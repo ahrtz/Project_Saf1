@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://spot-db.chcpmydsm52l.ap-northeast-2.rds.amazonaws.com/spot
+    username: spot
+    password: codmsgusrlthdusdbwlsalrud
+    driverClassName: com.mysql.cj.jdbc.Driver  
+mybatis:
+  type-aliases-package: shop.spotweb.spot.dto
+  mapper-locations: mapper/**/*.xml
