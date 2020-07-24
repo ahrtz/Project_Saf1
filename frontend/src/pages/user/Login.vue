@@ -12,7 +12,7 @@
       <br>
       <button>Google Login 버튼</button>
       <br>
-      <router-link :to="{name:'SignIn'}">회원가입</router-link>
+      <router-link :to="{name:'SignUp'}">회원가입</router-link>
   </div>
 </template>
 

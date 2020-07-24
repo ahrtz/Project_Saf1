@@ -8,7 +8,7 @@ import Router from 'vue-router'
 // user 
 import MainPage from '../Mainpage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
-import SignIn from '../pages/user/SignIn.vue'
+import SignUp from '../pages/user/SignUp.vue'
 import Login from '../pages/user/Login.vue'
 import Project from '../pages/diary/Projects/Projects.vue'
 import Blog from '../pages/diary/Blogs/Blogs.vue'
@@ -56,9 +56,9 @@ const router = new Router({
       component: Login,
     },
     {
-      path: '/signin',
-      name:'SignIn',
-      component: SignIn,
+      path: '/signup',
+      name:'SignUp',
+      component: SignUp,
     },
     // 다이어리
     {
