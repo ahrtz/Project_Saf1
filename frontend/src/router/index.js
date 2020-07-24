@@ -16,6 +16,7 @@ import Scrap from '../pages/user/Scrap.vue'
 import Diary from '../pages/diary/DiaryMain.vue'
   //project
 import Project from '../pages/diary/Projects/Projects.vue'
+import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
   // blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
@@ -75,12 +76,17 @@ const router = new Router({
       component: Project,
     },
     {
+      path:'/diary/projects/:did',
+      name:'ProjectDetail',
+      component : ProjectDetail
+    },
+    {
       path: '/diary/blogs',
       name:'Blog',
       component: Blog,
     },
     {
-      path:'/diary/:did',
+      path:'/diary/blog/:did',
       name:'BlogDetail',
       component:BlogDetail
     },
