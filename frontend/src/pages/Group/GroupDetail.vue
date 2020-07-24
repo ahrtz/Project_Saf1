@@ -1,0 +1,25 @@
+<template>
+  <div>
+      <h2>그룹 리스트 조회 페이지</h2>
+      <router-link :to="{name:'MemberList'}">멤버조회(서브메뉴1)</router-link> 
+      <br>우측에 관리자 메뉴 필요
+      <br>
+      {{desc}}
+      
+  </div>
+</template>
+
+<script>
+export default {
+    name : 'GroupDetail',
+    data(){
+      return{
+        desc:'그룹소개와 기타 등등이  올 곳'
+      }
+    }
+}
+</script>
+
+<style>
+
+</style>
