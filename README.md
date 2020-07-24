@@ -14,8 +14,8 @@
   - __master__ : Service Release 및 제출용 branch(결과물). (Merge할 경우 Request 필수!)
    
 2. __Commit 메세지 Format__  
-  ___"[type] commit message, issue Key"___  
-  _ex) git commit -m "[Add]<기능설명>, jira Key"_
+  ___"[type][issue Key] commit message"___  
+  _ex) git commit -m "[Add][jira Key] <기능설명>"_
   - __Add :__ 새로운 기능 추가.
   - __Fix :__ 버그 수정.
   - __Modify :__ 기능에 버그는 없지만, 코드 수정.
