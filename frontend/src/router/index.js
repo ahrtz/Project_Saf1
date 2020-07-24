@@ -10,12 +10,15 @@ import MainPage from '../Mainpage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignIn from '../pages/user/SignIn.vue'
 import Login from '../pages/user/Login.vue'
-import Project from '../pages/diary/Projects/Projects.vue'
-import Blog from '../pages/diary/Blogs/Blogs.vue'
 import Follow from '../pages/user/Follow.vue'
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
 import Diary from '../pages/diary/DiaryMain.vue'
+  //project
+import Project from '../pages/diary/Projects/Projects.vue'
+  // blog
+import Blog from '../pages/diary/Blogs/Blogs.vue'
+import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
 
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'
@@ -75,6 +78,11 @@ const router = new Router({
       path: '/diary/blogs',
       name:'Blog',
       component: Blog,
+    },
+    {
+      path:'/diary/:did',
+      name:'BlogDetail',
+      component:BlogDetail
     },
     // 그룹
     {
