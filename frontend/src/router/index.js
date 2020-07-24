@@ -4,6 +4,7 @@ import Router from 'vue-router'
 
 
 
+
 // user 
 import MainPage from '../Mainpage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
@@ -82,7 +83,7 @@ const router = new Router({
       component: GroupMain
     },
     {
-      path:'/group/MemberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐 
+      path:'/group/MemberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
       name:'MemberList',
       component : MemberList
     },
