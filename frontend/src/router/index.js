@@ -20,7 +20,7 @@ import Diary from '../pages/diary/DiaryMain.vue'
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'
 import MemberList from '../pages/Group/MemberList.vue'
-import GroupList from '../pages/Group/GroupList.vue'
+import GroupDetail from '../pages/Group/GroupDetail.vue'
 
 Vue.use(Router)
 
@@ -88,9 +88,9 @@ const router = new Router({
       component : MemberList
     },
     {
-      path:'/group/GroupList',
-      name:'GroupList',
-      component: GroupList
+      path:'/group/GroupDetail',
+      name:'GroupDetail',
+      component: GroupDetail
     }
   ]
 })
