@@ -1,6 +1,6 @@
 <template>
   <div>
-      사이드바
+      <h2>사이드바</h2>
   </div>
 </template>
 

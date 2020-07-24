@@ -1,6 +1,6 @@
 <template>
   <div>
-      로그인 페이지
+      <h2>로그인 페이지</h2>
       <br>
       id <input type="text" placeholder="id를 입력하세요">
       <br>
@@ -12,7 +12,7 @@
       <br>
       <button>Google Login 버튼</button>
       <br>
-      라우터링크 회원가입 페이지 이동 유도
+      <router-link :to="{name:'SignIn'}">회원가입</router-link>
   </div>
 </template>
 

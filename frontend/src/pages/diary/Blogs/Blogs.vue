@@ -1,6 +1,6 @@
 <template>
     <div>
-        블로그 카드뷰
+        <h2>블로그 카드뷰</h2>
     </div>
 </template>
 

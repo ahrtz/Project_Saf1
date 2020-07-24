@@ -1,6 +1,6 @@
 <template>
   <div>
-    헤더<br>
+    <h2>헤더</h2>
 
     <router-link to="/">Main</router-link>
     <router-link :to="{name:'Diary'}">Diary</router-link>

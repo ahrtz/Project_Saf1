@@ -1,6 +1,6 @@
 <template>
 <div>
-    메인페이지
+    <h2>메인페이지</h2>
     <br>
     <br>
 </div>

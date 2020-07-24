@@ -5,12 +5,14 @@ import Router from 'vue-router'
 
 
 // user 
-import AccountDetail from '../pages/user/AccountDetail.vue'
-import Login from '../pages/user/Login.vue'
 import MainPage from '../Mainpage.vue'
+import AccountDetail from '../pages/user/AccountDetail.vue'
+import SignIn from '../pages/user/SignIn.vue'
+import Login from '../pages/user/Login.vue'
 import Project from '../pages/diary/Projects/Projects.vue'
 import Blog from '../pages/diary/Blogs/Blogs.vue'
-
+import Follow from '../pages/user/Follow.vue'
+import Scrap from '../pages/user/Scrap.vue'
 //Diary
 import Diary from '../pages/diary/DiaryMain.vue'
 
@@ -38,9 +40,24 @@ const router = new Router({
       component: AccountDetail,
     },
     {
+      path: '/account/follow',
+      name :'Follow',
+      component: Follow
+    },
+    {
+      path: '/account/scrap',
+      name : 'Scrap',
+      component: Scrap
+    },
+    {
       path: '/login',
       name:'Login',
       component: Login,
+    },
+    {
+      path: '/signin',
+      name:'SignIn',
+      component: SignIn,
     },
     // 다이어리
     {
