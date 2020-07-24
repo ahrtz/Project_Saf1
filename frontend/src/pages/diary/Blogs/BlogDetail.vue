@@ -1,13 +1,13 @@
 <template>
   <div>
-      <h2>그룹 리스트 조회 페이지</h2>
-  
+      다이어리(블로그) 세부 페이지
+      
   </div>
 </template>
 
 <script>
 export default {
-    name : 'GroupList'
+    name:'BlogDetail',
 }
 </script>
 
