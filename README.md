@@ -25,6 +25,7 @@
 
 ## Directory 설명  
    - __documents__ : 발표자료, 회의록 등 팀의 Reference용 문서 저장.
+   - __infra__ : EC2, DB Query 등의 파일 저장.
    - __그 외__ : Project 파일.
 
 ## 구현 내용
