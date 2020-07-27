@@ -1,0 +1,142 @@
+
+Drop TABLE if exists `group_relation`;
+Drop TABLE if exists `groups`;
+Drop TABLE if exists `like`;
+Drop TABLE if exists `commit_list`;
+Drop TABLE if exists `comment`;
+Drop TABLE if exists `tag`;
+Drop TABLE if exists `follow`;
+Drop TABLE if exists `scrap`;
+Drop TABLE if exists `post`;
+Drop TABLE if exists `diary`;
+Drop TABLE if exists `user`;
+
+
+CREATE TABLE `user` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`email`	varchar(128)	NOT NULL,
+	`pwd`	varchar(128)	NULL,
+	`nickname`	varchar(128)	NULL,
+	`git_id`	varchar(128)	NULL,
+	`git_url`	varchar(128)	NULL,
+	`desc`	varchar(256)	NULL,
+	`img`	varchar(128)	NULL,
+	`git_token`	varchar(128)	NULL,
+	`is_social`	boolean	NULL
+);
+
+
+CREATE TABLE `diary` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`uid`	int	NOT NULL,
+	`title`	varchar(128)	NULL,
+	`desc`	varchar(256)	NULL,
+	`img`	varchar(256)	NULL,
+	`git_url`	varchar(256)	NULL,
+	`is_proj`	Boolean	NULL,
+	`s_date`	date	NULL,
+	`e_date`	date	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `post` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`did`	int	NOT NULL,
+	`uid`	int	NOT NULL,
+	`title`	varchar(128)	NULL,
+	`content`	Text	NULL,
+	`c_date`	varchar(128)	NULL,
+	`priority`	int	NULL,
+	`cnt_like`	int	NULL,
+	`is_temp`	boolean	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `like` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`uid`	int	NOT NULL,
+	`pid`	int	NOT NULL,
+	`status`	boolean	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `commit_list` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`uid`	int	NOT NULL,
+	`pid`	int	NOT NULL,
+	`sha`	VARCHAR(255)	NULL,
+	`author`	varchar(256)	NULL,
+	`msg`	varchar(1000)	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `tag` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`pid`	int	NOT NULL,
+	`name`	varchar(128)	NULL,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `scrap` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`uid`	int	NOT NULL,
+	`pid`	int	NOT NULL,
+	`status`	boolean	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `follow` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`user_from`	int	NOT NULL,
+	`user_to`	int	NOT NULL,
+   FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+   FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `groups` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`lid`	int	NOT NULL,
+	`name`	varchar(128)	NULL,
+	`desc`	varchar(256)	NULL,
+  FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
+
+);
+
+
+CREATE TABLE `comment` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`uid`	int	NOT NULL,
+	`pid`	int	NOT NULL,
+	`content`	varchar(10000)	NULL,
+	`date`	Date	NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `group_relation` (
+	`id`	int	NOT NULL auto_increment primary key,
+	`gid`	int	NOT NULL,
+	`uid`	int	NOT NULL ,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (gid) REFERENCES groups(id) ON UPDATE CASCADE ON DELETE RESTRICT  
+);
+
+
+
+
+
+
+
+
