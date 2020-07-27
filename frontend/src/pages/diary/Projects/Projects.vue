@@ -15,7 +15,7 @@
        <v-container fluid>
            <v-row>
                <v-col v-for="project in projects" :key="project.did">
-                    <v-card id="card" img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" class="ma-2 pa-2" stlye="height:300px" outlined>
+                    <v-card id="CardView" img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" class="ma-2 pa-2" stlye="height:300px" outlined>
                        <v-card-title v-show="show">
                            {{project.dname}}
                            </v-card-title>
@@ -38,16 +38,34 @@
 </template>
 
 <script>
-new Vue({
-    el: '#card',
+import plugin from '../../../plugins/vuetify.js'; // 이거 모르겠음..
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+
+window.onload = function(){
+    new Vue({
+    el: '#CardView',
     vuetify: new Vuetify(),
-    data : () => ({
-        show : false,
-        backOpacity:{
-            opacity : 
-        }
-    }),
-})
+    data: () => ({
+    show: false,
+    opacityStyle:{
+      opacity : "1.0",
+    },
+  }),
+  methods: {
+    changecardStyle : function(){
+      this.opacityStyle.opacity = "0.4";
+      this.show = true;
+    },
+    originalcardStyle : function(){
+      this.opacityStyle.opacity = "1.0";
+      this.show = false;
+    }
+  }
+});
+}
+
+
 export default {
     name:'Projects',
     data(){
