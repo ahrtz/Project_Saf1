@@ -17,3 +17,6 @@
 ## 7.23
 - STS 사용 Spring Boot Project로 제작
 - 내부 소스코드 기존과 동일
+
+## 7.24
+- GitHup API 관련 jar 파일 레퍼런스 분석
