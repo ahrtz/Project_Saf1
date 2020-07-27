@@ -20,6 +20,8 @@ import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
   // blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
+import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
+import PostDetail from '../pages/diary/Blogs/PostDetail.vue'
 
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'
@@ -89,6 +91,16 @@ const router = new Router({
       path:'/diary/blog/:did',
       name:'BlogDetail',
       component:BlogDetail
+    },
+    {
+      path:'/diary/:pid',
+      name:'PostDetail',
+      component:PostDetail
+    },
+    {
+      path:'/diary/blog/:did/new',
+      name:'NewBlogPost',
+      component:NewBlogPost
     },
     // 그룹
     {
