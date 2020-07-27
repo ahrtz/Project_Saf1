@@ -5,8 +5,8 @@ import Router from 'vue-router'
 
 
 
-// user 
-import MainPage from '../Mainpage.vue'
+// user
+import MainPage from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignIn from '../pages/user/SignIn.vue'
 import Login from '../pages/user/Login.vue'
