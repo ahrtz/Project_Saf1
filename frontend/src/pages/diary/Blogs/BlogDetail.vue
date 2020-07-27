@@ -1,7 +1,8 @@
 <template>
   <div>
       다이어리(블로그) 세부 페이지
-      <router-link :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
+      <Status />
+      <router-link  class="d-flex justify-end" :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
         <v-btn>글 작성 </v-btn>
         </router-link>
       
@@ -34,8 +35,12 @@
 </template>
 
 <script>
+import Status from '@/component/Status.vue'
 export default {
     name:'BlogDetail',
+    components:{
+      Status
+    },
     data(){
       return{
         diaryid:this.$route.params,
