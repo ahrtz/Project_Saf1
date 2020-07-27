@@ -1,8 +1,8 @@
-package shop.spotweb.spot.dao;
+package io.ssafy.p.i3a110.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import shop.spotweb.spot.dto.HealthDto;
+import io.ssafy.p.i3a110.dto.HealthDto;
 @Mapper
 public interface HealthDao {
 	public HealthDto getHealth();

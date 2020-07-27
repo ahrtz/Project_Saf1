@@ -1,4 +1,4 @@
-package shop.spotweb.spot.dto;
+package io.ssafy.p.i3a110.dto;
 
 import lombok.Data;
 
