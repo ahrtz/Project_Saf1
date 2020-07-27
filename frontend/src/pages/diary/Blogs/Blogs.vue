@@ -6,11 +6,13 @@
         <br>
         <br>
 
-        <v-container fluid grid-list-md>
-        <v-layout row wrap>
-      
+        <v-container fluid>
+
+        <v-row>
+        <v-col cols="4">
         <div v-for="blog in blogs" :key="blog.did"> <!-- key는 이 값을 기준으로 안겹치게 list에서 뽑아줄 것이다 -->
         <!-- <v-flex xs12 sm6 md4 lg3 xl2>    -->
+        
         <v-flex>
              <v-card
     class="mx-auto"
@@ -61,9 +63,10 @@
   </v-card>
             <!-- <router-link :to="{name:'BlogDetail',params:{did:blog.did}}">들어가보기</router-link> -->
         </v-flex>
+       
         </div>
-
-        </v-layout>
+         </v-col>
+        </v-row>
         </v-container>
 
     </div>
@@ -81,23 +84,23 @@ export default {
         return{
             blogs:[{
                 did:0,
-                dname:'1번 다이어리'
+                dname:'1번 블로그'
             },
             {
                 did:1,
-                dname:'2번 다이어리'
+                dname:'2번 블로그'
             },
             {
                 did:2,
-                dname:'3번 다이어리'
+                dname:'3번 블로그'
             },
             {
                 did:3,
-                dname:'4번 다이어리'
+                dname:'4번 블로그'
             },
             {
                 did:4,
-                dname:'5번 다이어리'
+                dname:'5번 블로그'
             },
             ]
         }
