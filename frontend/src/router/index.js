@@ -14,12 +14,15 @@ import Follow from '../pages/user/Follow.vue'
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
 import Diary from '../pages/diary/DiaryMain.vue'
-  //project
+
+//project
 import Project from '../pages/diary/Projects/Projects.vue'
 import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
-  // blog
+
+// blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
+import BlogAdd from '../pages/diary/Blogs/BlogAdd.vue'
 
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'
@@ -70,6 +73,7 @@ const router = new Router({
       name:'Diary',
       component: Diary
     },
+        //프로젝트
     {
       path: '/diary/projects',
       name:'Project',
@@ -80,13 +84,19 @@ const router = new Router({
       name:'ProjectDetail',
       component : ProjectDetail
     },
+        //블로그
     {
       path: '/diary/blogs',
       name:'Blog',
       component: Blog,
     },
     {
-      path:'/diary/blog/:did',
+      path : '/diary/blogs/add',
+      name : 'BlogAdd',
+      component : BlogAdd
+    },
+    {
+      path:'/diary/blogs/:did',
       name:'BlogDetail',
       component:BlogDetail
     },
