@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h2>사이드바</h2>
+      <h2>사이드바 수정 해놓으면 댐 배치는 나중</h2>
   </div>
 </template>
 
