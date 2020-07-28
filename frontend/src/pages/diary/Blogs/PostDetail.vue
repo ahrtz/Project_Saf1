@@ -7,6 +7,7 @@
         </nav>
         <article>
           <v-btn class="ma-2" tile color="indigo" dark @click="goback()">목록으로</v-btn>
+          <v-btn class="ma-2 float-right" tile color="indigo" dark >수정하기</v-btn>
           <v-container fluid>
               제목
               <v-text-field
@@ -15,10 +16,10 @@
               readonly />
               <p v-show="PostData.commitList">커밋리스트</p>
               <!-- <v-text-field v-model="PostData.commitList" readonly/> -->
-              <v-checkbox v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in PostData.commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
+              <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in PostData.commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
               <v-btn v-show="commitcheck==false" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
 
-              <v-checkbox  v-show="PostData.commitList && commitcheck == true" v-for="commit in PostData.commitList" :key="commit.cid" v-model="commit.checked" :label="commit.commitcontent" readonly></v-checkbox>
+              <v-checkbox  class="my-0" v-show="PostData.commitList && commitcheck == true" v-for="commit in PostData.commitList" :key="commit.cid" v-model="commit.checked" :label="commit.commitcontent" readonly></v-checkbox>
               <v-btn v-show='commitcheck==true' class="ma-2" tile color="indigo" dark @click="commitwide()">접기</v-btn>
               <br>
               내용

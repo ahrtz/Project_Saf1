@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    name:'UserSidebar'
+    name:'userSidebar'
 }
 </script>
 

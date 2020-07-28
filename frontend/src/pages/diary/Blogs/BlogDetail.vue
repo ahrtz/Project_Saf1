@@ -2,7 +2,8 @@
   <div>
       다이어리(블로그) 세부 페이지
       <Status />
-      <router-link  class="d-flex justify-end" :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
+      
+      <router-link  class="float-right" :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
         <v-btn>글 작성 </v-btn>
         </router-link>
       
