@@ -5,8 +5,8 @@ import Router from 'vue-router'
 
 
 
-// user 
-import MainPage from '../Mainpage.vue'
+// user
+import MainPage from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
 import Login from '../pages/user/Login.vue'
@@ -23,7 +23,12 @@ import ProjectAdd from '../pages/diary/Projects/ProjectAdd.vue'
 // blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
+<<<<<<< HEAD
 import BlogAdd from '../pages/diary/Blogs/BlogAdd.vue'
+=======
+import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
+import PostDetail from '../pages/diary/Blogs/PostDetail.vue'
+>>>>>>> origin/develop
 
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'
@@ -106,6 +111,16 @@ const router = new Router({
       path:'/diary/blogs/:did',
       name:'BlogDetail',
       component:BlogDetail
+    },
+    {
+      path:'/diary/:pid',
+      name:'PostDetail',
+      component:PostDetail
+    },
+    {
+      path:'/diary/blog/:did/new',
+      name:'NewBlogPost',
+      component:NewBlogPost
     },
     // 그룹
     {

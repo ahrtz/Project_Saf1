@@ -1,12 +1,12 @@
-package shop.spotweb.spot.controller;
+package io.ssafy.p.i3a110.controller;
 
+import io.ssafy.p.i3a110.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import shop.spotweb.spot.dto.HealthDto;
-import shop.spotweb.spot.service.HealthService;
+import io.ssafy.p.i3a110.dto.HealthDto;
 
 @RestController
 public class HealthController {

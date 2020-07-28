@@ -1,10 +1,10 @@
-package shop.spotweb.spot.service;
+package io.ssafy.p.i3a110.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import shop.spotweb.spot.dao.HealthDao;
-import shop.spotweb.spot.dto.HealthDto;
+import io.ssafy.p.i3a110.dao.HealthDao;
+import io.ssafy.p.i3a110.dto.HealthDto;
 
 @Service
 public class HealthService {
