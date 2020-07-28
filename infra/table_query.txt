@@ -34,8 +34,8 @@ CREATE TABLE `diary` (
 	`img`	varchar(256)	NULL,
 	`git_url`	varchar(256)	NULL,
 	`is_proj`	Boolean	NULL,
-	`s_date`	date	NULL,
-	`e_date`	date	NULL,
+	`s_date`	datetime	NULL,
+	`e_date`	datetime	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
