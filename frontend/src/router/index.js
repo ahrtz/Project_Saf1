@@ -18,12 +18,12 @@ import Diary from '../pages/diary/DiaryMain.vue'
 //project
 import Project from '../pages/diary/Projects/Projects.vue'
 import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
-import ProjectAdd from '../pages/diary/Projects/ProjectAdd.vue'
+import ProjectAdd from '../pages/diary/DiaryAdd.vue'
 
 // blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
-import BlogAdd from '../pages/diary/Blogs/BlogAdd.vue'
+import BlogAdd from '../pages/diary/DiaryAdd.vue'
 import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
 import PostDetail from '../pages/diary/Blogs/PostDetail.vue'
 

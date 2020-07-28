@@ -1,7 +1,7 @@
-
+use ssafy;
 Drop TABLE if exists `group_relation`;
 Drop TABLE if exists `groups`;
-Drop TABLE if exists `like`;
+Drop TABLE if exists `likes`;
 Drop TABLE if exists `commit_list`;
 Drop TABLE if exists `comment`;
 Drop TABLE if exists `tag`;
@@ -11,7 +11,6 @@ Drop TABLE if exists `post`;
 Drop TABLE if exists `diary`;
 Drop TABLE if exists `user`;
 
-
 CREATE TABLE `user` (
 	`id`	int	NOT NULL auto_increment primary key,
 	`email`	varchar(128)	NOT NULL,
@@ -19,26 +18,26 @@ CREATE TABLE `user` (
 	`nickname`	varchar(128)	NULL,
 	`git_id`	varchar(128)	NULL,
 	`git_url`	varchar(128)	NULL,
-	`desc`	varchar(256)	NULL,
+	`intro`	varchar(256)	NULL,
 	`img`	varchar(128)	NULL,
 	`git_token`	varchar(128)	NULL,
 	`is_social`	boolean	NULL,
-	`is_certified boolean NULL`
-);
+	`is_certified` boolean NULL
+) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `diary` (
 	`id`	int	NOT NULL auto_increment primary key,
 	`uid`	int	NOT NULL,
 	`title`	varchar(128)	NULL,
-	`desc`	varchar(256)	NULL,
+	`intro`	varchar(256)	NULL,
 	`img`	varchar(256)	NULL,
 	`git_url`	varchar(256)	NULL,
 	`is_proj`	Boolean	NULL,
 	`s_date`	date	NULL,
 	`e_date`	date	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `post` (
@@ -53,17 +52,17 @@ CREATE TABLE `post` (
 	`is_temp`	boolean	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
-CREATE TABLE `like` (
+CREATE TABLE `likes` (
 	`id`	int	NOT NULL auto_increment primary key,
 	`uid`	int	NOT NULL,
 	`pid`	int	NOT NULL,
 	`status`	boolean	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `commit_list` (
@@ -75,7 +74,7 @@ CREATE TABLE `commit_list` (
 	`msg`	varchar(1000)	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `tag` (
@@ -83,7 +82,7 @@ CREATE TABLE `tag` (
 	`pid`	int	NOT NULL,
 	`name`	varchar(128)	NULL,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `scrap` (
@@ -93,7 +92,7 @@ CREATE TABLE `scrap` (
 	`status`	boolean	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `follow` (
@@ -102,17 +101,17 @@ CREATE TABLE `follow` (
 	`user_to`	int	NOT NULL,
    FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
    FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `groups` (
 	`id`	int	NOT NULL auto_increment primary key,
 	`lid`	int	NOT NULL,
 	`name`	varchar(128)	NULL,
-	`desc`	varchar(256)	NULL,
+	`intro`	varchar(256)	NULL,
   FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `comment` (
@@ -120,10 +119,10 @@ CREATE TABLE `comment` (
 	`uid`	int	NOT NULL,
 	`pid`	int	NOT NULL,
 	`content`	varchar(10000)	NULL,
-	`date`	Date	NULL,
+	`c_date`	datetime	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `group_relation` (
@@ -132,10 +131,90 @@ CREATE TABLE `group_relation` (
 	`uid`	int	NOT NULL ,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (gid) REFERENCES groups(id) ON UPDATE CASCADE ON DELETE RESTRICT  
-);
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+
+INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('dominicong@naver.com', '1234','창교이','github.com/dominicong','test@test.com','창경입니다.',NULL,NULL,false,false);
+INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test@test.com', 'test','test','test','github.com/test','for test user',NULL,NULL,false,false);
+INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test2@test.com', NULL,'test2','test2','github.com/test2','for test user2',NULL,'hashed_git_token',true,true);
+INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test3@test.com', NULL,'test3','test3','github.com/test3','for test user3','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS2pu5gU8U_jMw2G-iOgyG0OwVnK3nRWqi77w&usqp=CAU','hashed_git_token',true,true);
+
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project1','나의 프로젝트1 입니다',NULL,'github.com',true,'2020-07-01','2020-07-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project2','나의 프로젝트2 입니다',NULL,'github.com',true,'2020-06-01','2020-06-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project3','나의 프로젝트3 입니다',NULL,'github.com',true,'2020-05-01','2020-05-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project4','나의 프로젝트4 입니다',NULL,'github.com',true,'2020-04-01','2020-04-22');
+
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Project1','나의 테스트 프로젝트1 입니다',NULL,'github.com',true,'2020-07-01','2020-07-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Project2','나의 테스트 프로젝트2 입니다',NULL,'github.com',true,'2020-06-01','2020-06-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Project3','나의 테스트 프로젝트3 입니다',NULL,'github.com',true,'2020-05-01','2020-05-22');
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Project4','나의 테스트 프로젝트4 입니다',NULL,'github.com',true,'2020-04-01','2020-04-22');
 
 
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Post1','나의 포스트1 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Post2','나의 포스트2 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Post3','나의 포스트3 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Post4','나의 포스트4 입니다',NULL,'github.com',false,NULL,NULL);
 
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Post1','나의 포스트1 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Post2','나의 포스트2 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Post3','나의 포스트3 입니다',NULL,'github.com',false,NULL,NULL);
+INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Post4','나의 포스트4 입니다',NULL,'github.com',false,NULL,NULL);
+
+
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-02',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-03',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 3입니다','글3에대한 컨텐츠입니다','2020-07-04',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 4입니다','글4에대한 컨텐츠입니다','2020-07-05',0,2,false);
+
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,2,'프로젝트 2 글 1입니다','글1에대한 컨텐츠입니다','2020-06-02',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,2,'프로젝트 2 글 2입니다','글2에대한 컨텐츠입니다','2020-06-03',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,2,'프로젝트 2 글 3입니다','글3에대한 컨텐츠입니다','2020-06-04',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,2,'프로젝트 2 글 4입니다','글4에대한 컨텐츠입니다','2020-06-05',0,2,false);
+
+
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'프로젝트 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-02',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'프로젝트 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-03',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'프로젝트 1 글 3입니다','글3에대한 컨텐츠입니다','2020-07-04',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'프로젝트 1 글 4입니다','글4에대한 컨텐츠입니다','2020-07-05',0,2,false);
+
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(1,1,'hash1','dominicong','commit1');
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(1,1,'hash2','dominicong','commit2');
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(1,1,'hash3','dominicong','commit3');
+
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash4','test','commit1');
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash5','test','commit2');
+INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash6','test','commit3');
+
+INSERT INTO groups(lid,name,intro) VALUES(1,'창경그룹','열심히 commit 관리하자');
+INSERT INTO group_relation(gid,uid  ) VALUES(1,1);
+INSERT INTO group_relation(gid,uid  ) VALUES(1,2);
+INSERT INTO group_relation(gid,uid  ) VALUES(1,3);
+
+INSERT INTO follow(user_from,user_to  ) VALUES(2,1);
+INSERT INTO follow(user_from,user_to  ) VALUES(3,1);
+INSERT INTO follow(user_from,user_to  ) VALUES(1,2);
+INSERT INTO follow(user_from,user_to  ) VALUES(4,1);
+
+INSERT INTO scrap(uid,pid,status) VALUES(1,1,true);
+INSERT INTO scrap(uid,pid,status) VALUES(1,2,true);
+INSERT INTO scrap(uid,pid,status) VALUES(1,4,true);
+INSERT INTO scrap(uid,pid,status) VALUES(2,2,true);
+INSERT INTO scrap(uid,pid,status) VALUES(2,3,true);
+INSERT INTO scrap(uid,pid,status) VALUES(2,4,true);
+
+INSERT INTO comment(uid,pid,content,c_date) VALUES(1,1,'1빠','2020-07-02 09:01:00.00');
+INSERT INTO comment(uid,pid,content,c_date) VALUES(2,1,'2빠','2020-07-02 09:02:00.00');
+INSERT INTO comment(uid,pid,content,c_date) VALUES(2,1,'3빠','2020-07-02 09:03:01.00');
+
+INSERT INTO likes(uid,pid,status) VALUES(1,1,true);
+INSERT INTO likes(uid,pid,status) VALUES(2,1,true);
+INSERT INTO likes(uid,pid,status) VALUES(3,1,true);
+INSERT INTO likes(uid,pid,status) VALUES(4,1,true);
+INSERT INTO likes(uid,pid,status) VALUES(1,2,true);
+INSERT INTO likes(uid,pid,status) VALUES(2,2,true);
+INSERT INTO likes(uid,pid,status) VALUES(3,2,true);
+INSERT INTO likes(uid,pid,status) VALUES(4,2,true);
+
+INSERT INTO diary(  ) VALUES();
 
 
 

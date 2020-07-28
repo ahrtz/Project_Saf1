@@ -5,6 +5,9 @@
       <v-col cols="12">
       블로그 : <v-text-field v-model="blogData.title" type = "text" placeholder="블로그 이름을 입력하세요"></v-text-field>
       </v-col>
+      <v-col cols="12" v-show="isProject">
+      git_url : <v-text-field v-model="blogData.git_url" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
+      </v-col>
       <v-col cols="12">
             대표 이미지
             <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
@@ -66,6 +69,13 @@ export default {
                 menu2: false,
             },
         }
+    },
+    computed:{
+        
+        isProject(){
+            return (this.$route.path[7] =='p')
+        }
+        
     },
     methods:{
       goback(){
