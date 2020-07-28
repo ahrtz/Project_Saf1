@@ -6,7 +6,7 @@ public class DiaryDto {
     private int id;
     private int uid;
     private String title;
-    private String desc;
+    private String intro;
     private String img;
     private String gitUrl;
     private int isProj;
