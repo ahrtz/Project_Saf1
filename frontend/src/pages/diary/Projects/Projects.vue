@@ -19,7 +19,8 @@
                     class=" ma-2 " 
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
-                    outlined>
+                    outlined
+                    @click="goProject(project.did)">
                     <!-- hover -->
                     <div 
                     v-if="hover"
@@ -131,6 +132,11 @@ export default {
             ]
         }
     },
+    methods:{
+        goProject( param ){
+            this.$router.push({name : 'ProjectDetail', params :{did:param}})
+        }
+    }
    
 }
 </script>
