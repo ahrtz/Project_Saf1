@@ -6,5 +6,5 @@ public class GroupsDto {
     private int id;
     private int lid;
     private String name;
-    private String desc;
+    private String intro;
 }
