@@ -23,12 +23,10 @@ import ProjectAdd from '../pages/diary/Projects/ProjectAdd.vue'
 // blog
 import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
-<<<<<<< HEAD
 import BlogAdd from '../pages/diary/Blogs/BlogAdd.vue'
-=======
 import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
 import PostDetail from '../pages/diary/Blogs/PostDetail.vue'
->>>>>>> origin/develop
+
 
 //Group
 import GroupMain from '../pages/Group/GroupMain.vue'

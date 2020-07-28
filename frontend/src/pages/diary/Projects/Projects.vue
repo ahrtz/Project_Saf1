@@ -2,34 +2,48 @@
     <div>
         <h2>프로젝트 카드 뷰</h2>
          
-         <router-link :to="{name:'ProjectAdd'}" tag="button">프로젝트 추가(버튼임)</router-link>
+        <router-link :to="{name:'ProjectAdd'}" tag="button">프로젝트 추가(버튼임)</router-link>
         <br>
         <br>
-
-       <div v-for="project in projects" :key="project.did">
-            {{project.dname}}
-        
-            <!-- <router-link :to="{name:'ProjectDetail',params:{did:project.did}}">들어가보기</router-link> -->
-       </div>
 
        <v-container fluid>
            <v-row>
-               <v-col v-for="project in projects" :key="project.did">
-                    <v-card id="CardView" img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" class="ma-2 pa-2" stlye="height:300px" outlined>
-                       <v-card-title v-show="show">
+               <v-col cols="4" v-for="project in projects" :key="project.did">
+                   <v-hover
+                        v-slot:default="{ hover }"
+                        enabled
+                        >   
+                    <v-card 
+                    :elevation="hover? 12 : 2"
+                    :img="project.img"
+                    class=" ma-2 " 
+                    :class="{ 'on-hover': hover }"
+                    style="height:300px;" 
+                    outlined>
+                    <div 
+                    v-if="hover"
+                    class = "black div-reveal"
+                    >
+                        <!-- if hover -->
+                        <v-card-title v-if="hover">
                            {{project.dname}}
-                           </v-card-title>
-                
-                           <v-card-subtitle v-show="show">
-                               <div v-for="tag in project.tags" :key="tag">
-                                   {{tag}}
-                               </div>
-                           </v-card-subtitle>
+                        
+                        </v-card-title>
 
-                           <v-card-text v-show="show">
-                               {{project.descrip}} 
-                           </v-card-text>
+                        <v-card-subtitle v-show="hover">
+                            <div style="color:white;" v-for="tag in project.tags" :key="tag">
+                                {{tag}}
+                            </div>
+                        </v-card-subtitle>
+
+                        <v-card-text v-show="hover">
+                            {{project.descrip}} 
+                        </v-card-text>
+
+                    </div>
+                    
                     </v-card>
+                </v-hover>
                 </v-col>
                    
            </v-row>
@@ -38,38 +52,13 @@
 </template>
 
 <script>
-import plugin from '../../../plugins/vuetify.js'; // 이거 모르겠음.. 이렇게 import 하는 건 줄 알았는데...
-import Vue from 'vue';
-import Vuetify from 'vuetify';
-
-window.onload = function(){
-    new Vue({
-    el: '#CardView',
-    vuetify: new Vuetify(),
-    data: () => ({
-    show: false,
-    opacityStyle:{
-      opacity : "1.0",
-    },
-  }),
-  methods: {
-    changecardStyle : function(){
-      this.opacityStyle.opacity = "0.4";
-      this.show = true;
-    },
-    originalcardStyle : function(){
-      this.opacityStyle.opacity = "1.0";
-      this.show = false;
-    }
-  }
-});
-}
 
 
 export default {
     name:'Projects',
     data(){
         return{
+            show: false,
             projects:[{
                 did:0,
                 dname:'1번 프로젝트',
@@ -134,10 +123,29 @@ export default {
 
             ]
         }
-    }
+    },
+   
 }
 </script>
 
 <style>
+/* .v-card{
+    transition: opacity .4s ease-in-out;
+    opacity : .4;
+} */
+.v-card:not(.on-hover){
+    opacity : 1.0;
+}
+.div-reveal {
+    color : white;
+    opacity: .5;
+    width : 100%;
+    height : 100%;
+}
 
+.v-card-title{
+    color : black;
+    background-color : #FFFFFF;
+    opacity : .5;
+}
 </style>
