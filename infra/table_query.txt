@@ -22,7 +22,8 @@ CREATE TABLE `user` (
 	`desc`	varchar(256)	NULL,
 	`img`	varchar(128)	NULL,
 	`git_token`	varchar(128)	NULL,
-	`is_social`	boolean	NULL
+	`is_social`	boolean	NULL,
+	`is_certified boolean NULL`
 );
 
 
