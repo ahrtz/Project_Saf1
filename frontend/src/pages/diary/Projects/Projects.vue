@@ -2,7 +2,10 @@
     <div>
         <h2>프로젝트 카드 뷰</h2>
          
-        <router-link :to="{name:'ProjectAdd'}" tag="button">프로젝트 추가(버튼임)</router-link>
+        <router-link class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+          <v-btn class="mr-4 " color="indigo" dark>프로젝트 추가</v-btn>
+          
+        </router-link>
         <br>
         <br>
 
@@ -19,7 +22,8 @@
                     class=" ma-2 " 
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
-                    outlined>
+                    outlined
+                    @click="goProject(project.did)">
                     <!-- hover -->
                     <div 
                     v-if="hover"
@@ -131,6 +135,11 @@ export default {
             ]
         }
     },
+    methods:{
+        goProject( param ){
+            this.$router.push({name : 'ProjectDetail', params :{did:param}})
+        }
+    }
    
 }
 </script>

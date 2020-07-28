@@ -11,7 +11,7 @@ public class UserDto {
     private String gitUrl;
     private String intro;
     private String img;
-    private String gitTocken;
+    private String gitToken;
     private int isSocial;
     private int isCertified;
 }
