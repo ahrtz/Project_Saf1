@@ -7,21 +7,59 @@
               <h2>Login for BloGit </h2>
               </caption>
               <tr>
-                <td align="left">Email</td> 
+                <td style="margin:5px;padding: 5px;" align="left">Email</td> 
                 <td><div><input class="login-id" v-model="loginData.id" required type="email" ></div></td>
               </tr>
               <tr>
-                <td align="left">Password </td>
+                <td style="margin:5px;padding: 5px;" align="left">Password </td>
                 <td><input class="login-passwd" v-model="loginData.password" type="password"  minlength="8" required placeholder= "" @focus="visi='visible'" @blur="visi='hidden'"><br>
-                     <span :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+                     
                 </td>
               </tr>
+              <tr>
+                <td></td>
+                <td><span :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span></td>
+              </tr>
             </table>
-            <center>
-              <button type="submit" class="login-login">Login</button>
-              <button class="login-gitlogin">Git Login</button>
-              <button class="login-googlelogin">Google Login</button>
-            </center>
+            <v-card
+              class="login-flex-container align-start"
+              flat
+              color="white lighten-2"
+              height="60"
+            >
+              <v-card
+                class="login-flex-item "
+                @click="active = true"
+                color="green accent-1"
+                onclick=""
+              >
+                <router-link class="login-router-link login-login" :to="{name:'MainPage'}" exact style="margin-top:5px;">
+                  Login
+                </router-link>
+              </v-card>
+              <v-card
+                class="login-flex-item "
+                @click="active = true"
+                color="white"
+                onclick=""
+                flat
+              >
+                <router-link class="login-router-link" :to="{name:'MainPage'}" exact >
+                  <td><img src="../../../static/git_logo.png" style="height:40px;width:40px;" alt="git login" type="button"></td>
+                </router-link>
+              </v-card>
+              <v-card
+                class="login-flex-item "
+                @click="active = true"
+                color="white accent-2"
+                onclick=""
+                flat
+              >
+                <router-link class="login-router-link" :to="{name:'MainPage'}" exact >
+                  <td><img src="../../../static/google_logo.png" style="height:40px;width:40px;" alt="google login" type="button"></td>  
+                </router-link>
+            </v-card>
+            </v-card>
             <br>
             <router-link class="login-register" :to="{name:'SignUp'}">회원가입</router-link>
           </center>
@@ -52,7 +90,6 @@ export default {
   display: table; margin-left: auto; margin-right: auto;
 }
 table{ 
-  visibility:;
   border:"1px solid black" ;
 }
 .login-id{
@@ -68,7 +105,7 @@ table{
   border:2px solid rgb(219, 40, 40);
 }
 .login-passwd{
-  margin:5px;
+  margin: 5px;
   padding: 5px;
   padding-left: 10px;
   width:350px;
@@ -82,17 +119,46 @@ table{
 }
 .login-login{
   /* float: left; */
-  margin:10px;
+  padding-left:5px;
+  padding-right:5px;
 }
 .login-gitlogin{
   /* float: left; */
-  margin: 10px;
+  float:unset;
 }
 .login-googlelogin{
   float:unset;
-  margin: 10px;
 }
 .login-register{
   float:unset;
+}
+
+
+.login-flex-container {
+  width:100%;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 5px;
+}
+.login-flex-item {
+  display:flex;
+  margin: 10px;
+  padding: 0px;
+  text-align: center;
+  height:40px;
+  border-radius: 5px;
+  color:"green accent-2";
+  font-family: Recursive;
+  font-size:20px;
+}
+.login-router-link {
+  text-decoration: none;
+}
+.login-router-link-exact-active  {
+  color: white;
+  background-color:#56c068;
 }
 </style>

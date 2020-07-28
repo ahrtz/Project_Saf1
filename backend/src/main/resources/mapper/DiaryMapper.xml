@@ -7,19 +7,19 @@
 	<select id="getAllBlogsByKeyword" resultType="DiaryDto">
 		select *
 		from diary
-		where is_proj = false and title like concat('%',#{keyword},'%')
+		where uid = #{uid} and is_proj = false and title like concat('%',#{keyword},'%')
 	</select>
 
 	<select id="getAllProjectsByKeyword" resultType="DiaryDto">
 		select *
 		from diary
-		where is_proj = true and title like concat('%',#{keyword},'%')
+		where uid = #{uid} and is_proj = true and title like concat('%',#{keyword},'%')
 	</select>
 
 	<select id="getAllDiariesByKeyword" resultType="DiaryDto">
 		select *
 		from diary
-		where title like concat('%',#{keyword},'%')
+		where uid = #{uid} and title like concat('%',#{keyword},'%')
 	</select>
 
 	<select id="getDiary" resultType="DiaryDto">
@@ -30,28 +30,21 @@
 
 	<insert id="createDiary" parameterType="DiaryDto">
 		insert into diary 
-		values
-		(#{uid},
-		#{title},
-		#{desc},
-		#{img},
-		#{git_url},
-		#{is_proj},
-		#{s_date},
-		#{e_date})
+		(uid, title, intro,	img, git_url, is_proj, s_date, e_date)
+		values (#{uid}, #{title}, #{intro}, #{img}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
 	</insert>
 
 	<update id="updateDiary" parameterType="DiaryDto">
-		update customer 
+		update diary 
 		set 
 		uid = #{uid},
 		title = #{title},
-		desc = #{desc},
+		intro = #{intro},
 		img = #{img},
-		git_url = #{git_url},
-		is_proj = #{is_proj},
-		s_date = #{s_date},
-		e_date = #{e_date}
+		git_url = #{gitUrl},
+		is_proj = #{isProj},
+		s_date = #{sDate},
+		e_date = #{eDate}
 		where id = #{id}
 	</update>
 </mapper>
