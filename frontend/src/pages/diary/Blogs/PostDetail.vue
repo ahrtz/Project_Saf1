@@ -14,6 +14,13 @@
               filled
               v-model="PostData.title"
               readonly />
+              우선순위
+              <v-rating
+                v-model="PostData.rating"
+                background-color="orange lighten-3"
+                color="orange"
+                readonly
+                ></v-rating>
               <p v-show="PostData.commitList">커밋리스트</p>
               <!-- <v-text-field v-model="PostData.commitList" readonly/> -->
               <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in PostData.commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
@@ -79,6 +86,7 @@ export default {
             title:'글 제목',
             content:'글 내용',
             likechecked:false,
+            rating:4,
 
             commitList:[
                 {cid:0,
