@@ -41,7 +41,7 @@
                         </v-card-subtitle>
 
                         <v-card-text>
-                            {{project.descrip}} 
+                            {{project.intro}} 
                         </v-card-text>
 
                     </div>
@@ -79,7 +79,7 @@ export default {
                     '#Kotlin', 
                 ],
                 img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                descrip : '1번 프로젝트의 내용입니다.',
+                intro : '1번 프로젝트의 내용입니다.',
             },
             {
                 did:1,
@@ -92,7 +92,7 @@ export default {
                     'Spring-boot', 
                 ],
                 img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                descrip : '2번 프로젝트의 내용입니다.',
+                intro : '2번 프로젝트의 내용입니다.',
 
             },
             {
@@ -104,7 +104,7 @@ export default {
                     '#Media Processing',
                 ],
                 img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                descrip : '3번 프로젝트의 내용입니다.',
+                intro : '3번 프로젝트의 내용입니다.',
 
             },
             {
@@ -116,7 +116,7 @@ export default {
                     '#Mutil Thread',
                 ],
                 img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                descrip : '4번 프로젝트의 내용입니다.',
+                intro : '4번 프로젝트의 내용입니다.',
 
             },
             {
@@ -129,7 +129,7 @@ export default {
                     '#Dijkstra',
                 ],
                 img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                descrip : '5번 프로젝트의 내용입니다.',
+                intro : '5번 프로젝트의 내용입니다.',
             },
 
             ]
@@ -145,10 +145,6 @@ export default {
 </script>
 
 <style>
-/* .v-card{
-    transition: opacity .4s ease-in-out;
-    opacity : .4;
-} */
 .v-card:not(.on-hover){
     opacity : 1.0;
 }
