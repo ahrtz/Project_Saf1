@@ -23,12 +23,20 @@
         <router-link class="router-link" :to="{name:'Project'}" exact>Projects </router-link>
       </v-card>
       <v-card
-        class="header-flex-item mr-auto"
+        class="header-flex-item"
         v-click-outside="onClickOutside"
         @click="active = true"
         color="green accent-2"
       >
         <router-link class="router-link" :to="{name:'Blog'}">Blogs</router-link>
+      </v-card>
+      <v-card
+        class="header-flex-item mr-auto"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+        color="green accent-2"
+      >
+        <router-link class="router-link" :to="{name:'GroupMain'}">Group</router-link>
       </v-card>
       <div class="header-search header-flex-item">
         <input id="searchInput"
