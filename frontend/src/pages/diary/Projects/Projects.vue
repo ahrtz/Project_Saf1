@@ -20,28 +20,35 @@
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
                     outlined>
+                    <!-- hover -->
                     <div 
                     v-if="hover"
                     class = "black div-reveal"
                     >
-                        <!-- if hover -->
-                        <v-card-title v-if="hover">
-                           {{project.dname}}
                         
+                        <v-card-title>
+                           {{project.dname}}
                         </v-card-title>
 
-                        <v-card-subtitle v-show="hover">
+                        <v-card-subtitle>
                             <div style="color:white;" v-for="tag in project.tags" :key="tag">
                                 {{tag}}
                             </div>
                         </v-card-subtitle>
 
-                        <v-card-text v-show="hover">
+                        <v-card-text>
                             {{project.descrip}} 
                         </v-card-text>
 
                     </div>
-                    
+
+                    <!-- unhover -->
+                    <div v-else>
+                        <v-card-title class = "title-unhover">
+                           {{project.dname}}
+                        </v-card-title>
+
+                    </div>
                     </v-card>
                 </v-hover>
                 </v-col>
@@ -142,10 +149,15 @@ export default {
     width : 100%;
     height : 100%;
 }
-
-.v-card-title{
+.title-unhover {
     color : black;
-    background-color : #FFFFFF;
-    opacity : .5;
+    font-weight: bold;
+    background-color : white;
+    opacity: .5;
+    width: 100%;
+    height : 100%;
 }
+
+/* TODO : 반응형으로 작성(half page : 줄당 2개) 모바일 : 줄당 1개 */
 </style>
+
