@@ -94,6 +94,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- github api -->
+		<dependency>
+		    <groupId>org.kohsuke</groupId>
+		    <artifactId>github-api</artifactId>
+		    <version>1.115</version>
+		</dependency>
 	</dependencies>
 
 	<build>
