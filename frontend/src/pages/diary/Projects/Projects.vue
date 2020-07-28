@@ -18,7 +18,7 @@
                     <v-card 
                     :elevation="hover? 12 : 2"
                     :img="project.img"
-                    class=" ma-2 " 
+                    class=" ma-2 projects-v-card " 
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
                     outlined
@@ -26,7 +26,7 @@
                     <!-- hover -->
                     <div 
                     v-if="hover"
-                    class = "black div-reveal"
+                    class = "black projects-div-reveal"
                     >
                         
                         <v-card-title>
@@ -47,7 +47,7 @@
 
                     <!-- unhover -->
                     <div v-else>
-                        <v-card-title class = "title-unhover">
+                        <v-card-title class = "projects-title-unhover">
                            {{project.dname}}
                         </v-card-title>
 
@@ -144,16 +144,16 @@ export default {
 </script>
 
 <style>
-.v-card:not(.on-hover){
+.projects-v-card:not(.on-hover){
     opacity : 1.0;
 }
-.div-reveal {
+.projects-div-reveal {
     color : white;
     opacity: .5;
     width : 100%;
     height : 100%;
 }
-.title-unhover {
+.projects-title-unhover {
     color : black;
     font-weight: bold;
     background-color : white;

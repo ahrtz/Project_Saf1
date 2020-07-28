@@ -18,7 +18,7 @@
                     <v-card 
                     :elevation="hover? 12 : 2"
                     :img="blog.img"
-                    class=" ma-2 " 
+                    class=" ma-2 blogs-v-card" 
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
                     outlined
@@ -26,7 +26,7 @@
                     <!-- hover -->
                     <div 
                     v-if="hover"
-                    class = "black div-reveal"
+                    class = "black blogs-div-reveal"
                     >
                         
                         <v-card-title>
@@ -47,7 +47,7 @@
 
                     <!-- unhover -->
                     <div v-else>
-                        <v-card-title class = "title-unhover">
+                        <v-card-title class = "blogs-title-unhover">
                            {{blog.dname}}
                         </v-card-title>
 
@@ -140,16 +140,16 @@ export default {
 </script>
 
 <style>
-.v-card:not(.on-hover){
+.blogs-v-card:not(.on-hover){
     opacity : 1.0;
 }
-.div-reveal {
+.blogs-div-reveal {
     color : white;
     opacity: .5;
     width : 100%;
     height : 100%;
 }
-.title-unhover {
+.blogs-title-unhover {
     color : black;
     font-weight: bold;
     background-color : white;
