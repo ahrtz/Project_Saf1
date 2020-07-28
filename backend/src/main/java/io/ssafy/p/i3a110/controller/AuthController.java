@@ -23,9 +23,12 @@ public class AuthController {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
+        System.out.println(pwd);
+        System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
+            System.out.println(httpSession.getAttribute("email"));
         }
     }
 
