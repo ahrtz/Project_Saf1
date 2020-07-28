@@ -1,6 +1,8 @@
 package io.ssafy.p.i3a110.controller;
 
+import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.HealthService;
+import io.ssafy.p.i3a110.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,6 @@ public class HealthController {
 	@RequestMapping("/health")
 	public HealthDto getHealth() {
 		return healthService.getHealth();
-		
 	}
 	
 	@GetMapping("/test")
