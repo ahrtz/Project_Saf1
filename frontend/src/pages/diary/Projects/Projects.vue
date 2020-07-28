@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import plugin from '../../../plugins/vuetify.js'; // 이거 모르겠음..
+import plugin from '../../../plugins/vuetify.js'; // 이거 모르겠음.. 이렇게 import 하는 건 줄 알았는데...
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 
