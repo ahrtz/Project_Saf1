@@ -17,29 +17,29 @@ import io.ssafy.p.i3a110.service.DiaryService;
 public class DiaryController {
     @Autowired
     private DiaryService diaryService;
-    
+
     // 전체 Diary 검색 (type - 0: Blog, 1: Project, 2 or Other: All)
     @PostMapping("/diaries/{uid}")
     public List<DiaryDto> getAllDiaries(@PathVariable String uid, int type, String keyword) {
     	return diaryService.getAllDiariesByKeyword(uid, type, keyword);
     }
-    
+
     // Diary 상세 조회
     @GetMapping("/diaries/{id}")
     public DiaryDto getDiary(@PathVariable String id) {
     	return diaryService.getDiary(id);
     }
-    
+
     // Diary 생성
     @PostMapping("/diaries")
     public void createDiary(@RequestBody DiaryDto diary) {
     	diaryService.createDiary(diary);
     }
-    
+
     // Diary 수정
     @PutMapping("/diaries")
     public void updateDiary(@RequestBody DiaryDto diary) {
     	diaryService.updateDiary(diary);
     }
-    
+
 }
