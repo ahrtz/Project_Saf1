@@ -23,7 +23,7 @@
               <button class="login-googlelogin">Google Login</button>
             </center>
             <br>
-            <router-link class="login-register" :to="{name:'SignIn'}">회원가입</router-link>
+            <router-link class="login-register" :to="{name:'SignUp'}">회원가입</router-link>
           </center>
       </form>
   </div>

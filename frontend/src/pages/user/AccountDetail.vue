@@ -1,9 +1,30 @@
 <template>
   <div>
-      <h2>AccoutnDetail 페이지</h2>
-      <user-sidebar/>
-      <div>유저 사이드 바는 우측으로 밀고</div>
-      <div>{{user}}</div>
+    <v-container>
+      <v-row>
+        <v-col cols="9">
+          email
+          <v-text-field v-model="email"></v-text-field>
+          nickname
+          <v-text-field v-model="nickname"></v-text-field>
+          <h3>git 관련</h3>
+          id
+          <v-text-field v-model="git_id"></v-text-field>
+          url
+          <v-text-field v-model="git_url"></v-text-field>
+          token
+          <v-text-field v-model="git_token"></v-text-field>
+          소개 
+          <v-textarea v-model="desc"></v-textarea>
+        </v-col>
+        <v-col cols="3">
+          <user-sidebar/>
+
+        </v-col>
+      </v-row>
+    </v-container>  
+      
+
   </div>
 
 </template>
@@ -20,10 +41,13 @@ export default {
         },
     data(){
       return{
-        user:[
-        {name: '유저이름',
-        email : '등등 이런 정보 여기다가 form 형식으로 빼주면 댐'}
-      ]
+          email:'a',
+          pwd:'b',
+          nickname:'d',
+          git_id:'d',
+          git_url:'s',
+          git_token:'v',
+          desc:'q'
     }
 
 }
