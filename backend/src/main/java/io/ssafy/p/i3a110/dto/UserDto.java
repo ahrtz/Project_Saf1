@@ -9,7 +9,7 @@ public class UserDto {
     private String nickname;
     private String gitId;
     private String gitUrl;
-    private String desc;
+    private String intro;
     private String img;
     private String gitTocken;
     private int isSocial;

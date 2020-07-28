@@ -30,15 +30,23 @@
 
 	<insert id="createDiary" parameterType="DiaryDto">
 		insert into diary 
+		(uid,
+		title,
+		intro,
+		img,
+		git_url,
+		is_proj,
+		s_date,
+		e_date)
 		values
 		(#{uid},
 		#{title},
-		#{desc},
+		#{intro},
 		#{img},
-		#{git_url},
-		#{is_proj},
-		#{s_date},
-		#{e_date})
+		#{gitUrl},
+		#{isProj},
+		#{sDate},
+		#{eDate})
 	</insert>
 
 	<update id="updateDiary" parameterType="DiaryDto">
@@ -46,7 +54,7 @@
 		set 
 		uid = #{uid},
 		title = #{title},
-		desc = #{desc},
+		intro = #{intro},
 		img = #{img},
 		git_url = #{git_url},
 		is_proj = #{is_proj},
