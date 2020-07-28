@@ -3,8 +3,8 @@ import lombok.Data;
 
 @Data
 public class ScrapDto {
-    int id;
-    int uid;
-    int pid;
-    int status;
+    private int id;
+    private int uid;
+    private int pid;
+    private int status;
 }

@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class FollowDto {
-    int id;
-    int userFrom;
-    int userTo;
+    private int id;
+    private int userFrom;
+    private int userTo;
 }

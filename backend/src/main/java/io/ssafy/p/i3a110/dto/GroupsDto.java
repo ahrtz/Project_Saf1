@@ -3,8 +3,8 @@ import lombok.Data;
 
 @Data
 public class GroupsDto {
-    int id;
-    int lid;
-    String name;
-    String desc;
+    private int id;
+    private int lid;
+    private String name;
+    private String desc;
 }

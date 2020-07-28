@@ -3,13 +3,13 @@ import lombok.Data;
 
 @Data
 public class PostDto {
-    int id;
-    int did;
-    int uid;
-    String title;
-    String content;
-    String cDate;
-    int priority;
-    int cntLike;
-    int isTemp;
+    private int id;
+    private int did;
+    private int uid;
+    private String title;
+    private String content;
+    private String cDate;
+    private int priority;
+    private int cntLike;
+    private int isTemp;
 }

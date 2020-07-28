@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class GroupRelationDto {
-    int id;
-    int gid;
-    int uid;
+    private int id;
+    private int gid;
+    private int uid;
 }

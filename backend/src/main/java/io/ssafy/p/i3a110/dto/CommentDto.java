@@ -3,9 +3,9 @@ import lombok.Data;
 
 @Data
 public class CommentDto {
-    int id;
-    int uid;
-    int pid;
-    String content;
-    String date;
+    private int id;
+    private int uid;
+    private int pid;
+    private String content;
+    private String date;
 }

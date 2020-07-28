@@ -3,10 +3,10 @@ import lombok.Data;
 
 @Data
 public class CommitListDto {
-    int id;
-    int uid;
-    int pid;
-    String sha;
-    String author;
-    String msg;
+    private int id;
+    private int uid;
+    private int pid;
+    private String sha;
+    private String author;
+    private String msg;
 }

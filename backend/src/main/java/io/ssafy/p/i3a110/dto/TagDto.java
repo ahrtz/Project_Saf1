@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class TagDto {
-    int id;
-    int pid;
-    int name;
+    private int id;
+    private int pid;
+    private int name;
 }
