@@ -2,7 +2,10 @@
     <div>
         <h2>블로그 카드뷰</h2>
         <br>
-        <router-link :to="{name:'BlogAdd'}" tag="button">블로그 추가(버튼임)</router-link>
+        <router-link class="float-right" :to="{name:'BlogAdd'}" tag="button">
+          <v-btn class="mr-4 " color="indigo" dark>일기장 추가</v-btn>
+          
+        </router-link>
         <br>
         <br>
 
@@ -12,7 +15,7 @@
         <v-col cols="4">
         <div v-for="blog in blogs" :key="blog.did"> <!-- key는 이 값을 기준으로 안겹치게 list에서 뽑아줄 것이다 -->
         <!-- <v-flex xs12 sm6 md4 lg3 xl2>    -->
-        
+         <router-link :to="{name:'BlogDetail',params:{did:blog.did}}">들어가보기</router-link>
         <v-flex>
              <v-card
     class="mx-auto"

@@ -1,21 +1,50 @@
 <template>
   <div>
-      <h2>새 블로그 추가 페이지</h2>
-      제목 : <input v-model="blogData.title" type = "text" placeholder="제목을 입력하세요">
-      <br>
-      대표 이미지 : <input v-model="blogData.img" type = "text" placeholder="설정한 이미지의 경로 출력"> <button> 찾아보기 </button>
-      <br>
-      시작 날짜 : <input v-model="blogData.s_date" type = "date">
-      종료 날짜 : <input v-model="blogData.e_date" type = "date">
-      <br>
-      내용 : <input v-model="blogData.desc" type = "text" placeholder="상세 내용을 입력하세요">
-      <br>
-      <div style="float:right">
-          <button> 취소 </button>
-          <button> 작성완료 </button>
-          <button> 임시저장 </button>
-      </div>
+      <v-container>
+          <v-row>
+      <v-col cols="12">
+      블로그 : <v-text-field v-model="blogData.title" type = "text" placeholder="블로그 이름을 입력하세요"></v-text-field>
+      </v-col>
+      <v-col cols="12">
+            대표 이미지
+            <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
+      </v-col>
+      <v-col cols="6">
+        <v-menu
+            v-model="blogData.menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+        >
+            <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+                v-model="blogData.date"
+                label="시작날짜"
+                prepend-icon="event"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+            ></v-text-field>
+            </template>
+            <v-date-picker v-model="blogData.date" @input="blogData.menu2 = false"></v-date-picker>
+        </v-menu>
+        </v-col>
       
+        <v-col cols="12">
+            간단 설명
+            <v-textarea v-model="blogData.desc" label="desc"></v-textarea>
+        </v-col>
+          </v-row>
+      </v-container>
+      <div style="float:right">
+          <v-btn class="mr-4 float-right" color="indigo" dark  @click="goback()">취소</v-btn>
+          <v-btn class="mr-4 float-right" color="indigo" dark>작성완료</v-btn>
+
+          
+      </div>
+
   </div>
 </template>
 
@@ -31,10 +60,17 @@ export default {
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
                 git_url : null, //얘는 블로그에선 필요없는 요소. 맞지?
                 is_project : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
-                s_date : null,  //정확한 개념을 모르므로 일단 입력 폼에서 입력받도록 하였음.
-                e_date : null,  //정확한 개념을 모르므로 일단 입력 폼에서 입력받도록 하였음.
+
+                date: new Date().toISOString().substr(0, 10),
+                modal: false,
+                menu2: false,
             },
         }
+    },
+    methods:{
+      goback(){
+            this.$router.go(-1)
+        },
     }
 }
 </script>
