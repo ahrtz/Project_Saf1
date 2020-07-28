@@ -12,7 +12,7 @@
         color="green accent-2"
         onclick=""
       >
-        <router-link class="router-link" :to="{name:'MainPage'}" exact ><a>Home</a></router-link>
+        <router-link class="header-router-link" :to="{name:'MainPage'}" exact ><a>Home</a></router-link>
       </v-card>
       <v-card
         class="header-flex-item"
@@ -20,7 +20,7 @@
         @click="active = true"
         color="green accent-2"
       >
-        <router-link class="router-link" :to="{name:'Project'}" exact>Projects </router-link>
+        <router-link class="header-router-link" :to="{name:'Project'}" exact>Projects </router-link>
       </v-card>
       <v-card
         class="header-flex-item"
@@ -28,7 +28,7 @@
         @click="active = true"
         color="green accent-2"
       >
-        <router-link class="router-link" :to="{name:'Blog'}">Blogs</router-link>
+        <router-link class="header-router-link" :to="{name:'Blog'}">Blogs</router-link>
       </v-card>
       <v-card
         class="header-flex-item mr-auto"
@@ -36,7 +36,7 @@
         @click="active = true"
         color="green accent-2"
       >
-        <router-link class="router-link" :to="{name:'GroupMain'}">Group</router-link>
+        <router-link class="header-router-link" :to="{name:'GroupMain'}">Group</router-link>
       </v-card>
       <div class="header-search header-flex-item">
         <input id="searchInput"
@@ -54,7 +54,7 @@
         v-click-outside="onClickOutside"
         @click="active = true"
       >
-        <router-link class="router-link" :to="{name:'Login'}">Login</router-link>
+        <router-link class="header-router-link" :to="{name:'Login'}">Login</router-link>
       </v-card>
       <v-card
         class="header-flex-item"
@@ -62,7 +62,7 @@
         v-click-outside="onClickOutside"
         @click="active = true"
       >
-        <router-link class="router-link" :to="{name:'AccountDetail'}">MyPage</router-link>
+        <router-link class="header-router-link" :to="{name:'AccountDetail'}">MyPage</router-link>
       </v-card>
     </v-card>
 
@@ -138,11 +138,11 @@ export default {
   outline:none;
   color:#ffffff;
 }
-.router-link {
+.header-router-link {
   text-decoration: none;
   margin:5px;
 }
-.router-link-exact-active  {
+.header-router-link-exact-active  {
   color: white;
   background-color:#56c068;
 
