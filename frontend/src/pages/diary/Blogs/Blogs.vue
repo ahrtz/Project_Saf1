@@ -1,116 +1,163 @@
 <template>
     <div>
-        <h2>블로그 카드뷰</h2>
-        <br>
+        <h2>블로그 카드 뷰</h2>
+         
         <router-link class="float-right" :to="{name:'BlogAdd'}" tag="button">
           <v-btn class="mr-4 " color="indigo" dark>일기장 추가</v-btn>
-          
         </router-link>
         <br>
         <br>
 
-        <v-container fluid>
+       <v-container fluid>
+           <v-row>
+               <v-col cols="4" v-for="blog in blogs" :key="blog.did">
+                   <v-hover
+                        v-slot:default="{ hover }"
+                        enabled
+                        >   
+                    <v-card 
+                    :elevation="hover? 12 : 2"
+                    :img="blog.img"
+                    class=" ma-2 " 
+                    :class="{ 'on-hover': hover }"
+                    style="height:300px;" 
+                    outlined
+                    @click="goBlog(blog.did)">
+                    <!-- hover -->
+                    <div 
+                    v-if="hover"
+                    class = "black div-reveal"
+                    >
+                        
+                        <v-card-title>
+                           {{blog.dname}}
+                        </v-card-title>
 
-        <v-row>
-        <v-col cols="4">
-        <div v-for="blog in blogs" :key="blog.did"> <!-- key는 이 값을 기준으로 안겹치게 list에서 뽑아줄 것이다 -->
-        <!-- <v-flex xs12 sm6 md4 lg3 xl2>    -->
-         <router-link :to="{name:'BlogDetail',params:{did:blog.did}}">들어가보기</router-link>
-        <v-flex>
-             <v-card
-    class="mx-auto"
-    max-width="344"
-  >
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-      height="200px"
-    ></v-img>
+                        <v-card-subtitle>
+                            <div style="color:white;" v-for="tag in blog.tags" :key="tag">
+                                {{tag}}
+                            </div>
+                        </v-card-subtitle>
 
-    <v-card-title>
-      {{blog.dname}}
-    </v-card-title>
+                        <v-card-text>
+                            {{blog.intro}} 
+                        </v-card-text>
 
-    <v-card-subtitle>
-      1,000 miles of wonder
-    </v-card-subtitle>
+                    </div>
 
-    <v-card-actions>
-      <v-btn text>Share</v-btn>
+                    <!-- unhover -->
+                    <div v-else>
+                        <v-card-title class = "title-unhover">
+                           {{blog.dname}}
+                        </v-card-title>
 
-      <v-btn
-        color="purple"
-        text
-      >
-        Explore
-      </v-btn>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        icon
-        @click="show = !show"
-      >
-        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-      </v-btn>
-    </v-card-actions>
-
-    <v-expand-transition>
-      <div v-show="show">
-        <v-divider></v-divider>
-
-        <v-card-text>
-          I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-        </v-card-text>
-      </div>
-    </v-expand-transition>
-  </v-card>
-            <!-- <router-link :to="{name:'BlogDetail',params:{did:blog.did}}">들어가보기</router-link> -->
-        </v-flex>
-       
-        </div>
-         </v-col>
-        </v-row>
-        </v-container>
-
+                    </div>
+                    </v-card>
+                </v-hover>
+                </v-col>
+                   
+           </v-row>
+       </v-container>
     </div>
 </template>
 
 <script>
-import cardView from '../../../component/diary_cardview.vue'
+
 
 export default {
     name:'Blogs',
-    components : {
-        cardView
-    },
     data(){
         return{
+            show: false,
             blogs:[{
                 did:0,
-                dname:'1번 블로그'
+                dname:'1번 블로그',
+                tags : [
+                    '#데일리',
+                    '#끄적끄적',
+                    '#감수성 넘치는 밤', 
+                ],
+                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+                intro : '1번 블로그의 내용입니다.',
             },
             {
                 did:1,
-                dname:'2번 블로그'
+                dname:'2번 블로그',
+                tags : [
+                    '#데일리',
+                    '#생일파티',
+                    '#행복', 
+                ],
+                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+                intro : '2번 블로그의 내용입니다.',
+
             },
             {
                 did:2,
-                dname:'3번 블로그'
+                dname:'3번 블로그',
+                tags : [
+                    '#쇼핑',
+                    '#flex',
+                    '#옷',
+                ],
+                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+                intro : '3번 블로그의 내용입니다.',
+
             },
             {
                 did:3,
-                dname:'4번 블로그'
+                dname:'4번 블로그',
+                tags : [
+                    '#코로나',
+                    '#방콕 생활',
+                    '#힐링',
+                ],
+                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+                intro : '4번 블로그의 내용입니다.',
+
             },
             {
                 did:4,
-                dname:'5번 블로그'
+                dname:'5번 블로그',
+                tags : [
+                    '#데일리',
+                    '#끄적끄적',
+                ],
+                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+                intro : '5번 블로그의 내용입니다.',
             },
+
             ]
         }
     },
+    methods:{
+        goBlog( param ){
+            this.$router.push({name : 'BlogDetail', params :{did:param}})
+        }
+    }
+   
 }
 </script>
 
 <style>
+.v-card:not(.on-hover){
+    opacity : 1.0;
+}
+.div-reveal {
+    color : white;
+    opacity: .5;
+    width : 100%;
+    height : 100%;
+}
+.title-unhover {
+    color : black;
+    font-weight: bold;
+    background-color : white;
+    opacity: .5;
+    width: 100%;
+    height : 100%;
+}
 
+/* TODO : 반응형으로 작성(half page : 줄당 2개) 모바일 : 줄당 1개 */
 </style>
+
