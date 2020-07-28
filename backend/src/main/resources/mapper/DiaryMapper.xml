@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.DiaryDao">
+
+	<select id="getAllBlogsByKeyword" resultType="DiaryDto">
+		select *
+		from diary
+		where is_proj = false and title like concat('%',#{keyword},'%')
+	</select>
+
+	<select id="getAllProjectsByKeyword" resultType="DiaryDto">
+		select *
+		from diary
+		where is_proj = true and title like concat('%',#{keyword},'%')
+	</select>
+
+	<select id="getAllDiariesByKeyword" resultType="DiaryDto">
+		select *
+		from diary
+		where title like concat('%',#{keyword},'%')
+	</select>
+
+	<select id="getDiary" resultType="DiaryDto">
+		select *
+		from diary
+		where id = #{id}
+	</select>
+
+	<insert id="createDiary" parameterType="DiaryDto">
+		insert into diary 
+		values
+		(#{uid},
+		#{title},
+		#{desc},
+		#{img},
+		#{git_url},
+		#{is_proj},
+		#{s_date},
+		#{e_date})
+	</insert>
+
+	<update id="updateDiary" parameterType="DiaryDto">
+		update customer 
+		set 
+		uid = #{uid},
+		title = #{title},
+		desc = #{desc},
+		img = #{img},
+		git_url = #{git_url},
+		is_proj = #{is_proj},
+		s_date = #{s_date},
+		e_date = #{e_date}
+		where id = #{id}
+	</update>
+</mapper>
+
+
+
+
+
