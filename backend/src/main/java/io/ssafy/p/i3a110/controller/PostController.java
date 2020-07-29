@@ -31,9 +31,9 @@ public class PostController {
     @ApiOperation(value = "다이어리 포스트 조회")
     public ArrayList<PostDto> getPost(@RequestBody HashMap<String, String> map) {
         String keyword = map.get("keyword");
-        ArrayList<PostDto> list = postService.getPost("포스트");
-        System.out.println(list.toString());
-        return postService.getPost(keyword);
+        int isTemp = Integer.parseInt(map.get("isTemp"));
+
+        return postService.getPost(keyword, isTemp);
     }
 
     @GetMapping("/posts/{id}")
