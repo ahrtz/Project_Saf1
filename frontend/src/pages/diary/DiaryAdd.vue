@@ -97,7 +97,9 @@ export default {
         },
     AddProj(){
         axios.post('http://localhost:3000/diaries',this.blogData,)
-        .then(res=> console.log(res))
+        .then(res=> {console.log(res)
+        this.$router.push({name:'Blog'})
+        })
         .catch(err=> console.log(err.data))
     }
     }
