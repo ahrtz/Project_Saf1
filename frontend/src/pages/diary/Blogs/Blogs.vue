@@ -39,11 +39,11 @@
 
 
 
-        <router-link v-show="test==0" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+        <router-link v-show="test==1" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
           <v-btn class="mr-4 " color="indigo" dark>플젝 추가</v-btn>
         </router-link>
 
-        <router-link v-show="test==1" class="float-right" :to="{name:'BlogAdd'}" tag="button">
+        <router-link v-show="test==0" class="float-right" :to="{name:'BlogAdd'}" tag="button">
           <v-btn class="mr-4 " color="indigo" dark>일기장 추가</v-btn>
         </router-link>
         <br>
