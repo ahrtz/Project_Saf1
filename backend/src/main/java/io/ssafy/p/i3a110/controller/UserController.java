@@ -4,8 +4,6 @@ import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -31,11 +29,16 @@ public class UserController {
         return userService.findUserById(id);
     }
 
+    @GetMapping("/users/{email}")
+    @ApiOperation(value = "회원 단일 조회")
+    public UserDto findUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
+
     @PutMapping("/users")
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-//        int id = (int) httpSession.getAttribute("id");
-        int id = 5;
+        int id = (int) httpSession.getAttribute("id");
         UserDto user = userService.findUserById(id);
         user.setPwd(map.get("pwd"));
         user.setNickname(map.get("nickname"));

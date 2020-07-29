@@ -1,4 +1,6 @@
 package io.ssafy.p.i3a110.dto;
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -9,4 +11,5 @@ public class CommitListDto {
     private String sha;
     private String author;
     private String msg;
+    private Date date;
 }

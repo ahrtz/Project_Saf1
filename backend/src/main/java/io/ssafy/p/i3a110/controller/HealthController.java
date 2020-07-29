@@ -14,12 +14,12 @@ import io.ssafy.p.i3a110.dto.HealthDto;
 public class HealthController {
 	@Autowired
 	private HealthService healthService;
-	
+
 	@RequestMapping("/health")
 	public HealthDto getHealth() {
 		return healthService.getHealth();
 	}
-	
+
 	@GetMapping("/test")
 	public String test() {
 		return "Success";
