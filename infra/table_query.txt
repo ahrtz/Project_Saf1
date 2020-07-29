@@ -46,7 +46,7 @@ CREATE TABLE `post` (
 	`uid` int NOT NULL,
 	`title`	varchar(128) NULL,
 	`content` Text	NULL,
-	`c_date` varchar(128) NULL,
+	`c_date` datetime NULL,
 	`priority` int NULL,
 	`cnt_like` int NULL,
 	`is_temp` boolean NULL,
