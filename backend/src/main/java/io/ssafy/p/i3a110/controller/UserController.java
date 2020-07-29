@@ -23,12 +23,6 @@ public class UserController {
         return userService.findUsers(keyword);
     }
 
-    @GetMapping("/users/{id}")
-    @ApiOperation(value = "회원 단일 조회")
-    public UserDto findUsersById(@PathVariable int id) {
-        return userService.findUserById(id);
-    }
-
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
     public UserDto findUserByEmail(@PathVariable String email) {
@@ -38,8 +32,8 @@ public class UserController {
     @PutMapping("/users")
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-        int id = (int) httpSession.getAttribute("id");
-        UserDto user = userService.findUserById(id);
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = userService.findUserByEmail(email);
         user.setPwd(map.get("pwd"));
         user.setNickname(map.get("nickname"));
         user.setGitId(map.get("git_id"));
@@ -56,9 +50,10 @@ public class UserController {
     @DeleteMapping("/users")
     @ApiOperation(value = "회원 탈퇴")
     public void deleteById(HttpSession httpSession) {
-        int id = (int) httpSession.getAttribute("id");
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = findUserByEmail(email);
 
-        userService.deleteById(id);
+        userService.deleteById(user.getId());
     }
 
     @PostMapping("/users/login")
@@ -71,7 +66,6 @@ public class UserController {
         System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
-            httpSession.setAttribute("id", user.getId());
             httpSession.setAttribute("email", email);
             System.out.println(httpSession.getAttribute("email"));
         }
