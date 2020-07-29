@@ -1,6 +1,6 @@
 use ssafy;
-Drop TABLE if exists `group_relation`;
-Drop TABLE if exists `groups`;
+Drop TABLE if exists `organization_relation`;
+Drop TABLE if exists `organization`;
 Drop TABLE if exists `likes`;
 Drop TABLE if exists `commit_list`;
 Drop TABLE if exists `comment`;
@@ -104,7 +104,7 @@ CREATE TABLE `follow` (
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
-CREATE TABLE `groups` (
+CREATE TABLE `organization` (
 	`id`	int	NOT NULL auto_increment primary key,
 	`lid`	int	NOT NULL,
 	`name`	varchar(128)	NULL,
@@ -125,12 +125,12 @@ CREATE TABLE `comment` (
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
-CREATE TABLE `group_relation` (
+CREATE TABLE `organization_relation` (
 	`id`	int	NOT NULL auto_increment primary key,
-	`gid`	int	NOT NULL,
+	`oid`	int	NOT NULL,
 	`uid`	int	NOT NULL ,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-  FOREIGN KEY (gid) REFERENCES groups(id) ON UPDATE CASCADE ON DELETE RESTRICT  
+  FOREIGN KEY (oid) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE RESTRICT  
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('dominicong@naver.com', '1234','창교이','github.com/dominicong','test@test.com','창경입니다.',NULL,NULL,false,false);
@@ -184,10 +184,10 @@ INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash4','test','commi
 INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash5','test','commit2');
 INSERT INTO commit_list(uid,pid,sha,author,msg) VALUES(2,5,'hash6','test','commit3');
 
-INSERT INTO groups(lid,name,intro) VALUES(1,'창경그룹','열심히 commit 관리하자');
-INSERT INTO group_relation(gid,uid  ) VALUES(1,1);
-INSERT INTO group_relation(gid,uid  ) VALUES(1,2);
-INSERT INTO group_relation(gid,uid  ) VALUES(1,3);
+INSERT INTO organization(lid,name,intro) VALUES(1,'창경그룹','열심히 commit 관리하자');
+INSERT INTO organization_relation(oid,uid  ) VALUES(1,1);
+INSERT INTO organization_relation(oid,uid  ) VALUES(1,2);
+INSERT INTO organization_relation(oid,uid  ) VALUES(1,3);
 
 INSERT INTO follow(user_from,user_to  ) VALUES(2,1);
 INSERT INTO follow(user_from,user_to  ) VALUES(3,1);
