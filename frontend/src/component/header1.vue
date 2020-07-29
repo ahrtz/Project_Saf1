@@ -28,7 +28,7 @@
         @click="active = true"
         color="green accent-2"
       >
-        <router-link class="header-router-link" :to="{name:'Blog'}">Blogs</router-link>
+        <router-link class="header-router-link" :to="{name:'DiaryMain'}">Diary</router-link>
       </v-card>
       <v-card
         class="header-flex-item mr-auto"

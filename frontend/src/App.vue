@@ -12,6 +12,7 @@ import header1 from '../src/component/header1.vue'
 import axios from 'axios'
 
 let data = {}
+let log = 'test'
 export default {
   
   name: 'App',
@@ -19,7 +20,9 @@ export default {
   
   async beforeCreate(){
     try {
-      data = await axios.get('http://localhost:3000/users/me').data
+      // data = await axios.get('http://localhost:3000/users/me').data
+      axios.get('http://localhost:3000/users/me').then(res=>{console.log(res)})
+      console.log(data)
       this.$store.commit('userData',data)
     }catch(e){
       console.error(e)
@@ -27,7 +30,8 @@ export default {
     }
 
     try{
-      let {log} = await axios.get('http://localhost:3000/users/is-logged-in').data
+      log = await axios.get('http://localhost:3000/users/is-logged-in').data
+      console.log(log)
       this.$store.commit('isLoggedIn',log)
     }catch(e){
       console.log(e)
