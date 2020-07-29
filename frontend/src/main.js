@@ -12,8 +12,11 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import moment from 'moment'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import Swiper from 'swiper';
+
 // import Swiper styles
 import 'swiper/swiper-bundle.css';
+
+import store from './store'
 
 Vue.use(VueAxios, axios)
 Vue.prototype.$moment = moment
@@ -38,5 +41,6 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
+  store,
   vuetify
 })
