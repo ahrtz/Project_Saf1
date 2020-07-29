@@ -13,7 +13,8 @@ import Login from '../pages/user/Login.vue'
 import Follow from '../pages/user/Follow.vue'
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
-import Diary from '../pages/diary/DiaryMain.vue'
+import DiaryMain from '../pages/diary/DiaryMain.vue'
+
 
 //project
 import Project from '../pages/diary/Projects/Projects.vue'
@@ -21,7 +22,6 @@ import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
 import ProjectAdd from '../pages/diary/DiaryAdd.vue'
 
 // blog
-import Blog from '../pages/diary/Blogs/Blogs.vue'
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
 import BlogAdd from '../pages/diary/DiaryAdd.vue'
 import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
@@ -72,11 +72,7 @@ const router = new Router({
       component: SignUp,
     },
     // 다이어리
-    {
-      path: '/diary',
-      name:'Diary',
-      component: Diary
-    },
+    
         //프로젝트
     {
       path: '/diary/projects',
@@ -96,9 +92,9 @@ const router = new Router({
     },
         //블로그
     {
-      path: '/diary/blogs',
-      name:'Blog',
-      component: Blog,
+      path: '/diary',
+      name:'DiaryMain',
+      component: DiaryMain,
     },
     {
       path : '/diary/blogs/add',

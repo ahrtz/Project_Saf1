@@ -47,6 +47,12 @@
 		e_date = #{eDate}
 		where id = #{id}
 	</update>
+	
+	<select id="getAllWrittenProjcetName">
+		select git_url
+		from diary
+		where uid = #{uid} and is_proj = true
+	</select>
 </mapper>
 
 

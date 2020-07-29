@@ -40,5 +40,10 @@ public class DiaryService {
 	public void updateDiary(DiaryDto diary) {
 		diaryDao.updateDiary(diary);
 	}
+	
+	// GitHub API 용
+	public List<String> getAllWrittenProjectName(int uid){
+		return diaryDao.getAllWrittenProjcetName(uid);
+	}
 
 }
