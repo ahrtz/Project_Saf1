@@ -16,8 +16,12 @@ public class CommitService {
 	public List<CommitListDto> getAllCommitsByPost(String pid) {
 		return null;
 	}
-	
-//	public HealthDto getHealth() {
-//		return healthDao.getHealth();
-//	}
+
+	public List<CommitListDto> addCommit(CommitListDto commit) {
+		return null;
+	}
+
+	public List<CommitListDto> deleteCommit(String id) {
+		return null;
+	}
 }

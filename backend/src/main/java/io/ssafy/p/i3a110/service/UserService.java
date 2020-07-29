@@ -20,6 +20,14 @@ public class UserService {
         return userDao.findUserById(id);
     }
 
+    public UserDto findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
+    }
+
+    public void insertUser(UserDto user) {
+        userDao.insertUser(user);
+    }
+
     public void updateUser(UserDto user) {
         userDao.updateUser(user);
     }
