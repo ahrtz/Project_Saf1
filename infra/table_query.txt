@@ -214,9 +214,5 @@ INSERT INTO likes(uid,pid,status) VALUES(2,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(3,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(4,2,true);
 
-INSERT INTO diary(  ) VALUES();
-
-
-
 
 
