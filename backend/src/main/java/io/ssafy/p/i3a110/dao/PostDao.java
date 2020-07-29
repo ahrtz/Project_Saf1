@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 @Mapper
 public interface PostDao {
-    public ArrayList<PostDto> getPost(String keyword, int isTemp);
+    public ArrayList<PostDto> getPost(int did, String keyword, int isTemp);
     public PostDto getPostById(int id);
     public void createPost(PostDto post);
     public void updatePost(PostDto post);
