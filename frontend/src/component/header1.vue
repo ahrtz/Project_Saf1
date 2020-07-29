@@ -38,6 +38,7 @@
       >
         <router-link class="header-router-link" :to="{name:'GroupMain'}">Group</router-link>
       </v-card>
+      
       <div class="header-search header-flex-item">
         <input id="searchInput"
         autocomplete="off"
@@ -62,7 +63,7 @@
         v-click-outside="onClickOutside"
         @click="active = true"
       >
-        <router-link class="header-router-link" :to="{name:'AccountDetail'}">MyPage</router-link>
+        <router-link class="header-router-link" :to="{name:'Follow'}">MyPage</router-link>
       </v-card>
     </v-card>
 
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name:'header1',
   data: () => ({
@@ -84,7 +86,7 @@ export default {
   methods: {
       onClickOutside () {
         this.active = false
-      },
+      }
   },
 }
 

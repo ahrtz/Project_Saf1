@@ -8,11 +8,11 @@
               </caption>
               <tr>
                 <td style="margin:5px;padding: 5px;" align="left">Email</td> 
-                <td><div><input class="login-id" v-model="loginData.id" required type="email" ></div></td>
+                <td><div><input class="login-id" v-model="loginData.email" required type="email" ></div></td>
               </tr>
               <tr>
                 <td style="margin:5px;padding: 5px;" align="left">Password </td>
-                <td><input class="login-passwd" v-model="loginData.password" type="password"  minlength="8" required placeholder= "" @focus="visi='visible'" @blur="visi='hidden'"><br>
+                <td><input class="login-passwd" v-model="loginData.pwd" type="password"  required placeholder= "" @focus="visi='visible'" @blur="visi='hidden'"><br>
                      
                 </td>
               </tr>
@@ -33,9 +33,7 @@
                 color="green accent-1"
                 onclick=""
               >
-                <router-link class="login-router-link login-login" :to="{name:'MainPage'}" exact style="margin-top:5px;">
-                  Login
-                </router-link>
+                <v-btn class="mr-4 d-flex" color="indigo" dark  @click="login()">로그인</v-btn>
               </v-card>
               <v-card
                 class="login-flex-item "
@@ -68,19 +66,35 @@
 </template>
 
 <script>
+import axios from 'axios'
+import VueCookies from 'vue-cookies'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
 export default {
     name: 'Login',
     data(){
 
       return{
         loginData:{
-          id:null,
-          password:null
+          email:null,
+          pwd:null
         },
         dummy:null,
         visi:'hidden',
       }
     },
+    methods:{
+      login(){
+        axios.post('http://localhost:3000/users/login',this.loginData,{headers:{'Content-Type':'application/json'}})
+        .then(res=>{
+        this.$store.commit('userData',this.loginData)
+        this.$store.commit('isLoggedIn',true)
+        this.$router.push({name:'MainPage'})        
+        })
+        .catch(err=>{console.log('실패')}
+        )
+      }
+    }
 }
 </script>
 
