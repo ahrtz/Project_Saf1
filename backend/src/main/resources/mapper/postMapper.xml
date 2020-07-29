@@ -8,6 +8,7 @@
         select *
         from post
         where title like concat("%",#{keyword},"%")
+        and is_temp=#{isTemp}
     </select>
 
     <select id="getPostById" resultType="PostDto">

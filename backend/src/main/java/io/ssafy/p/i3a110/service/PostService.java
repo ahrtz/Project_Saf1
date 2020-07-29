@@ -12,8 +12,8 @@ public class PostService {
     @Autowired
     private PostDao postDao;
 
-    public ArrayList<PostDto> getPost(String keyword) {
-        return postDao.getPost(keyword);
+    public ArrayList<PostDto> getPost(String keyword, int isTemp) {
+        return postDao.getPost(keyword, isTemp);
     }
     public PostDto getPostById(int id) {
         return postDao.getPostById(id);
