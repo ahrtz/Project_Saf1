@@ -22,4 +22,6 @@ public interface DiaryDao {
 	public void createDiary(DiaryDto diary);
 
 	public void updateDiary(DiaryDto diary);
+
+	public List<String> getAllWrittenProjcetName(int uid);
 }
