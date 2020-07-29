@@ -60,4 +60,69 @@ public class UserController {
 
         userService.deleteById(id);
     }
+
+    @PostMapping("/users/login")
+    @ApiOperation(value = "로그인")
+    public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+        String email = map.get("email");
+        String pwd = map.get("pwd");
+        UserDto user = userService.findUserByEmail(email);
+        System.out.println(pwd);
+        System.out.println(user.getPwd());
+        if(pwd.equals(user.getPwd())) {
+            httpSession.setAttribute("isLoggedIn", true);
+            httpSession.setAttribute("id", user.getId());
+            httpSession.setAttribute("email", email);
+            System.out.println(httpSession.getAttribute("email"));
+        }
+    }
+
+    @PostMapping("/users/logout")
+    @ApiOperation(value = "로그아웃")
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+    }
+
+    @GetMapping("/users/is-logged-in")
+    @ApiOperation(value = "로그인 체크")
+    public boolean isLoggedIn(HttpSession httpSession) {
+        boolean result;
+        if(httpSession.getAttribute("isLoggedIn") == null) {
+            result = false;
+        } else {
+            result = (boolean) httpSession.getAttribute("isLoggedIn");
+        }
+        return result;
+    }
+
+    @PostMapping("/users/signup")
+    @ApiOperation(value = "가입하기")
+    public void signup(@RequestBody HashMap<String, String> map) {
+        UserDto user = userService.findUserByEmail(map.get("email"));
+        if(user == null) {
+            user = new UserDto();
+            user.setEmail(map.get("email"));
+            user.setPwd(map.get("pwd"));
+            user.setNickname(map.get("nickname"));
+            user.setGitId(map.get("git_id"));
+            user.setGitUrl(map.get("git_url"));
+            user.setIntro(map.get("intro"));
+            user.setImg(map.get("img"));
+            user.setGitToken(map.get("git_token"));
+            user.setIsSocial(Integer.parseInt(map.get("is_social")));
+            user.setIsCertified(Integer.parseInt(map.get("is_certified")));
+
+            userService.insertUser(user);
+        }
+
+    }
+
+    @GetMapping("/users/me")
+    @ApiOperation(value = "내 정보 조회")
+    public UserDto me(HttpSession httpSession) {
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = findUserByEmail(email);
+
+        return user;
+    }
 }
