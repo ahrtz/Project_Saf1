@@ -71,13 +71,14 @@
                     >
                         
                         <v-card-title>
-                           {{blog.dname}}
+                           {{blog.title}}
                         </v-card-title>
 
                         <v-card-subtitle>
-                            <div style="color:white;" v-for="tag in blog.tags" :key="tag">
+                            <!-- <div style="color:white;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
-                            </div>
+                            </div> -->
+                            {{blog.isProj}}
                         </v-card-subtitle>
 
                         <v-card-text>
@@ -88,8 +89,8 @@
 
                     <!-- unhover -->
                     <div v-else>
-                        <v-card-title class = "blogs-title-unhover">
-                           {{blog.dname}}
+                        <v-card-title class ="blogs-title-unhover">
+                           {{blog.title}}
                         </v-card-title>
 
                     </div>
@@ -110,70 +111,11 @@ export default {
     name:'Blogs',
     data(){
         return{
-            test:'project' ,
+            test:'project',
             activeBtn: 1,
             showNav: true,
             show: false,
             diarys:{},
-            blogs:[{
-                did:0,
-                dname:'1번 블로그',
-                tags : [
-                    '#데일리',
-                    '#끄적끄적',
-                    '#감수성 넘치는 밤', 
-                ],
-                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                intro : '1번 블로그의 내용입니다.',
-            },
-            {
-                did:1,
-                dname:'2번 블로그',
-                tags : [
-                    '#데일리',
-                    '#생일파티',
-                    '#행복', 
-                ],
-                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                intro : '2번 블로그의 내용입니다.',
-
-            },
-            {
-                did:2,
-                dname:'3번 블로그',
-                tags : [
-                    '#쇼핑',
-                    '#flex',
-                    '#옷',
-                ],
-                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                intro : '3번 블로그의 내용입니다.',
-
-            },
-            {
-                did:3,
-                dname:'4번 블로그',
-                tags : [
-                    '#코로나',
-                    '#방콕 생활',
-                    '#힐링',
-                ],
-                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                intro : '4번 블로그의 내용입니다.',
-
-            },
-            {
-                did:4,
-                dname:'5번 블로그',
-                tags : [
-                    '#데일리',
-                    '#끄적끄적',
-                ],
-                img : "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-                intro : '5번 블로그의 내용입니다.',
-            },
-
-            ]
         }
     },
     methods:{
