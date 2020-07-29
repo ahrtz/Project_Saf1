@@ -16,14 +16,10 @@
       background-color="orange lighten-3"
       color="orange"
     ></v-rating>
-      <v-container fluid>
+      <v-container v-show="isProj" fluid>
           여기 들어오는 곳이 다이어리에서 온건지 프로젝트에서 온건지 구분해서 v-show 걸면 될것
         <div :id="'t'+commit.cid" v-for="(commit,key,index) in commitList" :key="index">
-          <!-- {{commit.commitcontent}}
-             <v-btn class="mr-4" @click="addcommit(commit)">추가</v-btn> -->
-          <!-- <v-checkbox
-            v-model="post.selected" :label="commit.commitcontent" :value="{'cid':commit.cid,'commit':commit.commitcontent}">
-          </v-checkbox> -->
+          
           <p>
             <input type="checkbox" :id="key" v-model="post.selected" :value="{'cid':commit.cid,'commit':commit.commitcontent}"  >
             <label :for="key"> {{commit.commitcontent}}</label>
@@ -94,6 +90,15 @@ export default {
       }
     },
     props:['value'],
+    computed:{
+      isProj(){
+        if (this.$route.path[7]=='p'){
+          return true
+        }else{
+          return false
+        }
+      }
+    },
     methods:{
       clear(){
         this.$refs.form.reset()

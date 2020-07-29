@@ -78,6 +78,7 @@
                             <div style="color:white;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
                             </div>
+                            
                         </v-card-subtitle>
 
                         <v-card-text>
@@ -120,7 +121,12 @@ export default {
     },
     methods:{
         goBlog( param ){
-            this.$router.push({name : 'BlogDetail', params :{did:param}})
+            if (this.test==0){
+                this.$router.push({name : 'BlogDetail', params :{did:param}})
+            }else{
+                this.$router.push({name : 'ProjectDetail', params :{did:param}})
+                
+            }
         },
         testa(){
             axios.get('http://localhost:3000/users/is-logged-in')
