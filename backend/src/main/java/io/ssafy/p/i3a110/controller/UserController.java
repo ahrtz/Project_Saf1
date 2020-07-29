@@ -61,7 +61,7 @@ public class UserController {
         userService.deleteById(id);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/users/login")
     @ApiOperation(value = "로그인")
     public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = map.get("email");
@@ -71,18 +71,19 @@ public class UserController {
         System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
+            httpSession.setAttribute("id", user.getId());
             httpSession.setAttribute("email", email);
             System.out.println(httpSession.getAttribute("email"));
         }
     }
 
-    @PostMapping("/auth/logout")
+    @PostMapping("/users/logout")
     @ApiOperation(value = "로그아웃")
     public void logout(HttpSession httpSession) {
         httpSession.invalidate();
     }
 
-    @GetMapping("/auth/is-logged-in")
+    @GetMapping("/users/is-logged-in")
     @ApiOperation(value = "로그인 체크")
     public boolean isLoggedIn(HttpSession httpSession) {
         boolean result;
@@ -94,7 +95,7 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/users/signup")
     @ApiOperation(value = "가입하기")
     public void signup(@RequestBody HashMap<String, String> map) {
         UserDto user = userService.findUserByEmail(map.get("email"));
@@ -114,5 +115,14 @@ public class UserController {
             userService.insertUser(user);
         }
 
+    }
+
+    @GetMapping("/users/me")
+    @ApiOperation(value = "내 정보 조회")
+    public UserDto me(HttpSession httpSession) {
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = findUserByEmail(email);
+
+        return user;
     }
 }
