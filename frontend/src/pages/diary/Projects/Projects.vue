@@ -63,12 +63,13 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 
 export default {
     name:'Projects',
     data(){
         return{
+            test:null,
             show: false,
             projects:[{
                 did:0,
@@ -139,7 +140,8 @@ export default {
         goProject( param ){
             this.$router.push({name : 'ProjectDetail', params :{did:param}})
         }
-    }
+    },
+
    
 }
 </script>

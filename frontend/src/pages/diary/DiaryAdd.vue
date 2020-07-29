@@ -6,7 +6,7 @@
       블로그 : <v-text-field v-model="blogData.title" type = "text" placeholder="블로그 이름을 입력하세요"></v-text-field>
       </v-col>
       <v-col cols="12" v-show="isProject">
-      git_url : <v-text-field v-model="blogData.git_url" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
+      gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
       </v-col>
       <v-col cols="12">
             대표 이미지
@@ -23,7 +23,7 @@
         >
             <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="blogData.date"
+                v-model="blogData.sdate"
                 label="시작날짜"
                 prepend-icon="event"
                 readonly
@@ -31,19 +31,19 @@
                 v-on="on"
             ></v-text-field>
             </template>
-            <v-date-picker v-model="blogData.date" @input="blogData.menu2 = false"></v-date-picker>
+            <v-date-picker v-model="blogData.sdate" @input="blogData.menu2 = false"></v-date-picker>
         </v-menu>
         </v-col>
       
         <v-col cols="12">
             간단 설명
-            <v-textarea v-model="blogData.desc" label="desc"></v-textarea>
+            <v-textarea v-model="blogData.intro" label="intro"></v-textarea>
         </v-col>
           </v-row>
       </v-container>
       <div style="float:right">
           <v-btn class="mr-4 float-right" color="indigo" dark  @click="goback()">취소</v-btn>
-          <v-btn class="mr-4 float-right" color="indigo" dark>작성완료</v-btn>
+          <v-btn class="mr-4 float-right" color="indigo" dark @click="AddProj()">작성완료</v-btn>
 
           
       </div>
@@ -52,19 +52,21 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
     name : 'BlogAdd',
     data(){
         return {
             blogData:{
-                uid : null,// 회원 pk.
+                uid : 1,// 회원 pk.
                 title : null,
-                desc : null,
+                intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
-                git_url : null, //얘는 블로그에선 필요없는 요소. 맞지?
-                is_project : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
-
-                date: new Date().toISOString().substr(0, 10),
+                gitUrl : null, //얘는 블로그에선 필요없는 요소. 맞지?
+                isProj : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
+                sdate: new Date().toISOString().substr(0, 10),
                 modal: false,
                 menu2: false,
             },
@@ -73,14 +75,28 @@ export default {
     computed:{
         
         isProject(){
-            return (this.$route.path[7] =='p')
-        }
+            if (this.$route.path[7] =='p'){
+                this.blogData.isProj=1
+                return true
+            }else{
+                this.blogData.isProj=0
+                return false
+            }
+            
+
+        },
+
         
     },
     methods:{
-      goback(){
+    goback(){
             this.$router.go(-1)
         },
+    AddProj(){
+        axios.post('http://i3a110.p.ssafy.io:3000/diaries',this.blogData)
+        .then(res=> console.log(res))
+        .catch(err=> console.log(err))
+    }
     }
 }
 </script>
