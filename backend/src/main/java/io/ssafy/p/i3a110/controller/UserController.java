@@ -60,4 +60,59 @@ public class UserController {
 
         userService.deleteById(id);
     }
+
+    @PostMapping("/auth/login")
+    @ApiOperation(value = "로그인")
+    public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+        String email = map.get("email");
+        String pwd = map.get("pwd");
+        UserDto user = userService.findUserByEmail(email);
+        System.out.println(pwd);
+        System.out.println(user.getPwd());
+        if(pwd.equals(user.getPwd())) {
+            httpSession.setAttribute("isLoggedIn", true);
+            httpSession.setAttribute("email", email);
+            System.out.println(httpSession.getAttribute("email"));
+        }
+    }
+
+    @PostMapping("/auth/logout")
+    @ApiOperation(value = "로그아웃")
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+    }
+
+    @GetMapping("/auth/is-logged-in")
+    @ApiOperation(value = "로그인 체크")
+    public boolean isLoggedIn(HttpSession httpSession) {
+        boolean result;
+        if(httpSession.getAttribute("isLoggedIn") == null) {
+            result = false;
+        } else {
+            result = (boolean) httpSession.getAttribute("isLoggedIn");
+        }
+        return result;
+    }
+
+    @PostMapping("/auth/signup")
+    @ApiOperation(value = "가입하기")
+    public void signup(@RequestBody HashMap<String, String> map) {
+        UserDto user = userService.findUserByEmail(map.get("email"));
+        if(user == null) {
+            user = new UserDto();
+            user.setEmail(map.get("email"));
+            user.setPwd(map.get("pwd"));
+            user.setNickname(map.get("nickname"));
+            user.setGitId(map.get("git_id"));
+            user.setGitUrl(map.get("git_url"));
+            user.setIntro(map.get("intro"));
+            user.setImg(map.get("img"));
+            user.setGitToken(map.get("git_token"));
+            user.setIsSocial(Integer.parseInt(map.get("is_social")));
+            user.setIsCertified(Integer.parseInt(map.get("is_certified")));
+
+            userService.insertUser(user);
+        }
+
+    }
 }

@@ -20,14 +20,4 @@ public class CommitController {
 	public List<CommitListDto> getAllCommitsByPost(@PathVariable String pid) {
 		return commitService.getAllCommitsByPost(pid);
 	}
-	
-//	@RequestMapping("/health")
-//	public HealthDto getHealth() {
-//		return healthService.getHealth();
-//	}
-	
-	@GetMapping("/test")
-	public String test() {
-		return "Success";
-	}
 }
