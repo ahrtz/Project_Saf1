@@ -14,14 +14,14 @@ public class CommitService {
 	private CommitDao commitDao;
 
 	public List<CommitListDto> getAllCommitsByPost(String pid) {
-		return null;
+		return commitDao.getAllCommitsByPost(pid);
 	}
 
-	public List<CommitListDto> addCommit(CommitListDto commit) {
-		return null;
+	public void addCommit(CommitListDto commit) {
+		commitDao.addCommit(commit);
 	}
 
-	public List<CommitListDto> deleteCommit(String id) {
-		return null;
+	public void deleteCommit(String id) {
+		commitDao.deleteCommit(id);
 	}
 }
