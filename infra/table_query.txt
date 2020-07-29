@@ -129,6 +129,7 @@ CREATE TABLE `organization_relation` (
 	`id` int NOT NULL auto_increment primary key,
 	`oid` int NOT NULL,
 	`uid` int NOT NULL ,
+
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (oid) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE RESTRICT  
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
