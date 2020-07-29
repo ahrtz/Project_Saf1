@@ -1,8 +1,49 @@
 <template>
     <div>
         <h2>블로그 카드 뷰</h2>
-         
-        <router-link class="float-right" :to="{name:'BlogAdd'}" tag="button">
+
+        <div class="overflow-hidden">
+            <div class="text-center mb-2">
+            <v-btn
+                text
+                color="deep-purple"
+                @click="showNav = !showNav"
+            >
+                Toggle Nav
+            </v-btn>
+            </div>
+
+            <v-bottom-navigation
+            :input-value="showNav"
+            :value="activeBtn"
+            v-model="test"
+            color="indigo"
+            >
+            <v-btn @click="getDiary()">
+                <span>Blog</span>
+                <v-icon>favorite</v-icon>
+            </v-btn>
+            <v-btn @click="getDiary()">
+                <span>Project</span>
+                <v-icon>history</v-icon>
+            </v-btn>
+
+
+            </v-bottom-navigation>
+        </div>
+
+
+
+
+        <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn>
+
+
+
+        <router-link v-show="test==1" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+          <v-btn class="mr-4 " color="indigo" dark>플젝 추가</v-btn>
+        </router-link>
+
+        <router-link v-show="test==0" class="float-right" :to="{name:'BlogAdd'}" tag="button">
           <v-btn class="mr-4 " color="indigo" dark>일기장 추가</v-btn>
         </router-link>
         <br>
@@ -10,7 +51,7 @@
 
        <v-container fluid>
            <v-row>
-               <v-col cols="4" v-for="blog in blogs" :key="blog.did">
+               <v-col cols="4" v-for="blog in diarys" :key="blog.id">
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
@@ -22,7 +63,7 @@
                     :class="{ 'on-hover': hover }"
                     style="height:300px;" 
                     outlined
-                    @click="goBlog(blog.did)">
+                    @click="goBlog(blog.id)">
                     <!-- hover -->
                     <div 
                     v-if="hover"
@@ -62,13 +103,18 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 
 export default {
     name:'Blogs',
     data(){
         return{
+            test:'project' ,
+            activeBtn: 1,
+            showNav: true,
             show: false,
+            diarys:{},
             blogs:[{
                 did:0,
                 dname:'1번 블로그',
@@ -133,8 +179,19 @@ export default {
     methods:{
         goBlog( param ){
             this.$router.push({name : 'BlogDetail', params :{did:param}})
+        },
+        testa(){
+            axios.get('http://localhost:3000/users/is-logged-in')
+            .then(res=>{console.log(res)})
+        },
+        getDiary(){
+            axios.post('http://localhost:3000/diaries/1',{type:this.test,keyword:""})
+            .then(res=>{
+                console.log(res.data)
+                this.diarys = res.data})
         }
-    }
+    },
+
    
 }
 </script>
