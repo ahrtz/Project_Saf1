@@ -13,7 +13,7 @@
           </v-col>
           <v-col cols="12">
             password 확인*
-            <v-text-field v-model="signupData.pwd2" label="비밀번호 확인" type="password" required></v-text-field>
+            <v-text-field v-model="signupData.pwdconfirm" label="비밀번호 확인" type="password" required></v-text-field>
           </v-col>
           <v-col cols="12">
             닉네임*
@@ -37,16 +37,18 @@
           </v-col>
           <v-col cols="12">
             자기소개
-            <v-textarea v-model="signupData.desc" label="desc"></v-textarea>
+            <v-textarea v-model="signupData.intro" label="intro"></v-textarea>
           </v-col>
         </v-row>
-        <v-btn class="mr-4 float-right" color="indigo" dark>회원가입</v-btn>
+        <v-btn class="mr-4 float-right" color="indigo" dark @click="signup()">회원가입</v-btn>
         <v-btn class="mr-4 float-right" color="indigo" dark @click="goback()">취소</v-btn>
       </v-container>
   </div>
 </template>
 
 <script>
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+import axios from 'axios'
 export default {
     name:'SignUp',
     data(){
@@ -54,12 +56,15 @@ export default {
         signupData:{
           email:'',
           pwd:'',
-          pwd2:'',
+          pwdconfirm:'',
+          img:"",
           nickname:'',
           git_id:'',
           git_url:'',
           git_token:'',
-          desc:''
+          intro:'',
+          is_social:'0',
+          is_certified:'0'
         }
       }
     },
@@ -67,6 +72,11 @@ export default {
       goback(){
             this.$router.go(-1)
         },
+        signup(){
+          axios.post('http://localhost:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
+          .then(res=>{console.log('성공')})
+          .catch(err=>{console.log(err)})
+        }
     }
 }
 </script>
