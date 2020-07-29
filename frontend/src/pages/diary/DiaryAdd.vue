@@ -54,11 +54,14 @@
 <script>
 
 import axios from 'axios'
-
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
     name : 'BlogAdd',
     data(){
         return {
+            config:{
+
+            },
             blogData:{
                 uid : 1,// 회원 pk.
                 title : null,
@@ -93,9 +96,9 @@ export default {
             this.$router.go(-1)
         },
     AddProj(){
-        axios.post('http://i3a110.p.ssafy.io:3000/diaries',this.blogData)
+        axios.post('http://localhost:3000/diaries',this.blogData,)
         .then(res=> console.log(res))
-        .catch(err=> console.log(err))
+        .catch(err=> console.log(err.data))
     }
     }
 }
