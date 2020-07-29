@@ -12,123 +12,124 @@ Drop TABLE if exists `diary`;
 Drop TABLE if exists `user`;
 
 CREATE TABLE `user` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`email`	varchar(128)	NOT NULL,
-	`pwd`	varchar(128)	NULL,
-	`nickname`	varchar(128)	NULL,
-	`git_id`	varchar(128)	NULL,
-	`git_url`	varchar(128)	NULL,
-	`intro`	varchar(256)	NULL,
-	`img`	varchar(128)	NULL,
-	`git_token`	varchar(128)	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`email`	varchar(128) NOT NULL,
+	`pwd` varchar(128) NULL,
+	`nickname` varchar(128)	NULL,
+	`git_id` varchar(128) NULL,
+	`git_url` varchar(128) NULL,
+	`intro`	varchar(256) NULL,
+	`img` varchar(128) NULL,
+	`git_token`	varchar(128) NULL,
 	`is_social`	boolean	NULL,
 	`is_certified` boolean NULL
 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `diary` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`uid`	int	NOT NULL,
-	`title`	varchar(128)	NULL,
-	`intro`	varchar(256)	NULL,
-	`img`	varchar(256)	NULL,
-	`git_url`	varchar(256)	NULL,
-	`is_proj`	Boolean	NULL,
-	`s_date`	datetime	NULL,
-	`e_date`	datetime	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`title`	varchar(128) NULL,
+	`intro`	varchar(256) NULL,
+	`img` varchar(256) NULL,
+	`git_url` varchar(256) NULL,
+	`is_proj` Boolean NULL,
+	`s_date` datetime NULL,
+	`e_date` datetime NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `post` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`did`	int	NOT NULL,
-	`uid`	int	NOT NULL,
-	`title`	varchar(128)	NULL,
-	`content`	Text	NULL,
-	`c_date`	varchar(128)	NULL,
-	`priority`	int	NULL,
-	`cnt_like`	int	NULL,
-	`is_temp`	boolean	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`did` int NOT NULL,
+	`uid` int NOT NULL,
+	`title`	varchar(128) NULL,
+	`content` Text	NULL,
+	`c_date` varchar(128) NULL,
+	`priority` int NULL,
+	`cnt_like` int NULL,
+	`is_temp` boolean NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `likes` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`uid`	int	NOT NULL,
-	`pid`	int	NOT NULL,
-	`status`	boolean	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`pid` int NOT NULL,
+	`status` boolean NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `commit_list` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`uid`	int	NOT NULL,
-	`pid`	int	NOT NULL,
-	`sha`	VARCHAR(255)	NULL,
-	`author`	varchar(256)	NULL,
-	`msg`	varchar(1000)	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`pid` int NOT NULL,
+	`sha` VARCHAR(255) NULL,
+	`author` varchar(256) NULL,
+	`msg` varchar(1000)	NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `tag` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`pid`	int	NOT NULL,
-	`name`	varchar(128)	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`pid` int NOT NULL,
+	`name` varchar(128)	NULL,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `scrap` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`uid`	int	NOT NULL,
-	`pid`	int	NOT NULL,
-	`status`	boolean	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`pid` int NOT NULL,
+	`status` boolean NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `follow` (
-	`id`	int	NOT NULL auto_increment primary key,
+	`id` int NOT NULL auto_increment primary key,
 	`user_from`	int	NOT NULL,
-	`user_to`	int	NOT NULL,
+	`user_to` int NOT NULL,
    FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
    FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `organization` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`lid`	int	NOT NULL,
-	`name`	varchar(128)	NULL,
-	`intro`	varchar(256)	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`lid` int NOT NULL,
+	`name` varchar(128)	NULL,
+	`intro`	varchar(256) NULL,
   FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `comment` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`uid`	int	NOT NULL,
-	`pid`	int	NOT NULL,
-	`content`	varchar(10000)	NULL,
-	`c_date`	datetime	NULL,
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`pid` int NOT NULL,
+	`content` varchar(10000) NULL,
+	`c_date` datetime NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 
 CREATE TABLE `organization_relation` (
-	`id`	int	NOT NULL auto_increment primary key,
-	`oid`	int	NOT NULL,
-	`uid`	int	NOT NULL ,
+	`id` int NOT NULL auto_increment primary key,
+	`oid` int NOT NULL,
+	`uid` int NOT NULL ,
+
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (oid) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE RESTRICT  
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
@@ -213,10 +214,6 @@ INSERT INTO likes(uid,pid,status) VALUES(1,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(2,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(3,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(4,2,true);
-
-INSERT INTO diary(  ) VALUES();
-
-
 
 
 
