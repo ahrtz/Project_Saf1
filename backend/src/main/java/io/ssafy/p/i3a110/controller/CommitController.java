@@ -27,13 +27,13 @@ public class CommitController {
 	
 	@PostMapping("/commits")
 	@ApiOperation(value = "Commit 추가")
-	public List<CommitListDto> addCommit(@RequestBody CommitListDto commit) {
-		return commitService.addCommit(commit);
+	public void addCommit(@RequestBody CommitListDto commit) {
+		commitService.addCommit(commit);
 	}
 	
 	@DeleteMapping("/commits/{id}")
 	@ApiOperation(value = "Commit 삭제")
-	public List<CommitListDto> deleteCommit(@PathVariable String id) {
-		return commitService.deleteCommit(id);
+	public void deleteCommit(@PathVariable String id) {
+		commitService.deleteCommit(id);
 	}
 }
