@@ -2,6 +2,7 @@ package io.ssafy.p.i3a110.controller;
 
 import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.http.request.GetPostRequest;
 import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
@@ -10,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Optional;
 
 @RestController
 public class PostController {
@@ -29,11 +30,11 @@ public class PostController {
 
     @PostMapping("/posts/{did}")
     @ApiOperation(value = "다이어리 포스트 조회")
-    public ArrayList<PostDto> getPost(@RequestBody HashMap<String, String> map) {
-        String keyword = map.get("keyword");
-        int isTemp = Integer.parseInt(map.get("isTemp"));
+    public ArrayList<PostDto> getPost(@PathVariable int did, @RequestBody GetPostRequest map) {
+        String keyword = Optional.ofNullable(map.getKeyword()).orElse("");
+        int isTemp = Optional.ofNullable(map.getIsTemp()).orElse(0);
 
-        return postService.getPost(keyword, isTemp);
+        return postService.getPost(did, keyword, isTemp);
     }
 
     @GetMapping("/posts/{id}")

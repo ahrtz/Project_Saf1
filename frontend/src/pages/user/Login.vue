@@ -66,14 +66,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import VueCookies from 'vue-cookies'
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
 export default {
     name: 'Login',
     data(){
-
       return{
         loginData:{
           email:null,
@@ -84,15 +79,14 @@ export default {
       }
     },
     methods:{
-      login(){
-        axios.post('http://localhost:3000/users/login',this.loginData,{headers:{'Content-Type':'application/json'}})
-        .then(res=>{
-        this.$store.commit('userData',this.loginData)
-        this.$store.commit('isLoggedIn',true)
-        this.$router.push({name:'MainPage'})        
-        })
-        .catch(err=>{console.log('실패')}
-        )
+      async login() {
+        try {
+          await this.$api.login(this.loginData)
+          this.$router.push({name:'MainPage'})
+          location.reload()
+        } catch (e) {
+          console.log('실패')
+        }
       }
     }
 }
