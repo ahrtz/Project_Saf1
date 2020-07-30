@@ -11,19 +11,6 @@ Drop TABLE if exists `post`;
 Drop TABLE if exists `diary`;
 Drop TABLE if exists `user`;
 CREATE TABLE `user` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `email` varchar(128) NOT NULL,
-    `pwd` varchar(128) NULL,
-    `nickname` varchar(128) NULL,
-    `git_id` varchar(128) NULL,
-    `git_url` varchar(128) NULL,
-    `intro` varchar(256) NULL,
-    `img` varchar(128) NULL,
-    `git_token` varchar(128) NULL,
-    `is_social` boolean NULL,
-    `is_certified` boolean NULL
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`email` varchar(128) NOT NULL,
 	`pwd` varchar(128) NULL,
@@ -35,20 +22,8 @@ CREATE TABLE `user` (
 	`git_token` varchar(128) NULL,
 	`is_social`	boolean NULL,
 	`is_certified` boolean NULL
->>>>>>> Stashed changes
 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `diary` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `uid` int NOT NULL,
-    `title` varchar(128) NULL,
-    `intro` varchar(256) NULL,
-    `img` varchar(256) NULL,
-    `git_url` varchar(256) NULL,
-    `is_proj` Boolean NULL,
-    `s_date` datetime NULL,
-    `e_date` datetime NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`uid` int NOT NULL,
 	`title` varchar(128) NULL,
@@ -58,21 +33,9 @@ CREATE TABLE `diary` (
 	`is_proj` Boolean NULL,
 	`s_date` datetime NULL,
 	`e_date` datetime NULL,
->>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `post` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `did` int NOT NULL,
-    `uid` int NOT NULL,
-    `title` varchar(128) NULL,
-    `content` Text  NULL,
-    `c_date` datetime NULL,
-    `priority` int NULL,
-    `cnt_like` int NULL,
-    `is_temp` boolean NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`did` int NOT NULL,
 	`uid` int NOT NULL,
@@ -82,7 +45,6 @@ CREATE TABLE `post` (
 	`priority` int NULL,
 	`cnt_like` int NULL,
 	`is_temp` boolean NULL,
->>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
@@ -95,34 +57,19 @@ CREATE TABLE `likes` (
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `commit_list` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `uid` int NOT NULL,
-    `pid` int NOT NULL,
-    `sha` VARCHAR(255) NULL,
-    `author` varchar(256) NULL,
-    `msg` varchar(1000) NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`uid` int NOT NULL,
 	`pid` int NOT NULL,
 	`sha` VARCHAR(255) NULL,
 	`author` varchar(256) NULL,
 	`msg` varchar(1000) NULL,
->>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `tag` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `pid` int NOT NULL,
-    `name` varchar(128) NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`pid` int NOT NULL,
 	`name` varchar(128) NULL,
->>>>>>> Stashed changes
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `scrap` (
@@ -134,30 +81,17 @@ CREATE TABLE `scrap` (
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `follow` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `user_from` int NOT NULL,
-    `user_to` int NOT NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`user_from` int NOT NULL,
 	`user_to` int NOT NULL,
->>>>>>> Stashed changes
    FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
    FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `organization` (
-<<<<<<< Updated upstream
-    `id` int NOT NULL auto_increment primary key,
-    `lid` int NOT NULL,
-    `name` varchar(128) NULL,
-    `intro` varchar(256) NULL,
-=======
 	`id` int NOT NULL auto_increment primary key,
 	`lid` int NOT NULL,
 	`name` varchar(128) NULL,
 	`intro` varchar(256) NULL,
->>>>>>> Stashed changes
   FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `comment` (
@@ -176,7 +110,8 @@ CREATE TABLE `organization_relation` (
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (oid) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE RESTRICT  
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
-INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('dominicong@naver.com', '1234','창교이','github.com/dominicong','test@test.com','창경입니다.',NULL,NULL,false,false);
+
+INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('dominicong@naver.com', '1234','창교이','github.com/dominicong','github@github.com/dominicong','창경입니다.','http://bitly.kr/pBl28lHHJvI',NULL,false,false);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test@test.com', 'test','test','test','github.com/test','for test user',NULL,NULL,false,false);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test2@test.com', NULL,'test2','test2','github.com/test2','for test user2',NULL,'hashed_git_token',true,true);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test3@test.com', NULL,'test3','test3','github.com/test3','for test user3','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS2pu5gU8U_jMw2G-iOgyG0OwVnK3nRWqi77w&usqp=CAU','hashed_git_token',true,true);
