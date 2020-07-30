@@ -184,20 +184,15 @@ alter table `diary` modify column `git_name` varchar(128) after `img`;
     
 --  //새로 추가된 컬럼에 대한 데이터 반영 : 기존의 튜플들 중 is_proj=1(프로젝트인 것들만)인 튜플들에 대해서만 git_name='테스트 깃 네임'이라는 데이터 값을 삽입합니다.
 update `diary` set `git_name` = 'Test git name' where `is_proj`=1;
--- //post 테이블에 'is_proj`라는 컬럼 추가
-alter table `post` add column `is_proj` boolean not null;
---  //현재 기존에 있는 데이터는 다 프로젝트에 대한 글들이기 때문에 `is_proj`=1로 설정. 
-update `post` set `is_proj`=1;
-
 
 -- //`post` 테이블에 블로그에 대한 포스트 튜플 추가.
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(1,1,'블로그 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(1,1,'블로그 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(2,1,'블로그 2 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(2,1,'블로그 2 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'블로그 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'블로그 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'블로그 2 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(2,1,'블로그 2 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false);
 
 
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(5,2,'블로그 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(5,2,'블로그 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(6,2,'블로그 2 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
-INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp,is_proj) VALUES(6,2,'블로그 2 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(5,2,'블로그 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(5,2,'블로그 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(6,2,'블로그 2 글 1입니다','글1에대한 컨텐츠입니다','2020-07-05',0,2,false);
+INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(6,2,'블로그 2 글 2입니다','글2에대한 컨텐츠입니다','2020-07-05',0,2,false);
