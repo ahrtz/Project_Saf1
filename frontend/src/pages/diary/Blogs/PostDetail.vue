@@ -115,16 +115,18 @@ export default {
         this.uid=this.$store.state.user.id
         
         try{
-            this.tmp = await this.$api.postdetail(this.id.pid)
+            let tmpspace = await this.$api.postdetail(this.id.pid)
+            this.tmp =tmpspace
             console.log('성공')
         }catch(e){
-            console.log('error')
+            console.log(e)
         }
         try{
-            this.likeDummy = await this.$api.likedata(this.id.pid)
+            let tmpspace1= await this.$api.likedata(this.id.pid)
+            this.likeDummy =tmpspace1 
             console.log('성공')
         }catch(e){
-            console.log('error')
+            console.log(e)
         }
         
 

@@ -153,7 +153,8 @@ export default {
         async getDiary(){
 
             try{
-                this.diarys = await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
+                let tempspace= await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
+                this.diarys = tempspace 
                 console.log('성공')
             }catch(e){
                 console.log(e)

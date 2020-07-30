@@ -62,10 +62,10 @@ export default {
     
   },
   async created(){
-    
-    
       try {
-           this.postdata = await this.$api.diarydetail(this.$route.params.did,this.config)
+         let tmpspace= await this.$api.diarydetail(this.$route.params.did,this.config)
+          console.log(tmpspace)
+          this.postdata = tmpspace 
           console.log ('성공')
         } catch (e) {
           console.log('실패')
