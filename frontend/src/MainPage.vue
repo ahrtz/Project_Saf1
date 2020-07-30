@@ -11,39 +11,45 @@
                     <div class="main-page-section-title">Project Post</div>
                     <div class="d-flex justify-center flex-grow-0 align-center main-page-btn" style="margin-bottom:5px;">더보기</div>
                 </div>
-                <v-card
-                class="ma-2"
-                flat
-                v-for="post in project_posts" :key="post.id"
-                style="margin-top:10px; border-bottom:dashed 1px grey"
-
-                >
-                <!-- card layout -->
-                <div>
-                  <!-- 프로필 이미지, 닉네임  -->
-                  <header class="main-card-header">
-                    <img :src="post.userinfo.img" alt="" class="main-card-header-img">
-                    <div class="main-card-header-nick_date">
-                      <span> 닉네임 :
-                        {{post.userinfo.nickname}}
-                      </span>
-                      <span> 작성일 :
-                        {{post.cdate}}
-                      </span>
+                  <v-card
+                  class="ma-2"
+                  flat
+                  v-for="post in list_proj" :key="post.id"
+                  style="margin-top:10px; border-bottom:dashed 1px grey"
+                  >
+                  <!-- card layout -->
+                    <div>
+                      <!-- 프로필 이미지, 닉네임  -->
+                      <header class="main-card-header">
+                        <img :src="post.userinfo.img" alt="" class="main-card-header-img">
+                        <div class="main-card-header-nick_date">
+                          <span> 닉네임 :
+                            {{post.userinfo.nickname}}
+                          </span>
+                          <span> 작성일 :
+                            {{post.cdate}}
+                          </span>
+                        </div>
+                      </header>
+                      <!-- 포스트 제목 / 컨텐츠 -->
+                      <article class="main-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
+                        <h3 style="margin-left:10px;">{{post.title}}</h3>
+                        <p style="margin-left:10px; margin-top:5px;">
+                            {{post.content}}
+                        </p>
+                      </article>
+                      <footer>
+                        <!-- TODO: tags -->
+                      </footer>
                     </div>
-                  </header>
-                  <!-- 포스트 제목 / 컨텐츠 -->
-                  <article class="main-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
-                    <h3 style="margin-left:10px;">{{post.title}}</h3>
-                    <p style="margin-left:10px; margin-top:5px;">
-                        {{post.content}}
-                    </p>
-                  </article>
-                  <footer>
-                    <!-- TODO: tags -->
-                  </footer>
-                </div>
-                </v-card>
+                  </v-card>
+
+                  <infinite-loading
+                    slot="append"
+                    @infinite="infiniteHandler"
+                    spinner="waveDots"
+                    force-use-infinite-wrapper=".el-table__body-wrapper">
+                  </infinite-loading>
             </v-col>
             <v-col cols="6">
                 <div class="d-flex align-center justify-space-between" style="margin-bottom:16px; border-bottom:solid 1px grey">
@@ -53,7 +59,7 @@
                 <v-card
                 class="ma-2"
                 flat
-                v-for="post in blog_posts" :key="post.id"
+                v-for="post in list_blog" :key="post.id"
                 style="margin-top:10px;border-bottom:dashed 1px grey"
                 >
                 <div>
@@ -81,7 +87,12 @@
                   </footer>
                 </div>
                 </v-card>
-
+                <infinite-loading
+                    slot="append"
+                    @infinite="infiniteHandler2"
+                    spinner="waveDots"
+                    force-use-infinite-wrapper=".el-table__body-wrapper">
+                  </infinite-loading>
             </v-col>
 
         </v-row>
@@ -93,11 +104,14 @@
 <script>
 import axios from 'axios'
 import Status from '../src/component/Status.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 
+var count=0;
 export default {
     name:'MainPage',
     components:{
-        Status
+        Status,
+        InfiniteLoading
     },
     data(){
         return{
@@ -105,6 +119,11 @@ export default {
             blog_posts:{},
             project_posts:{},
             user:{},
+            limit_proj:0,
+            limit_blog:0,
+            page:1,
+            list_proj:[],
+            list_blog:[],
         }
     },
     created(){
@@ -118,13 +137,13 @@ export default {
           //if(isLogin)
 
           //TODO : uid 현재 유저로 확인해야됨
-          axios.post('/api/posts/all/' ,{uid:"",type:"0",is_temp:"0",keyword:""})
+          axios.post('/api/posts/all/' ,{uid:"",type:"0",is_temp:"0",keyword:"",limit:"1"})
           .then(res=>{
               console.log(res.data)
               this.blog_posts = res.data}
           )
 
-          axios.post('/api/posts/all/'  ,{uid:"",type:"1",is_temp:"0",keyword:""})
+          axios.post('/api/posts/all/'  ,{uid:"",type:"1",is_temp:"0",keyword:"",limit:"2"})
           .then(res=>{
               console.log(res.data)
               this.project_posts = res.data}
@@ -133,6 +152,42 @@ export default {
           //TODO
           //else
 
+        },
+        infiniteHandler($state) {
+          axios.post('/api/posts/all/', {uid:"",type:"1",is_temp:"0",keyword:"",limit:this.limit_proj+10})
+          .then(res => {
+            setTimeout(()=>{
+              if(res.data.length>=this.limit_proj){
+                this.list_proj = res.data;
+                $state.loaded();
+                this.limit_proj +=10;
+              }
+              else{
+                $state.complete();
+              }
+            },1000)
+
+          }).catch(err =>{
+            console.log(err);
+          });
+        },
+        infiniteHandler2($state) {
+          axios.post('/api/posts/all/', {uid:"",type:"0",is_temp:"0",keyword:"",limit:this.limit_blog+10})
+          .then(res => {
+            setTimeout(()=>{
+              if(res.data.length>=this.limit_blog){
+                this.list_blog = res.data;
+                $state.loaded();
+                this.limit_blog +=10;
+              }
+              else{
+                $state.complete();
+              }
+            },1000)
+
+          }).catch(err =>{
+            console.log(err);
+          });
         },
     },
 
