@@ -96,9 +96,16 @@ public class GitController {
 		int uid = (int) session.getAttribute("id");
 		UserDto user = userService.findUserById(uid);
 		String repoName = map.get("reponame");
+		String sDate = map.get("sdate");
+		String eDate = map.get("edate");
+		
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			list = helper.getAllCommitInfoList(repoName);
+			if(sDate == null || eDate == null) {
+				list = helper.getAllCommitInfoList(repoName);
+			}else {
+				list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+			}
 		}else {
 			
 		}
