@@ -98,15 +98,7 @@ export default {
       }
     },
     props:['value'],
-    computed:{
-      isProj(){
-        if (this.$route.path[7]=='p'){
-          return true
-        }else{
-          return false
-        }
-      }
-    },
+    
     methods:{
       clear(){
         this.$refs.form.reset()
@@ -135,6 +127,13 @@ export default {
     computed:{
       userid(){
         return this.post.uid= this.$store.state.user.id
+      },
+      isProj(){
+        if (this.$route.path[7]=='p'){
+          return true
+        }else{
+          return false
+        }
       }
     }
 }

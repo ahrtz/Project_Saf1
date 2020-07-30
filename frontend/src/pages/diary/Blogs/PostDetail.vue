@@ -111,12 +111,17 @@ export default {
 }
     },
     created(){
+        this.uid=this.$store.state.user.id
+        
         axios.get('http://i3a110.p.ssafy.io:3000/posts/'+this.id.pid)
         .then(res=>{console.log(res)
         this.tmp = res.data
         })
         .catch(err => console.log(err))
-        this.uid=this.$store.state.user.id
+
+        axios.get('http://i3a110.p.ssafy.io:3000/likes/'+this.id.pid)
+        .then(res=>{console.log('성공')
+        console.log(res.data)})
     }
     ,
     methods:{
