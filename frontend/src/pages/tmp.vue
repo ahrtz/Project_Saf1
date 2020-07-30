@@ -30,7 +30,7 @@
               </div>
             </header>
             <!-- 포스트 제목 / 컨텐츠 -->
-            <article class="search-card-article">
+            <article class="search-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
               <h3 style="margin-left:10px;">{{post.title}}</h3>
               <p style="margin-left:10px; margin-top:5px;">
                   {{post.content}}
