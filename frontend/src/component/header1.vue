@@ -96,6 +96,7 @@ export default {
   border-radius: 6px;
   width: 80px;
   height: 40px;
+  cursor: pointer;
 }
 
 .header-flex-container {
@@ -118,12 +119,6 @@ export default {
   font-size:20px;
 }
 
-.header-search-input{
-  width:325px;
-  font-size:16px;
-  border:0px;
-  outline:none;
-}
 .header-search-button{
   background:#32681c;
   border:0px;
