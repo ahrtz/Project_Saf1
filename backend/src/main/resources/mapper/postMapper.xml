@@ -12,6 +12,24 @@
         and is_temp=#{isTemp}
     </select>
     
+    <select id="getAllBlogPost" resultType="PostDto">
+    	select *
+    	from post
+    	where is_proj=false
+    </select>
+    
+    <select id="getAllProjectPost" resultType="PostDto">
+    	select *
+    	from post
+    	where is_proj=false
+    </select>
+    
+    <select id="getAllDiaryPost" resultType="PostDto">
+    	select *
+    	from post
+    	where is_proj=false
+    </select>
+    
     <select id="getAllBlogPostByUser" resultType="PostDto">
     	select *
     	from post

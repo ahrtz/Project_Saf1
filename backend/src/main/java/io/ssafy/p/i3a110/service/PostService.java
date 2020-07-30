@@ -28,13 +28,24 @@ public class PostService {
         postDao.deletePost(id);
     }
 	public ArrayList<PostDto> getAllPostByUser(String uid, int type) {
-		switch (type) {
-		case 0:
-			return postDao.getAllBlogPostByUser(uid, type);
-		case 1:
-			return postDao.getAllProjectPostByUser(uid, type);
-		default:
-			return postDao.getAllDiaryPostByUser(uid, type);
+		if(uid==null) {
+			switch (type) {
+			case 0:
+				return postDao.getAllBlogPost();
+			case 1:
+				return postDao.getAllProjectPost();
+			default:
+				return postDao.getAllDiaryPost();
+			}
+		}else {
+			switch (type) {
+			case 0:
+				return postDao.getAllBlogPostByUser(uid, type);
+			case 1:
+				return postDao.getAllProjectPostByUser(uid, type);
+			default:
+				return postDao.getAllDiaryPostByUser(uid, type);
+			}
 		}
 	}
 }

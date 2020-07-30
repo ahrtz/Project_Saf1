@@ -15,4 +15,7 @@ public interface PostDao {
 	public ArrayList<PostDto> getAllBlogPostByUser(String uid, int type);
 	public ArrayList<PostDto> getAllProjectPostByUser(String uid, int type);
 	public ArrayList<PostDto> getAllDiaryPostByUser(String uid, int type);
+	public ArrayList<PostDto> getAllBlogPost();
+	public ArrayList<PostDto> getAllProjectPost();
+	public ArrayList<PostDto> getAllDiaryPost();
 }

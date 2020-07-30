@@ -55,39 +55,39 @@ public class GitController {
 		return list;
 	}
 	
-//	@PostMapping("/gits/commits/cnt")
-//	@ApiOperation(value = "Repo Commit 수 조회")
-//	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, HttpServletRequest request) {
-//		HashMap<Date, Integer> map = null;
-//		int uid = (int) session.getAttribute("id");
-//		UserDto user = userService.findUserById(uid);
-//		String repoName = (String) request.getAttribute("reponame");
-//		if(user.getIsCertified()==1) {
-//			helper = new GitHubRestApiHelper(user.getGitToken());
-//			if(repoName == null) {
-//				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(uid));
-//			}else {
-//				map = helper.getCommitCnt(repoName);
-//			}
-//		}else {
-//			
-//		}
-//		return map;
-//	}
-	
-	//Test
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
-	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> m) {
+	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
 		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("private");
-		String token = m.get("token");
-		System.out.println(token);
-		helper = new GitHubRestApiHelper(token);
-		map = helper.getAllCommitCnt(list);
+		int uid = (int) session.getAttribute("id");
+		UserDto user = userService.findUserById(uid);
+		String repoName = input.get("reponame");
+		if(user.getIsCertified()==1) {
+			helper = new GitHubRestApiHelper(user.getGitToken());
+			if(repoName == null) {
+				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(uid));
+			}else {
+				map = helper.getCommitCnt(repoName);
+			}
+		}else {
+			
+		}
 		return map;
 	}
+	
+//	//Test
+//	@PostMapping("/gits/commits/cnt")
+//	@ApiOperation(value = "Repo Commit 수 조회")
+//	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> m) {
+//		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
+//		ArrayList<String> list = new ArrayList<String>();
+//		list.add("private");
+//		String token = m.get("token");
+//		System.out.println(token);
+//		helper = new GitHubRestApiHelper(token);
+//		map = helper.getAllCommitCnt(list);
+//		return map;
+//	}
 	
 	@PostMapping("/gits/commits")
 	@ApiOperation(value = "Repoitory 전체 Commit 조회")
