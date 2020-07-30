@@ -74,6 +74,8 @@ export default {
             try{
                 this.$api.deletePost(postid)
                 console.log('성공')
+                this.$router.push({name:'tmpPost'})
+                // 여기 리디렉션? 같은거 해서 삭제한걸 새롭게.. 받아 와야함 라우터 푸시로 안될거같은데 
                 
             }catch(e){
                 console.log(e)
