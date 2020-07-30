@@ -1,5 +1,26 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.http.request.GetPostRequest;
@@ -7,17 +28,6 @@ import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Optional;
 
 @RestController
 public class PostController {
@@ -28,14 +38,35 @@ public class PostController {
     @Autowired
     private LikeService likeService;
 
+//	  // OLD
+//    // 0: blog 1: project 2: all
+//    @PostMapping("/posts/all")
+//    @ApiOperation(value = "회원별 다이어리 전체 조회")
+//    public ArrayList<PostDto> getAllPostByUser(@RequestBody HashMap<String, String> map) {
+//    	String uid = map.get("uid");
+//    	int type = Integer.parseInt(map.get("type"));
+//    	
+//    	return postService.getAllPostByUser(uid, type);
+//    }
+   
     // 0: blog 1: project 2: all
     @PostMapping("/posts/all")
     @ApiOperation(value = "회원별 다이어리 전체 조회")
-    public ArrayList<PostDto> getAllPostByUser(@RequestBody HashMap<String, String> map) {
+    public List<HashMap<Object, Object>> getAllPostByUser(@RequestBody HashMap<String, String> map) {
     	String uid = map.get("uid");
     	int type = Integer.parseInt(map.get("type"));
     	
-    	return postService.getAllPostByUser(uid, type);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type);
+    	for(PostDto post : postList) {
+    		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+    		form.put("userinfo", userService.findUserById(post.getUid()));
+    		output.add(form);
+    	}
+    	
+    	return output;
     }
     
     @PostMapping("/posts/{did}")

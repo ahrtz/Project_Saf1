@@ -1,8 +1,6 @@
 <template>
 <div class="main-page-container">
 <div class="main-page-inner d-flex flex-column justify-center">
-    <!-- <h2>메인페이지</h2> -->
-    <!-- <br>스테이터스가 컴포넌트로 해놓긴 햇는데 데이터를 어케 받아서 넘겨줄지 고민  -->
     <status />
     <br>
     <br>
@@ -17,9 +15,33 @@
                 class="pa-2"
                 outlined
                 tile
-                v-for="post in diarypost" :key="post.pid"
+                v-for="post in project_posts" :key="post.id"
+                style="margin-top:10px"
                 >
-                {{post}}
+                <!-- card layout -->
+                <div>
+                  <!-- 프로필 이미지, 닉네임  -->
+                  <header class="main-card-header">
+                    <img :src="post.userinfo.img" alt="" class="main-card-header-img">
+                    <div class="main-card-header-nick_date">
+                      <span> 닉네임 :
+                        {{post.userinfo.nickname}}
+                      </span>
+                      <span> 작성일 :
+                        {{post.cdate}}
+                      </span>
+                    </div>
+                  </header>
+                  <!-- post 제목, 컨텐츠(간략하게) -->
+
+                  <article class="main-card-article">
+                    <h3>{{post.title}}</h3>
+                    <p>
+                        {{post.content}}
+                    </p>
+                  </article>
+                </div>
+                <!-- {{post.title}} -->
                 </v-card>
             </v-col>
             <v-col cols="6">
@@ -31,11 +53,11 @@
                 class="pa-2"
                 outlined
                 tile
-                v-for="post in projectpost" :key="post.pid"
+                v-for="post in blog_posts" :key="post.id"
                 >
-                {{post}}
+                {{post.title}}
                 </v-card>
-                
+
             </v-col>
         </v-row>
     </v-container>
@@ -44,6 +66,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Status from '../src/component/Status.vue'
 
 export default {
@@ -54,7 +77,8 @@ export default {
     data(){
         return{
             status:['날짜정보 혹은 뭐 커밋 정보'],
-            diarypost:[{
+            diarypost:[
+            {
                 pid:0,
                 pname:'1번 글'
             },
@@ -96,13 +120,81 @@ export default {
                 pname:'5번 글'
             },
             ],
+            blog_posts:{},
+            project_posts:{},
+            user:{},
         }
+    },
+    mounted(){
+      this.getPost();
+      this.getUser();
+    },
+    methods:{
+      getPost(){
+
+          //로그인 안 되어 있는 경우 전체 post
+          //TODO : 로그인 세션 추가
+          //if(isLogin)
+          // console.log(111);
+          // var curUid = 1;
+          // console.log(curUid.toString());
+          axios.post('http://localhost:3000/posts/all/' ,{uid:"1",type:"0"})
+          .then(res=>{
+              // console.log(res.data)
+              this.blog_posts = res.data}
+          )
+          axios.post('http://localhost:3000/posts/all/'  ,{uid:"1",type:"1"})
+          .then(res=>{
+              // console.log(res.data)
+              this.project_posts = res.data}
+          )
+          //로그인 되어 있는 경우 나의 post
+          //TODO
+          //else
+
+        },
+        getUser(){
+          //TODO : 현재 세션 로그인 값으로 수정
+          var curUserEmail="dominicong@naver.com";
+          console.log(curUserEmail);
+          axios.get('http://localhost:3000/users/' + curUserEmail)
+          .then(res=>{
+              console.log(res.data)
+              this.user = res.data}
+          )
+        }
+
+
     }
 }
 </script>
 
 <style>
- .main-page-container {
+.main-card-header{
+  background-color:#c3d1eb;
+  font-size: 16px;
+  color: black;
+  height: 55px;
+
+}
+.main-card-header-nick_date{
+  display:flex;
+  flex-direction: column;
+}
+
+.main-card-header-img{
+  width:35px;
+  height:35px;
+  margin:10px 10px 10px 10px;
+  float:left;
+}
+.main-card-article{
+  background-color:#a0bbee;
+  float:unset;
+  width:100%;
+  height:100px;
+}
+.main-page-container {
   width: 100%;
 }
 
