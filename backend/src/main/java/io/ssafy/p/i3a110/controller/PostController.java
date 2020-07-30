@@ -57,11 +57,12 @@ public class PostController {
     	String uid = map.get("uid");
     	int type = Integer.parseInt(map.get("type"));
     	String keyword = map.get("keyword");
+    	int isTemp = Integer.parseInt(map.get("is_temp"));
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
-    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword);
+    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword, isTemp);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		form.put("userinfo", userService.findUserById(post.getUid()));
@@ -121,7 +122,7 @@ public class PostController {
         post.setTitle(map.get("title"));
         post.setContent(map.get("content"));
         post.setPriority(Integer.parseInt(map.get("priority")));
-
+        
         postService.updatePost(post);
     }
 
