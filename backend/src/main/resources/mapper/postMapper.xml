@@ -16,14 +16,14 @@
     	select *
     	from post
     	where uid=#{uid}
-    	and isProj="0"
+    	and is_proj=false
     </select>
     
     <select id="getAllProjectPostByUser" resultType="PostDto">
     	select *
     	from post
     	where uid=#{uid}
-    	and isProj="1"
+    	and is_proj=true
     </select>
     
     <select id="getAllDiaryPostByUser" resultType="PostDto">
