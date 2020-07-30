@@ -8,9 +8,9 @@
       height="70"
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">home</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">group</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">Group</div>
       <div class="d-flex"/>
       <v-text-field
         class="d-flex justify-center flex-grow-0"
