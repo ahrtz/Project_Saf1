@@ -61,7 +61,7 @@ export default {
         selected:[] ,
         post:{
           uid:'',
-          did:this.did,
+          did:this.$route.params.did,
           title:'',
           content:'',
           priority:0,
@@ -98,7 +98,9 @@ export default {
       }
     },
     props:['value'],
-    
+    created(){
+      this.post.uid= this.$store.state.user.id
+    },
     methods:{
       clear(){
         this.$refs.form.reset()
@@ -121,12 +123,15 @@ export default {
       writePost(){
         axios.post('http://i3a110.p.ssafy.io:3000/posts',this.post,)
         .then(res=> console.log('성공') )
-        .catch(err=>console.log(err))
+        .catch(err=>{
+          console.log(err),
+          console.log('실패')
+        })
       }
     },
     computed:{
       userid(){
-        return this.post.uid= this.$store.state.user.id
+        
       },
       isProj(){
         if (this.$route.path[7]=='p'){
