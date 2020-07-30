@@ -60,7 +60,7 @@ export default {
     created(){
         console.log(this.ddd.key)
         axios.post("http://i3a110.p.ssafy.io:3000/posts/all/",{
-            keyword:"1",
+            keyword:this.$route.params.key,
             is_temp:"0",
             uid:"",
             type:"2"
