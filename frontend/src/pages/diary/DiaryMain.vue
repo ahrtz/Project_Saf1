@@ -94,7 +94,7 @@
                     <!-- hover -->
                     <div 
                     v-if="hover"
-                    class = "black div-reveal"
+                    class = "primary div-reveal"
                     >
                         
                         <v-card-title>
