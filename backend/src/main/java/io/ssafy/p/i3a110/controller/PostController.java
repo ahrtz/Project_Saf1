@@ -28,6 +28,16 @@ public class PostController {
     @Autowired
     private LikeService likeService;
 
+    // 0: blog 1: project 2: all
+    @PostMapping("/posts/all")
+    @ApiOperation(value = "회원별 다이어리 전체 조회")
+    public ArrayList<PostDto> getAllPostByUser(@RequestBody HashMap<String, String> map) {
+    	String uid = map.get("uid");
+    	int type = Integer.parseInt(map.get("type"));
+    	
+    	return postService.getAllPostByUser(uid, type);
+    }
+    
     @PostMapping("/posts/{did}")
     @ApiOperation(value = "다이어리 포스트 조회")
     public ArrayList<PostDto> getPost(@PathVariable int did, @RequestBody GetPostRequest map) {
