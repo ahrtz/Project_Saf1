@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public interface PostDao {
     public ArrayList<PostDto> getPost(int did, String keyword, int isTemp);
     public PostDto getPostById(int id);
+    public PostDto getPostByTitle(String keyword);
     public void createPost(PostDto post);
     public void updatePost(PostDto post);
     public void deletePost(int id);
