@@ -1,10 +1,11 @@
 <template>
-  <div>
+<div class="header-container">
+  <div class="header-inner">
     <v-card
-      class="header-flex-container align-start"
+      class="header-flex-container justify-center align-center"
       flat
-      color="green lighten-2"
-      height="60"
+      color="#fff"
+      height="70"
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
@@ -27,6 +28,7 @@
     </v-card>
 
   </div>
+</div>
 </template>
 
 <script>
