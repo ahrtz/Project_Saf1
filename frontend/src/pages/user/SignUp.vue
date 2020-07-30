@@ -74,14 +74,8 @@
         ></v-text-field>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>
-      <div
-        class="d-flex justify-center align-center signup-btn"
-        @click="signup"
-      >완료</div>
-      <div
-        class="d-flex justify-center align-center signup-cancel-btn"
-        @click="goback"
-      >취소</div>
+      <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
+      <div class="d-flex justify-center align-center signup-cancel-btn" @click="goback">취소</div>
     </div>
   </div>
 </template>
@@ -112,39 +106,33 @@ export default {
     goback() {
       this.$router.go(-1);
     },
-    methods:{
-      goback(){
-            this.$router.go(-1)
-        },
-      async signup(){
-          if(this.signupData.pwd != this.signupData.pwdconfirm){
-            this.signupData.pwdconfirm=''
-            console.log('dnajk')
-            alert('비밀번호가 다름')}
-            else{
-
-              try{
-                this.$api.signupp(this.signupData,{headers:{'Content-Type':'application/json'}})
-                console.log('성공')
-                this.$router.push({name:'Login'})
-
-              }catch(e){
-                console.log(e)
-                console.log('실패')
-              }
-
-        }},
-        checkpwd(){
-          if(this.pwd != this.pwdconfirm){
-            this.pwdconfirm=''
-            console.log('dnajk')
-            alert('비밀번호가 다름')
-          }
+    async signup() {
+      if (this.signupData.pwd != this.signupData.pwdconfirm) {
+        this.signupData.pwdconfirm = '';
+        console.log('dnajk');
+        alert('비밀번호가 다름');
+      } else {
+        try {
+          this.$api.signupp(this.signupData, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          console.log('성공');
+          this.$router.push({ name: 'Login' });
+        } catch (e) {
+          console.log(e);
+          console.log('실패');
         }
+      }
     },
-  }
-    
-}
+    checkpwd() {
+      if (this.pwd != this.pwdconfirm) {
+        this.pwdconfirm = '';
+        console.log('dnajk');
+        alert('비밀번호가 다름');
+      }
+    },
+  },
+};
 </script>
 
 <style>
