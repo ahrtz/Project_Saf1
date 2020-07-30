@@ -43,5 +43,6 @@ export default {
 <style>
 * {
   font-family: NoTo Sans KR,sans-serif;
+  color: #21262e;
 }
 </style>
