@@ -1,11 +1,10 @@
 <template>
-<div class="header-container">
-  <div class="header-inner">
+  <div>
     <v-card
-      class="header-flex-container justify-center align-center"
+      class="header-flex-container align-start"
       flat
-      color="#fff"
-      height="70"
+      color="green lighten-2"
+      height="60"
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
@@ -20,12 +19,14 @@
             hide-details
           ></v-text-field>
       <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'Login'})">Login</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'Follow'})">MyPage</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==false" @click="$router.push({name:'Login'})">Login</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==true" @click="logout()">Logout</div>
+      
+
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==true" @click="$router.push({name:'Follow'})">MyPage</div>
     </v-card>
 
   </div>
-</div>
 </template>
 
 <script>
@@ -40,12 +41,25 @@ export default {
         '검색',
         'Myinfo',
       ],
+      signin:false
   }),
   methods: {
       onClickOutside () {
         this.active = false
       }
   },
+  computed:{
+    islogin(){
+      return this.signin= this.$store.state.isLoggedIn
+    },
+    logout(){
+      axios.post("http://i3a110.p.ssafy.io:3000/users/logout")
+      .then(
+              this.$store.commit('userData',{}),
+              this.$store.commit('isLoggedIn',false)
+      ).catch(err=> console.log(err))
+    }
+  }
 }
 
 </script>
@@ -118,7 +132,6 @@ export default {
   font-family: Recursive;
   font-size:20px;
 }
-
 .header-search-button{
   background:#32681c;
   border:0px;
@@ -126,7 +139,6 @@ export default {
   height:100%;
   outline:none;
   color:#ffffff;
-  cursor: pointer;
 }
 .header-router-link {
   text-decoration: none;

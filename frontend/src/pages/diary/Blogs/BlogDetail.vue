@@ -22,9 +22,9 @@
                 class="pa-2"
                 outlined
                 tile
-                v-for="post in diarypost" :key="post.pid"
+                v-for="post in postdata" :key="post.id"
                 >
-                <router-link :to="{name:'PostDetail',params:{pid:post.pid}}">
+                <router-link :to="{name:'PostDetail',params:{pid:post.id}}">
                 {{post}}
                 </router-link>
                   
@@ -40,6 +40,8 @@
 
 <script>
 import Status from '@/component/Status.vue'
+import axios from 'axios'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
     name:'BlogDetail',
     components:{
@@ -48,31 +50,25 @@ export default {
     data(){
       return{
         diaryid:this.$route.params,
-        diarypost:[{
-                pid:0,
-                pname:'1번 글'
-            },
-            {
-                pid:1,
-                pname:'2번 글'
-            },
-            {
-                pid:2,
-                pname:'3번 글'
-            },
-            {
-                pid:3,
-                pname:'4번 글'
-            },
-            {
-                pid:4,
-                pname:'5번 글'
-            },
-            ]
+        config:{
+          keyword:"",
+          isTemp:0
+        },
+        postdata:[],
+        
     }
   },
   methods:{
     
+  },
+  created(){
+    axios.post('http://localhost:3000/posts/'+this.diaryid.did,this.config,)
+    .then(res=>{
+      console.log(res.data)
+      this.postdata = res.data
+      }
+    )
+    .catch(err => console.log(err))
   },
   computed:{
       isProj(){
@@ -83,8 +79,10 @@ export default {
         }
       }
     },
+  
 
 }
+
 </script>
 
 <style>

@@ -1,4 +1,4 @@
-use ssafy;
+﻿use ssafy;
 Drop TABLE if exists `organization_relation`;
 Drop TABLE if exists `organization`;
 Drop TABLE if exists `likes`;
@@ -11,6 +11,7 @@ Drop TABLE if exists `post`;
 Drop TABLE if exists `diary`;
 Drop TABLE if exists `user`;
 CREATE TABLE `user` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `email` varchar(128) NOT NULL,
     `pwd` varchar(128) NULL,
@@ -22,8 +23,22 @@ CREATE TABLE `user` (
     `git_token` varchar(128) NULL,
     `is_social` boolean NULL,
     `is_certified` boolean NULL
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`email` varchar(128) NOT NULL,
+	`pwd` varchar(128) NULL,
+	`nickname` varchar(128) NULL,
+	`git_id` varchar(128) NULL,
+	`git_url` varchar(128) NULL,
+	`intro` varchar(256) NULL,
+	`img` varchar(128) NULL,
+	`git_token` varchar(128) NULL,
+	`is_social`	boolean NULL,
+	`is_certified` boolean NULL
+>>>>>>> Stashed changes
 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `diary` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `uid` int NOT NULL,
     `title` varchar(128) NULL,
@@ -33,9 +48,21 @@ CREATE TABLE `diary` (
     `is_proj` Boolean NULL,
     `s_date` datetime NULL,
     `e_date` datetime NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`title` varchar(128) NULL,
+	`intro` varchar(256) NULL,
+	`img` varchar(256) NULL,
+	`git_url` varchar(256) NULL,
+	`is_proj` Boolean NULL,
+	`s_date` datetime NULL,
+	`e_date` datetime NULL,
+>>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `post` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `did` int NOT NULL,
     `uid` int NOT NULL,
@@ -45,6 +72,17 @@ CREATE TABLE `post` (
     `priority` int NULL,
     `cnt_like` int NULL,
     `is_temp` boolean NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`did` int NOT NULL,
+	`uid` int NOT NULL,
+	`title` varchar(128) NULL,
+	`content` Text NULL,
+	`c_date` datetime NULL,
+	`priority` int NULL,
+	`cnt_like` int NULL,
+	`is_temp` boolean NULL,
+>>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
@@ -57,19 +95,34 @@ CREATE TABLE `likes` (
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `commit_list` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `uid` int NOT NULL,
     `pid` int NOT NULL,
     `sha` VARCHAR(255) NULL,
     `author` varchar(256) NULL,
     `msg` varchar(1000) NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`uid` int NOT NULL,
+	`pid` int NOT NULL,
+	`sha` VARCHAR(255) NULL,
+	`author` varchar(256) NULL,
+	`msg` varchar(1000) NULL,
+>>>>>>> Stashed changes
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `tag` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `pid` int NOT NULL,
     `name` varchar(128) NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`pid` int NOT NULL,
+	`name` varchar(128) NULL,
+>>>>>>> Stashed changes
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `scrap` (
@@ -81,17 +134,30 @@ CREATE TABLE `scrap` (
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `follow` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `user_from` int NOT NULL,
     `user_to` int NOT NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`user_from` int NOT NULL,
+	`user_to` int NOT NULL,
+>>>>>>> Stashed changes
    FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
    FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `organization` (
+<<<<<<< Updated upstream
     `id` int NOT NULL auto_increment primary key,
     `lid` int NOT NULL,
     `name` varchar(128) NULL,
     `intro` varchar(256) NULL,
+=======
+	`id` int NOT NULL auto_increment primary key,
+	`lid` int NOT NULL,
+	`name` varchar(128) NULL,
+	`intro` varchar(256) NULL,
+>>>>>>> Stashed changes
   FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `comment` (

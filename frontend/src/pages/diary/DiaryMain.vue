@@ -131,15 +131,13 @@ export default {
                 
             }
         },
-        testa(){
-            axios.get('http://localhost:3000/users/is-logged-in')
-            .then(res=>{console.log(res)})
-        },
+
         getDiary(){
-            axios.post('http://localhost:3000/diaries/1',{type:this.test,keyword:""})
+            axios.post('http://i3a110.p.ssafy.io:3000/diaries/1',{type:this.test,keyword:""})
             .then(res=>{
                 console.log(res.data)
                 this.diarys = res.data})
+                .catch(err=>console.log(err))
         }
     },
 

@@ -12,30 +12,33 @@
               제목
               <v-text-field
               filled
-              v-model="PostData.title"
+              v-model="tmp.title"
               readonly />
               우선순위
               <v-rating
-                v-model="PostData.rating"
+                v-model="tmp.priority"
                 background-color="orange lighten-3"
                 color="orange"
                 readonly
                 ></v-rating>
-              <p v-show="PostData.commitList">커밋리스트</p>
-              <!-- <v-text-field v-model="PostData.commitList" readonly/> -->
-              <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in PostData.commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
-              <v-btn v-show="commitcheck==false" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
+              <div v-show="checkcommit">
+                <p v-show="checkcommit">커밋리스트</p>
+                
+                <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
+                <v-btn v-show="commitcheck==false" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
 
-              <v-checkbox  class="my-0" v-show="PostData.commitList && commitcheck == true" v-for="commit in PostData.commitList" :key="commit.cid" v-model="commit.checked" :label="commit.commitcontent" readonly></v-checkbox>
-              <v-btn v-show='commitcheck==true' class="ma-2" tile color="indigo" dark @click="commitwide()">접기</v-btn>
-              <br>
+                <v-checkbox  class="my-0" v-show="commitList && commitcheck == true" v-for="commit in commitList" :key="commit.cid" v-model="commit.checked" :label="commit.commitcontent" readonly></v-checkbox>
+                <v-btn v-show='commitcheck==true' class="ma-2" tile color="indigo" dark @click="commitwide()">접기</v-btn>
+                <br>
+              </div>
               내용
-              <v-textarea filled v-model="PostData.content" readonly/>
+              <v-textarea filled v-model="tmp.content" readonly/>
           </v-container>
-          <v-btn class="ma-2" tile color="grey" dark v-if="PostData.likechecked == false" @click="like()" >좋아요</v-btn>
-          <v-btn class="ma-2" tile color="red" dark v-if="PostData.likechecked" @click="like()">좋아요 취소</v-btn>
-          <v-btn class="ma-2" tile color="indigo" dark @click="scrap()">스크랩</v-btn>
-          <v-btn class="ma-2" tile color="indigo" dark >공유</v-btn>
+          <v-btn class="ma-2" tile color="grey" dark v-if="likeData.likechecked == false" @click="like()" >좋아요</v-btn>
+          좋아요 숫자 {{tmp.cntLike}}
+          <v-btn class="ma-2" tile color="red" dark v-if="likeData.likechecked" @click="like()">좋아요 취소</v-btn>
+          <v-btn class="ma-2" tile color="indigo" dark >스크랩</v-btn>
+          <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()" >공유</v-btn>
 
           <br>
           댓글
@@ -68,85 +71,72 @@
 <script>
 import PostSidebar from '../../../component/PostSidebar.vue'
 import ContentSidebar from '../../../component/ContentSidebar.vue'
-
+import axios from 'axios'
 
 export default {
     name:'PostDetail',
     components:{PostSidebar, ContentSidebar},
     data(){
         return{
+        uid:null,
+        id:this.$route.params,//pid임
         commitcheck:false,
         commentData:
                 {
                     content:''
                 }
             ,
-        PostData:{
-            pid:0,
-            title:'글 제목',
-            content:'글 내용',
-            likechecked:false,
-            rating:4,
-
-            commitList:[
-                {cid:0,
-                commitcontent:'1번 커밋',
-                checked:true
-                },
-                {cid:1,
-                commitcontent:'2번 커밋',
-                checked:true
-                },
-                {cid:2,
-                commitcontent:'3번 커밋',
-                checked:true
-                },
-                {cid:3,
-                commitcontent:'4번 커밋',
-                checked:true
-                },
-                {cid:4,
-                commitcontent:'5번 커밋',
-                checked:true
-                },
-                {cid:5,
-                commitcontent:'6번 커밋',
-                checked:true
-                },
-                ],
-
+        tmp:{},
+        likeData:{
+            likechecked:false
         },
+        commitList:[],
         comments:[
-                {
-                cid:0,
-                commentcontent:'1번 댓글',
-                user:'1번'
-                },
-                {
-                cid:1,
-                commentcontent:'2번 댓글',
-                user:'2번'
-                },
-                {
-                cid:2,
-                commentcontent:'3번 댓글',
-                user:'1번'
-                },
-            ]
-        }
+        {
+        cid:0,
+        commentcontent:'1번 댓글',
+        user:'1번'
+        },
+        {
+        cid:1,
+        commentcontent:'2번 댓글',
+        user:'2번'
+        },
+        {
+        cid:2,
+        commentcontent:'3번 댓글',
+        user:'1번'
+        },
+    ]
+}
     },
+    created(){
+        this.uid=this.$store.state.user.id
+        
+        axios.get('http://i3a110.p.ssafy.io:3000/posts/'+this.id.pid)
+        .then(res=>{console.log(res)
+        this.tmp = res.data
+        })
+        .catch(err => console.log(err))
+
+        axios.get('http://i3a110.p.ssafy.io:3000/likes/'+this.id.pid)
+        .then(res=>{console.log('성공')
+        console.log(res.data)})
+    }
+    ,
     methods:{
         goback(){
             this.$router.go(-1)
         },
         like(){
-            if (this.PostData.likechecked==true){
-                this.PostData.likechecked=false
+            if (this.likeData.likechecked==true){
+                this.likeData.likechecked=false
             }else{
-                this.PostData.likechecked=true
+                this.likeData.likechecked=true
             }
         },
-        scrap(){
+
+        grapurl(){             
             alert(this.$route.path)
         },
         commitwide(){
@@ -156,13 +146,28 @@ export default {
                 this.commitcheck = false
             }
         },
+        scrap(){
+            // axios.post('http://localhost:3000/scraps',{
+            //     uid:this.uid,
+            //     pid:this.id.pid,
+            //     publisher:this.tmp.uid,
+            //     status:1})
+            //     .then(alert())
+        },
         commentwrite(){
 
         }
     },
     computed:{
         limited: function(){
-            return this.PostData.commitList
+            return this.commitList
+        },
+        checkcommit(){
+            if (this.commitList.length==0){
+                return false
+            }else{
+                return true
+            }
         }
     }
 }
