@@ -120,11 +120,6 @@ public class UserController {
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = findUserByEmail(email);
-<<<<<<< Updated upstream
-        
-=======
-        System.out.println(httpSession.getId());
->>>>>>> Stashed changes
         return user;
     }
 }

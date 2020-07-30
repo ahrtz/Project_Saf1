@@ -1,90 +1,205 @@
 <template>
-  <div>
-      <h2>회원가입 페이지</h2>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            id*
-            <v-text-field v-model="signupData.email" label="Email 형식으로 입력하세요" required></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            password*
-            <v-text-field v-model="signupData.pwd" label="비밀번호" type="password" required></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            password 확인*
-            <v-text-field v-model="signupData.pwdconfirm" label="비밀번호 확인" type="password" required></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            닉네임*
-            <v-text-field v-model="signupData.nickname" label="닉네임"  required></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            대표 이미지
-            <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
-          </v-col>
-          <v-col cols="12">
-            git id
-            <v-text-field v-model="signupData.git_id" label="git id" ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            git url
-            <v-text-field v-model="signupData.git_url" label="git url"></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            git token
-            <v-text-field v-model="signupData.git_token" label="git token"></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            자기소개
-            <v-textarea v-model="signupData.intro" label="intro"></v-textarea>
-          </v-col>
-        </v-row>
-        <v-btn class="mr-4 float-right" color="indigo" dark @click="signup()">회원가입</v-btn>
-        <v-btn class="mr-4 float-right" color="indigo" dark @click="goback()">취소</v-btn>
-      </v-container>
+  <div class="signup-container">
+    <div class="signup-inner">
+      <div class="signup-title">회원가입</div>
+      <div class="signup-subtitle">email과 Git 아이디로 Blogit을 시작해보세요.</div>
+      <div class="d-flex flex-column">
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="이메일"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.email"
+          required
+          type="email"
+        ></v-text-field>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="비밀번호"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.pwd"
+          required
+          type="password"
+        ></v-text-field>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="비밀번호 확인"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.pwdconfirm"
+          required
+          type="password"
+        ></v-text-field>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="닉네임"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.nickname"
+          required
+        ></v-text-field>
+        <v-file-input ref="file" label="대표 이미지" prepend-icon="mdi-camera"></v-file-input>
+
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="Git 아이디"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.git_id"
+          required
+        ></v-text-field>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="Git url"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.git_url"
+          required
+        ></v-text-field>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="Git token"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.git_token"
+          required
+        ></v-text-field>
+        <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
+      </div>
+      <div
+        class="d-flex justify-center align-center signup-btn"
+        @click="signup"
+      >완료</div>
+      <div
+        class="d-flex justify-center align-center signup-cancel-btn"
+        @click="signup"
+      >취소</div>
+    </div>
   </div>
 </template>
 
 <script>
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-import axios from 'axios'
+import axios from 'axios';
 export default {
-    name:'SignUp',
-    data(){
-      return{
-        signupData:{
-          email:'',
-          pwd:'',
-          pwdconfirm:'',
-          img:"",
-          nickname:'',
-          git_id:'',
-          git_url:'',
-          git_token:'',
-          intro:'',
-          is_social:'0',
-          is_certified:'0'
-        }
-      }
+  name: 'SignUp',
+  data() {
+    return {
+      signupData: {
+        email: '',
+        pwd: '',
+        pwdconfirm: '',
+        img: '',
+        nickname: '',
+        git_id: '',
+        git_url: '',
+        git_token: '',
+        intro: '',
+        is_social: '0',
+        is_certified: '0',
+      },
+    };
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
     },
-    methods:{
-      goback(){
-            this.$router.go(-1)
-        },
-        signup(){
-          // axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-          // .then(res=>{console.log('성공')
-          // this.$router.push({name:'Login'})
-          // })
-          // axios.post('http://localhost:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-          // .then(res=>{console.log('성공')})
-          // .catch(err=>{console.log(err)})
-        }
-    }
-}
+    signup() {
+      // axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
+      // .then(res=>{console.log('성공')
+      // this.$router.push({name:'Login'})
+      // })
+      // axios.post('http://localhost:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
+      // .then(res=>{console.log('성공')})
+      // .catch(err=>{console.log(err)})
+      this.$router.push({name:'MainPage'});
+    },
+  },
+};
 </script>
 
 <style>
+.signup-container {
+  padding-top: 77px;
+  width: 100%;
+}
 
+.signup-inner {
+  width: 450px;
+  margin: 0 auto;
+}
+
+.signup-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.signup-subtitle {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 12px;
+  color: #21262e;
+}
+
+.signup-btn {
+  margin-top: 32px;
+  width: 100%;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.signup-signup-btn {
+  margin-top: 16px;
+  width: 100%;
+  font-size: 14px;
+  background: #fff;
+  font-weight: 600;
+  color: #0051cb;
+  border: solid 1px #0051cb;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.signup-btn {
+  margin-top: 32px;
+  width: 100%;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.signup-cancel-btn {
+  margin-top: 8px;
+  width: 100%;
+  font-size: 14px;
+  background: #fff;
+  font-weight: 600;
+  color: #0051cb;
+  border: solid 1px #0051cb;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.signup-input {
+  margin-bottom: 8px;
+}
 </style>

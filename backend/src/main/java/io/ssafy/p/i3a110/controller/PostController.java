@@ -78,23 +78,9 @@ public class PostController {
 
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
-<<<<<<< Updated upstream
     public void createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-    	System.out.println(httpSession.getId());
-=======
-    public void createPost(@RequestHeader Map<String, String> headers, HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-        System.out.println(headers.toString());
-
-        System.out.println(httpSession.getId());
->>>>>>> Stashed changes
         String email = (String) httpSession.getAttribute("email");
-        System.out.print("email:" + email);
         UserDto user = userService.findUserByEmail(email);
-<<<<<<< Updated upstream
-        
-=======
-        System.out.print(user.toString());
->>>>>>> Stashed changes
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
         System.out.println( " Timestamp : " + ts);
