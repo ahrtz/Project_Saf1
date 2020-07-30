@@ -26,6 +26,7 @@
     	on d.id = p.did
     	where d.is_proj=false
     	and p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
     </select>
     
     <select id="getAllProjectPost" resultType="PostDto">
@@ -42,6 +43,7 @@
     	on d.id = p.did
     	where d.is_proj=true
     	and p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
     </select>
     
     <select id="getAllDiaryPost" resultType="PostDto">
@@ -57,6 +59,7 @@
     	from diary d join post p
     	on d.id = p.did
     	where p.title like concat("%",#{keyword}, "%")
+    	and is_temp=#{isTemp}
     </select>
     
     <select id="getAllBlogPostByUser" resultType="PostDto">
@@ -74,6 +77,7 @@
     	where d.is_proj=false
     	and p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
     </select>
     
     <select id="getAllProjectPostByUser" resultType="PostDto">
@@ -91,6 +95,7 @@
     	where d.is_proj=true
     	and p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
     </select>
     
     <select id="getAllDiaryPostByUser" resultType="PostDto">
@@ -107,6 +112,7 @@
     	on d.id = p.did
     	where p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
     </select>
 
     <select id="getPostById" resultType="PostDto">
@@ -125,16 +131,14 @@
     <update id="updatePost">
         update post
         set
-        email=#{email},
-        pwd=#{pwd},
-        nickname=#{nickname},
-        git_id=#{gitId},
-        git_url=#{gitUrl},
-        intro=#{intro},
-        img=#{img},
-        git_token=#{gitToken},
-        is_social=#{isSocial},
-        is_certified=#{isCertified}
+        uid = #{uid},
+        did = #{did},
+        title = #{title},
+        content = #{content},
+        c_date = #{createdDate},
+        priority = #{priority},
+        cnt_like = #{cntLike},
+        is_temp = #{isTemp}
         where id=#{id}
     </update>
 
