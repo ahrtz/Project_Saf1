@@ -4,6 +4,7 @@ import Router from 'vue-router'
 
 
 import tmp from '../pages/tmp.vue'
+import tmpPost from '../pages/tmpPost.vue'
 
 // user
 import MainPage from '../MainPage.vue'
@@ -45,6 +46,11 @@ const router = new Router({
       path: '/search/:key',
       name: 'tmp',
       component: tmp
+    },
+    {
+      path:'/tmppost',
+      name:'tmpPost',
+      component:tmpPost
     },
     {
       path: '/',

@@ -63,7 +63,7 @@ export default {
 
             },
             blogData:{
-                uid : 1,// 회원 pk. 임시로 사용 
+                uid :"" ,// 회원 pk. 임시로 사용 
                 title : null,
                 intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
@@ -74,6 +74,9 @@ export default {
                 menu2: false,
             },
         }
+    },
+    created(){
+      this.blogData.uid= this.$store.state.user.id
     },
     computed:{
         
@@ -95,12 +98,16 @@ export default {
     goback(){
             this.$router.go(-1)
         },
-    AddProj(){
-        axios.post('http://i3a110.p.ssafy.io:3000/diaries',this.blogData,)
-        .then(res=> {console.log(res)
-        this.$router.push({name:'DiaryMain'})
-        })
-        .catch(err=> console.log(err.data))
+    async AddProj(){
+        try{
+            await this.$api.AddProject(this.blogData)
+            console.log('성공')
+            this.$router.push({name:'DiaryMain'})
+        }catch(e){
+            console.log('실패')
+        }
+        
+    
     }
     }
 }

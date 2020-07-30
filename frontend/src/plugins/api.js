@@ -18,5 +18,33 @@ export default {
                 'Content-Type': 'application/json'
             }
         }))
+    },
+    async logout(){
+        return (await axios.post(`${baseURL}/users/logout`))
+    },
+    async diarydetail(did,configdata){
+        return (await axios.post(`${baseURL}/posts/${did}`,configdata).data
+
+         ) },
+    async postdetail(pid){
+        return (await axios.post(`${baseURL}/posts/${pid}`)).data
+    },
+    async likedata(pid){
+        return(await axios.post(`${baseURL}/likes/${pid}`)).data
+    },
+    async AddProject(blogData){
+        return(await axios.post(`${baseURL}/diaries`,blogData,))
+    },
+    async getDiaries(uid,params){
+        return(await axios.post(`${baseURL}/diaries/${uid}`,params)).data
+    },
+    async userUpdate(userdata){
+        return (await axios.put(`${baseURL}/users`,userdata))
+    },
+    async signupp(data,configs){
+        return (await axios.post(`${baseURL}/users/signup`,data,configs))
+    },
+    async savePost(data){
+        return (await axios.post(`${baseURL}/posts`,data))
     }
 }

@@ -52,11 +52,16 @@ created(){
   this.userdata = this.$store.state.user
 },
 methods:{
-  updateUser(){
-    axios.put('http://i3a110.p.ssafy.io:3000/users/',this.userdata,)
-    .then(this.$router.push({name:'AccountDetail'},
-    alert('수정 완료')))
-    .catch(err => console.log(err))
+  async updateUser(){
+    try{
+      await this.$api.userUpdate(this.userdata)
+      console.log('성공')
+    }catch(e){
+      console.log('실패')
+      console.log(e)
+    }
+
+
   }
 }
 }

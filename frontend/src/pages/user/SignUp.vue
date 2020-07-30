@@ -13,7 +13,8 @@
           </v-col>
           <v-col cols="12">
             password 확인*
-            <v-text-field v-model="signupData.pwdconfirm" label="비밀번호 확인" type="password" required></v-text-field>
+            <v-text-field v-model="signupData.pwdconfirm" label="비밀번호 확인" type="password" 
+            :rules='[]' required></v-text-field>
           </v-col>
           <v-col cols="12">
             닉네임*
@@ -72,14 +73,34 @@ export default {
       goback(){
             this.$router.go(-1)
         },
-        signup(){
-          axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-          .then(res=>{console.log('성공')
-          this.$router.push({name:'Login'})
-          })
-          .catch(err=>{console.log(err)})
+      async signup(){
+          if(this.signupData.pwd != this.signupData.pwdconfirm){
+            this.signupData.pwdconfirm=''
+            console.log('dnajk')
+            alert('비밀번호가 다름')}
+            else{
+
+              try{
+                this.$api.signupp(this.signupData,{headers:{'Content-Type':'application/json'}})
+                console.log('성공')
+                this.$router.push({name:'Login'})
+
+              }catch(e){
+                console.log(e)
+                console.log('실패')
+              }
+
+        }},
+        checkpwd(){
+          if(this.pwd != this.pwdconfirm){
+            this.pwdconfirm=''
+            console.log('dnajk')
+            alert('비밀번호가 다름')
+          }
         }
-    }
+    },
+    
+    
 }
 </script>
 
