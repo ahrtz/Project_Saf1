@@ -42,7 +42,7 @@
       {{tags}}
       <br>
       <v-btn class="mr-4" @click="writePost()" >작성</v-btn>
-      <v-btn class="mr-4">임시저장</v-btn>
+      <v-btn class="mr-4" @click="writetmpPost()">임시저장</v-btn>
       <v-btn @click="clear()" >초기화</v-btn>
     </v-form>
   </div>
@@ -120,13 +120,31 @@ export default {
         this.$emit('input', !this.value);
         console.log(this.post);
       },
-      writePost(){
-        axios.post('/api/posts',this.post,)
-        .then(res=> console.log('성공') )
-        .catch(err=>{
-          console.log(err),
+      async writePost(){
+        try{
+          this.$api.savePost(this.post)
+          console.log('성공')
+          this.$router.go(-1)
+        }catch(e){
+          console.log(e)
           console.log('실패')
-        })
+        }
+
+
+      },
+      writetmpPost(){
+        this.post.is_temp=1
+        
+        try{
+          this.$api.savePost(this.post)
+          console.log('성공')
+          this.$router.go(-1)
+        }catch(e){
+          console.log(e)
+          console.log('실패')
+        }
+
+        
       }
     },
     computed:{

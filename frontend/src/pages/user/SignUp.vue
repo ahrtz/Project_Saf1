@@ -80,7 +80,7 @@
       >완료</div>
       <div
         class="d-flex justify-center align-center signup-cancel-btn"
-        @click="signup"
+        @click="goback"
       >취소</div>
     </div>
   </div>
@@ -112,18 +112,39 @@ export default {
     goback() {
       this.$router.go(-1);
     },
-    signup() {
-      // axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-      // .then(res=>{console.log('성공')
-      // this.$router.push({name:'Login'})
-      // })
-      // axios.post('http://localhost:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-      // .then(res=>{console.log('성공')})
-      // .catch(err=>{console.log(err)})
-      this.$router.push({name:'MainPage'});
+    methods:{
+      goback(){
+            this.$router.go(-1)
+        },
+      async signup(){
+          if(this.signupData.pwd != this.signupData.pwdconfirm){
+            this.signupData.pwdconfirm=''
+            console.log('dnajk')
+            alert('비밀번호가 다름')}
+            else{
+
+              try{
+                this.$api.signupp(this.signupData,{headers:{'Content-Type':'application/json'}})
+                console.log('성공')
+                this.$router.push({name:'Login'})
+
+              }catch(e){
+                console.log(e)
+                console.log('실패')
+              }
+
+        }},
+        checkpwd(){
+          if(this.pwd != this.pwdconfirm){
+            this.pwdconfirm=''
+            console.log('dnajk')
+            alert('비밀번호가 다름')
+          }
+        }
     },
-  },
-};
+  }
+    
+}
 </script>
 
 <style>

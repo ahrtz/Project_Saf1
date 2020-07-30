@@ -61,14 +61,17 @@ export default {
   methods:{
     
   },
-  created(){
-    axios.post('http://i3a110.p.ssafy.io:3000/posts/'+this.diaryid.did,this.config,)
-    .then(res=>{
-      console.log(res.data)
-      this.postdata = res.data
-      }
-    )
-    .catch(err => console.log(err))
+  async created(){
+      try {
+         let tmpspace= await this.$api.diarydetail(this.$route.params.did,this.config)
+          console.log(tmpspace)
+          this.postdata = tmpspace 
+          console.log ('성공')
+        } catch (e) {
+          console.log('실패')
+        }
+     
+    
   },
   computed:{
       isProj(){

@@ -144,8 +144,12 @@ export default {
             showNav: true,
             show: false,
             diarys:{},
+            uid:''
             
         }
+    },
+    created(){
+        this.uid= this.$store.state.user.id
     },
     methods:{
         goBlog( param ){
@@ -156,17 +160,18 @@ export default {
                 
             }
         },
-        testa(){
-            axios.get('http://localhost:3000/users/is-logged-in')
-            .then(res=>{console.log(res)})
-        },
-        getDiary(){
-            axios.post('http://localhost:3000/diaries/1',{type:this.test,keyword:""})
-            .then(res=>{
-                console.log(res.data)
-                this.diarys = res.data})
-                .catch(err=>{console.log(err)
-                console.log('실패')})
+
+        async getDiary(){
+
+            try{
+                let tempspace= await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
+                this.diarys = tempspace 
+                console.log('성공')
+            }catch(e){
+                console.log(e)
+            }
+
+
         }
     },
 
