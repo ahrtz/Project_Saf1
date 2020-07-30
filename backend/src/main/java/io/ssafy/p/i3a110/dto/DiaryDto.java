@@ -5,6 +5,7 @@ import lombok.Data;
 public class DiaryDto {
     private int id;
     private int uid;
+    private String gitName;
     private String title;
     private String intro;
     private String img;
