@@ -135,7 +135,7 @@
         did = #{did},
         title = #{title},
         content = #{content},
-        c_date = #{createdDate},
+        c_date = #{cDate},
         priority = #{priority},
         cnt_like = #{cntLike},
         is_temp = #{isTemp}

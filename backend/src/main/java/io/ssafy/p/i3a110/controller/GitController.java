@@ -1,11 +1,9 @@
 package io.ssafy.p.i3a110.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +52,17 @@ public class GitController {
 		}
 		return list;
 	}
+	
+//	//Test
+//	@PostMapping("/gits/repositories")
+//	@ApiOperation(value = "사용자 Repoitory 전체 조회")
+//	public List<RepositoryInfoDto> getAllRepositories(@RequestBody HashMap<String, String> map) {
+//		List<RepositoryInfoDto> list = null;
+//		helper = new GitHubRestApiHelper(map.get("token"));
+//		list = helper.getAllRepositoryInfo();
+//		
+//		return list;
+//	}
 	
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
@@ -123,14 +132,5 @@ public class GitController {
 //		return list;
 //	}
 	
-//	//Test
-//	@PostMapping("/gits/repositories")
-//	@ApiOperation(value = "사용자 Repoitory 전체 조회")
-//	public List<RepositoryInfoDto> getAllRepositories(@RequestBody HashMap<String, String> map) {
-//		List<RepositoryInfoDto> list = null;
-//		helper = new GitHubRestApiHelper(map.get("token"));
-//		list = helper.getAllRepositoryInfo();
-//		
-//		return list;
-//	}
+
 }
