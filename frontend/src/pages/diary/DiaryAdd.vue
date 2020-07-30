@@ -63,7 +63,7 @@ export default {
 
             },
             blogData:{
-                uid : 1,// 회원 pk.
+                uid : 1,// 회원 pk. 임시로 사용 
                 title : null,
                 intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
@@ -96,9 +96,9 @@ export default {
             this.$router.go(-1)
         },
     AddProj(){
-        axios.post('http://localhost:3000/diaries',this.blogData,)
+        axios.post('http://i3a110.p.ssafy.io:3000/diaries',this.blogData,)
         .then(res=> {console.log(res)
-        this.$router.push({name:'Blog'})
+        this.$router.push({name:'DiaryMain'})
         })
         .catch(err=> console.log(err.data))
     }

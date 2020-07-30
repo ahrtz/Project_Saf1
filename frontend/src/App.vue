@@ -17,6 +17,7 @@ export default {
   name: 'App',
   components:{ header1 },
   
+
   async beforeCreate(){
     try {
       let userData = await this.$api.getMe()
@@ -34,6 +35,7 @@ export default {
       this.$store.commit('isLoggedIn',false)
     }
   },
+
 }
 
 </script>

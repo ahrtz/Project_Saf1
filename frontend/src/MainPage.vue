@@ -61,6 +61,7 @@
                 </v-card>
 
             </v-col>
+            
         </v-row>
     </v-container>
 </div>
@@ -165,9 +166,8 @@ export default {
               this.user = res.data}
           )
         }
-
-
-    }
+    },
+    
 }
 </script>
 

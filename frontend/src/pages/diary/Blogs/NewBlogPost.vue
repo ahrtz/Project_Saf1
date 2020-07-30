@@ -12,7 +12,7 @@
       ></v-text-field>
       중요도
       <v-rating
-      v-model="post.rating"
+      v-model="post.priority"
       background-color="orange lighten-3"
       color="orange"
     ></v-rating>
@@ -21,7 +21,7 @@
         <div :id="'t'+commit.cid" v-for="(commit,key,index) in commitList" :key="index">
           
           <p>
-            <input type="checkbox" :id="key" v-model="post.selected" :value="{'cid':commit.cid,'commit':commit.commitcontent}"  >
+            <input type="checkbox" :id="key" v-model="selected" :value="{'cid':commit.cid,'commit':commit.commitcontent}"  >
             <label :for="key"> {{commit.commitcontent}}</label>
           </p>
         </div>
@@ -39,9 +39,9 @@
       <v-text-field label="태그를 검색 혹은 추가" v-model="tag"></v-text-field>
       <v-btn class="mr-4" @click="addtag()">태그추가</v-btn>
       <br>
-      {{post.tag}}
+      {{tags}}
       <br>
-      <v-btn class="mr-4" >작성</v-btn>
+      <v-btn class="mr-4" @click="writePost()" >작성</v-btn>
       <v-btn class="mr-4">임시저장</v-btn>
       <v-btn @click="clear()" >초기화</v-btn>
     </v-form>
@@ -49,17 +49,25 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
     name:'NewBlogPost',
     data(){
       return{
         tag:'',
+        tags:[],
+        did:this.$route.params.did,
+        selected:[] ,
         post:{
-          selected:[] ,
+          uid:'',
+          did:this.did,
           title:'',
           content:'',
-          rating:0,
-          tag:[],
+          priority:0,
+          cnt_like:0,
+          is_temp:0,
+          created_date:new Date().toISOString().substr(0, 10)
         },
         commitList:[
                 {cid:0,
@@ -108,7 +116,7 @@ export default {
         },
       addtag(){
         const tmp = '#'+this.tag
-        this.post.tag.push(tmp)
+        this.tags.push(tmp)
         this.tag=''
       },
       addcommit(commit){
@@ -117,6 +125,16 @@ export default {
       toggle(){
         this.$emit('input', !this.value);
         console.log(this.post);
+      },
+      writePost(){
+        axios.post('http://i3a110.p.ssafy.io:3000/posts',this.post,)
+        .then(res=> console.log('성공') )
+        .catch(err=>console.log(err))
+      }
+    },
+    computed:{
+      userid(){
+        return this.post.uid= this.$store.state.user.id
       }
     }
 }

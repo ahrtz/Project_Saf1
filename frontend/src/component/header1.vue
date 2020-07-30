@@ -1,31 +1,75 @@
 <template>
-<div class="header-container">
-  <div class="header-inner">
+  <div>
     <v-card
-      class="header-flex-container justify-center align-center"
+      class="header-flex-container align-start"
       flat
-      color="#fff"
-      height="70"
+      color="green lighten-2"
+      height="60"
     >
-      <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">home</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">group</div>
-      <div class="d-flex"/>
-      <v-text-field
-        class="d-flex justify-center flex-grow-0"
-            placeholder=""
-            outlined
-            dense
-            hide-details
-          ></v-text-field>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'Login'})">Login</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'Follow'})">MyPage</div>
+      <v-card
+        class="header-flex-item "
+        @click="active = true"
+        color="green accent-2"
+        onclick=""
+      >
+        <router-link class="header-router-link" :to="{name:'MainPage'}" exact ><a>Home</a></router-link>
+      </v-card>
+      <v-card
+        class="header-flex-item"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+        color="green accent-2"
+      >
+        <router-link class="header-router-link" :to="{name:'Project'}" exact>Projects </router-link>
+      </v-card>
+      <v-card
+        class="header-flex-item"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+        color="green accent-2"
+      >
+        <router-link class="header-router-link" :to="{name:'DiaryMain'}">Diary</router-link>
+      </v-card>
+      <v-card
+        class="header-flex-item mr-auto"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+        color="green accent-2"
+      >
+        <router-link class="header-router-link" :to="{name:'GroupMain'}">Group</router-link>
+      </v-card>
+      
+      <div class="header-search header-flex-item">
+        <input id="searchInput"
+        autocomplete="off"
+        type="text"
+        placeholder="Search posts"
+        class="header-search-input"
+        >
+        <button class="header-search-button">검색</button>
+      </div>
+
+      <v-card
+        class="header-flex-item"
+        color="green accent-2"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+      >
+        <router-link v-show="islogin==false" class="header-router-link" :to="{name:'Login'}">Login</router-link>
+        <v-btn v-show="islogin==true" @click="logout()"> 로그아웃 </v-btn>
+      </v-card>
+      <v-card
+        class="header-flex-item"
+        color="green accent-2"
+        v-click-outside="onClickOutside"
+        @click="active = true"
+        v-show="islogin==true"
+      >
+        <router-link class="header-router-link" :to="{name:'Follow'}">MyPage</router-link>
+      </v-card>
     </v-card>
 
   </div>
-</div>
 </template>
 
 <script>
@@ -40,12 +84,25 @@ export default {
         '검색',
         'Myinfo',
       ],
+      signin:null
   }),
   methods: {
       onClickOutside () {
         this.active = false
       }
   },
+  computed:{
+    islogin(){
+      return this.signin= this.$store.state.isLoggedIn
+    },
+    logout(){
+      axios.post("http://i3a110.p.ssafy.io:3000/users/logout")
+      .then(
+              this.$store.commit('userData',{}),
+              this.$store.commit('isLoggedIn',false)
+      ).catch(err=> console.log(err))
+    }
+  }
 }
 
 </script>
@@ -56,47 +113,6 @@ export default {
   src:url(https://fonts.googleapis.com/css2?family=Recursive:wght@700&display=swap);
 }
 
-.header-container {
-  width: 100%;
-}
-
-.header-inner {
-  width: 1140px;
-  margin: 0 auto;
-}
-
-.header-logo {
-  margin-right: 16px;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-}
-
-.header-menu {
-  height: 100%;
-  line-height: 70px;
-  padding: 0 20px;
-  color: #21262e;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.header-menu:hover {
-  color: #0051cb;
-}
-
-.header-btn {
-  margin-left: 4px;
-  margin-right: 32px;
-  font-size: 14px;
-  background: #0051cb;
-  font-weight: 600;
-  color: #fff;
-  border-radius: 6px;
-  width: 80px;
-  height: 40px;
-}
 
 .header-flex-container {
   width:100%;
@@ -117,7 +133,14 @@ export default {
   font-family: Recursive;
   font-size:20px;
 }
-
+.header-search{
+  margin: 12px;
+  padding:5px;
+  height:40px;
+  width:400px;
+  border:1px solid #1b5ac2;
+  background-color: white;
+}
 .header-search-input{
   width:325px;
   font-size:16px;
@@ -131,7 +154,6 @@ export default {
   height:100%;
   outline:none;
   color:#ffffff;
-  cursor: pointer;
 }
 .header-router-link {
   text-decoration: none;
