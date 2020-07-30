@@ -20,7 +20,7 @@
             <v-card
               class="ma-2"
               flat
-              v-for="post in project_posts"
+              v-for="post in list_proj"
               :key="post.id"
               style="margin-top:10px; border-bottom:dashed 1px grey"
             >
@@ -54,6 +54,13 @@
                 </footer>
               </div>
             </v-card>
+
+            <infinite-loading
+              slot="append"
+              @infinite="infiniteHandler"
+              spinner="waveDots"
+              force-use-infinite-wrapper=".el-table__body-wrapper"
+            ></infinite-loading>
           </v-col>
           <v-col cols="6">
             <div
@@ -69,7 +76,7 @@
             <v-card
               class="ma-2"
               flat
-              v-for="post in blog_posts"
+              v-for="post in list_blog"
               :key="post.id"
               style="margin-top:10px;border-bottom:dashed 1px grey"
             >
@@ -102,6 +109,12 @@
                 </footer>
               </div>
             </v-card>
+            <infinite-loading
+              slot="append"
+              @infinite="infiniteHandler2"
+              spinner="waveDots"
+              force-use-infinite-wrapper=".el-table__body-wrapper"
+            ></infinite-loading>
           </v-col>
         </v-row>
       </v-container>
@@ -112,11 +125,14 @@
 <script>
 import axios from 'axios';
 import Status from '@/component/Status.vue';
+import InfiniteLoading from 'vue-infinite-loading';
 
+var count = 0;
 export default {
   name: 'MainPage',
   components: {
     Status,
+    InfiniteLoading,
   },
   data() {
     return {
@@ -124,34 +140,99 @@ export default {
       blog_posts: {},
       project_posts: {},
       user: {},
-      blogData: {
-        type: '0',
-        is_temp: '0',
-        keyword: '',
-      },
-      projectData: {
-        type: '1',
-        is_temp: '0',
-        keyword: '',
-      },
+      limit_proj: 0,
+      limit_blog: 0,
+      page: 1,
+      list_proj: [],
+      list_blog: [],
     };
   },
-
   created() {
-    this.getPost();
+    // this.getPost();
   },
   methods: {
-    async getPost() {
-      try {
-        this.blog_posts = await this.$api.getPost(blogData);
-      } catch (e) {
-        console.log('blog 실패');
-      }
-      try {
-          this.blog_posts = await this.$api.getPost(projectData)
-        } catch (e) {
-          console.log('project 실패')
-        }
+    getPost() {
+      //로그인 안 되어 있는 경우 전체 post
+      //TODO : 로그인 세션 추가
+      //if(isLogin)
+
+      //TODO : uid 현재 유저로 확인해야됨
+      axios
+        .post('/api/posts/all/', {
+          uid: '',
+          type: '0',
+          is_temp: '0',
+          keyword: '',
+          limit: '1',
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.blog_posts = res.data;
+        });
+
+      axios
+        .post('/api/posts/all/', {
+          uid: '',
+          type: '1',
+          is_temp: '0',
+          keyword: '',
+          limit: '2',
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.project_posts = res.data;
+        });
+      //로그인 되어 있는 경우 나의 post
+      //TODO
+      //else
+    },
+    infiniteHandler($state) {
+      axios
+        .post('/api/posts/all/', {
+          uid: '',
+          type: '1',
+          is_temp: '0',
+          keyword: '',
+          limit: this.limit_proj + 10,
+        })
+        .then((res) => {
+          setTimeout(() => {
+            if (res.data.length >= this.limit_proj) {
+              this.list_proj = res.data;
+              $state.loaded();
+              this.limit_proj += 10;
+            } else {
+              $state.complete();
+            }
+          }, 1000);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    infiniteHandler2($state) {
+      axios
+        .post('/api/posts/all/', {
+          uid: '',
+          type: '0',
+          is_temp: '0',
+          keyword: '',
+          limit: this.limit_blog + 10,
+        })
+        .then((res) => {
+          setTimeout(() => {
+            if (res.data.length >= this.limit_blog) {
+              this.list_blog = res.data;
+              $state.loaded();
+              this.limit_blog += 10;
+            } else {
+              $state.complete();
+            }
+          }, 1000);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
