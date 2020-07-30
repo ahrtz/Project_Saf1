@@ -18,6 +18,7 @@ public class PostService {
     public PostDto getPostById(int id) {
         return postDao.getPostById(id);
     }
+    public PostDto getPostByTitle(String keyword) {return postDao.getPostByTitle(keyword);}
     public void createPost(PostDto post) {
         postDao.createPost(post);
     }

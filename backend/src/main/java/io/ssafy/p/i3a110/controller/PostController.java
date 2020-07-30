@@ -2,23 +2,13 @@ package io.ssafy.p.i3a110.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -90,15 +80,14 @@ public class PostController {
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
     public void createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-    	System.out.println(httpSession.getId());
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-        
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
         System.out.println( " Timestamp : " + ts);
 
         PostDto post = new PostDto();
+        System.out.print(user.getId());
         post.setUid(user.getId());
         post.setDid(Integer.parseInt(map.get("did")));
         post.setTitle(map.get("title"));

@@ -119,12 +119,12 @@ export default {
           // console.log(111);
           // var curUid = 1;
           // console.log(curUid.toString());
-          axios.post('http://i3a110.p.ssafy.io:3000/posts/all/' ,{uid:"1",type:"0"})
+          axios.post('http://localhost:3000/posts/all/' ,{uid:"1",type:"0"})
           .then(res=>{
               console.log(res.data)
               this.blog_posts = res.data}
           )
-          axios.post('http://i3a110.p.ssafy.io:3000/posts/all/'  ,{uid:"1",type:"1"})
+          axios.post('http://localhost:3000/posts/all/'  ,{uid:"1",type:"1"})
           .then(res=>{
               console.log(res.data)
               this.project_posts = res.data}

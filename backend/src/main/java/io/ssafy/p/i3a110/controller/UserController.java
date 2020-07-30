@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +64,6 @@ public class UserController {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
-        System.out.println(pwd);
-        System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
@@ -122,7 +119,6 @@ public class UserController {
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = findUserByEmail(email);
-        
         return user;
     }
 }
