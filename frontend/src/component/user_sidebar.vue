@@ -6,6 +6,8 @@
       <router-link :to="{name:'Follow'}">팔로우</router-link>
       <br>
       <router-link :to="{name:'Scrap'}">스크랩</router-link>
+      <br>
+      <router-link :to="{name:'tmpPost'}">임시 저장 글</router-link>
   </div>
 </template>
 

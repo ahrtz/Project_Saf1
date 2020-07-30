@@ -8,7 +8,6 @@
       height="70"
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('개발중')">Group</div>
       <div class="d-flex"/>
@@ -22,7 +21,7 @@
           ></v-text-field>
       <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Signup'})">signup</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="logout()">Logout</div>
       
 
@@ -64,13 +63,16 @@ export default {
     islogin(){
       return this.signin= this.$store.state.isLoggedIn
     },
-    logout(){
-      axios.post("http://i3a110.p.ssafy.io:3000/users/logout")
-      .then(
-              this.$store.commit('userData',{}),
-              this.$store.commit('isLoggedIn',false)
-      ).catch(err=> console.log(err))
-    }
+    async logout(){
+      try {
+          await this.$api.logout()
+          this.$router.push({name:'MainPage'})
+          location.reload()
+        } catch (e) {
+          console.log('실패')
+        }
+      }
+      
   }
 }
 

@@ -133,8 +133,12 @@ export default {
             showNav: true,
             show: false,
             diarys:{},
+            uid:''
             
         }
+    },
+    created(){
+        this.uid= this.$store.state.user.id
     },
     methods:{
         goBlog( param ){
@@ -146,13 +150,16 @@ export default {
             }
         },
 
-        getDiary(){
-            axios.post('http://i3a110.p.ssafy.io:3000/diaries/1',{type:this.test,keyword:""})
-            .then(res=>{
-                console.log(res.data)
-                this.diarys = res.data})
-                .catch(err=>{console.log(err)
-                console.log('실패')})
+        async getDiary(){
+
+            try{
+                this.diarys = await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
+                console.log('성공')
+            }catch(e){
+                console.log(e)
+            }
+
+
         }
     },
 

@@ -35,7 +35,7 @@
               <v-textarea filled v-model="tmp.content" readonly/>
           </v-container>
           <v-btn class="ma-2" tile color="grey" dark v-if="likeData.likechecked == false" @click="like()" >좋아요</v-btn>
-          좋아요 숫자 {{tmp.cntLike}}
+          
           <v-btn class="ma-2" tile color="red" dark v-if="likeData.likechecked" @click="like()">좋아요 취소</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark >스크랩</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()" >공유</v-btn>
@@ -90,6 +90,7 @@ export default {
         likeData:{
             likechecked:false
         },
+        likedummy:{},
         commitList:[],
         comments:[
         {
@@ -110,18 +111,23 @@ export default {
     ]
 }
     },
-    created(){
+    async created(){
         this.uid=this.$store.state.user.id
         
-        axios.get('http://i3a110.p.ssafy.io:3000/posts/'+this.id.pid)
-        .then(res=>{console.log(res)
-        this.tmp = res.data
-        })
-        .catch(err => console.log(err))
+        try{
+            this.tmp = await this.$api.postdetail(this.id.pid)
+            console.log('성공')
+        }catch(e){
+            console.log('error')
+        }
+        try{
+            this.likeDummy = await this.$api.likedata(this.id.pid)
+            console.log('성공')
+        }catch(e){
+            console.log('error')
+        }
+        
 
-        axios.get('http://i3a110.p.ssafy.io:3000/likes/'+this.id.pid)
-        .then(res=>{console.log('성공')
-        console.log(res.data)})
     }
     ,
     methods:{
