@@ -27,24 +27,24 @@ public class PostService {
     public void deletePost(int id) {
         postDao.deletePost(id);
     }
-	public ArrayList<PostDto> getAllPostByUser(String uid, int type) {
+	public ArrayList<PostDto> getAllPostByUser(String uid, int type, String keyword) {
 		if(uid==null) {
 			switch (type) {
 			case 0:
-				return postDao.getAllBlogPost();
+				return postDao.getAllBlogPost(keyword);
 			case 1:
-				return postDao.getAllProjectPost();
+				return postDao.getAllProjectPost(keyword);
 			default:
-				return postDao.getAllDiaryPost();
+				return postDao.getAllDiaryPost(keyword);
 			}
 		}else {
 			switch (type) {
 			case 0:
-				return postDao.getAllBlogPostByUser(uid, type);
+				return postDao.getAllBlogPostByUser(uid, type, keyword);
 			case 1:
-				return postDao.getAllProjectPostByUser(uid, type);
+				return postDao.getAllProjectPostByUser(uid, type, keyword);
 			default:
-				return postDao.getAllDiaryPostByUser(uid, type);
+				return postDao.getAllDiaryPostByUser(uid, type, keyword);
 			}
 		}
 	}

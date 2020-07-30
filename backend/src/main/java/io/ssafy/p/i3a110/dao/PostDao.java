@@ -12,10 +12,10 @@ public interface PostDao {
     public void createPost(PostDto post);
     public void updatePost(PostDto post);
     public void deletePost(int id);
-	public ArrayList<PostDto> getAllBlogPostByUser(String uid, int type);
-	public ArrayList<PostDto> getAllProjectPostByUser(String uid, int type);
-	public ArrayList<PostDto> getAllDiaryPostByUser(String uid, int type);
-	public ArrayList<PostDto> getAllBlogPost();
-	public ArrayList<PostDto> getAllProjectPost();
-	public ArrayList<PostDto> getAllDiaryPost();
+	public ArrayList<PostDto> getAllBlogPostByUser(String uid, int type, String keyword);
+	public ArrayList<PostDto> getAllProjectPostByUser(String uid, int type, String keyword);
+	public ArrayList<PostDto> getAllDiaryPostByUser(String uid, int type, String keyword);
+	public ArrayList<PostDto> getAllBlogPost(String keyword);
+	public ArrayList<PostDto> getAllProjectPost(String keyword);
+	public ArrayList<PostDto> getAllDiaryPost(String keyword);
 }

@@ -51,15 +51,16 @@ public class PostController {
    
     // 0: blog 1: project 2: all
     @PostMapping("/posts/all")
-    @ApiOperation(value = "회원별 다이어리 전체 조회")
+    @ApiOperation(value = "회원별 포스트 전체 조회")
     public List<HashMap<Object, Object>> getAllPostByUser(@RequestBody HashMap<String, String> map) {
     	String uid = map.get("uid");
     	int type = Integer.parseInt(map.get("type"));
+    	String keyword = map.get("keyword");
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
-    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type);
+    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		form.put("userinfo", userService.findUserById(post.getUid()));
