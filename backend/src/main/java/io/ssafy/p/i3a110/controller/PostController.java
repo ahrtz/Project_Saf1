@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +52,16 @@ public class PostController {
    
     // 0: blog 1: project 2: all
     @PostMapping("/posts/all")
-    @ApiOperation(value = "회원별 다이어리 전체 조회")
+    @ApiOperation(value = "회원별 포스트 전체 조회")
     public List<HashMap<Object, Object>> getAllPostByUser(@RequestBody HashMap<String, String> map) {
     	String uid = map.get("uid");
     	int type = Integer.parseInt(map.get("type"));
+    	String keyword = map.get("keyword");
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
-    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type);
+    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		form.put("userinfo", userService.findUserById(post.getUid()));
@@ -87,9 +89,10 @@ public class PostController {
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
     public void createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    	System.out.println(httpSession.getId());
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-
+        
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
         System.out.println( " Timestamp : " + ts);
@@ -128,4 +131,5 @@ public class PostController {
 
         postService.deletePost(id);
     }
+
 }

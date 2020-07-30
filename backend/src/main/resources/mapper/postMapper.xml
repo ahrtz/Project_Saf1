@@ -25,6 +25,7 @@
     	from diary d join post p
     	on d.id = p.did
     	where d.is_proj=false
+    	and p.title like concat("%",#{keyword},"%")
     </select>
     
     <select id="getAllProjectPost" resultType="PostDto">
@@ -40,6 +41,7 @@
     	from diary d join post p
     	on d.id = p.did
     	where d.is_proj=true
+    	and p.title like concat("%",#{keyword},"%")
     </select>
     
     <select id="getAllDiaryPost" resultType="PostDto">
@@ -54,6 +56,7 @@
     		   p.is_temp is_temp
     	from diary d join post p
     	on d.id = p.did
+    	where p.title like concat("%",#{keyword}, "%")
     </select>
     
     <select id="getAllBlogPostByUser" resultType="PostDto">
@@ -70,6 +73,7 @@
     	on d.id = p.did
     	where d.is_proj=false
     	and p.uid=#{uid}
+    	and p.title like concat("%",#{keyword},"%")
     </select>
     
     <select id="getAllProjectPostByUser" resultType="PostDto">
@@ -86,6 +90,7 @@
     	on d.id = p.did
     	where d.is_proj=true
     	and p.uid=#{uid}
+    	and p.title like concat("%",#{keyword},"%")
     </select>
     
     <select id="getAllDiaryPostByUser" resultType="PostDto">
@@ -101,6 +106,7 @@
     	from diary d join post p
     	on d.id = p.did
     	where p.uid=#{uid}
+    	and p.title like concat("%",#{keyword},"%")
     </select>
 
     <select id="getPostById" resultType="PostDto">

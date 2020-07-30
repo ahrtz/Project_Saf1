@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class UserController {
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = findUserByEmail(email);
-
+        
         return user;
     }
 }
