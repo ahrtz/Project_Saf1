@@ -151,7 +151,8 @@ export default {
             .then(res=>{
                 console.log(res.data)
                 this.diarys = res.data})
-                .catch(err=>console.log(err))
+                .catch(err=>{console.log(err)
+                console.log('실패')})
         }
     },
 

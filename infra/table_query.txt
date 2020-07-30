@@ -24,27 +24,27 @@ CREATE TABLE `user` (
 	`is_certified` boolean NULL
 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `diary` (
-	`id` int NOT NULL auto_increment primary key,
-	`uid` int NOT NULL,
-	`title` varchar(128) NULL,
-	`intro` varchar(256) NULL,
-	`img` varchar(256) NULL,
-	`git_url` varchar(256) NULL,
-	`is_proj` Boolean NULL,
-	`s_date` datetime NULL,
-	`e_date` datetime NULL,
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `title` varchar(128) NULL,
+    `intro` varchar(256) NULL,
+    `img` varchar(256) NULL,
+    `git_url` varchar(256) NULL,
+    `is_proj` Boolean NULL,
+    `s_date` datetime NULL,
+    `e_date` datetime NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `post` (
-	`id` int NOT NULL auto_increment primary key,
-	`did` int NOT NULL,
-	`uid` int NOT NULL,
-	`title` varchar(128) NULL,
-	`content` Text NULL,
-	`c_date` datetime NULL,
-	`priority` int NULL,
-	`cnt_like` int NULL,
-	`is_temp` boolean NULL,
+    `id` int NOT NULL auto_increment primary key,
+    `did` int NOT NULL,
+    `uid` int NOT NULL,
+    `title` varchar(128) NULL,
+    `content` Text  NULL,
+    `c_date` datetime NULL,
+    `priority` int NULL,
+    `cnt_like` int NULL,
+    `is_temp` boolean NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
@@ -57,12 +57,12 @@ CREATE TABLE `likes` (
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `commit_list` (
-	`id` int NOT NULL auto_increment primary key,
-	`uid` int NOT NULL,
-	`pid` int NOT NULL,
-	`sha` VARCHAR(255) NULL,
-	`author` varchar(256) NULL,
-	`msg` varchar(1000) NULL,
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `pid` int NOT NULL,
+    `sha` VARCHAR(255) NULL,
+    `author` varchar(256) NULL,
+    `msg` varchar(1000) NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
