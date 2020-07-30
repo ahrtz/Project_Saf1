@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://i3a110.p.ssafy.io:3000',
         pathRewrite: {
           '^/api': ''
         }
