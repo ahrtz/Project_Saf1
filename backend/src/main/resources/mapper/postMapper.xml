@@ -7,8 +7,10 @@
     <select id="getPost" resultType="hashmap">
         select *
         from post
-        where title like concat("%",#{keyword},"%")
+        where did=#{did}
+        and title like concat("%",#{keyword},"%")
         and is_temp=#{isTemp}
+
     </select>
 
     <select id="getPostById" resultType="PostDto">

@@ -18,8 +18,9 @@ import DiaryMain from '../pages/diary/DiaryMain.vue'
 
 //project
 import Project from '../pages/diary/Projects/Projects.vue'
-import ProjectDetail from '../pages/diary/Projects/ProjectDetail.vue'
+import ProjectDetail from '../pages/diary/Blogs/BlogDetail.vue'
 import ProjectAdd from '../pages/diary/DiaryAdd.vue'
+import NewProjectPost from '../pages/diary/Blogs/NewBlogPost.vue'
 
 // blog
 import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
@@ -83,14 +84,19 @@ const router = new Router({
       path:'/diary/projects/add',
       name:'ProjectAdd',
       component: ProjectAdd,
-
+      
     },
     {
       path:'/diary/projects/:did',
       name:'ProjectDetail',
       component : ProjectDetail
     },
-        //블로그
+    {
+      path:'/diary/projects/:did/new',
+      name:'NewProjectPost',
+      component: NewProjectPost
+    },
+    //블로그
     {
       path: '/diary',
       name:'DiaryMain',

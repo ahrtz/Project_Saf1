@@ -1,11 +1,14 @@
 <template>
   <div>
-      다이어리(블로그) 세부 페이지
+      다이어리 세부 페이지
       <Status />
       
-      <router-link  class="float-right" :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
-        <v-btn>글 작성 </v-btn>
-        </router-link>
+      <router-link v-show="isProj==false" class="float-right" :to="{name:'NewBlogPost',params:{did:diaryid.did}}">
+        <v-btn> 글 작성 </v-btn>
+      </router-link>
+      <router-link v-show="isProj==true" class="float-right" :to="{name:'NewProjectPost',params:{did:diaryid.did}}">
+        <v-btn> 글 작성 </v-btn>
+      </router-link>
       
       <div></div>
       <div>
@@ -70,7 +73,16 @@ export default {
   },
   methods:{
     
-  }
+  },
+  computed:{
+      isProj(){
+        if (this.$route.path[7]=='p'){
+          return true
+        }else{
+          return false
+        }
+      }
+    },
 
 }
 </script>
