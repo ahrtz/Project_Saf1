@@ -10,7 +10,7 @@
         <v-row>
             <v-col cols="6">
                 <div class="text-center d-flex justify-space-between">
-                    <div >프로젝트 글</div>
+                    <div style="margin-left:15px;" ><h2>프로젝트 글</h2></div>
                     <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
                 </div>
                 <v-card
@@ -18,18 +18,21 @@
                 outlined
                 tile
                 v-for="post in project_posts" :key="post.id"
+                style="margin-top:10px"
                 >
                 <!-- card layout -->
                 <div>
                   <!-- 프로필 이미지, 닉네임  -->
                   <header class="main-card-header">
-                    <img src="post.user.img" alt="" class="main-card-header-img">
-                    <span> 닉네임 :
-                      <!-- {{post.user.nickname}} -->
-                    </span><br>
-                    <span> 작성일 :
-                      <!-- {{post.user.id}} -->
-                    </span>
+                    <img :src="post.userinfo.img" alt="" class="main-card-header-img">
+                    <div class="main-card-header-nick_date">
+                      <span> 닉네임 :
+                        {{post.userinfo.nickname}}
+                      </span>
+                      <span> 작성일 :
+                        {{post.cdate}}
+                      </span>
+                    </div>
                   </header>
                   <!-- post 제목, 컨텐츠(간략하게) -->
 
@@ -169,16 +172,22 @@ export default {
 </script>
 
 <style>
-<<<<<<< HEAD
 .main-card-header{
   background-color:#c3d1eb;
-  padding: 10px;
   font-size: 16px;
   color: black;
+  height: 55px;
+
 }
+.main-card-header-nick_date{
+  display:flex;
+  flex-direction: column;
+}
+
 .main-card-header-img{
-  width:60px;
-  height:60px;
+  width:35px;
+  height:35px;
+  margin:10px 10px 10px 10px;
   float:left;
 }
 .main-card-article{
@@ -186,8 +195,8 @@ export default {
   float:unset;
   width:100%;
   height:100px;
-=======
- .main-page-container {
+}
+.main-page-container {
   width: 100%;
 }
 
@@ -207,6 +216,5 @@ export default {
   border-radius: 6px;
   width: 80px;
   height: 40px;
->>>>>>> origin/develop
 }
 </style>
