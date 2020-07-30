@@ -15,23 +15,23 @@ public class TagService {
 	private TagDao tagDao;
 
 	public List<TagDto> getAllTagsByPost(String pid) {
-		return null;
+		return tagDao.getAllTagsByPost(pid);
 	}
 
 	public List<TagDto> getTagsByKeyword(String keyword) {
-		return null;
+		return tagDao.getTagsByKeyword(keyword);
 	}
 
 	public List<TagDto> getTopNTags(String uid, String num) {
-		return null;
+		return tagDao.getTopNTags(uid,num);
 	}
 
 	public void addTag(TagDto tagDto) {
-		
+		tagDao.addTag(tagDto);
 	}
 
-	public void deleteTag(String pid) {
-		
+	public void deleteTag(String id) {
+		tagDao.deleteTag(id);
 	}
 	
 }
