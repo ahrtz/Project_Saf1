@@ -27,4 +27,14 @@ public class PostService {
     public void deletePost(int id) {
         postDao.deletePost(id);
     }
+	public ArrayList<PostDto> getAllPostByUser(String uid, int type) {
+		switch (type) {
+		case 0:
+			return postDao.getAllBlogPostByUser(uid, type);
+		case 1:
+			return postDao.getAllProjectPostByUser(uid, type);
+		default:
+			return postDao.getAllDiaryPostByUser(uid, type);
+		}
+	}
 }
