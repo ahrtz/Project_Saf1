@@ -62,7 +62,7 @@ export default {
     
   },
   created(){
-    axios.post('http://localhost:3000/posts/'+this.diaryid.did,this.config,)
+    axios.post('http://i3a110.p.ssafy.io:3000/posts/'+this.diaryid.did,this.config,)
     .then(res=>{
       console.log(res.data)
       this.postdata = res.data

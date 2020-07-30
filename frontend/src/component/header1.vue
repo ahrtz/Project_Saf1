@@ -10,7 +10,7 @@
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">Group</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('개발중')">Group</div>
       <div class="d-flex"/>
       <v-text-field
         class="d-flex justify-center flex-grow-0"
@@ -18,13 +18,15 @@
             outlined
             dense
             hide-details
+            v-model="keyw"
           ></v-text-field>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==false" @click="$router.push({name:'Login'})">Login</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==true" @click="logout()">Logout</div>
+      <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Signup'})">signup</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="logout()">Logout</div>
       
 
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-show="islogin==true" @click="$router.push({name:'Follow'})">MyPage</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="$router.push({name:'Follow'})">MyPage</div>
     </v-card>
 
   </div>
@@ -43,11 +45,19 @@ export default {
         '검색',
         'Myinfo',
       ],
+      keyw:'',
       signin:false
   }),
   methods: {
       onClickOutside () {
         this.active = false
+      },
+      search(){
+
+        this.$router.push({name: 'tmp',params:{key:this.keyw}})
+      },
+      alerts(msg){
+        alert(msg)
       }
   },
   computed:{

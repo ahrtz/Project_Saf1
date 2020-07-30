@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 
 
-
+import tmp from '../pages/tmp.vue'
 
 // user
 import MainPage from '../MainPage.vue'
@@ -41,6 +41,11 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/search/:key',
+      name: 'tmp',
+      component: tmp
+    },
     {
       path: '/',
       name:'MainPage',
