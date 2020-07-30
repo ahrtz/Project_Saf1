@@ -1,5 +1,6 @@
 <template>
-<div>
+<div class="main-page-container">
+<div class="main-page-inner d-flex flex-column justify-center">
     <h2>메인페이지</h2>
     <br>스테이터스가 컴포넌트로 해놓긴 햇는데 데이터를 어케 받아서 넘겨줄지 고민 
     <status />
@@ -10,7 +11,7 @@
             <v-col cols="6">
                 <div class="text-center d-flex justify-space-between">
                     <div >프로젝트 글</div>     
-                    <v-btn class="ma-2  " tile color="indigo" dark>view all</v-btn>
+                    <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
                 </div>
                 <v-card
                 class="pa-2"
@@ -38,6 +39,7 @@
             </v-col>
         </v-row>
     </v-container>
+</div>
 </div>
 </template>
 
@@ -100,5 +102,25 @@ export default {
 </script>
 
 <style>
+ .main-page-container {
+  width: 100%;
+}
 
+.main-page-inner {
+  width: 1140px;
+  margin: 0 auto;
+  padding: 77px 0;
+}
+
+.main-page-btn {
+  margin-left: 4px;
+  margin-right: 32px;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  width: 80px;
+  height: 40px;
+}
 </style>

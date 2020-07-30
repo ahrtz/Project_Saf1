@@ -82,6 +82,10 @@ export default {
   cursor: pointer;
 }
 
+.header-menu:hover {
+  color: #0051cb;
+}
+
 .header-btn {
   margin-left: 4px;
   margin-right: 32px;
@@ -113,14 +117,7 @@ export default {
   font-family: Recursive;
   font-size:20px;
 }
-.header-search{
-  margin: 12px;
-  padding:5px;
-  height:40px;
-  width:400px;
-  border:1px solid #1b5ac2;
-  background-color: white;
-}
+
 .header-search-input{
   width:325px;
   font-size:16px;
@@ -134,6 +131,7 @@ export default {
   height:100%;
   outline:none;
   color:#ffffff;
+  cursor: pointer;
 }
 .header-router-link {
   text-decoration: none;
