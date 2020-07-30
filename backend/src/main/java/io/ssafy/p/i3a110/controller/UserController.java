@@ -6,12 +6,15 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
 public class UserController {
+	@Autowired
+	private ServletContext servletContext;
     @Autowired
     private UserService userService;
 
@@ -58,7 +61,7 @@ public class UserController {
 
     @PostMapping("/users/login")
     @ApiOperation(value = "로그인")
-    public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public HashMap<String, String> login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
@@ -69,6 +72,10 @@ public class UserController {
             httpSession.setAttribute("email", email);
             System.out.println(httpSession.getAttribute("email"));
         }
+        HashMap<String, String> output = new HashMap<String, String>();
+        output.put("sessionId", httpSession.getId());
+        servletContext.setAttribute(httpSession.getId(), httpSession);
+        return output;
     }
 
     @PostMapping("/users/logout")
@@ -116,7 +123,12 @@ public class UserController {
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = findUserByEmail(email);
-
+        
         return user;
+    }
+    
+    private HttpSession getSession(final String sessionId) {
+    	final HttpSession session = (HttpSession) servletContext.getAttribute(sessionId);
+    	return session;
     }
 }
