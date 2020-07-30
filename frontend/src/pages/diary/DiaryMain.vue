@@ -1,10 +1,23 @@
 <template>
 <div class="diary-main-container">
+    <div class="d-flex diary-main-toggle">
+        <div class="d-flex justify-center">
+            <div class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
+                <div></div>
+                <div>
+                    <div>Project</div>
+                    <div style="font-size:14px;font-weight:300">Git Commit</div>
+                </div>
+                
+            </div>
+            <div class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">Blog</div>
+        </div>
+     </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-
+        
         <div class="overflow-hidden">
-            <div class="text-center mb-2">
+            <!-- <div class="text-center mb-2">
             <v-btn
                 text
                 color="deep-purple"
@@ -12,7 +25,8 @@
             >
                 Toggle Nav
             </v-btn>
-            </div>
+            </div> -->
+
 
             <v-bottom-navigation
             :input-value="showNav"
@@ -42,11 +56,11 @@
 
 
         <router-link v-show="test==1" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
-          <div class="d-flex flex-grow-0 justify-center align-center diary-add-btn">추가</div>
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">추가</div>
         </router-link>
 
         <router-link v-show="test==0" class="float-right" :to="{name:'BlogAdd'}" tag="button">
-          <v-btn class="mr-4 " color="indigo" dark>추가</v-btn>
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">추가</div>
         </router-link>
         <br>
         <br>
@@ -158,7 +172,7 @@ export default {
   padding: 77px 0;
 }
 
-.diary-add-btn {
+.diary-main-add-btn {
   margin-left: 4px;
   margin-right: 32px;
   font-size: 14px;
@@ -169,6 +183,23 @@ export default {
   width: 80px;
   height: 40px;
   cursor: pointer;
+}
+
+.diary-main-toggle {
+    width: 100%;
+    height: 130px;
+    background: #f7f9fd;
+}
+
+.diary-main-toggle-item {
+    min-width: 160px;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.diary-main-toggle-item:hover {
+    color: #0051cb !important;
 }
 
 .v-card:not(.on-hover){
