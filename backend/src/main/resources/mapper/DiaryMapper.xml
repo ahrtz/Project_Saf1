@@ -30,8 +30,8 @@
 
 	<insert id="createDiary" parameterType="DiaryDto">
 		insert into diary 
-		(uid, title, intro,	img, git_url, is_proj, s_date, e_date)
-		values (#{uid}, #{title}, #{intro}, #{img}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
+		(uid, title, intro,	img, git_name, git_url, is_proj, s_date, e_date)
+		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
 	</insert>
 
 	<update id="updateDiary" parameterType="DiaryDto">
@@ -41,6 +41,7 @@
 		title = #{title},
 		intro = #{intro},
 		img = #{img},
+		git_name = #{gitName},
 		git_url = #{gitUrl},
 		is_proj = #{isProj},
 		s_date = #{sDate},
