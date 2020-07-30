@@ -33,7 +33,7 @@ public class DiaryController {
     public DiaryDto getDiary(@PathVariable String id) {
     	return diaryService.getDiary(id);
     }
-
+    
     // Diary 생성
     @PostMapping("/diaries")
     @ApiOperation(value = "다이어리 생성")
