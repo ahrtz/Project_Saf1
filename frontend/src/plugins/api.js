@@ -47,5 +47,14 @@ export default {
     },
     async savePost(data){
         return (await axios.post(`${baseURL}/posts`,data))
+    },
+    async deletePost(pid){
+        return (await axios.delete(`${baseURL}/posts/${pid}`))
+    },
+    async updatePost(data){
+        return (await axios.put(`${baseURL}/posts`,data))
+    },
+    async searchTemp(data){
+        return  (await axios.post(`${baseURL}/posts/all`,data)).data
     }
 }
