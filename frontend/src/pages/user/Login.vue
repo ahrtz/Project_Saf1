@@ -57,9 +57,17 @@ export default {
     onLogoClick() {
       alert("준비중입니다.");
     },
-    login() {
+    async login() {
+        try {
+          await this.$api.login(this.loginData)
+          this.$router.push({name:'MainPage'})
+          location.reload()
+        } catch (e) {
+          alert("아이디 또는 비밀번호를 확인해주세요.")
+          console.log('실패')
+        }
+      }
 
-    }
   },
 };
 </script>

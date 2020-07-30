@@ -64,6 +64,11 @@ public class UserController {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
+        if(user == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        System.out.println(pwd);
+        System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
