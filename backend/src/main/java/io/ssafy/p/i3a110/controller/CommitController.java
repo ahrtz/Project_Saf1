@@ -20,7 +20,7 @@ public class CommitController {
 	private CommitService commitService;
 	
 	@GetMapping("/commits/{pid}")
-	@ApiOperation(value = "다이어리 별 Commit 조회")
+	@ApiOperation(value = "Post 별 Commit 조회")
 	public List<CommitListDto> getAllCommitsByPost(@PathVariable String pid) {
 		return commitService.getAllCommitsByPost(pid);
 	}

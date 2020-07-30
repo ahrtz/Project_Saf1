@@ -50,7 +50,7 @@
 	</update>
 	
 	<select id="getAllWrittenProjcetName">
-		select git_url
+		select git_name
 		from diary
 		where uid = #{uid} and is_proj = true
 	</select>
