@@ -28,6 +28,7 @@ import BlogDetail from '../pages/diary/Blogs/BlogDetail.vue'
 import BlogAdd from '../pages/diary/DiaryAdd.vue'
 import NewBlogPost from '../pages/diary/Blogs/NewBlogPost.vue'
 import PostDetail from '../pages/diary/Blogs/PostDetail.vue'
+import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 
 
 //Group
@@ -132,6 +133,11 @@ const router = new Router({
       path:'/diary/blog/:did/new',
       name:'NewBlogPost',
       component:NewBlogPost
+    },
+    {
+      path:'/diary/:pid/update',
+      name:'UpdatePost',
+      component:UpdatePost
     },
     // 그룹
     {

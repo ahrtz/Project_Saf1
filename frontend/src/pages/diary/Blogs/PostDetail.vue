@@ -7,7 +7,7 @@
         </nav>
         <article>
           <v-btn class="ma-2" tile color="indigo" dark @click="goback()">목록으로</v-btn>
-          <v-btn class="ma-2 float-right" tile color="indigo" dark >수정하기</v-btn>
+          <v-btn class="ma-2 float-right" tile color="indigo" dark v-show="this.uid==this.tmp.uid" @click="$router.push({name:'UpdatePost',params:{pid:tmp.id}})">수정하기</v-btn>
           <v-container fluid>
               제목
               <v-text-field
@@ -39,6 +39,7 @@
           <v-btn class="ma-2" tile color="red" dark v-if="likeData.likechecked" @click="like()">좋아요 취소</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark >스크랩</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()" >공유</v-btn>
+          <v-btn class="ma-2 float-right" tile color="indigo" dark v-show="this.uid==this.tmp.uid" @click="deleteP(tmp.id)" >삭제</v-btn>
 
           <br>
           댓글
@@ -57,7 +58,7 @@
           filled
           v-model="commentData.content"
           />
-          <v-btn class="ma-2" tile color="indigo" dark >댓글 작성</v-btn>
+          <v-btn class="ma-2" tile color="indigo" dark @click="commentwrite()" >댓글 작성</v-btn>
           </div>
         </article>
         <aside>
@@ -163,6 +164,16 @@ export default {
             //     .then(alert())
         },
         commentwrite(){
+            alert('구현 예정')
+        },
+        async deleteP(postid){
+            try{
+                this.$api.deletePost(postid)
+                console.log('성공')
+                this.$router.go(-1)
+            }catch(e){
+                console.log(e)
+            }
 
         }
     },
@@ -175,6 +186,13 @@ export default {
                 return false
             }else{
                 return true
+            }
+        },
+        likechecking(){
+            if (this.likedummy.status==1){
+                this.likeData.likechecked==true
+            }else{
+                this.likeData.likechecked==false
             }
         }
     }
