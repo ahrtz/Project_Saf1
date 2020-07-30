@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class PostController {
+	@Autowired
+	private ServletContext servletContext;
     @Autowired
     private PostService postService;
     @Autowired
@@ -87,10 +90,12 @@ public class PostController {
 
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
-    public void createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public void createPost(@RequestBody HashMap<String, String> map) {
+    	HttpSession httpSession = getSession(map.get("sessionId"));
+    	System.out.println(httpSession.getId());
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-
+        
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
         System.out.println( " Timestamp : " + ts);
@@ -128,5 +133,13 @@ public class PostController {
     public void deletePost(@PathVariable int id) {
 
         postService.deletePost(id);
+    }   
+    
+    private HttpSession getSession(final String sessionId) {
+    	System.out.println(sessionId);
+    	System.out.println(servletContext.toString());
+    	final HttpSession session = (HttpSession) servletContext.getAttribute(sessionId);
+    	return session;
     }
+
 }
