@@ -73,11 +73,13 @@ export default {
             this.$router.go(-1)
         },
         signup(){
-          axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
-          .then(res=>{console.log('성공')
-          this.$router.push({name:'Login'})
-          })
-          .catch(err=>{console.log(err)})
+          // axios.post('http://i3a110.p.ssafy.io:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
+          // .then(res=>{console.log('성공')
+          // this.$router.push({name:'Login'})
+          // })
+          // axios.post('http://localhost:3000/users/signup',this.signupData,{headers:{'Content-Type':'application/json'}})
+          // .then(res=>{console.log('성공')})
+          // .catch(err=>{console.log(err)})
         }
     }
 }

@@ -10,7 +10,7 @@
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('개발중')">Group</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('준비중입니다.')">Group</div>
       <div class="d-flex"/>
       <v-text-field
         class="d-flex justify-center flex-grow-0"
@@ -65,11 +65,12 @@ export default {
       return this.signin= this.$store.state.isLoggedIn
     },
     logout(){
-      axios.post("http://i3a110.p.ssafy.io:3000/users/logout")
+      axios.post("http://localhost:3000/users/logout")
       .then(
               this.$store.commit('userData',{}),
               this.$store.commit('isLoggedIn',false)
       ).catch(err=> console.log(err))
+      location.reload();
     }
   }
 }

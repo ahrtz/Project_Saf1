@@ -121,7 +121,7 @@ export default {
         console.log(this.post);
       },
       writePost(){
-        axios.post('http://i3a110.p.ssafy.io:3000/posts',this.post,)
+        axios.post('/api/posts',this.post,)
         .then(res=> console.log('성공') )
         .catch(err=>{
           console.log(err),

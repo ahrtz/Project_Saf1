@@ -96,7 +96,8 @@ export default {
             this.$router.go(-1)
         },
     AddProj(){
-        axios.post('http://i3a110.p.ssafy.io:3000/diaries',this.blogData,)
+        // axios.post('http://localhost:3000/diaries',this.blogData,)
+        axios.post('http://localhost:3000/diaries',this.blogData,)
         .then(res=> {console.log(res)
         this.$router.push({name:'DiaryMain'})
         })

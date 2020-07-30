@@ -2,15 +2,26 @@
 <div class="diary-main-container">
     <div class="d-flex diary-main-toggle">
         <div class="d-flex justify-center">
-            <div class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
-                <div></div>
+            <div @click="activeBtn=0" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
                 <div>
-                    <div>Project</div>
-                    <div style="font-size:14px;font-weight:300">Git Commit</div>
+                    <img class="diary-main-toggle-img" src="/static/images/branch.png" />
+                </div>
+                <div>
+                    <div class="diary-main-toggle-text">Project</div>
+                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
                 </div>
                 
             </div>
-            <div class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">Blog</div>
+            <div @click="activeBtn=1" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
+                <div>
+                    <img class="diary-main-toggle-img" src="/static/images/blog.png" />
+                </div>
+                <div>
+                    <div class="diary-main-toggle-text">Blog</div>
+                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Daily life, etc...</div>
+                </div>
+                
+            </div>
         </div>
      </div>
     <div class="diary-main-inner">
@@ -145,9 +156,12 @@ export default {
                 
             }
         },
-
+        testa(){
+            axios.get('http://localhost:3000/users/is-logged-in')
+            .then(res=>{console.log(res)})
+        },
         getDiary(){
-            axios.post('http://i3a110.p.ssafy.io:3000/diaries/1',{type:this.test,keyword:""})
+            axios.post('http://localhost:3000/diaries/1',{type:this.test,keyword:""})
             .then(res=>{
                 console.log(res.data)
                 this.diarys = res.data})
@@ -192,13 +206,19 @@ export default {
 
 .diary-main-toggle-item {
     min-width: 160px;
-    margin-right: 20px;
+    margin-right: 32px;
+    cursor: pointer;
+}
+
+.diary-main-toggle-text {
     font-size: 14px;
     font-weight: 700;
 }
 
-.diary-main-toggle-item:hover {
-    color: #0051cb !important;
+.diary-main-toggle-img {
+    width: 65px;
+    height: 65px;
+    margin-right: 10px;
 }
 
 .v-card:not(.on-hover){

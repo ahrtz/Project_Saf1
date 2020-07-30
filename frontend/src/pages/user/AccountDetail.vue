@@ -53,10 +53,11 @@ created(){
 },
 methods:{
   updateUser(){
-    axios.put('http://i3a110.p.ssafy.io:3000/users/',this.userdata,)
-    .then(this.$router.push({name:'AccountDetail'},
-    alert('수정 완료')))
-    .catch(err => console.log(err))
+    // axios.put('http://i3a110.p.ssafy.io:3000/users/',this.userdata,)
+    // axios.put('http://localhost:3000/users/')
+    // .then(this.$router.push({name:'AccountDetail'}
+    // // alert('수정 완료')))
+    // .catch(err => console.log(err))
   }
 }
 }

@@ -2,14 +2,10 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.ssafy.p.i3a110.dto.DiaryDto;
 import io.ssafy.p.i3a110.service.DiaryService;
@@ -38,6 +34,7 @@ public class DiaryController {
     @PostMapping("/diaries")
     @ApiOperation(value = "다이어리 생성")
     public void createDiary(@RequestBody DiaryDto diary) {
+
     	diaryService.createDiary(diary);
     }
 
@@ -49,3 +46,4 @@ public class DiaryController {
     }
 
 }
+

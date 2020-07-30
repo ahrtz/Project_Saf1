@@ -1,172 +1,128 @@
 <template>
-  <div>
-      <form class="login-form">
-          <center>
-            <table align="center">
-              <caption>
-              <h2>Login for BloGit </h2>
-              </caption>
-              <tr>
-                <td style="margin:5px;padding: 5px;" align="left">Email</td> 
-                <td><div><input class="login-id" v-model="loginData.email" required type="email" ></div></td>
-              </tr>
-              <tr>
-                <td style="margin:5px;padding: 5px;" align="left">Password </td>
-                <td><input class="login-passwd" v-model="loginData.pwd" type="password"  required placeholder= "" @focus="visi='visible'" @blur="visi='hidden'"><br>
-                     
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td><span :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span></td>
-              </tr>
-            </table>
-            <v-card
-              class="login-flex-container align-start"
-              flat
-              color="white lighten-2"
-              height="60"
-            >
-              <v-card
-                class="login-flex-item "
-                @click="active = true"
-                color="green accent-1"
-                onclick=""
-              >
-                <v-btn class="mr-4 d-flex" color="indigo" dark  @click="login()">로그인</v-btn>
-              </v-card>
-              <v-card
-                class="login-flex-item "
-                @click="active = true"
-                color="white"
-                onclick=""
-                flat
-              >
-                <router-link class="login-router-link" :to="{name:'MainPage'}" exact >
-                  <td><img src="../../../static/git_logo.png" style="height:40px;width:40px;" alt="git login" type="button"></td>
-                </router-link>
-              </v-card>
-              <v-card
-                class="login-flex-item "
-                @click="active = true"
-                color="white accent-2"
-                onclick=""
-                flat
-              >
-                <router-link class="login-router-link" :to="{name:'MainPage'}" exact >
-                  <td><img src="../../../static/google_logo.png" style="height:40px;width:40px;" alt="google login" type="button"></td>  
-                </router-link>
-            </v-card>
-            </v-card>
-            <br>
-            <router-link class="login-register" :to="{name:'SignUp'}">회원가입</router-link>
-          </center>
-      </form>
+  <div class="login-container d-flex flex-column align-center">
+    <div class="login-inner">
+      <div class="login-title">Blogit에 오신것을<br> 환영합니다.</div>
+      <div class="login-subtitle">이메일 주소 또는 SNS 간편 로그인을 통하여 로그인 해 주세요.</div>
+      <v-text-field
+        class="d-flex justify-center"
+        placeholder="아이디"
+        outlined
+        dense
+        hide-details
+        v-model="loginData.email"
+        required
+        type="email"
+      ></v-text-field>
+      <v-text-field
+        class="d-flex justify-center"
+        style="margin-top:16px;"
+        placeholder="비밀번호"
+        outlined
+        dense
+        hide-details
+        v-model="loginData.pwd"
+        required
+        type="password"
+        @focus="visi='visible'"
+        @blur="visi='hidden'"
+      ></v-text-field>
+      <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+      <div class="d-flex justify-center align-center login-btn" @click="login()">로그인</div>
+      <div
+        class="d-flex justify-center align-center login-signup-btn"
+        @click="$router.push({name:'SignUp'})"
+      >회원가입</div>
+      <div class="d-flex justify-center login-logo-container">
+        <img @click="onLogoClick" class="login-logo" style="margin-right:16px;" src="/static/git_logo.png"/>
+        <img @click="onLogoClick" class="login-logo" src="/static/google_logo.png"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'Login',
-    data(){
-      return{
-        loginData:{
-          email:null,
-          pwd:null
-        },
-        dummy:null,
-        visi:'hidden',
-      }
+  name: 'Login',
+  data() {
+    return {
+      loginData: {
+        email: null,
+        pwd: null,
+      },
+      dummy: null,
+      visi: 'hidden',
+    };
+  },
+  methods: {
+    onLogoClick() {
+      alert("준비중입니다.");
     },
-    methods:{
-      async login() {
-        try {
-          await this.$api.login(this.loginData)
-          this.$router.push({name:'MainPage'})
-          location.reload()
-        } catch (e) {
-          console.log('실패')
-        }
-      }
+    login() {
+
     }
-}
+  },
+};
 </script>
 
 <style>
-.login-form{
-  /* background-color: yellow; */
-  display: table; margin-left: auto; margin-right: auto;
-}
-table{ 
-  border:"1px solid black" ;
-}
-.login-id{
-  margin:5px;
-  padding: 5px;
-  padding-left: 10px;
-  width:350px;
-  border:2px solid rgb(112, 223, 208);  
-}
-.login-id:focus{
-  width:350px;
-  /* background-color: aquamarine; */
-  border:2px solid rgb(219, 40, 40);
-}
-.login-passwd{
-  margin: 5px;
-  padding: 5px;
-  padding-left: 10px;
-  width:350px;
-  border:2px solid rgb(112, 223, 208);  
-}
-.login-passwd:focus{
-  width:350px;
-  color:black;
-  border:2px solid aquamarine;
-  /* background-color: aquamarine; */
-}
-.login-login{
-  /* float: left; */
-  padding-left:5px;
-  padding-right:5px;
-}
-.login-gitlogin{
-  /* float: left; */
-  float:unset;
-}
-.login-googlelogin{
-  float:unset;
-}
-.login-register{
-  float:unset;
+.login-container {
+  padding-top: 77px;
+  width: 100%;
 }
 
+.login-inner {
+  width: 380px;
+}
 
-.login-flex-container {
-  width:100%;
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 0px;
-  padding: 0px;
-  border-radius: 5px;
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
 }
-.login-flex-item {
-  display:flex;
-  margin: 10px;
-  padding: 0px;
-  text-align: center;
-  height:40px;
-  border-radius: 5px;
-  color:"green accent-2";
-  font-family: Recursive;
-  font-size:20px;
+
+.login-subtitle {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 12px;
+  color: #21262e;
 }
-.login-router-link {
-  text-decoration: none;
+
+.login-btn {
+  margin-top: 32px;
+  width: 100%;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
 }
-.login-router-link-exact-active  {
-  color: white;
-  background-color:#56c068;
+
+.login-signup-btn {
+  margin-top: 16px;
+  width: 100%;
+  font-size: 14px;
+  background: #fff;
+  font-weight: 600;
+  color: #0051cb;
+  border: solid 1px #0051cb;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.login-logo-container {
+  padding-top: 24px;
+}
+
+.login-logo {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.login-hint {
+  font-size: 12px;
+  color: #21262e;
 }
 </style>

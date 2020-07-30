@@ -11,6 +11,12 @@
         and title like concat("%",#{keyword},"%")
         and is_temp=#{isTemp}
     </select>
+
+	<select id="getPostByTitle" resultType="PostDto">
+		select *
+		from post
+		where title like concat("%",#{keyword},"%")
+	</select>
     
     <select id="getAllBlogPost" resultType="PostDto">
     	select p.id id,

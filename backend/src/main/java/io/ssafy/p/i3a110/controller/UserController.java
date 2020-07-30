@@ -3,6 +3,7 @@ package io.ssafy.p.i3a110.controller;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -59,7 +61,7 @@ public class UserController {
 
     @PostMapping("/users/login")
     @ApiOperation(value = "로그인")
-    public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public void login(@RequestHeader Map<String, String> headers, HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
@@ -70,6 +72,7 @@ public class UserController {
             httpSession.setAttribute("email", email);
             System.out.println(httpSession.getAttribute("email"));
         }
+        System.out.println(headers.toString());
     }
 
     @PostMapping("/users/logout")
@@ -117,7 +120,11 @@ public class UserController {
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = findUserByEmail(email);
+<<<<<<< Updated upstream
         
+=======
+        System.out.println(httpSession.getId());
+>>>>>>> Stashed changes
         return user;
     }
 }
