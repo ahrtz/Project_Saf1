@@ -33,7 +33,7 @@
                     </div>
                   </header>
                   <!-- 포스트 제목 / 컨텐츠 -->
-                  <article class="main-card-article">
+                  <article class="main-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
                     <h3 style="margin-left:10px;">{{post.title}}</h3>
                     <p style="margin-left:10px; margin-top:5px;">
                         {{post.content}}
@@ -70,7 +70,7 @@
                     </div>
                   </header>
                   <!-- 포스트 제목 / 컨텐츠 -->
-                  <article class="main-card-article">
+                  <article class="main-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer" >
                     <h3 style="margin-left:10px;">{{post.title}}</h3>
                     <p style="margin-left:10px; margin-top:5px;">
                         {{post.content}}
@@ -107,7 +107,7 @@ export default {
             user:{},
         }
     },
-    mounted(){
+    created(){
       this.getPost();
     },
     methods:{
@@ -116,15 +116,15 @@ export default {
           //로그인 안 되어 있는 경우 전체 post
           //TODO : 로그인 세션 추가
           //if(isLogin)
-          // console.log(111);
-          // var curUid = 1;
-          // console.log(curUid.toString());
-          axios.post('/api/posts/all/' ,{uid:"1",type:"0"})
+
+          //TODO : uid 현재 유저로 확인해야됨
+          axios.post('/api/posts/all/' ,{uid:"",type:"0",is_temp:"0",keyword:""})
           .then(res=>{
               console.log(res.data)
               this.blog_posts = res.data}
           )
-          axios.post('/api/posts/all/'  ,{uid:"1",type:"1"})
+
+          axios.post('/api/posts/all/'  ,{uid:"",type:"1",is_temp:"0",keyword:""})
           .then(res=>{
               console.log(res.data)
               this.project_posts = res.data}

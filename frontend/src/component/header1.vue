@@ -13,7 +13,7 @@
       <div class="d-flex"/>
       <v-text-field
         class="d-flex justify-center flex-grow-0"
-            placeholder=""
+            placeholder="Search by Title"
             outlined
             dense
             hide-details
@@ -23,7 +23,7 @@
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="logout()">Logout</div>
-      
+
 
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="$router.push({name:'Follow'})">MyPage</div>
     </v-card>
@@ -72,7 +72,7 @@ export default {
           console.log('실패')
         }
       }
-      
+
   }
 }
 
