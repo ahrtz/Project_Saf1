@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <h2>블로그 카드 뷰</h2>
+<div class="diary-main-container">
+    <div class="diary-main-inner">
+        <!-- <h2>블로그 카드 뷰</h2> -->
 
         <div class="overflow-hidden">
             <div class="text-center mb-2">
@@ -20,13 +21,14 @@
             color="indigo"
             >
             <v-btn @click="getDiary()">
-                <span>Blog</span>
-                <v-icon>favorite</v-icon>
-            </v-btn>
-            <v-btn @click="getDiary()">
                 <span>Project</span>
                 <v-icon>history</v-icon>
             </v-btn>
+            <v-btn @click="getDiary()">
+                <span>Blog</span>
+                <v-icon>favorite</v-icon>
+            </v-btn>
+            
 
 
             </v-bottom-navigation>
@@ -35,16 +37,16 @@
 
 
 
-        <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn>
+        <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
 
 
 
         <router-link v-show="test==1" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
-          <v-btn class="mr-4 " color="indigo" dark>플젝 추가</v-btn>
+          <div class="d-flex flex-grow-0 justify-center align-center diary-add-btn">추가</div>
         </router-link>
 
         <router-link v-show="test==0" class="float-right" :to="{name:'BlogAdd'}" tag="button">
-          <v-btn class="mr-4 " color="indigo" dark>일기장 추가</v-btn>
+          <v-btn class="mr-4 " color="indigo" dark>추가</v-btn>
         </router-link>
         <br>
         <br>
@@ -101,6 +103,7 @@
            </v-row>
        </v-container>
     </div>
+</div>
 </template>
 
 <script>
@@ -111,8 +114,8 @@ export default {
     name:'Blogs',
     data(){
         return{
-            test:1 ,
-            activeBtn: 1,
+            test:0,
+            activeBtn: 0,
             showNav: true,
             show: false,
             diarys:{},
@@ -143,6 +146,29 @@ export default {
 </script>
 
 <style>
+ .diary-main-container {
+  width: 100%;
+}
+
+.diary-main-inner {
+  width: 1140px;
+  margin: 0 auto;
+  padding: 77px 0;
+}
+
+.diary-add-btn {
+  margin-left: 4px;
+  margin-right: 32px;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+}
+
 .v-card:not(.on-hover){
     opacity : 1.0;
 }
