@@ -13,41 +13,94 @@
     </select>
     
     <select id="getAllBlogPost" resultType="PostDto">
-    	select *
-    	from post
-    	where is_proj=false
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where d.is_proj=false
     </select>
     
     <select id="getAllProjectPost" resultType="PostDto">
-    	select *
-    	from post
-    	where is_proj=false
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where d.is_proj=true
     </select>
     
     <select id="getAllDiaryPost" resultType="PostDto">
-    	select *
-    	from post
-    	where is_proj=false
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
     </select>
     
     <select id="getAllBlogPostByUser" resultType="PostDto">
-    	select *
-    	from post
-    	where uid=#{uid}
-    	and is_proj=false
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where d.is_proj=false
+    	and p.uid=#{uid}
     </select>
     
     <select id="getAllProjectPostByUser" resultType="PostDto">
-    	select *
-    	from post
-    	where uid=#{uid}
-    	and is_proj=true
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where d.is_proj=true
+    	and p.uid=#{uid}
     </select>
     
     <select id="getAllDiaryPostByUser" resultType="PostDto">
-    	select *
-    	from post
-    	where uid=#{uid}
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where p.uid=#{uid}
     </select>
 
     <select id="getPostById" resultType="PostDto">

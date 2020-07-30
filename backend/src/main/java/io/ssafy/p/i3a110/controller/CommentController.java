@@ -20,18 +20,18 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 	
-//	@GetMapping("/comments/{pid}")
-//	public List<CommentDto> getAllCommentsByPost(@PathVariable String pid){
-//		return commentService.getAllCommentsByPost();
-//	}
-//	
-//	@PostMapping("/comments")
-//	public void addComment(HttpSession session, @RequestBody CommentDto commentDto) {
-//		commentService.addComment(commentDto);
-//	}
-//	
-//	@DeleteMapping("/comments/{id}")
-//	public void deleteComment(HttpSession session, @PathVariable int id) {
-//		commentService.deleteComment(id);
-//	}
+	@GetMapping("/comments/{pid}")
+	public List<CommentDto> getAllCommentsByPost(@PathVariable String pid){
+		return commentService.getAllCommentsByPost(pid);
+	}
+	
+	@PostMapping("/comments")
+	public void addComment(HttpSession session, @RequestBody CommentDto commentDto) {
+		commentService.addComment(commentDto);
+	}
+	
+	@DeleteMapping("/comments/{id}")
+	public void deleteComment(HttpSession session, @PathVariable String id) {
+		commentService.deleteComment(id);
+	}
 }
