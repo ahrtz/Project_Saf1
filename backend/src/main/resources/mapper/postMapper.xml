@@ -123,7 +123,7 @@
     </insert>
 
     <update id="updatePost">
-        update user
+        update post
         set
         email=#{email},
         pwd=#{pwd},
@@ -139,7 +139,7 @@
     </update>
 
     <delete id="deletePost">
-        delete from user
+        delete from post
         where id=#{id}
     </delete>
 
