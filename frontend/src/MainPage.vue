@@ -127,7 +127,7 @@ export default {
         }
     },
     created(){
-      this.getPost();
+      // this.getPost();
     },
     methods:{
       getPost(){
