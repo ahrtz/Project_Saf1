@@ -7,16 +7,16 @@
     <v-container fluid>
         <v-row>
             <v-col cols="6">
-                <div class="d-flex align-center justify-space-between" style="margin-bottom:16px">
+                <div class="d-flex align-center justify-space-between" style="margin-bottom:16px; border-bottom:solid 1px grey">
                     <div class="main-page-section-title">Project Post</div>
-                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
+                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn" style="margin-bottom:5px;">더보기</div>
                 </div>
                 <v-card
-                class="pa-2"
-                outlined
-                tile
+                class="ma-2"
+                flat
                 v-for="post in project_posts" :key="post.id"
-                style="margin-top:10px"
+                style="margin-top:10px; border-bottom:dashed 1px grey"
+
                 >
                 <!-- card layout -->
                 <div>
@@ -32,30 +32,54 @@
                       </span>
                     </div>
                   </header>
-                  <!-- post 제목, 컨텐츠(간략하게) -->
-
+                  <!-- 포스트 제목 / 컨텐츠 -->
                   <article class="main-card-article">
-                    <h3>{{post.title}}</h3>
-                    <p>
+                    <h3 style="margin-left:10px;">{{post.title}}</h3>
+                    <p style="margin-left:10px; margin-top:5px;">
                         {{post.content}}
                     </p>
                   </article>
+                  <footer>
+                    <!-- TODO: tags -->
+                  </footer>
                 </div>
-                <!-- {{post.title}} -->
                 </v-card>
             </v-col>
             <v-col cols="6">
-                <div class="d-flex align-center justify-space-between"  style="margin-bottom:16px">
+                <div class="d-flex align-center justify-space-between" style="margin-bottom:16px; border-bottom:solid 1px grey">
                     <div class="main-page-section-title">Blog Post</div>
-                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
+                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn" style="margin-bottom:5px;">더보기</div>
                 </div>
                 <v-card
-                class="pa-2"
-                outlined
-                tile
+                class="ma-2"
+                flat
                 v-for="post in blog_posts" :key="post.id"
+                style="margin-top:10px;border-bottom:dashed 1px grey"
                 >
-                {{post.title}}
+                <div>
+                  <!-- 프로필 이미지, 닉네임  -->
+                  <header class="main-card-header">
+                    <img :src="post.userinfo.img" alt="" class="main-card-header-img">
+                    <div class="main-card-header-nick_date">
+                      <span> 닉네임 :
+                        {{post.userinfo.nickname}}
+                      </span>
+                      <span> 작성일 :
+                        {{post.cdate}}
+                      </span>
+                    </div>
+                  </header>
+                  <!-- 포스트 제목 / 컨텐츠 -->
+                  <article class="main-card-article">
+                    <h3 style="margin-left:10px;">{{post.title}}</h3>
+                    <p style="margin-left:10px; margin-top:5px;">
+                        {{post.content}}
+                    </p>
+                  </article>
+                  <footer>
+                    <!-- TODO: tags -->
+                  </footer>
+                </div>
                 </v-card>
 
             </v-col>
@@ -78,49 +102,6 @@ export default {
     data(){
         return{
             status:['날짜정보 혹은 뭐 커밋 정보'],
-            diarypost:[
-            {
-                pid:0,
-                pname:'1번 글'
-            },
-            {
-                pid:1,
-                pname:'2번 글'
-            },
-            {
-                pid:2,
-                pname:'3번 글'
-            },
-            {
-                pid:3,
-                pname:'4번 글'
-            },
-            {
-                pid:4,
-                pname:'5번 글'
-            },
-            ],
-            projectpost:[{
-                pid:0,
-                pname:'1번 글'
-            },
-            {
-                pid:1,
-                pname:'2번 글'
-            },
-            {
-                pid:2,
-                pname:'3번 글'
-            },
-            {
-                pid:3,
-                pname:'4번 글'
-            },
-            {
-                pid:4,
-                pname:'5번 글'
-            },
-            ],
             blog_posts:{},
             project_posts:{},
             user:{},
@@ -140,12 +121,12 @@ export default {
           // console.log(curUid.toString());
           axios.post('http://i3a110.p.ssafy.io:3000/posts/all/' ,{uid:"1",type:"0"})
           .then(res=>{
-              // console.log(res.data)
+              console.log(res.data)
               this.blog_posts = res.data}
           )
           axios.post('http://i3a110.p.ssafy.io:3000/posts/all/'  ,{uid:"1",type:"1"})
           .then(res=>{
-              // console.log(res.data)
+              console.log(res.data)
               this.project_posts = res.data}
           )
           //로그인 되어 있는 경우 나의 post
@@ -160,7 +141,8 @@ export default {
 
 <style>
 .main-card-header{
-  background-color:#c3d1eb;
+  background-color:white;
+  /* background:#ffffffde; */
   font-size: 16px;
   color: black;
   height: 55px;
@@ -178,7 +160,7 @@ export default {
   float:left;
 }
 .main-card-article{
-  background-color:#a0bbee;
+  background-color:white;
   float:unset;
   width:100%;
   height:100px;
