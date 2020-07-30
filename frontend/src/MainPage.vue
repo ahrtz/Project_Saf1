@@ -8,7 +8,7 @@
         <v-row>
             <v-col cols="6">
                 <div class="d-flex align-center justify-space-between" style="margin-bottom:16px">
-                    <div class="main-page-section-title">Project Post</div>     
+                    <div class="main-page-section-title">Project Post</div>
                     <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
                 </div>
                 <v-card
@@ -46,7 +46,7 @@
             </v-col>
             <v-col cols="6">
                 <div class="d-flex align-center justify-space-between"  style="margin-bottom:16px">
-                    <div class="main-page-section-title">Blog Post</div>     
+                    <div class="main-page-section-title">Blog Post</div>
                     <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
                 </div>
                 <v-card
@@ -59,7 +59,7 @@
                 </v-card>
 
             </v-col>
-            
+
         </v-row>
     </v-container>
 </div>
@@ -128,7 +128,6 @@ export default {
     },
     mounted(){
       this.getPost();
-      this.getUser();
     },
     methods:{
       getPost(){
@@ -139,12 +138,12 @@ export default {
           // console.log(111);
           // var curUid = 1;
           // console.log(curUid.toString());
-          axios.post('http://localhost:3000/posts/all/' ,{uid:"1",type:"0"})
+          axios.post('http://i3a110.p.ssafy.io:3000/posts/all/' ,{uid:"1",type:"0"})
           .then(res=>{
               // console.log(res.data)
               this.blog_posts = res.data}
           )
-          axios.post('http://localhost:3000/posts/all/'  ,{uid:"1",type:"1"})
+          axios.post('http://i3a110.p.ssafy.io:3000/posts/all/'  ,{uid:"1",type:"1"})
           .then(res=>{
               // console.log(res.data)
               this.project_posts = res.data}
@@ -154,18 +153,8 @@ export default {
           //else
 
         },
-        getUser(){
-          //TODO : 현재 세션 로그인 값으로 수정
-          var curUserEmail="dominicong@naver.com";
-          console.log(curUserEmail);
-          axios.get('http://localhost:3000/users/' + curUserEmail)
-          .then(res=>{
-              console.log(res.data)
-              this.user = res.data}
-          )
-        }
     },
-    
+
 }
 </script>
 
