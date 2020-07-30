@@ -4,6 +4,8 @@ import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
@@ -59,7 +61,7 @@ public class UserController {
 
     @PostMapping("/users/login")
     @ApiOperation(value = "로그인")
-    public void login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public Object login(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = map.get("email");
         String pwd = map.get("pwd");
         UserDto user = userService.findUserByEmail(email);
@@ -69,6 +71,9 @@ public class UserController {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
             System.out.println(httpSession.getAttribute("email"));
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }else {
+        	return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
