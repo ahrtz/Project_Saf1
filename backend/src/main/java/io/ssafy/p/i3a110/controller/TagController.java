@@ -47,8 +47,8 @@ public class TagController {
 	
 	@DeleteMapping("/tags/{id}")
 	@ApiOperation(value = "태그 삭제")
-	public void deleteTag(@PathVariable String pid){
-		tagService.deleteTag(pid);
+	public void deleteTag(@PathVariable String id){
+		tagService.deleteTag(id);
 	}
 	
 }

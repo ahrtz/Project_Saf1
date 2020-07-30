@@ -28,7 +28,7 @@ public class PostService {
         postDao.deletePost(id);
     }
 	public ArrayList<PostDto> getAllPostByUser(String uid, int type, String keyword) {
-		if(uid==null) {
+		if(uid==null || uid.equals("")) {
 			switch (type) {
 			case 0:
 				return postDao.getAllBlogPost(keyword);
