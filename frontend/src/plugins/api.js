@@ -56,5 +56,8 @@ export default {
     },
     async searchTemp(data){
         return  (await axios.post(`${baseURL}/posts/all`,data)).data
+    },
+    async getPost(data) {
+        return (await axios.post(`${baseURL}/posts/0`,data)).data
     }
 }

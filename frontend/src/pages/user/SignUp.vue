@@ -13,6 +13,7 @@
           v-model="signupData.email"
           required
           type="email"
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -23,6 +24,7 @@
           v-model="signupData.pwd"
           required
           type="password"
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -33,6 +35,7 @@
           v-model="signupData.pwdconfirm"
           required
           type="password"
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -42,8 +45,9 @@
           hide-details
           v-model="signupData.nickname"
           required
+          style="margin-bottom:16px;"
         ></v-text-field>
-        <v-file-input ref="file" label="대표 이미지" prepend-icon="mdi-camera"></v-file-input>
+        <v-file-input ref="file" label="프로필 사진" prepend-icon="mdi-camera" style="margin-bottom:16px;"></v-file-input>
 
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -53,6 +57,7 @@
           hide-details
           v-model="signupData.git_id"
           required
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -62,6 +67,7 @@
           hide-details
           v-model="signupData.git_url"
           required
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -71,6 +77,7 @@
           hide-details
           v-model="signupData.git_token"
           required
+          style="margin-bottom:16px;"
         ></v-text-field>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>

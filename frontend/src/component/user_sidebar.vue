@@ -1,13 +1,9 @@
 <template>
-  <div>
-      <h2>user 사이드바</h2>
-      <router-link :to="{name:'AccountDetail'}">회원 정보</router-link>
-      <br>
-      <router-link :to="{name:'Follow'}">팔로우</router-link>
-      <br>
-      <router-link :to="{name:'Scrap'}">스크랩</router-link>
-      <br>
-      <router-link :to="{name:'tmpPost'}">임시 저장 글</router-link>
+  <div class="user-sidebar">
+    <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'AccountDetail'})">회원 정보</div>
+    <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'Follow'})">팔로우</div>
+    <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'Scrap'})">스크랩</div>
+    <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'tmpPost'})">임시 저장 글</div>
   </div>
 </template>
 
@@ -18,5 +14,15 @@ export default {
 </script>
 
 <style>
+.user-sidebar {
+  width: 200px;
+  
+}
 
+.user-sidebar-menu {
+  font-size: 14px;
+  font-weight: bold;
+  height: 50px;
+  cursor: pointer;
+}
 </style>
