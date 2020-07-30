@@ -8,9 +8,9 @@
       height="70"
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">home</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">group</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'MainPage'})">Home</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">Group</div>
       <div class="d-flex"/>
       <v-text-field
         class="d-flex justify-center flex-grow-0"
@@ -96,6 +96,7 @@ export default {
   border-radius: 6px;
   width: 80px;
   height: 40px;
+  cursor: pointer;
 }
 
 .header-flex-container {
@@ -118,12 +119,6 @@ export default {
   font-size:20px;
 }
 
-.header-search-input{
-  width:325px;
-  font-size:16px;
-  border:0px;
-  outline:none;
-}
 .header-search-button{
   background:#32681c;
   border:0px;

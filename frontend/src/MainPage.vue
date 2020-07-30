@@ -1,17 +1,15 @@
 <template>
 <div class="main-page-container">
 <div class="main-page-inner d-flex flex-column justify-center">
-    <h2>메인페이지</h2>
-    <br>스테이터스가 컴포넌트로 해놓긴 햇는데 데이터를 어케 받아서 넘겨줄지 고민
     <status />
     <br>
     <br>
     <v-container fluid>
         <v-row>
             <v-col cols="6">
-                <div class="text-center d-flex justify-space-between">
-                    <div style="margin-left:15px;" ><h2>프로젝트 글</h2></div>
-                    <div class="d-flex justify-center flex-grow-0 align-center header-btn">검색</div>
+                <div class="d-flex align-center justify-space-between" style="margin-bottom:16px">
+                    <div class="main-page-section-title">Project Post</div>     
+                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
                 </div>
                 <v-card
                 class="pa-2"
@@ -47,9 +45,9 @@
                 </v-card>
             </v-col>
             <v-col cols="6">
-                <div class="text-center d-flex justify-space-between">
-                    <div >블로그 글</div>
-                    <v-btn class="ma-2  " tile color="indigo" dark>view all</v-btn>
+                <div class="d-flex align-center justify-space-between"  style="margin-bottom:16px">
+                    <div class="main-page-section-title">Blog Post</div>     
+                    <div class="d-flex justify-center flex-grow-0 align-center main-page-btn">더보기</div>
                 </div>
                 <v-card
                 class="pa-2"
@@ -208,7 +206,6 @@ export default {
 
 .main-page-btn {
   margin-left: 4px;
-  margin-right: 32px;
   font-size: 14px;
   background: #0051cb;
   font-weight: 600;
@@ -216,5 +213,12 @@ export default {
   border-radius: 6px;
   width: 80px;
   height: 40px;
+  cursor: pointer;
+}
+
+.main-page-section-title {
+    font-size: 20px;
+    font-weight: 700;
+
 }
 </style>
