@@ -58,6 +58,7 @@ public class GitController {
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, HttpServletRequest request) {
+		
 		HashMap<Date, Integer> map = null;
 		int uid = (int) session.getAttribute("id");
 		UserDto user = userService.findUserById(uid);

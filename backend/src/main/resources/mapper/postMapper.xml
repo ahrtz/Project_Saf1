@@ -10,7 +10,26 @@
         where did=#{did}
         and title like concat("%",#{keyword},"%")
         and is_temp=#{isTemp}
-
+    </select>
+    
+    <select id="getAllBlogPostByUser" resultType="PostDto">
+    	select *
+    	from post
+    	where uid=#{uid}
+    	and isProj="0"
+    </select>
+    
+    <select id="getAllProjectPostByUser" resultType="PostDto">
+    	select *
+    	from post
+    	where uid=#{uid}
+    	and isProj="1"
+    </select>
+    
+    <select id="getAllDiaryPostByUser" resultType="PostDto">
+    	select *
+    	from post
+    	where uid=#{uid}
     </select>
 
     <select id="getPostById" resultType="PostDto">
