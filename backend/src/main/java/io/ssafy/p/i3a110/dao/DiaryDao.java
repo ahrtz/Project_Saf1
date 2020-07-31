@@ -11,11 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface DiaryDao {
     public UserDto getUser();
 
-	public List<DiaryDto> getAllBlogsByKeyword(String uid, String keyword);
-
-	public List<DiaryDto> getAllProjectsByKeyword(String uid, String keyword);
-
-	public List<DiaryDto> getAllDiariesByKeyword(String uid, String keyword);
+	public List<DiaryDto> getAllDiariesByKeyword(int uid, int isProj, String keyword);
 
 	public DiaryDto getDiary(String id);
 
@@ -23,5 +19,8 @@ public interface DiaryDao {
 
 	public void updateDiary(DiaryDto diary);
 
+	public void deleteDiary(String id);
+	
 	public List<String> getAllWrittenProjcetName(int uid);
+
 }

@@ -18,15 +18,8 @@ public class DiaryService {
         return diaryDao.getUser();
     }
 
-	public List<DiaryDto> getAllDiariesByKeyword(String uid, int type, String keyword) {
-		switch (type) {
-		case 0:
-			return diaryDao.getAllBlogsByKeyword(uid, keyword);
-		case 1:
-			return diaryDao.getAllProjectsByKeyword(uid, keyword);
-		default:
-			return diaryDao.getAllDiariesByKeyword(uid, keyword);
-		}
+	public List<DiaryDto> getAllDiariesByKeyword(int uid, int isProj, String keyword) {
+		return diaryDao.getAllDiariesByKeyword(uid, isProj, keyword);
 	}
 
 	public DiaryDto getDiary(String id) {
@@ -40,10 +33,13 @@ public class DiaryService {
 	public void updateDiary(DiaryDto diary) {
 		diaryDao.updateDiary(diary);
 	}
+
+	public void deleteDiary(String id) {
+		diaryDao.deleteDiary(id);
+	}
 	
 	// GitHub API 용
 	public List<String> getAllWrittenProjectName(int uid){
 		return diaryDao.getAllWrittenProjcetName(uid);
 	}
-
 }

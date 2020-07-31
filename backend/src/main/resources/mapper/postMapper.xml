@@ -17,8 +17,8 @@
 		from post
 		where title like concat("%",#{keyword},"%")
 	</select>
-    
-    <select id="getAllBlogPost" resultType="PostDto">
+	
+	<select id="getAllPost" resultType="PostDto">
     	select p.id id,
     		   p.did did,
     		   p.uid uid,
@@ -30,14 +30,14 @@
     		   p.is_temp is_temp
     	from diary d join post p
     	on d.id = p.did
-    	where d.is_proj=false
-    	and p.title like concat("%",#{keyword},"%")
+    	where p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
-    	order by c_date desc
+    	<if test='isProj != "2"'>and d.is_proj = #{isProj}</if>
+    	order by p.c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
-    
-    <select id="getAllProjectPost" resultType="PostDto">
+	</select>
+	
+	<select id="getAllPostByUser" resultType="PostDto">
     	select p.id id,
     		   p.did did,
     		   p.uid uid,
@@ -49,89 +49,13 @@
     		   p.is_temp is_temp
     	from diary d join post p
     	on d.id = p.did
-    	where d.is_proj=true
-    	and p.title like concat("%",#{keyword},"%")
+    	where p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
-    	order by c_date desc
+    	and p.uid = #{uid}
+    	<if test='isProj != "2"'>and d.is_proj = #{isProj}</if>
+    	order by p.c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
-    
-    <select id="getAllDiaryPost" resultType="PostDto">
-    	select p.id id,
-    		   p.did did,
-    		   p.uid uid,
-    		   p.title title,
-    		   p.content content,
-    		   p.c_date c_date,
-    		   p.priority priority,
-    		   p.cnt_like cnt_like,
-    		   p.is_temp is_temp
-    	from diary d join post p
-    	on d.id = p.did
-    	where p.title like concat("%",#{keyword}, "%")
-    	and is_temp=#{isTemp}
-    	order by c_date desc
-    	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
-    
-    <select id="getAllBlogPostByUser" resultType="PostDto">
-    	select p.id id,
-    		   p.did did,
-    		   p.uid uid,
-    		   p.title title,
-    		   p.content content,
-    		   p.c_date c_date,
-    		   p.priority priority,
-    		   p.cnt_like cnt_like,
-    		   p.is_temp is_temp
-    	from diary d join post p
-    	on d.id = p.did
-    	where d.is_proj=false
-    	and p.uid=#{uid}
-    	and p.title like concat("%",#{keyword},"%")
-    	and is_temp=#{isTemp}
-    	order by c_date desc
-    	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
-    
-    <select id="getAllProjectPostByUser" resultType="PostDto">
-    	select p.id id,
-    		   p.did did,
-    		   p.uid uid,
-    		   p.title title,
-    		   p.content content,
-    		   p.c_date c_date,
-    		   p.priority priority,
-    		   p.cnt_like cnt_like,
-    		   p.is_temp is_temp
-    	from diary d join post p
-    	on d.id = p.did
-    	where d.is_proj=true
-    	and p.uid=#{uid}
-    	and p.title like concat("%",#{keyword},"%")
-    	and is_temp=#{isTemp}
-    	order by c_date desc
-    	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
-    
-    <select id="getAllDiaryPostByUser" resultType="PostDto">
-    	select p.id id,
-    		   p.did did,
-    		   p.uid uid,
-    		   p.title title,
-    		   p.content content,
-    		   p.c_date c_date,
-    		   p.priority priority,
-    		   p.cnt_like cnt_like,
-    		   p.is_temp is_temp
-    	from diary d join post p
-    	on d.id = p.did
-    	where p.uid=#{uid}
-    	and p.title like concat("%",#{keyword},"%")
-    	and is_temp=#{isTemp}
-    	order by c_date desc
-    	<if test='limit!="0"'>limit #{limit}</if>
-    </select>
+	</select>
 
     <select id="getPostById" resultType="PostDto">
         select *
