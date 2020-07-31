@@ -35,6 +35,7 @@ export default {
         type: 2,
         keyword: '',
         is_temp: 1,
+        limit:0
       },
       tempPost: '',
     };
