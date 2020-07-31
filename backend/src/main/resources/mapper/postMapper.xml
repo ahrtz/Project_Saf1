@@ -33,6 +33,7 @@
     	where d.is_proj=false
     	and p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
     
@@ -51,6 +52,7 @@
     	where d.is_proj=true
     	and p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
     
@@ -68,6 +70,7 @@
     	on d.id = p.did
     	where p.title like concat("%",#{keyword}, "%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
     
@@ -87,6 +90,7 @@
     	and p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
     
@@ -106,6 +110,7 @@
     	and p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
     
@@ -124,6 +129,7 @@
     	where p.uid=#{uid}
     	and p.title like concat("%",#{keyword},"%")
     	and is_temp=#{isTemp}
+    	order by c_date desc
     	<if test='limit!="0"'>limit #{limit}</if>
     </select>
 
