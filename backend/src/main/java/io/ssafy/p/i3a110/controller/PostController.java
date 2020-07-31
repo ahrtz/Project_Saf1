@@ -114,8 +114,7 @@ public class PostController {
         post.setTitle(map.get("title"));
         post.setContent(map.get("content"));
         post.setPriority(Integer.parseInt(map.get("priority")));
-        // 임시
-        post.setIsTemp(0);
+        post.setIsTemp(Integer.parseInt(map.get("is_temp")));
         
         postService.updatePost(post);
     }
