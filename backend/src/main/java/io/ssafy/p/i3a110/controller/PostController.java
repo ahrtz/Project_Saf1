@@ -28,26 +28,14 @@ public class PostController {
     private UserService userService;
     @Autowired
     private LikeService likeService;
-
-//	  // OLD
-//    // 0: blog 1: project 2: all
-//    @PostMapping("/posts/all")
-//    @ApiOperation(value = "회원별 다이어리 전체 조회")
-//    public ArrayList<PostDto> getAllPostByUser(@RequestBody HashMap<String, String> map) {
-//    	String uid = map.get("uid");
-//    	int type = Integer.parseInt(map.get("type"));
-//    	
-//    	return postService.getAllPostByUser(uid, type);
-//    }
-   
-    // 0: blog 1: project 2: all
+    
     @PostMapping("/posts/all")
-    @ApiOperation(value = "회원별 포스트 전체 조회")
+    @ApiOperation(value = "회원 별 포스트 전체 조회")
     public List<HashMap<Object, Object>> getAllPostByUser(@RequestBody HashMap<String, String> map) {
     	String uid = map.get("uid");
-    	int type = Integer.parseInt(map.get("type"));
+    	int isProj = Integer.parseInt(map.get("isProj"));
     	String keyword = map.get("keyword");
-    	int isTemp = Integer.parseInt(map.get("is_temp"));
+    	int isTemp = Integer.parseInt(map.get("isTemp"));
     	String lim = map.get("limit");
     	int limit = 0;
     	if(lim==null || lim.equals("")) limit = 0;
@@ -55,13 +43,12 @@ public class PostController {
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
-    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword, isTemp, limit);
+    	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, isProj, keyword, isTemp, limit);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		form.put("userinfo", userService.findUserById(post.getUid()));
     		output.add(form);
     	}
-    	
     	return output;
     }
     
@@ -90,7 +77,6 @@ public class PostController {
         System.out.println( " Timestamp : " + ts);
 
         PostDto post = new PostDto();
-        System.out.print(user.getId());
         post.setUid(user.getId());
         post.setDid(Integer.parseInt(map.get("did")));
         post.setTitle(map.get("title"));
@@ -98,7 +84,7 @@ public class PostController {
         post.setCDate(ts.toString());
         post.setPriority(Integer.parseInt(map.get("priority")));
         post.setCntLike(0);
-        post.setIsTemp(Integer.parseInt(map.get("is_temp")));
+        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
 
         postService.createPost(post);
     }
@@ -122,7 +108,6 @@ public class PostController {
     @DeleteMapping("/posts/{id}")
     @ApiOperation(value = "포스트 삭제")
     public void deletePost(@PathVariable int id) {
-
         postService.deletePost(id);
     }
 }

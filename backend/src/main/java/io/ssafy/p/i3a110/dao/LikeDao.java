@@ -1,9 +1,8 @@
 package io.ssafy.p.i3a110.dao;
 
-import io.ssafy.p.i3a110.dto.LikeDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
+import io.ssafy.p.i3a110.dto.LikeDto;
 
 @Mapper
 public interface LikeDao {

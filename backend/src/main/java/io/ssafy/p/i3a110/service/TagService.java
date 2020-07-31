@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.ssafy.p.i3a110.dao.TagDao;
-import io.ssafy.p.i3a110.dto.HealthDto;
 import io.ssafy.p.i3a110.dto.TagDto;
 
 @Service

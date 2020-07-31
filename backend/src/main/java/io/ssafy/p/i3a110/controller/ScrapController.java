@@ -12,43 +12,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.ssafy.p.i3a110.dto.CommentDto;
+import io.ssafy.p.i3a110.dto.ScrapDto;
 import io.ssafy.p.i3a110.dto.UserDto;
-import io.ssafy.p.i3a110.service.CommentService;
+import io.ssafy.p.i3a110.service.ScrapService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-public class CommentController {
+public class ScrapController {
 	@Autowired
-	private CommentService commentService;
+	private ScrapService scrapService;
 	@Autowired
 	private UserService userService;
-	
-	@GetMapping("/comments/{pid}")
-	@ApiOperation(value = "포스트 별 댓글 조회")
-	public List<CommentDto> getAllCommentsByPost(@PathVariable String pid){
-		return commentService.getAllCommentsByPost(pid);
+
+	@GetMapping("/scraps/{uid}")
+	@ApiOperation(value = "회원 스크랩 정보 조회")
+	public List<ScrapDto> getAllScrapsByUser(@PathVariable int uid) {
+		return scrapService.getAllScrapsByUser(uid);
 	}
 	
-	@PostMapping("/comments")
-	@ApiOperation(value = "댓글 작성")
-	public void addComment(HttpSession session, @RequestBody CommentDto commentDto) {
+	@PostMapping("/scraps")
+	@ApiOperation(value = "스크랩 생성")
+	public void createScrap(HttpSession session, @RequestBody ScrapDto scrapDto) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		int uid = user.getId();
+		scrapDto.setUid(uid);
+		
+		scrapService.createScrap(scrapDto);
+	}
+	
+	@DeleteMapping("scraps/{pid}")
+	@ApiOperation(value = "스크랩 삭제")
+	public void delelteScrap(HttpSession session, @PathVariable int pid) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		int uid = user.getId();
-		commentDto.setUid(uid);
 		
-		commentService.addComment(commentDto);
+		scrapService.deleteScrap(uid, pid);
 	}
 	
-	@DeleteMapping("/comments/{id}")
-	@ApiOperation(value = "댓글 삭제")
-	public void deleteComment(HttpSession session, @PathVariable String id) {
-		String email = (String) session.getAttribute("email");
-		UserDto user = userService.findUserByEmail(email);
-		int uid = user.getId();
-		
-		commentService.deleteComment(id, uid);
-	}
 }

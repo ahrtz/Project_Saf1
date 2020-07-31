@@ -24,29 +24,29 @@ public class UserController {
 
         return userService.findUsers(keyword);
     }
-
+    
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
     public UserDto findUserByEmail(@PathVariable String email) {
         return userService.findUserByEmail(email);
     }
-
+    
     @PutMapping("/users")
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-        String email = (String) httpSession.getAttribute("email");
-        UserDto user = userService.findUserByEmail(email);
-        user.setPwd(map.get("pwd"));
-        user.setNickname(map.get("nickname"));
-        user.setGitId(map.get("git_id"));
-        user.setGitUrl(map.get("git_url"));
-        user.setIntro(map.get("intro"));
-        user.setImg(map.get("img"));
-        user.setGitToken(map.get("git_token"));
-        user.setIsSocial(Integer.parseInt(map.get("is_social")));
-        user.setIsCertified(Integer.parseInt(map.get("is_certified")));
-
-        userService.updateUser(user);
+    	String email = (String) httpSession.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	user.setPwd(map.get("pwd"));
+    	user.setNickname(map.get("nickname"));
+    	user.setGitId(map.get("gitId"));
+    	user.setGitUrl(map.get("gitUrl"));
+    	user.setIntro(map.get("intro"));
+    	user.setImg(map.get("img"));
+    	user.setGitToken(map.get("gitToken"));
+    	user.setIsSocial(Integer.parseInt(map.get("isSocial")));
+    	user.setIsCertified(Integer.parseInt(map.get("isCertified")));
+    	
+    	userService.updateUser(user);
     }
 
     @DeleteMapping("/users")
@@ -67,12 +67,9 @@ public class UserController {
         if(user == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        System.out.println(pwd);
-        System.out.println(user.getPwd());
         if(pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
-            System.out.println(httpSession.getAttribute("email"));
             return new ResponseEntity<>(null, HttpStatus.OK);
         }else {
         	return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -96,9 +93,17 @@ public class UserController {
         }
         return result;
     }
+    
+    @GetMapping("/users/me")
+    @ApiOperation(value = "내 정보 조회")
+    public UserDto me(HttpSession httpSession) {
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = findUserByEmail(email);
+        return user;
+    }
 
     @PostMapping("/users/signup")
-    @ApiOperation(value = "가입하기")
+    @ApiOperation(value = "회원 가입")
     public void signup(@RequestBody HashMap<String, String> map) {
         UserDto user = userService.findUserByEmail(map.get("email"));
         if(user == null) {
@@ -106,24 +111,16 @@ public class UserController {
             user.setEmail(map.get("email"));
             user.setPwd(map.get("pwd"));
             user.setNickname(map.get("nickname"));
-            user.setGitId(map.get("git_id"));
-            user.setGitUrl(map.get("git_url"));
+            user.setGitId(map.get("gitId"));
+            user.setGitUrl(map.get("gitUrl"));
             user.setIntro(map.get("intro"));
             user.setImg(map.get("img"));
-            user.setGitToken(map.get("git_token"));
-            user.setIsSocial(Integer.parseInt(map.get("is_social")));
-            user.setIsCertified(Integer.parseInt(map.get("is_certified")));
+            user.setGitToken(map.get("gitToken"));
+            user.setIsSocial(Integer.parseInt(map.get("isSocial")));
+            user.setIsCertified(Integer.parseInt(map.get("isCertified")));
 
             userService.insertUser(user);
         }
 
-    }
-
-    @GetMapping("/users/me")
-    @ApiOperation(value = "내 정보 조회")
-    public UserDto me(HttpSession httpSession) {
-        String email = (String) httpSession.getAttribute("email");
-        UserDto user = findUserByEmail(email);
-        return user;
     }
 }

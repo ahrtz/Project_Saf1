@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="getTopNTags" resultType = "TagDto">
-		select count(*) cnt
+		select name, count(*) cnt
 		from tag
 		group by name
 		order by cnt
@@ -25,8 +25,7 @@
 	</select>
 	
 	<insert id="addTag" parameterType="TagDto">
-		insert into diary 
-		(pid, name)
+		insert into tag(pid, name)
 		values (#{pid}, #{name})
 	</insert>
 	

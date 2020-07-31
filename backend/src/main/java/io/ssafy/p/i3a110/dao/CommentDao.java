@@ -13,6 +13,6 @@ public interface CommentDao {
 
 	void addComment(CommentDto commentDto);
 
-	void deleteComment(String id);
+	void deleteComment(String id, int uid);
 
 }
