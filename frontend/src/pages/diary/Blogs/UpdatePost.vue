@@ -128,9 +128,8 @@ export default {
         console.log(this.post);
       },
       async writePost(){
-        try{
-            this.post.is_temp=0
-            
+      try{
+          this.post.isTemp=0
           this.$api.updatePost(this.post)
           console.log('성공11')
           this.$router.go(-1)
@@ -142,7 +141,7 @@ export default {
 
       },
       writetmpPost(){
-        this.post.is_temp=1
+        this.post.isTemp=1
         
         try{
           this.$api.updatePost(this.post)
