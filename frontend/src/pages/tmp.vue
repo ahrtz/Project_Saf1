@@ -1,7 +1,7 @@
 <template>
   <div class="search-page-container ">
 <div class="search-page-inner d-flex justify-center">
-    <status />
+    <Status />
     <br>
     <br>
       <v-col cols="8">
@@ -49,6 +49,8 @@
 
 <script>
 import axios from 'axios'
+import Status from '@/component/Status.vue'
+
 export default {
     name: 'tmp',
     data(){
@@ -59,7 +61,7 @@ export default {
     },
     created(){
         console.log(this.ddd.key)
-        axios.post("http://i3a110.p.ssafy.io:3000/posts/all/",{
+        axios.post("/api/posts/all/",{
             keyword:this.$route.params.key,
             is_temp:"0",
             uid:"",

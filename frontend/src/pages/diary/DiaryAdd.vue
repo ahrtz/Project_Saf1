@@ -3,7 +3,7 @@
       <v-container>
           <v-row>
       <v-col cols="12">
-      블로그 : <v-text-field v-model="blogData.title" type = "text" placeholder="블로그 이름을 입력하세요"></v-text-field>
+      다이어리 : <v-text-field v-model="blogData.title" type = "text" placeholder="다이어리 이름을 입력하세요"></v-text-field>
       </v-col>
       <v-col cols="12" v-show="isProject">
       gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>

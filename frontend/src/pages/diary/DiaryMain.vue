@@ -2,7 +2,7 @@
 <div class="diary-main-container">
     <div class="d-flex diary-main-toggle">
         <div class="d-flex justify-center">
-            <div @click="activeBtn=0" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
+            <div @click="test=0;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==0}">
                 <div>
                     <img class="diary-main-toggle-img" src="/static/images/branch.png" />
                 </div>
@@ -12,7 +12,7 @@
                 </div>
                 
             </div>
-            <div @click="activeBtn=1" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
+            <div @click="test=1;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==1}">
                 <div>
                     <img class="diary-main-toggle-img" src="/static/images/blog.png" />
                 </div>
@@ -26,52 +26,14 @@
      </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-        
-        <div class="overflow-hidden">
-            <!-- <div class="text-center mb-2">
-            <v-btn
-                text
-                color="deep-purple"
-                @click="showNav = !showNav"
-            >
-                Toggle Nav
-            </v-btn>
-            </div> -->
-
-
-            <v-bottom-navigation
-            :input-value="showNav"
-            :value="activeBtn"
-            v-model="test"
-            color="indigo"
-            >
-            <v-btn @click="getDiary()">
-                <span>Project</span>
-                <v-icon>history</v-icon>
-            </v-btn>
-            <v-btn @click="getDiary()">
-                <span>Blog</span>
-                <v-icon>favorite</v-icon>
-            </v-btn>
-            
-
-
-            </v-bottom-navigation>
-        </div>
-
-
-
-
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
 
-
-
-        <router-link v-show="test==1" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
-          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">추가</div>
+        <router-link v-show="test==0" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">프로젝트 추가</div>
         </router-link>
 
-        <router-link v-show="test==0" class="float-right" :to="{name:'BlogAdd'}" tag="button">
-          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">추가</div>
+        <router-link v-show="test==1" class="float-right" :to="{name:'BlogAdd'}" tag="button">
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
         </router-link>
         <br>
         <br>
@@ -150,10 +112,11 @@ export default {
     },
     created(){
         this.uid= this.$store.state.user.id
+        this.getDiary();
     },
     methods:{
         goBlog( param ){
-            if (this.test==0){
+            if (this.test==1){
                 this.$router.push({name : 'BlogDetail', params :{did:param}})
             }else{
                 this.$router.push({name : 'ProjectDetail', params :{did:param}})
@@ -164,7 +127,7 @@ export default {
         async getDiary(){
 
             try{
-                let tempspace= await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
+                let tempspace= await this.$api.getDiaries(this.uid,{type:(this.test+1)%2,keyword:""})
                 this.diarys = tempspace 
                 console.log('성공')
             }catch(e){
@@ -198,7 +161,7 @@ export default {
   font-weight: 600;
   color: #fff;
   border-radius: 6px;
-  width: 80px;
+  padding: 0 16px;
   height: 40px;
   cursor: pointer;
 }
@@ -211,9 +174,14 @@ export default {
 
 .diary-main-toggle-item {
     min-width: 160px;
-    margin-right: 32px;
+    padding: 0 32px;
     cursor: pointer;
 }
+
+.diary-main-toggle-item--selected {
+    background: #ebf0fa;
+}
+
 
 .diary-main-toggle-text {
     font-size: 14px;
