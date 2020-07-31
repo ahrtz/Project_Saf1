@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,16 +13,23 @@ import io.ssafy.p.i3a110.dto.DiaryDto;
 import io.ssafy.p.i3a110.service.DiaryService;
 import io.swagger.annotations.ApiOperation;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 public class DiaryController {
     @Autowired
     private DiaryService diaryService;
+    @Autowired
+    private UserService userService;
 
     // 전체 Diary 검색 (type - 0: Blog, 1: Project, 2 or Other: All)
     @PostMapping("/diaries/{uid}")
     @ApiOperation(value = "전체 다이어리 조회")
-    public List<DiaryDto> getAllDiaries(@PathVariable String uid, @RequestBody HashMap<String, String> map) {
-    	return diaryService.getAllDiariesByKeyword(uid, Integer.parseInt(map.get("type")), map.get("keyword"));
+    public List<DiaryDto> getAllDiaries(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+        String email = (String) httpSession.getAttribute("email");
+        UserDto user = userService.findUserByEmail(email);
+
+    	return diaryService.getAllDiariesByKeyword(user.getId()+"", Integer.parseInt(map.get("type")), map.get("keyword"));
     }
 
     // Diary 상세 조회

@@ -25,6 +25,7 @@
         type="password"
         @focus="visi='visible'"
         @blur="visi='hidden'"
+        @keypress.enter="login()"
       ></v-text-field>
       <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
       <div class="d-flex justify-center align-center login-btn" @click="login()">로그인</div>

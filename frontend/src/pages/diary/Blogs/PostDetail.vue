@@ -1,6 +1,5 @@
 <template>
   <div>
-      <h1>포스트 별로 디테일한 정보</h1>
       <section>
         <nav>
           <PostSidebar />
@@ -164,7 +163,7 @@ export default {
             //     .then(alert())
         },
         commentwrite(){
-            alert('구현 예정')
+            alert('준비중입니다.')
         },
         async deleteP(postid){
             try{
