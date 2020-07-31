@@ -42,14 +42,14 @@
             v-model="test"
             color="indigo"
             >
-            <v-btn @click="getDiary()">
+            <!-- <v-btn @click="getDiary()">
                 <span>Project</span>
                 <v-icon>history</v-icon>
             </v-btn>
             <v-btn @click="getDiary()">
                 <span>Blog</span>
                 <v-icon>favorite</v-icon>
-            </v-btn>
+            </v-btn> -->
             </v-bottom-navigation>
         </div>
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
