@@ -10,7 +10,7 @@
                     <div class="diary-main-toggle-text">Project</div>
                     <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
                 </div>
-                
+
             </div>
             <div @click="activeBtn=1" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item">
                 <div>
@@ -20,13 +20,12 @@
                     <div class="diary-main-toggle-text">Blog</div>
                     <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Daily life, etc...</div>
                 </div>
-                
+
             </div>
         </div>
      </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-        
         <div class="overflow-hidden">
             <!-- <div class="text-center mb-2">
             <v-btn
@@ -37,8 +36,6 @@
                 Toggle Nav
             </v-btn>
             </div> -->
-
-
             <v-bottom-navigation
             :input-value="showNav"
             :value="activeBtn"
@@ -53,15 +50,8 @@
                 <span>Blog</span>
                 <v-icon>favorite</v-icon>
             </v-btn>
-            
-
-
             </v-bottom-navigation>
         </div>
-
-
-
-
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
 
 
@@ -82,34 +72,30 @@
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
-                        >   
-                    <v-card 
+                        >
+                    <v-card
                     :elevation="hover? 12 : 2"
-                    :img="blog.img"
-                    class=" ma-2 " 
+                    :img="!blog.img?'../../../static/images/Blogit_logo.png':blog.img"
+                    class=" ma-2 "
                     :class="{ 'on-hover': hover }"
-                    style="height:300px;" 
+                    style="height:300px;"
                     outlined
                     @click="goBlog(blog.id)">
                     <!-- hover -->
-                    <div 
+                    <div
                     v-if="hover"
-                    class = "black div-reveal"
+                    class="black div-reveal"
                     >
-                        
-                        <v-card-title>
+                        <v-card-title style="color:white;">
                            {{blog.title}}
                         </v-card-title>
-
                         <v-card-subtitle>
-                            <div style="color:white;" v-for="tag in blog.tags" :key="tag">
+                            <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
                             </div>
-                            
                         </v-card-subtitle>
-
-                        <v-card-text>
-                            {{blog.intro}} 
+                        <v-card-text style="color:white;font-weight:bold;">
+                            {{blog.intro}}
                         </v-card-text>
 
                     </div>
@@ -124,7 +110,7 @@
                     </v-card>
                 </v-hover>
                 </v-col>
-                   
+
            </v-row>
        </v-container>
     </div>
@@ -145,7 +131,7 @@ export default {
             show: false,
             diarys:{},
             uid:''
-            
+
         }
     },
     created(){
@@ -157,7 +143,7 @@ export default {
                 this.$router.push({name : 'BlogDetail', params :{did:param}})
             }else{
                 this.$router.push({name : 'ProjectDetail', params :{did:param}})
-                
+
             }
         },
 
@@ -165,7 +151,7 @@ export default {
 
             try{
                 let tempspace= await this.$api.getDiaries(this.uid,{type:this.test,keyword:""})
-                this.diarys = tempspace 
+                this.diarys = tempspace
                 console.log('성공')
             }catch(e){
                 console.log(e)
@@ -175,7 +161,7 @@ export default {
         }
     },
 
-   
+
 }
 </script>
 
@@ -230,8 +216,7 @@ export default {
     opacity : 1.0;
 }
 .div-reveal {
-    color : white;
-    opacity: .5;
+    opacity: .6;
     width : 100%;
     height : 100%;
 }
