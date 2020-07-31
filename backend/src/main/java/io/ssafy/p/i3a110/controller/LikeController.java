@@ -19,13 +19,13 @@ public class LikeController {
     private UserService userService;
 
     @GetMapping("/likes/total/{pid}")
-    @ApiOperation(value = "글 전체 좋아요 수 조회")
+    @ApiOperation(value = "포스트 좋아요 수 조회")
     public int getLikeCnt(@PathVariable int pid) {
         return likeService.getLikeCnt(pid);
     }
 
     @GetMapping("/likes/{pid}")
-    @ApiOperation(value = "사용자가 글에 좋아요 눌렀는지 여부")
+    @ApiOperation(value = "사용자 포스트 좋아요 여부 조회")
     public LikeDto getLike(HttpSession httpSession, @PathVariable int pid) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);

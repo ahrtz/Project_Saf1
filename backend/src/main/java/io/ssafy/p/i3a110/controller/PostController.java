@@ -77,7 +77,6 @@ public class PostController {
         System.out.println( " Timestamp : " + ts);
 
         PostDto post = new PostDto();
-        System.out.print(user.getId());
         post.setUid(user.getId());
         post.setDid(Integer.parseInt(map.get("did")));
         post.setTitle(map.get("title"));
@@ -85,7 +84,7 @@ public class PostController {
         post.setCDate(ts.toString());
         post.setPriority(Integer.parseInt(map.get("priority")));
         post.setCntLike(0);
-        post.setIsTemp(Integer.parseInt(map.get("is_temp")));
+        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
 
         postService.createPost(post);
     }
@@ -109,7 +108,6 @@ public class PostController {
     @DeleteMapping("/posts/{id}")
     @ApiOperation(value = "포스트 삭제")
     public void deletePost(@PathVariable int id) {
-
         postService.deletePost(id);
     }
 }

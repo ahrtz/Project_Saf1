@@ -163,8 +163,8 @@ public class GitHubRestApiHelper {
 			GHCommitQueryBuilder commitqb = repo.queryCommits();
 			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 			
-			commitqb = commitqb.since(form.parse(sDate).getTime());
-			commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
+			if(sDate!=null && sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
+			if(eDate!=null && eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
 			List<GHCommit> commits = commitqb.list().toList();
 			for(GHCommit commit : commits) {
 				String author = commit.getCommitShortInfo().getAuthor().getName();
@@ -176,27 +176,6 @@ public class GitHubRestApiHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	//Repo 이름 있는지 확인해주는거 나중에 추가
-	public List<CommitInfoDto> getAllCommitInfoList(String repoName) {
-		List<CommitInfoDto> list = new ArrayList<CommitInfoDto>();
-		try {
-			this.github.checkApiUrlValidity();
-			GHRepository repo = person.getRepository(repoName);
-			GHCommitQueryBuilder commitqb = repo.queryCommits();
-			List<GHCommit> commits = commitqb.list().toList();
-			for(GHCommit commit : commits) {
-				String author = commit.getCommitShortInfo().getAuthor().getName();
-				String sha1 = commit.getSHA1();
-				Date date = commit.getCommitDate();
-				String msg = commit.getCommitShortInfo().getMessage();
-				list.add(new CommitInfoDto(author, sha1, date, msg));
-			}
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return list;
