@@ -48,9 +48,12 @@ public class PostController {
     	int type = Integer.parseInt(map.get("type"));
     	String keyword = map.get("keyword");
     	int isTemp = Integer.parseInt(map.get("is_temp"));
-    	int limit = Integer.parseInt(map.get("limit"));
-    	ObjectMapper objectMapper = new ObjectMapper();
+    	String lim = map.get("limit");
+    	int limit = 0;
+    	if(lim==null || lim.equals("")) limit = 0;
+    	else limit = Integer.parseInt(lim);
     	
+    	ObjectMapper objectMapper = new ObjectMapper();
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
     	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, type, keyword, isTemp, limit);
     	for(PostDto post : postList) {
