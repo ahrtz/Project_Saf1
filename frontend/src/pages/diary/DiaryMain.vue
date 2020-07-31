@@ -26,32 +26,7 @@
      </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-        <div class="overflow-hidden">
-            <!-- <div class="text-center mb-2">
-            <v-btn
-                text
-                color="deep-purple"
-                @click="showNav = !showNav"
-            >
-                Toggle Nav
-            </v-btn>
-            </div> -->
-            <v-bottom-navigation
-            :input-value="showNav"
-            :value="activeBtn"
-            v-model="test"
-            color="indigo"
-            >
-            <v-btn @click="getDiary()">
-                <span>Project</span>
-                <v-icon>history</v-icon>
-            </v-btn>
-            <v-btn @click="getDiary()">
-                <span>Blog</span>
-                <v-icon>favorite</v-icon>
-            </v-btn>
-            </v-bottom-navigation>
-        </div>
+        
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
 
         <router-link v-show="test==0" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
