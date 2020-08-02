@@ -15,6 +15,9 @@
           type="email"
           style="margin-bottom:16px;"
         ></v-text-field>
+        <div>
+          <v-btn @click="checkId()" style="margin-bottom:16px;" class="primary float-right">이메일 체크</v-btn>
+        </div>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -94,6 +97,7 @@ export default {
   name: 'SignUp',
   data() {
     return {
+      tmpresult:"",
       signupData: {
         email: '',
         pwd: '',
@@ -110,6 +114,23 @@ export default {
     };
   },
   methods: {
+    async checkId(){
+      try{
+        let tmpId=this.signupData.email
+        let tmpres=await this.$api.isthere(tmpId)
+        
+        if (tmpres.length==''){
+          alert('가입가능 ID')
+        }else{
+          alert('가입 불가능한 ID')
+        }
+
+      } catch(e){
+        console.log(e)
+      }
+    },
+
+    
     goback() {
       this.$router.go(-1);
     },

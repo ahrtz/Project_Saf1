@@ -12,6 +12,10 @@ export default {
     async isLoggedIn() {
         return (await axios.get(`${baseURL}/users/is-logged-in`)).data
     },
+    async isthere(id){
+        return (await axios.get(`${baseURL}/users/${id}`)).data
+    }
+    ,
     async login(loginData) {
         return (await axios.post(`${baseURL}/users/login`, loginData, {
             headers: {
@@ -59,5 +63,13 @@ export default {
     },
     async getPost(data) {
         return (await axios.post(`${baseURL}/posts/0`,data)).data
+    }, // 이거 누가 어디서 쓴거지 
+    // 여기서부턴 깃 관련 api 
+    async certgitToken(data){
+        return (await axios.post(`${baseURL}/gits`,data))
+    },//깃 토큰 검증
+    async getCommitList(data){
+        return (await axios.post(`${baseURL}/gits/commits`,data)).data
     }
+
 }
