@@ -22,8 +22,8 @@ public class CommentService {
 		commentDao.addComment(commentDto);
 	}
 
-	public void deleteComment(String id) {
-		commentDao.deleteComment(id);
+	public void deleteComment(String id, int uid) {
+		commentDao.deleteComment(id, uid);
 	}
 	
 }

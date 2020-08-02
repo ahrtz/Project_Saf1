@@ -11,6 +11,14 @@ import java.util.ArrayList;
 public class PostService {
     @Autowired
     private PostDao postDao;
+    
+	public ArrayList<PostDto> getAllPostByUser(String uid, int isProj, String keyword, int isTemp, int limit) {
+		if(uid==null || uid.equals("")) {
+			return postDao.getAllPost(isProj, keyword, isTemp, limit);
+		}else {
+			return postDao.getAllPostByUser(uid, isProj, keyword, isTemp, limit);
+		}
+	}
 
     public ArrayList<PostDto> getPost(int did, String keyword, int isTemp) {
         return postDao.getPost(did, keyword, isTemp);
@@ -28,25 +36,5 @@ public class PostService {
     public void deletePost(int id) {
         postDao.deletePost(id);
     }
-	public ArrayList<PostDto> getAllPostByUser(String uid, int type, String keyword, int isTemp, int limit) {
-		if(uid==null || uid.equals("")) {
-			switch (type) {
-			case 0:
-				return postDao.getAllBlogPost(keyword, isTemp, limit);
-			case 1:
-				return postDao.getAllProjectPost(keyword, isTemp, limit);
-			default:
-				return postDao.getAllDiaryPost(keyword, isTemp, limit);
-			}
-		}else {
-			switch (type) {
-			case 0:
-				return postDao.getAllBlogPostByUser(uid, type, keyword, isTemp, limit);
-			case 1:
-				return postDao.getAllProjectPostByUser(uid, type, keyword, isTemp, limit);
-			default:
-				return postDao.getAllDiaryPostByUser(uid, type, keyword, isTemp, limit);
-			}
-		}
-	}
+
 }

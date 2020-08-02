@@ -32,8 +32,8 @@ public class GitController {
 	@PostMapping("/gits")
 	@ApiOperation(value = "Git AccessToken 검증")
 	public boolean checkOauth(@RequestBody HashMap<String, String> map) {
-		String gitid = map.get("gitid");
-		String accesstoken = map.get("accesstoken");
+		String gitid = map.get("gitId");
+		String accesstoken = map.get("accessToken");
 		helper = new GitHubRestApiHelper();
 		return helper.checkOauth(gitid, accesstoken);
 	}
@@ -64,13 +64,43 @@ public class GitController {
 //		return list;
 //	}
 	
+	@PostMapping("/gits/commits")
+	@ApiOperation(value = "Repoitory 전체 Commit 조회")
+	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
+		List<CommitInfoDto> list = null;
+		int uid = (int) session.getAttribute("id");
+		UserDto user = userService.findUserById(uid);
+		String repoName = map.get("repoName");
+		String sDate = map.get("sDate");
+		String eDate = map.get("eDate");
+		
+		if(user.getIsCertified()==1) {
+			helper = new GitHubRestApiHelper(user.getGitToken());
+			list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+		}else {
+			
+		}
+		return list;
+	}
+	
+//	//Test
+//	@PostMapping("/gits/commits")
+//	@ApiOperation(value = "Repoitory 전체 Commit 조회")
+//	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
+//		List<CommitInfoDto> list = null;
+//		String repoName = map.get("reponame");
+//		helper = new GitHubRestApiHelper(map.get("token"));
+//		list = helper.getAllCommitInfoList(repoName);
+//		return list;
+//	}
+	
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
 		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
 		int uid = (int) session.getAttribute("id");
 		UserDto user = userService.findUserById(uid);
-		String repoName = input.get("reponame");
+		String repoName = input.get("repoName");
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			if(repoName == null) {
@@ -98,39 +128,4 @@ public class GitController {
 //		return map;
 //	}
 	
-	@PostMapping("/gits/commits")
-	@ApiOperation(value = "Repoitory 전체 Commit 조회")
-	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
-		List<CommitInfoDto> list = null;
-		int uid = (int) session.getAttribute("id");
-		UserDto user = userService.findUserById(uid);
-		String repoName = map.get("reponame");
-		String sDate = map.get("sdate");
-		String eDate = map.get("edate");
-		
-		if(user.getIsCertified()==1) {
-			helper = new GitHubRestApiHelper(user.getGitToken());
-			if(sDate == null || eDate == null) {
-				list = helper.getAllCommitInfoList(repoName);
-			}else {
-				list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
-			}
-		}else {
-			
-		}
-		return list;
-	}
-	
-//	//Test
-//	@PostMapping("/gits/commits")
-//	@ApiOperation(value = "Repoitory 전체 Commit 조회")
-//	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
-//		List<CommitInfoDto> list = null;
-//		String repoName = map.get("reponame");
-//		helper = new GitHubRestApiHelper(map.get("token"));
-//		list = helper.getAllCommitInfoList(repoName);
-//		return list;
-//	}
-	
-
 }

@@ -26,7 +26,7 @@ public class CommitController {
 	}
 	
 	@PostMapping("/commits")
-	@ApiOperation(value = "Commit 추가")
+	@ApiOperation(value = "포스트에 Commit 추가")
 	public void addCommit(@RequestBody CommitListDto commit) {
 		commitService.addCommit(commit);
 	}

@@ -15,6 +15,9 @@
           type="email"
           style="margin-bottom:16px;"
         ></v-text-field>
+        <div>
+          <v-btn @click="checkId()" style="margin-bottom:16px;" class="primary float-right">이메일 체크</v-btn>
+        </div>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -55,7 +58,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_id"
+          v-model="signupData.gitid"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -65,7 +68,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_url"
+          v-model="signupData.gitUrl"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -75,7 +78,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_token"
+          v-model="signupData.gitToken"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -94,22 +97,40 @@ export default {
   name: 'SignUp',
   data() {
     return {
+      tmpresult:"",
       signupData: {
         email: '',
         pwd: '',
         pwdconfirm: '',
         img: '',
         nickname: '',
-        git_id: '',
-        git_url: '',
-        git_token: '',
+        gitid: '',
+        gitUrl: '',
+        gitToken: '',
         intro: '',
-        is_social: '0',
-        is_certified: '0',
+        isSocial: '0',
+        isCertified: '0',
       },
     };
   },
   methods: {
+    async checkId(){
+      try{
+        let tmpId=this.signupData.email
+        let tmpres=await this.$api.isthere(tmpId)
+        
+        if (tmpres.length==''){
+          alert('가입가능 ID')
+        }else{
+          alert('가입 불가능한 ID')
+        }
+
+      } catch(e){
+        console.log(e)
+      }
+    },
+
+    
     goback() {
       this.$router.go(-1);
     },

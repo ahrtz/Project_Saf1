@@ -63,7 +63,7 @@ export default {
         console.log(this.ddd.key)
         axios.post("/api/posts/all/",{
             keyword:this.$route.params.key,
-            is_temp:"0",
+            isTemp:"0",
             uid:"",
             type:"2"
         })

@@ -6,6 +6,9 @@
       다이어리 : <v-text-field v-model="blogData.title" type = "text" placeholder="다이어리 이름을 입력하세요"></v-text-field>
       </v-col>
       <v-col cols="12" v-show="isProject">
+      gitName : <v-text-field v-model="blogData.gitName" type = "text" placeholder="깃 레포지토리 이름을 입력하세요 "></v-text-field>
+      </v-col>
+      <v-col cols="12" v-show="isProject">
       gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
       </v-col>
       <v-col cols="12">
@@ -23,7 +26,7 @@
         >
             <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="blogData.sdate"
+                v-model="blogData.sDate"
                 label="시작날짜"
                 prepend-icon="event"
                 readonly
@@ -31,7 +34,7 @@
                 v-on="on"
             ></v-text-field>
             </template>
-            <v-date-picker v-model="blogData.sdate" @input="blogData.menu2 = false"></v-date-picker>
+            <v-date-picker v-model="blogData.sDate" @input="blogData.menu2 = false"></v-date-picker>
         </v-menu>
         </v-col>
       
@@ -68,8 +71,10 @@ export default {
                 intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
                 gitUrl : null, //얘는 블로그에선 필요없는 요소. 맞지?
+                gitName: null,
                 isProj : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
-                sdate: new Date().toISOString().substr(0, 10),
+                sDate: new Date().toISOString().substr(0, 10),
+                eDate: new Date().toISOString().substr(0, 10),
                 modal: false,
                 menu2: false,
             },

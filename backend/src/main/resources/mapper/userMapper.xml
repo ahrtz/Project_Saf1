@@ -19,7 +19,7 @@
     <select id="findUserByEmail" resultType="UserDto">
         select *
         from user
-        where email=#{email}
+        where email like #{email}
     </select>
 
     <update id="updateUser">
