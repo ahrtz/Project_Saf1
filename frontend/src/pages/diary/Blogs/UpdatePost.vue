@@ -77,7 +77,7 @@ export default {
           priority:0,
           cnt_like:0,
           is_temp:0,
-          created_date:new Date().toISOString().substr(0, 10)
+          cDate:new Date().toISOString().substr(0, 10)
         },
         commitList:[
                 {cid:0,

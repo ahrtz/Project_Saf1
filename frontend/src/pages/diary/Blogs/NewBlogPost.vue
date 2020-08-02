@@ -74,9 +74,9 @@ export default {
         title: '',
         content: '',
         priority: 0,
-        cnt_like: 0,
-        is_temp: 0,
-        created_date: new Date().toISOString().substr(0, 10),
+        cntlike: 0,
+        isTemp: 0,
+        cDate: new Date().toISOString().substr(0, 10),
       },
       commitList: [
         { cid: 0, commitcontent: '1번 커밋', checked: false },
