@@ -74,7 +74,7 @@ export default {
         title: '',
         content: '',
         priority: 0,
-        cntlike: 0,
+        cntLike: 0,
         isTemp: 0,
         cDate: new Date().toISOString().substr(0, 10),
       },
