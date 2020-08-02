@@ -14,6 +14,7 @@ module.exports = {
       '/api': {
         // local back end 서버를 돌릴 사람만 사용
         // target: 'http://localhost:3000',
+        // changeOrigin:true,
 
         // 실제 back end 서버를 돌릴 사람만 사용
         target: 'http://i3a110.p.ssafy.io:3000',

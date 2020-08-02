@@ -55,7 +55,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_id"
+          v-model="signupData.gitid"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -65,7 +65,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_url"
+          v-model="signupData.gitUrl"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -75,7 +75,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.git_token"
+          v-model="signupData.gitToken"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -100,12 +100,12 @@ export default {
         pwdconfirm: '',
         img: '',
         nickname: '',
-        git_id: '',
-        git_url: '',
-        git_token: '',
+        gitid: '',
+        gitUrl: '',
+        gitToken: '',
         intro: '',
-        is_social: '0',
-        is_certified: '0',
+        isSocial: '0',
+        isCertified: '0',
       },
     };
   },

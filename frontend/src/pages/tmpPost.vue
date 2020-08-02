@@ -32,10 +32,10 @@ export default {
     return {
       config: {
         uid: '',
-        type: 2,
+        isProj: 2,
         keyword: '',
-        is_temp: 1,
-        limit:0
+        isTemp: 1,
+        limit:10
       },
       tempPost: '',
     };
