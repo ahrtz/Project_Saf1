@@ -123,8 +123,12 @@ export default {
         }
         try{
             let tmpspace1= await this.$api.likedata(this.id.pid)
-            this.likeDummy =tmpspace1 
-            console.log('성공')
+            if (tmpspace1.length ==0){
+                this.likeData.likechecked=false
+            }else{
+                this.likeData.likechecked==true
+            }
+            
         }catch(e){
             console.log(e)
         }
@@ -139,8 +143,11 @@ export default {
         like(){
             if (this.likeData.likechecked==true){
                 this.likeData.likechecked=false
+                this.$api.likeDislike({pid:this.id.pid,status:0})
+                console.log('좋아요')
             }else{
                 this.likeData.likechecked=true
+                this.$api.likeDislike({pid:this.id.pid,status:1})
             }
         },
 

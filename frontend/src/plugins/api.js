@@ -70,6 +70,11 @@ export default {
     },//깃 토큰 검증
     async getCommitList(data){
         return (await axios.post(`${baseURL}/gits/commits`,data)).data
+    },
+    //포스트 디테일 깔때 쓰는거
+    async likeDislike(data){
+        return (await axios.put(`${baseURL}/likes`,data))
     }
+
 
 }
