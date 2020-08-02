@@ -56,17 +56,18 @@
               outlined
               dense
               hide-details
-              v-model="userdata.git_id"
+              v-model="userdata.gitId"
               required
               style="margin-bottom:16px;"
             ></v-text-field>
+            
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git url"
               outlined
               dense
               hide-details
-              v-model="userdata.git_url"
+              v-model="userdata.gitUrl"
               required
               style="margin-bottom:16px;"
             ></v-text-field>
@@ -76,10 +77,15 @@
               outlined
               dense
               hide-details
-              v-model="userdata.git_token"
+              v-model="userdata.gitToken"
               required
               style="margin-bottom:16px;"
             ></v-text-field>
+            <div>
+              <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
+            </div>
+                        
+            
             <v-textarea solo label="자기소개" v-model="userdata.intro"></v-textarea>
           </div>
           <div class="d-flex justify-center align-center account-detail-btn" @click="updateUser">수정</div>
@@ -103,10 +109,12 @@ export default {
   data() {
     return {
       userdata: {},
+      
     };
   },
   created() {
     this.userdata = this.$store.state.user;
+    
   },
   methods: {
     async updateUser() {
@@ -118,6 +126,16 @@ export default {
         console.log(e);
       }
     },
+    async certifyGit(){
+      try{
+        let tmpid=this.userdata.gitId
+        let tmpToken = this.userdata.gitToken
+        await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
+        console.log('성공');
+      }catch(e){
+        console.log(e)
+      }
+    }
   },
 };
 </script>
