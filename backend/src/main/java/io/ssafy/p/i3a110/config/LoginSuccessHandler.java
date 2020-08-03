@@ -47,6 +47,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         HttpSession session = request.getSession();
         session.setAttribute("email", email);
         session.setAttribute("isLoggedIn", true);
-        response.sendRedirect("/google/success-callback");
+        response.sendRedirect("/google/success-callback");  // 301
     }
 }

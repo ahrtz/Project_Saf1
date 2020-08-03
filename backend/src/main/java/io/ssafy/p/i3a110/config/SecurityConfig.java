@@ -21,6 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .antMatcher("/**").authorizeRequests()
+                .antMatchers("/google").authenticated()
+                .anyRequest().permitAll()
+                .and()
                 .oauth2Login()
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler);
