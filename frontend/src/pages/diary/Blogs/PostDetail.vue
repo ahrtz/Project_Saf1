@@ -90,7 +90,7 @@ export default {
         likeData:{
             likechecked:false
         },
-        likedummy:{},
+        likedummy :'',
         commitList:[],
         comments:[
         {
@@ -122,11 +122,17 @@ export default {
             console.log(e)
         }
         try{
-            let tmpspace1= await this.$api.likedata(this.id.pid)
-            if (tmpspace1.length ==0){
-                this.likeData.likechecked=false
+            let tmpspace1= await this.$api.likedatas(this.id.pid)
+                this.likedummy = tmpspace1
+            if (tmpspace1.length!=0){
+            
+            if(tmpspace1.status==1){
+                this.likeData.likechecked=true
             }else{
-                this.likeData.likechecked==true
+                this.likeData.likechecked=false
+            }}
+            else{
+                this.likeData.likechecked=false
             }
             
         }catch(e){
@@ -152,8 +158,9 @@ export default {
             if (this.likeData.likechecked==true){
                 this.likeData.likechecked=false
                 this.$api.likeDislike({pid:this.id.pid,status:0})
-                console.log('좋아요')
+                console.log('좋아요 취소')
             }else{
+                console.log('좋아요')
                 this.likeData.likechecked=true
                 this.$api.likeDislike({pid:this.id.pid,status:1})
             }
@@ -204,9 +211,14 @@ export default {
         },
         likechecking(){
             if (this.likedummy.status==1){
+                
                 this.likeData.likechecked==true
+            }else if(this.likedummy,length==0)
+            {
+                this.likeData.likechecked==false
             }else{
                 this.likeData.likechecked==false
+
             }
         }
     }

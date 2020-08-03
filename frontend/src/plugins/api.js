@@ -39,7 +39,7 @@ export default {
     async postdetail(pid){
         return (await axios.get(`${baseURL}/posts/${pid}`)).data
     },
-    async likedata(pid){
+    async likedatas(pid){
         return(await axios.get(`${baseURL}/likes/${pid}`)).data
     },
     async AddProject(blogData){
