@@ -15,19 +15,18 @@
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
         <v-container v-show="isProj" fluid>
-          여기 들어오는 곳이 다이어리에서 온건지 프로젝트에서 온건지 구분해서 v-show 걸면 될것
-          <div :id="'t'+commit.cid" v-for="(commit,key,index) in commitList" :key="index">
+          <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>
               <input
                 type="checkbox"
-                :id="key"
+                
                 v-model="selected"
-                :value="{'cid':commit.cid,'commit':commit.commitcontent}"
+                :value="commit"
               />
-              <label :for="key">{{commit.commitcontent}}</label>
+              <label :for="commit">{{commit.msg}}</label>
             </p>
           </div>
-          {{post.selected}}
+          
         </v-container>내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
@@ -64,6 +63,7 @@ export default {
   name: 'NewBlogPost',
   data() {
     return {
+      diarys:'',
       tag: '',
       tags: [],
       did: this.$route.params.did,
@@ -78,19 +78,31 @@ export default {
         isTemp: 0,
         cDate: new Date().toISOString().substr(0, 10),
       },
-      commitList: [
-        { cid: 0, commitcontent: '1번 커밋', checked: false },
-        { cid: 1, commitcontent: '2번 커밋', checked: false },
-        { cid: 2, commitcontent: '3번 커밋', checked: false },
-        { cid: 3, commitcontent: '4번 커밋', checked: false },
-        { cid: 4, commitcontent: '5번 커밋', checked: false },
-        { cid: 5, commitcontent: '6번 커밋', checked: false },
-      ],
+      commitList: [],
+
+    
+    
     };
   },
   props: ['value'],
-  created() {
+  async created() {
     this.post.uid = this.$store.state.user.id;
+    try{
+        let diaryid = this.did
+        let tempspace= await this.$api.individualDiary(diaryid)
+        this.diarys = tempspace
+        try{
+          let git= this.diarys.gitName
+          let listCommit = await this.$api.getCommitList({repoName:git})
+          this.commitList=listCommit
+        }catch(e){
+          console.log('커밋쪽 에러')
+        }
+
+
+        }catch(e){
+            console.log(e)
+        }
   },
   methods: {
     clear() {
@@ -113,13 +125,31 @@ export default {
     },
     async writePost() {
       try {
-        this.$api.savePost(this.post);
-        console.log('성공');
+        let post = await this.$api.savePost(this.post);
+        console.log(post.data,'vdas');
+        try{
+        if (this.selected.length !=0){
+          for (var i=0;i<this.selected.length;i++){
+            this.selected[i].uid = this.diarys.uid
+            this.selected[i].pid = post.data
+            this.selected[i].sha=this.selected[i].sha1
+            this.selected[i].date=this.selected[i].date.substr(0,10)
+            delete this.selected[i].sha1
+            await this.$api.addCommit(this.selected[i])
+            console.log('성공',i)
+            }
+        }
         this.$router.go(-1);
+        console.log(this.selected)
+      }catch(e){
+        console.log(e)
+      }
+
       } catch (e) {
         console.log(e);
         console.log('실패');
       }
+      
     },
     writetmpPost() {
       this.post.is_temp = 1;

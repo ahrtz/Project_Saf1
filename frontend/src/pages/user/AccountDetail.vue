@@ -131,7 +131,8 @@ export default {
         let tmpid=this.userdata.gitId
         let tmpToken = this.userdata.gitToken
         await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
-        console.log('성공');
+        this.userdata.isCertified = 1
+        alert('인증되었습니다')
       }catch(e){
         console.log(e)
       }

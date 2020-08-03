@@ -30,6 +30,12 @@ export default {
         return (await axios.post(`${baseURL}/posts/${did}`,configdata)).data
 
         },
+    async individualDiary(id){
+        return (await axios.get(`${baseURL}/diaries/${id}`)).data
+    }
+    
+    ,
+
     async postdetail(pid){
         return (await axios.get(`${baseURL}/posts/${pid}`)).data
     },
@@ -42,6 +48,7 @@ export default {
     async getDiaries(uid,params){
         return(await axios.post(`${baseURL}/diaries/${uid}`,params)).data
     },
+    
 
     async userUpdate(userdata){
         return (await axios.put(`${baseURL}/users`,userdata))
@@ -109,6 +116,16 @@ export default {
     // id 는 코멘트의 id 임
     async deleteComment(id){
         return (await axios.delete(`${baseURL}/comments/${id}`))
+    },
+    async getRepoData(){
+        return (await axios.get(`${baseURL}/gits/repositories`)).data
+    },
+
+    async addCommit(data){
+        return (await axios.post(`${baseURL}/commits`,data))
+    },
+    async getPostCommit(pid){
+        return (await axios.get(`${baseURL}/commits/${pid}`)).data
     }
 
 }

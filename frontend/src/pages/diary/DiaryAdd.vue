@@ -5,12 +5,19 @@
       <v-col cols="12">
       다이어리 : <v-text-field v-model="blogData.title" type = "text" placeholder="다이어리 이름을 입력하세요"></v-text-field>
       </v-col>
-      <v-col cols="12" v-show="isProject">
+      <!-- <v-col cols="12" v-show="isProject">
       gitName : <v-text-field v-model="blogData.gitName" type = "text" placeholder="깃 레포지토리 이름을 입력하세요 "></v-text-field>
       </v-col>
       <v-col cols="12" v-show="isProject">
       gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
-      </v-col>
+      </v-col> -->
+      <v-radio-group v-model="repoChecked">
+        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo" >
+        
+        </v-radio>
+        
+      </v-radio-group>
+
       <v-col cols="12">
             대표 이미지
             <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
@@ -78,21 +85,41 @@ export default {
                 modal: false,
                 menu2: false,
             },
+            repoData:{
+
+            },
+            repoChecked:{
+                
+            }
         }
     },
-    created(){
+    watch:{
+        repoChecked(){
+            this.blogData.gitUrl = this.repoChecked.url
+            this.blogData.gitName = this.repoChecked.repoName
+        }
+    },
+    async created(){
       this.blogData.uid= this.$store.state.user.id
+
+        try{
+            let tmpspace = await this.$api.getRepoData()
+            console.log(tmpspace)
+            this.repoData = tmpspace
+        }catch(e){
+            console.log(e)
+        }
+        if (this.$route.path[7] =='p'){
+            this.blogData.isProj=1
+            return true
+        }else{
+            this.blogData.isProj=0
+            return false
+        }
     },
     computed:{
         
         isProject(){
-            if (this.$route.path[7] =='p'){
-                this.blogData.isProj=1
-                return true
-            }else{
-                this.blogData.isProj=0
-                return false
-            }
             
 
         },
@@ -100,6 +127,7 @@ export default {
         
     },
     methods:{
+    
     goback(){
             this.$router.go(-1)
         },
