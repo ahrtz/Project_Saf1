@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import io.ssafy.p.i3a110.apihelper.GitHubRestApiHelper;
 import io.ssafy.p.i3a110.dto.CommitInfoDto;
 import io.ssafy.p.i3a110.dto.RepositoryInfoDto;
 import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.DiaryService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -38,19 +41,20 @@ public class GitController {
 		return helper.checkOauth(gitid, accesstoken);
 	}
 	
+	@Auth
 	@GetMapping("/gits/repositories")
 	@ApiOperation(value = "사용자 Repoitory 전체 조회")
-	public List<RepositoryInfoDto> getAllRepositories(HttpSession session) {
+	public Object getAllRepositories(HttpSession session) {
 		List<RepositoryInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			list = helper.getAllRepositoryInfo();
+			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
-			
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return list;
 	}
 	
 //	//Test
@@ -64,9 +68,10 @@ public class GitController {
 //		return list;
 //	}
 	
+	@Auth
 	@PostMapping("/gits/commits")
 	@ApiOperation(value = "Repoitory 전체 Commit 조회")
-	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
+	public Object getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
 		List<CommitInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
@@ -77,10 +82,10 @@ public class GitController {
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
-			
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return list;
 	}
 	
 //	//Test
@@ -94,9 +99,10 @@ public class GitController {
 //		return list;
 //	}
 	
+	@Auth
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
-	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
+	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
 		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
@@ -108,10 +114,10 @@ public class GitController {
 			}else {
 				map = helper.getCommitCnt(repoName);
 			}
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		}else {
-			
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return map;
 	}
 	
 //	//Test

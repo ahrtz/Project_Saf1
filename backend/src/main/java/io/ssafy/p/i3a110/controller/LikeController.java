@@ -1,15 +1,20 @@
 package io.ssafy.p.i3a110.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.ssafy.p.i3a110.dto.LikeDto;
 import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @RestController
 public class LikeController {
@@ -24,6 +29,7 @@ public class LikeController {
         return likeService.getLikeCnt(pid);
     }
 
+    @Auth
     @GetMapping("/likes/{pid}")
     @ApiOperation(value = "사용자 포스트 좋아요 여부 조회")
     public LikeDto getLike(HttpSession httpSession, @PathVariable int pid) {
@@ -34,6 +40,7 @@ public class LikeController {
         return likeService.getLike(uid, pid);
     }
 
+    @Auth
     @PutMapping("/likes")
     @ApiOperation(value = "좋아요 수정")
     public void updateLike(HttpSession httpSession, @RequestBody LikeDto like) {
@@ -46,7 +53,6 @@ public class LikeController {
         }else {
         	likeService.updateLike(like);
         }
-
     }
 }
 

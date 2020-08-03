@@ -24,4 +24,8 @@ public class CommitService {
 	public void deleteCommit(String id) {
 		commitDao.deleteCommit(id);
 	}
+	
+	public int getUidById(String id) {
+		return commitDao.getUidById(id);
+	}
 }

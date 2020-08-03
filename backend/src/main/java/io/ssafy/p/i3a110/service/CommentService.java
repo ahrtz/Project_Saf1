@@ -25,5 +25,9 @@ public class CommentService {
 	public void deleteComment(String id, int uid) {
 		commentDao.deleteComment(id, uid);
 	}
+
+	public int getUidById(String id) {
+		return commentDao.getUidById(id);
+	}
 	
 }

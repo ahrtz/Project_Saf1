@@ -20,6 +20,12 @@
 		from commit_list
 		where id = #{id}
 	</delete>
+	
+	<select id="getUidById">
+		select id
+		from commit_list
+		where uid = #{uid}
+	</select>
 </mapper>    
     
     
