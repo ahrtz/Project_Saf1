@@ -160,8 +160,8 @@ export default {
       axios
         .post('/api/posts/all/', {
           uid: '',
-          type: '0',
-          is_temp: '0',
+          isProj: '0',
+          isTemp: '0',
           keyword: '',
           limit: '1',
         })
@@ -173,8 +173,8 @@ export default {
       axios
         .post('/api/posts/all/', {
           uid: '',
-          type: '1',
-          is_temp: '0',
+          isProj: '1',
+          isTemp: '0',
           keyword: '',
           limit: '2',
         })
@@ -190,8 +190,8 @@ export default {
       axios
         .post('/api/posts/all/', {
           uid: '',
-          type: '1',
-          is_temp: '0',
+          isProj: '1',
+          isTemp: '0',
           keyword: '',
           limit: this.limit_proj + 10,
         })
@@ -214,8 +214,8 @@ export default {
       axios
         .post('/api/posts/all/', {
           uid: '',
-          type: '0',
-          is_temp: '0',
+          isProj: '0',
+          isTemp: '0',
           keyword: '',
           limit: this.limit_blog + 10,
         })
