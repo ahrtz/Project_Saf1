@@ -9,4 +9,5 @@ public interface LikeDao {
     public int getLikeCnt(int pid);
     public LikeDto getLike(int uid, int pid);
     public void updateLike(LikeDto like);
+	public void makeLike(LikeDto like);
 }

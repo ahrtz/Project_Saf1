@@ -8,6 +8,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,24 +71,17 @@ public class PostController {
 
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
-    public int createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public Object createPost(HttpSession httpSession, @RequestBody PostDto post) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
         System.out.println( " Timestamp : " + ts);
-
-        PostDto post = new PostDto();
+        
         post.setUid(user.getId());
-        post.setDid(Integer.parseInt(map.get("did")));
-        post.setTitle(map.get("title"));
-        post.setContent(map.get("content"));
         post.setCDate(ts.toString());
-        post.setPriority(Integer.parseInt(map.get("priority")));
-        post.setCntLike(0);
-        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
         postService.createPost(post);
-        return post.getId();
+		return new ResponseEntity<>(post.getId(), HttpStatus.OK);
     }
 
     @PutMapping("/posts")

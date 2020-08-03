@@ -20,7 +20,15 @@
         update likes
         set
         status=#{status}
+        where uid = #{uid}
+        and pid = #{pid}
     </update>
+    
+    <insert id="makeLike">
+    	insert into likes
+    	(uid, pid, status)
+    	values (#{uid}, #{pid}, #{status})
+    </insert>
     
 </mapper>
 

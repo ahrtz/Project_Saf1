@@ -7,5 +7,5 @@ public class CommentDto {
     private int uid;
     private int pid;
     private String content;
-    private String date;
+    private String cDate;
 }

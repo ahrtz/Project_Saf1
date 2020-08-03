@@ -21,4 +21,8 @@ public class LikeService {
     public void updateLike(LikeDto like) {
         likeDao.updateLike(like);
     }
+    
+    public void makeLike(LikeDto like) {
+    	likeDao.makeLike(like);
+    }
 }
