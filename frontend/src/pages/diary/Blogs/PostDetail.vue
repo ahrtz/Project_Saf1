@@ -48,9 +48,10 @@
           <br>
           댓글
 
-          <div v-for="comment in comments" :key="comment.id" @click="commenterase(comment.id)">
-
-              <p class="my-0 text-end">작성자 : {{comment.uid}} </p>
+          <div v-for="comment in comments" :key="comment.id">
+              <p class="my-0 text-start">작성자 : {{comment.uid}} </p>
+              <v-btn class ="ma-2 text-end" tile color="indigo" style="float:right; color:white" v-show="isWritten(comment.uid)" @click="commenterase(comment.id)"> 댓글 삭제</v-btn>
+              <!-- <p class="my-0 text-end">작성자 : {{comment.uid}} </p> -->
               <v-text-field
               filled
               v-model="comment.content"
@@ -218,21 +219,29 @@ export default {
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
             
-            console.log(this.commentData)
+            //console.log(this.commentData)
             this.$api.createComment(this.commentData)
             this.getComment()
             location.reload()
         },
         commenterase(commentid){
-            var isDelete = confirm("정말로 이 댓글을 삭제하시겠습니까?")
-            if(isDelete)
-            {
-                console.log(commentid)
+                console.log("CKCK commentid")
                 this.$api.deleteComment(commentid)
                 this.getComment()
                 location.reload()
-            }else{
             
+        },
+        isWritten(authorid){
+            this.uid=this.$store.state.user.id
+            
+            if( authorid== this.uid)
+            {
+                console.log("ckck 같다.")
+                return true;
+            }else
+            {
+                console.log("ckck 다르다.")
+                return false;
             }
         },
         async deleteP(postid){
