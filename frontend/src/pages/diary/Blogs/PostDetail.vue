@@ -43,12 +43,12 @@
           <br>
           댓글
 
-          <div v-for="comment in comments" :key="comment.cid">
+          <div v-for="comment in comments" :key="comment.id">
 
-              <p class="my-0 text-end">작성자 : {{comment.user}} </p>
+              <p class="my-0 text-end">작성자 : {{comment.uid}} </p>
               <v-text-field
               filled
-              v-model="comment.commentcontent"
+              v-model="comment.content"
               readonly />
           </div>
           <div>
@@ -83,6 +83,9 @@ export default {
         commitcheck:false,
         commentData:
                 {
+                    uid:'',
+                    pid:"",
+                    cDate:'',
                     content:''
                 }
             ,
@@ -92,28 +95,35 @@ export default {
         },
         likedummy:{},
         commitList:[],
-        comments:[
-        {
-        cid:0,
-        commentcontent:'1번 댓글',
-        user:'1번'
-        },
-        {
-        cid:1,
-        commentcontent:'2번 댓글',
-        user:'2번'
-        },
-        {
-        cid:2,
-        commentcontent:'3번 댓글',
-        user:'1번'
-        },
-    ]
+        comments : [],
+    //     comments:[
+    //     {
+    //     cid:0,
+    //     commentcontent:'1번 댓글',
+    //     user:'1번'
+    //     },
+    //     {
+    //     cid:1,
+    //     commentcontent:'2번 댓글',
+    //     user:'2번'
+    //     },
+    //     {
+    //     cid:2,
+    //     commentcontent:'3번 댓글',
+    //     user:'1번'
+    //     },
+    // ]
 }
     },
     async created(){
         this.uid=this.$store.state.user.id
         
+        
+
+        //this.getcDate() //test
+
+        this.getComment();
+
         try{
             let tmpspace = await this.$api.postdetail(this.id.pid)
             this.tmp =tmpspace
@@ -145,6 +155,28 @@ export default {
     }
     ,
     methods:{
+        async getComment(){
+            try{
+                let temp = await this.$api.getCommentlist(this.id.pid)
+                this.comments = temp
+                console.log('Comment 목록 가져오기 성공')
+            }
+            catch(e)
+            {
+                console.log(e)
+            }
+        },
+        getcDate(){
+            var d = new Date()
+           
+            var ymd = d.toISOString().substr(0,10)
+            var timestamp = ("00" + d.getHours()).slice(-2) + ':' + ("00" + d.getMinutes()).slice(-2)
+                            + ':' + ("00" + d.getSeconds()).slice(-2)
+            
+            this.commentData.cDate = ymd + ' ' + timestamp
+            //console.log(this.commentData.cDate)
+        }
+        ,
         goback(){
             this.$router.go(-1)
         },
@@ -178,7 +210,13 @@ export default {
             //     .then(alert())
         },
         commentwrite(){
-            alert('준비중입니다.')
+            //alert('준비중입니다.')
+            this.commentData.uid=this.$store.state.user.id
+            // this.getcDate()
+            
+            console.log(this.commentData)
+            this.$api.createComment(this.commentData)
+            this.getComment()
         },
         async deleteP(postid){
             try{
@@ -208,6 +246,9 @@ export default {
             }else{
                 this.likeData.likechecked==false
             }
+        },
+        putpid(){
+            return this.commentData.pid = this.id.pid
         }
     }
 }
