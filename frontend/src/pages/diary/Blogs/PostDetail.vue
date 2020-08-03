@@ -48,7 +48,7 @@
           <br>
           댓글
 
-          <div v-for="comment in comments" :key="comment.id">
+          <div v-for="comment in comments" :key="comment.id" @click="commenterase(comment.id)">
 
               <p class="my-0 text-end">작성자 : {{comment.uid}} </p>
               <v-text-field
@@ -106,8 +106,10 @@ export default {
     },
     async created(){
         this.uid=this.$store.state.user.id
-        this.getComment();
         
+        //comment 데이터 가져오기
+        this.getComment();
+
         //post 데이터 가져오기
         try{
             let tmpspace = await this.$api.postdetail(this.id.pid)
@@ -219,6 +221,19 @@ export default {
             console.log(this.commentData)
             this.$api.createComment(this.commentData)
             this.getComment()
+            location.reload()
+        },
+        commenterase(commentid){
+            var isDelete = confirm("정말로 이 댓글을 삭제하시겠습니까?")
+            if(isDelete)
+            {
+                console.log(commentid)
+                this.$api.deleteComment(commentid)
+                this.getComment()
+                location.reload()
+            }else{
+            
+            }
         },
         async deleteP(postid){
             try{
