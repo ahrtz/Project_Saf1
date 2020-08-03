@@ -63,11 +63,11 @@
         where id=#{id}
     </select>
 
-    <insert id="createPost" parameterType="PostDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createPost" useGeneratedKeys="true" keyProperty="id">
         insert into post
-        (id, did, uid, title, content, c_date, priority, cnt_like, is_temp)
+        (did, uid, title, content, c_date, priority, cnt_like, is_temp)
         values
-        (#{id}, #{did}, #{uid}, #{title}, #{content}, #{cDate}, #{priority}, #{cntLike}, #{isTemp})
+        (#{did}, #{uid}, #{title}, #{content}, #{cDate}, #{priority}, #{cntLike}, #{isTemp})
     </insert>
 
     <update id="updatePost">

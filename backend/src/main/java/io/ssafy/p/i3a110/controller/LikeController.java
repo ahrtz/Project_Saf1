@@ -36,19 +36,17 @@ public class LikeController {
 
     @PutMapping("/likes")
     @ApiOperation(value = "좋아요 수정")
-    public void updateLike(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
-        System.out.println("#1");
-        int uid = (int) httpSession.getAttribute("id");
-        System.out.println(httpSession.toString());
-        System.out.println("#2");
-        int pid = Integer.parseInt(map.get("pid"));
-        System.out.println("#3");
-        LikeDto like = likeService.getLike(uid, pid);
-        System.out.println("#4");
-        like.setStatus(Integer.parseInt(map.get("status")));
-        System.out.println("#5");
+    public void updateLike(HttpSession httpSession, @RequestBody LikeDto like) {
+    	String email = (String) httpSession.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	int uid = user.getId();
+    	like.setUid(uid);
+        if(likeService.getLike(uid, like.getPid()) == null) {
+        	likeService.makeLike(like);
+        }else {
+        	likeService.updateLike(like);
+        }
 
-        likeService.updateLike(like);
     }
 }
 
