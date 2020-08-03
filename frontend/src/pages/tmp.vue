@@ -56,18 +56,32 @@ export default {
     data(){
         return{
             ddd:this.$route.params,
+            s_data:{
+              keyword:"",
+              isTemp:"0",
+              limit:"0",
+              isProj:"2"
+            },
             searchResult:{}
         }
     },
-    created(){
-        console.log(this.ddd.key)
-        axios.post("/api/posts/all/",{
-            keyword:this.$route.params.key,
-            isTemp:"0",
-            uid:"",
-            type:"2"
-        })
-        .then(res=> (this.searchResult = res.data))
+    async created(){
+        this.s_data.keyword = this.ddd.key;
+        try{
+          let tmpspace = await this.$api.searchTemp(this.s_data)
+          this.searchResult =tmpspace.data;
+          console.log('성공')
+        }catch(e){
+            console.log(e)
+        }
+        // console.log(this.ddd.key)
+        // axios.post("/api/posts/all/",{
+        //     keyword:this.$route.params.key,
+        //     isTemp:"0",
+        //     uid:"",
+        //     type:"2"
+        // })
+        // .then(res=> (this.searchResult = res.data))
         console.log(this.searchResult);
     }
 }
