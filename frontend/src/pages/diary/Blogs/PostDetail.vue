@@ -23,10 +23,10 @@
               <div v-show="checkcommit">
                 <p v-show="checkcommit">커밋리스트</p>
                 
-                <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.commitcontent" v-for="commit in commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
-                <v-btn v-show="commitcheck==false" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
+                <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.msg" v-for="commit in commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
+                <v-btn v-show="commitcheck==false & commitList.length>5" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
 
-                <v-checkbox  class="my-0" v-show="commitList && commitcheck == true" v-for="commit in commitList" :key="commit.cid" v-model="commit.checked" :label="commit.commitcontent" readonly></v-checkbox>
+                <v-checkbox  class="my-0" v-show="commitList && commitcheck == true" v-for="commit in commitList" :key="commit.cid" v-model="commit.checked" :label="commit.msg" readonly></v-checkbox>
                 <v-btn v-show='commitcheck==true' class="ma-2" tile color="indigo" dark @click="commitwide()">접기</v-btn>
                 <br>
               </div>
@@ -129,6 +129,14 @@ export default {
                 this.likeData.likechecked==true
             }
             
+        }catch(e){
+            console.log(e)
+        }
+        try{
+            let tmpspace2 = await this.$api.getPostCommit(this.id.pid)
+            this.commitList= tmpspace2
+            console.log('커밋 부르기 성공')
+
         }catch(e){
             console.log(e)
         }
