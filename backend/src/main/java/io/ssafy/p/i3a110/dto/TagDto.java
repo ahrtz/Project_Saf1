@@ -5,5 +5,5 @@ import lombok.Data;
 public class TagDto {
     private int id;
     private int pid;
-    private int name;
+    private String name;
 }
