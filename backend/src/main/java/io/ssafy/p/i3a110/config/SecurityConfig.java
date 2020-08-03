@@ -1,6 +1,5 @@
 package io.ssafy.p.i3a110.config;
 
-import io.ssafy.p.i3a110.common.SocialType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,21 +13,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private GoogleLoginSuccessHandler googleLoginSuccessHandler;
+    private LoginSuccessHandler loginSuccessHandler;
 
     @Autowired
-    private GoogleLoginFailureHandler googleLoginFailureHandler;
+    private LoginFailureHandler loginFailureHandler;
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
-                .antMatcher("/**").authorizeRequests()
-                .antMatchers("").permitAll()
-                .anyRequest().authenticated()
-                .and()
                 .oauth2Login()
-                .successHandler(googleLoginSuccessHandler)
-                .failureHandler(googleLoginFailureHandler);
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler);
     }
 }

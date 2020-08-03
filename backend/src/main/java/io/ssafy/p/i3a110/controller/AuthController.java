@@ -1,9 +1,8 @@
 package io.ssafy.p.i3a110.controller;
 
-import io.ssafy.p.i3a110.config.GoogleLoginSuccessHandler;
+import io.ssafy.p.i3a110.config.LoginSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,12 @@ import java.io.IOException;
 public class AuthController {
 
     @Autowired
-    private GoogleLoginSuccessHandler googleLoginSuccessHandler;
+    private LoginSuccessHandler loginSuccessHandler;
 
     @GetMapping("/google")
     public void loginGoogle(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        googleLoginSuccessHandler.onAuthenticationSuccess(request, response, authentication);
+        loginSuccessHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
     @GetMapping("/auth")
