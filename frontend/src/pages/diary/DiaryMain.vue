@@ -126,7 +126,7 @@ export default {
 
             try{
 
-                let tempspace= await this.$api.getDiaries(this.uid,{type:(this.test+1)%2,keyword:""})
+                let tempspace= await this.$api.getDiaries(this.uid,{isProj:(this.test+1)%2,keyword:""})
                 this.diarys = tempspace
                 console.log('성공')
             }catch(e){
