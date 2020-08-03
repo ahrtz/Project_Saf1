@@ -42,8 +42,8 @@ public class GitController {
 	@ApiOperation(value = "사용자 Repoitory 전체 조회")
 	public List<RepositoryInfoDto> getAllRepositories(HttpSession session) {
 		List<RepositoryInfoDto> list = null;
-		int uid = (int) session.getAttribute("id");
-		UserDto user = userService.findUserById(uid);
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			list = helper.getAllRepositoryInfo();
@@ -68,8 +68,8 @@ public class GitController {
 	@ApiOperation(value = "Repoitory 전체 Commit 조회")
 	public List<CommitInfoDto> getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
 		List<CommitInfoDto> list = null;
-		int uid = (int) session.getAttribute("id");
-		UserDto user = userService.findUserById(uid);
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
 		String repoName = map.get("repoName");
 		String sDate = map.get("sDate");
 		String eDate = map.get("eDate");
@@ -98,13 +98,13 @@ public class GitController {
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public HashMap<Date, Integer> getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
 		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
-		int uid = (int) session.getAttribute("id");
-		UserDto user = userService.findUserById(uid);
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
 		String repoName = input.get("repoName");
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			if(repoName == null) {
-				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(uid));
+				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
 			}else {
 				map = helper.getCommitCnt(repoName);
 			}
