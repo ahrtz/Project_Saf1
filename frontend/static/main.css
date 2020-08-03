@@ -1,0 +1,22 @@
+.d-flex:not(.flex-column){
+    flex-grow: 1;
+}
+
+* {
+    font-family: "NanumSquare";
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}

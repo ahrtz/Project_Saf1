@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.ScrapDao">
+
+	<select id="getAllScrapsByUser" resultType="ScrapDTo">
+		select *
+		from scrap
+		where uid = #{uid}
+	</select>
+	
+	<insert id="createScrap">
+		insert into scrap (uid, pid, status)
+		values (#{uid}, #{pid}, #{status})
+	</insert>
+
+	<delete id="deleteScrap">
+		delete
+		from scrap
+		where uid = #{uid}
+		and pid = #{pid}
+	</delete>
+</mapper>    
+    
+    
+    
+    
+    
+    

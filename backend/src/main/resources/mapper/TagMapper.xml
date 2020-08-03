@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.TagDao">
+
+	<select id="getAllTagsByPost" resultType = "TagDto">
+		select *
+		from tag
+		where pid = #{pid}
+	</select>
+	
+	<select id="getTagsByKeyword" resultType = "TagDto">
+		select *
+		from tag
+		where name like concat('%',#{keyword},'%')
+	</select>
+	
+	<select id="getTopNTags" resultType = "TagDto">
+		select name, count(*) cnt
+		from tag
+		group by name
+		order by cnt
+		limit #{num}
+	</select>
+	
+	<insert id="addTag" parameterType="TagDto">
+		insert into tag(pid, name)
+		values (#{pid}, #{name})
+	</insert>
+	
+	<delete id="deleteTag">
+		delete
+		from tag
+		where id = #{id}
+	</delete>
+</mapper>    
+    
+    
+    
+    
+    
+    

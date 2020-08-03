@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.DiaryDao">
+
+	<select id="getAllDiariesByKeyword" resultType="DiaryDto">
+		select *
+		from diary
+		where uid = #{uid}
+		and title like concat('%',#{keyword},'%')
+		<if test='isProj != "2"'>and is_proj = #{isProj}</if>
+	</select>
+
+	<select id="getDiary" resultType="DiaryDto">
+		select *
+		from diary
+		where id = #{id}
+	</select>
+
+	<insert id="createDiary" parameterType="DiaryDto">
+		insert into diary 
+		(uid, title, intro,	img, git_name, git_url, is_proj, s_date, e_date)
+		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
+	</insert>
+
+	<update id="updateDiary" parameterType="DiaryDto">
+		update diary 
+		set 
+		uid = #{uid},
+		title = #{title},
+		intro = #{intro},
+		img = #{img},
+		git_name = #{gitName},
+		git_url = #{gitUrl},
+		is_proj = #{isProj},
+		s_date = #{sDate},
+		e_date = #{eDate}
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteDiary">
+		delete
+		from diary
+		where id = #{id}
+	</delete>
+	
+	<select id="getAllWrittenProjcetName">
+		select git_name
+		from diary
+		where uid = #{uid} and is_proj = true
+	</select>
+</mapper>
+
+
+
+
+

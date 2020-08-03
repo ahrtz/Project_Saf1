@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.UserDao">
+
+    <select id="findUsers" resultType="hashmap">
+        select *
+        from user
+        where nickname like concat('%',#{keyword},'%')
+    </select>
+
+    <select id="findUserById" resultType="UserDto">
+        select *
+        from user
+        where id=#{id}
+    </select>
+
+    <select id="findUserByEmail" resultType="UserDto">
+        select *
+        from user
+        where email like #{email}
+    </select>
+
+    <update id="updateUser">
+        update user
+        set
+        email=#{email},
+        pwd=#{pwd},
+        nickname=#{nickname},
+        git_id=#{gitId},
+        git_url=#{gitUrl},
+        intro=#{intro},
+        img=#{img},
+        git_token=#{gitToken},
+        is_social=#{isSocial},
+        is_certified=#{isCertified}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from user
+        where id=#{id}
+    </delete>
+
+    <insert id="insertUser">
+        insert into user
+        (email, pwd, nickname, git_id, git_url, intro, img, git_token, is_social, is_certified)
+        values
+        (#{email}, #{pwd}, #{nickname}, #{gitId}, #{gitUrl}, #{intro}, #{img}, #{gitToken}, #{isSocial}, #{isCertified})
+    </insert>
+
+</mapper>
+
+
+
+
+

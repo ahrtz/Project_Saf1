@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.PostDao">
+
+    <select id="getPost" resultType="hashmap">
+        select *
+        from post
+        where did=#{did}
+        and title like concat("%",#{keyword},"%")
+        and is_temp=#{isTemp}
+    </select>
+
+	<select id="getPostByTitle" resultType="PostDto">
+		select *
+		from post
+		where title like concat("%",#{keyword},"%")
+	</select>
+	
+	<select id="getAllPost" resultType="PostDto">
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
+    	<if test='isProj != "2"'>and d.is_proj = #{isProj}</if>
+    	order by p.c_date desc
+    	<if test='limit!="0"'>limit #{limit}</if>
+	</select>
+	
+	<select id="getAllPostByUser" resultType="PostDto">
+    	select p.id id,
+    		   p.did did,
+    		   p.uid uid,
+    		   p.title title,
+    		   p.content content,
+    		   p.c_date c_date,
+    		   p.priority priority,
+    		   p.cnt_like cnt_like,
+    		   p.is_temp is_temp
+    	from diary d join post p
+    	on d.id = p.did
+    	where p.title like concat("%",#{keyword},"%")
+    	and is_temp=#{isTemp}
+    	and p.uid = #{uid}
+    	<if test='isProj != "2"'>and d.is_proj = #{isProj}</if>
+    	order by p.c_date desc
+    	<if test='limit!="0"'>limit #{limit}</if>
+	</select>
+
+    <select id="getPostById" resultType="PostDto">
+        select *
+        from post
+        where id=#{id}
+    </select>
+
+    <insert id="createPost">
+        insert into post
+        (did, uid, title, content, c_date, priority, cnt_like, is_temp)
+        values
+        (#{did}, #{uid}, #{title}, #{content}, #{cDate}, #{priority}, #{cntLike}, #{isTemp})
+    </insert>
+
+    <update id="updatePost">
+        update post
+        set
+        uid = #{uid},
+        did = #{did},
+        title = #{title},
+        content = #{content},
+        c_date = #{cDate},
+        priority = #{priority},
+        cnt_like = #{cntLike},
+        is_temp = #{isTemp}
+        where id=#{id}
+    </update>
+
+    <delete id="deletePost">
+        delete from post
+        where id=#{id}
+    </delete>
+
+</mapper>
+
+
+
+
+
