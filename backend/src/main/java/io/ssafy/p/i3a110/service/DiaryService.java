@@ -26,8 +26,8 @@ public class DiaryService {
 		return diaryDao.getDiary(id);
 	}
 
-	public void createDiary(DiaryDto diary) {
-		diaryDao.createDiary(diary);
+	public int createDiary(DiaryDto diary) {
+		return diaryDao.createDiary(diary);
 	}
 
 	public void updateDiary(DiaryDto diary) {

@@ -18,7 +18,7 @@ public interface PostDao {
     
     public PostDto getPostByTitle(String keyword);
     
-    public void createPost(PostDto post);
+    public int createPost(PostDto post);
     
     public void updatePost(PostDto post);
     
