@@ -15,7 +15,7 @@ public interface DiaryDao {
 
 	public DiaryDto getDiary(String id);
 
-	public void createDiary(DiaryDto diary);
+	public int createDiary(DiaryDto diary);
 
 	public void updateDiary(DiaryDto diary);
 

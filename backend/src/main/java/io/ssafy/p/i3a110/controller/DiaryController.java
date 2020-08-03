@@ -45,7 +45,8 @@ public class DiaryController {
     @PostMapping("/diaries")
     @ApiOperation(value = "다이어리 생성")
     public void createDiary(@RequestBody DiaryDto diary) {
-    	diaryService.createDiary(diary);
+    	System.out.println(diary.toString());
+    	System.out.println(diaryService.createDiary(diary));
     }
 
     // Diary 수정

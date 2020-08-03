@@ -69,7 +69,7 @@ public class PostController {
 
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
-    public void createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public int createPost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
@@ -85,8 +85,8 @@ public class PostController {
         post.setPriority(Integer.parseInt(map.get("priority")));
         post.setCntLike(0);
         post.setIsTemp(Integer.parseInt(map.get("isTemp")));
-
         postService.createPost(post);
+        return post.getId();
     }
 
     @PutMapping("/posts")
