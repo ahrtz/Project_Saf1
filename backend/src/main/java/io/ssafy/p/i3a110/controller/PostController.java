@@ -2,21 +2,31 @@ package io.ssafy.p.i3a110.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.http.request.GetPostRequest;
+import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
@@ -69,6 +79,7 @@ public class PostController {
         return postService.getPostById(id);
     }
 
+    @Auth
     @PostMapping("/posts")
     @ApiOperation(value = "포스트 작성")
     public Object createPost(HttpSession httpSession, @RequestBody PostDto post) {
@@ -84,25 +95,39 @@ public class PostController {
 		return new ResponseEntity<>(post.getId(), HttpStatus.OK);
     }
 
+    @Auth
     @PutMapping("/posts")
     @ApiOperation(value = "포스트 수정")
-    public void updatePost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public Object updatePost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
 
         PostDto post = postService.getPostById(Integer.parseInt(map.get("id")));
-
-        post.setTitle(map.get("title"));
-        post.setContent(map.get("content"));
-        post.setPriority(Integer.parseInt(map.get("priority")));
-        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
         
-        postService.updatePost(post);
+        if(user.getId() == post.getUid()) {
+	        post.setTitle(map.get("title"));
+	        post.setContent(map.get("content"));
+	        post.setPriority(Integer.parseInt(map.get("priority")));
+	        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
+	        postService.updatePost(post);
+	        return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-
+    
+    @Auth
     @DeleteMapping("/posts/{id}")
     @ApiOperation(value = "포스트 삭제")
-    public void deletePost(@PathVariable int id) {
-        postService.deletePost(id);
+    public Object deletePost(HttpSession session, @PathVariable int id) {
+        String email = (String) session.getAttribute("email");
+        UserDto user = userService.findUserByEmail(email);
+        
+        if(user.getId() == postService.getPostById(id).getUid()) {
+        	postService.deletePost(id);
+        	return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

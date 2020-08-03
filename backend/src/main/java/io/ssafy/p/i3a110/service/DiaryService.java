@@ -26,8 +26,8 @@ public class DiaryService {
 		return diaryDao.getDiary(id);
 	}
 
-	public int createDiary(DiaryDto diary) {
-		return diaryDao.createDiary(diary);
+	public void createDiary(DiaryDto diary) {
+		diaryDao.createDiary(diary);
 	}
 
 	public void updateDiary(DiaryDto diary) {
@@ -41,5 +41,9 @@ public class DiaryService {
 	// GitHub API 용
 	public List<String> getAllWrittenProjectName(int uid){
 		return diaryDao.getAllWrittenProjcetName(uid);
+	}
+
+	public int getUidById(int id) {
+		return diaryDao.getUidById(id);
 	}
 }

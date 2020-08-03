@@ -15,4 +15,6 @@ public interface CommentDao {
 
 	void deleteComment(String id, int uid);
 
+	int getUidById(String id);
+
 }

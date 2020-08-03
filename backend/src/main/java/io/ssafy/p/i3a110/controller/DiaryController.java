@@ -2,20 +2,26 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import io.ssafy.p.i3a110.dto.UserDto;
-import io.ssafy.p.i3a110.service.UserService;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import io.ssafy.p.i3a110.dto.DiaryDto;
-import io.ssafy.p.i3a110.service.DiaryService;
-import io.swagger.annotations.ApiOperation;
 
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.ssafy.p.i3a110.dto.DiaryDto;
+import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.DiaryService;
+import io.ssafy.p.i3a110.service.UserService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class DiaryController {
@@ -42,26 +48,49 @@ public class DiaryController {
     }
     
     // Diary 생성
+    @Auth
     @PostMapping("/diaries")
     @ApiOperation(value = "다이어리 생성")
-    public void createDiary(@RequestBody DiaryDto diary) {
-    	System.out.println(diary.toString());
-    	System.out.println(diaryService.createDiary(diary));
+    public Object createDiary(HttpSession session, @RequestBody DiaryDto diary) {
+    	String email = (String) session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	diary.setUid(user.getId());
+    	
+    	diaryService.createDiary(diary);
+    	return new ResponseEntity<>(diary.getId(), HttpStatus.OK);
     }
 
     // Diary 수정
+    @Auth
     @PutMapping("/diaries")
     @ApiOperation(value = "다이어리 수정")
-    public void updateDiary(@RequestBody DiaryDto diary) {
-    	diaryService.updateDiary(diary);
+    public Object updateDiary(HttpSession session, @RequestBody DiaryDto diary) {
+    	String email = (String) session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	
+    	int id = diary.getId();
+    	if(diaryService.getUidById(id) == user.getId()) {
+    		diaryService.updateDiary(diary);
+    		return new ResponseEntity<>(HttpStatus.OK);
+    	}else {
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}
     }
     
     // Diary 삭제
+    @Auth
     @DeleteMapping("/diaries/{id}")
     @ApiOperation(value = "다이어리 삭제")
-    public void deleteDiary(@PathVariable String id) {
-    	diaryService.deleteDiary(id);
+    public Object deleteDiary(HttpSession session, @PathVariable String id) {
+    	String email = (String) session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	
+    	if(diaryService.getUidById(Integer.parseInt(id)) == user.getId()) {
+    		diaryService.deleteDiary(id);
+    		return new ResponseEntity<>(HttpStatus.OK);
+    	}else {
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}
     }
-
 }
 

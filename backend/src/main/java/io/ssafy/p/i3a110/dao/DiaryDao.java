@@ -23,4 +23,6 @@ public interface DiaryDao {
 	
 	public List<String> getAllWrittenProjcetName(int uid);
 
+	public int getUidById(int id);
+
 }

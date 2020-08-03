@@ -14,4 +14,6 @@ public interface CommitDao {
 	public void addCommit(CommitListDto commit);
 
 	public void deleteCommit(String id);
+
+	public int getUidById(String id);
 }

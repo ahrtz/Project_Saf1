@@ -18,7 +18,7 @@
 		where id = #{id}
 	</select>
 
-	<insert id="createDiary" parameterType="DiaryDto">
+	<insert id="createDiary" useGeneratedKeys="true" keyProperty="id">
 		insert into diary 
 		(uid, title, intro,	img, git_name, git_url, is_proj, s_date, e_date)
 		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
@@ -49,6 +49,12 @@
 		select git_name
 		from diary
 		where uid = #{uid} and is_proj = true
+	</select>
+	
+	<select id="getUidById">
+		select uid
+		from diary
+		where id = #{id}
 	</select>
 </mapper>
 

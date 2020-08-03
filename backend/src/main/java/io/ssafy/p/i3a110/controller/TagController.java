@@ -3,6 +3,8 @@ package io.ssafy.p.i3a110.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.ssafy.p.i3a110.dto.TagDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.TagService;
 import io.swagger.annotations.ApiOperation;
 
@@ -39,15 +42,17 @@ public class TagController {
 		return tagService.getTopNTags(uid,num);
 	}
 	
+	@Auth
 	@PostMapping("/tags/add")
 	@ApiOperation(value = "태그 생성")
-	public void addTag(@RequestBody TagDto tagDto){
+	public void addTag(HttpSession session, @RequestBody TagDto tagDto){
 		tagService.addTag(tagDto);
 	}
 	
+	@Auth
 	@DeleteMapping("/tags/{id}")
 	@ApiOperation(value = "태그 삭제")
-	public void deleteTag(@PathVariable String id){
+	public void deleteTag(HttpSession session, @PathVariable String id){
 		tagService.deleteTag(id);
 	}
 	
