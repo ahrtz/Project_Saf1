@@ -22,7 +22,6 @@
                 ></v-rating>
               <div v-show="checkcommit">
                 <p v-show="checkcommit">커밋리스트</p>
-                
                 <v-checkbox class="my-0" v-show="commitcheck == false" :label="commit.msg" v-for="commit in commitList.slice(0,5)" :key="commit.cid" v-model="commit.checked" readonly/>
                 <v-btn v-show="commitcheck==false & commitList.length>5" class="ma-2" tile color="indigo" dark @click="commitwide()">펼치기</v-btn>
 
@@ -33,8 +32,14 @@
               내용
               <v-textarea filled v-model="tmp.content" readonly/>
           </v-container>
+
+          <div v-for="tag in tags" :key="'t-'+tag.id">
+              <a style="float: left;" @click="searchTag(tag.name)">
+                #{{tag.name}}&nbsp;&nbsp;
+              </a>
+          </div>
+          <br>
           <v-btn class="ma-2" tile color="grey" dark v-if="likeData.likechecked == false" @click="like()" >좋아요</v-btn>
-          
           <v-btn class="ma-2" tile color="red" dark v-if="likeData.likechecked" @click="like()">좋아요 취소</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark >스크랩</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()" >공유</v-btn>
@@ -91,6 +96,7 @@ export default {
             likechecked:false
         },
         likedummy :'',
+        tags:{},
         commitList:[],
         comments:[
         {
@@ -108,12 +114,12 @@ export default {
         commentcontent:'3번 댓글',
         user:'1번'
         },
-    ]
-}
+        ]
+      }
     },
     async created(){
         this.uid=this.$store.state.user.id
-        
+        //post 데이터 가져오기
         try{
             let tmpspace = await this.$api.postdetail(this.id.pid)
             this.tmp =tmpspace
@@ -121,11 +127,12 @@ export default {
         }catch(e){
             console.log(e)
         }
+        //좋아요 데이터 가져오기
         try{
             let tmpspace1= await this.$api.likedatas(this.id.pid)
                 this.likedummy = tmpspace1
             if (tmpspace1.length!=0){
-            
+
             if(tmpspace1.status==1){
                 this.likeData.likechecked=true
             }else{
@@ -134,10 +141,10 @@ export default {
             else{
                 this.likeData.likechecked=false
             }
-            
         }catch(e){
             console.log(e)
         }
+        //commit data가져오기
         try{
             let tmpspace2 = await this.$api.getPostCommit(this.id.pid)
             this.commitList= tmpspace2
@@ -146,10 +153,15 @@ export default {
         }catch(e){
             console.log(e)
         }
-        
 
-    }
-    ,
+        //tag 데이터 가져오기
+        try{
+            let tmpspace3= await this.$api.tagIndex(this.id.pid)
+            this.tags = tmpspace3;
+        }catch(e){
+            console.log(e)
+        }
+    },
     methods:{
         goback(){
             this.$router.go(-1)
@@ -165,8 +177,12 @@ export default {
                 this.$api.likeDislike({pid:this.id.pid,status:1})
             }
         },
+        searchTag(tagName){
 
-        grapurl(){             
+          document.getElementById('header-text').value=tagName;
+          this.$router.push({name: 'tmp',params:{key:tagName}})
+        },
+        grapurl(){
             alert(this.$route.path)
         },
         commitwide(){
@@ -211,7 +227,7 @@ export default {
         },
         likechecking(){
             if (this.likedummy.status==1){
-                
+
                 this.likeData.likechecked==true
             }else if(this.likedummy,length==0)
             {
@@ -247,5 +263,6 @@ article {
   width: 60%;
   background-color: #f1f1f1;
   height: 100%;
+
 }
 </style>

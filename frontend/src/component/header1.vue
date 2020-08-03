@@ -12,6 +12,7 @@
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('준비중입니다.')">Group</div>
       <div class="d-flex"/>
       <v-text-field
+        id="header-text"
         class="d-flex justify-center flex-grow-0"
             placeholder="Search by Title"
             outlined
@@ -53,7 +54,6 @@ export default {
         this.active = false
       },
       search(){
-
         this.$router.push({name: 'tmp',params:{key:this.keyw}})
       },
       alerts(msg){

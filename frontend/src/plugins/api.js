@@ -66,12 +66,12 @@ export default {
         return (await axios.put(`${baseURL}/posts`,data))
     },
     async searchTemp(data){
-        return  (await axios.post(`${baseURL}/posts/all`,data)).data
+        return  (await axios.post(`${baseURL}/posts/all`,data))
     },
     async getPost(data) {
         return (await axios.post(`${baseURL}/posts/0`,data)).data
-    }, // 이거 누가 어디서 쓴거지 
-    // 여기서부턴 깃 관련 api 
+    }, // 이거 누가 어디서 쓴거지
+    // 여기서부턴 깃 관련 api
     async certgitToken(data){
         return (await axios.post(`${baseURL}/gits`,data))
     },//깃 토큰 검증
@@ -100,11 +100,11 @@ export default {
     async userTagIndex(uid,num){
         return (await axios.get(`${baseURL}/tags?uid=${uid}&num=${num}`)).data
     },
-    // 삭제 
+    // 삭제
     async deleteTag(id){
         return (await axios.delete(`${baseURL}/tags/${id}`))
     },
-    //댓글 조회하기 
+    //댓글 조회하기
     async getCommentlist(pid){
         return (await axios.get(`${baseURL}/comments/${pid}`)).data
     },
