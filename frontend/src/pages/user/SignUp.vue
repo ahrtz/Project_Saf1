@@ -50,7 +50,12 @@
           required
           style="margin-bottom:16px;"
         ></v-text-field>
-        <v-file-input ref="file" label="프로필 사진" prepend-icon="mdi-camera" style="margin-bottom:16px;"></v-file-input>
+        <div class="input-wrap">
+          
+            <!-- <img :src="$store.state.me.profileImageUrl" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/> -->
+            <!-- <input ref="file" type="file" placeholder="프로필 사진" name="file" accept="image/*" prepend-icon="mdi-camera" outlined dense style="margin-bottom:16px;"></v-file-input> -->
+            <input ref="file" type="file" name="file" accept="image/*"/>
+          </div>
 
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -84,6 +89,7 @@
         ></v-text-field>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>
+      <div @click="onTestClick">test</div>
       <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
       <div class="d-flex justify-center align-center signup-cancel-btn" @click="goback">취소</div>
     </div>
@@ -111,9 +117,14 @@ export default {
         isSocial: '0',
         isCertified: '0',
       },
+      tempfile: "",
+      fileDeleteYn: null,
     };
   },
   methods: {
+    onTestClick() {
+      console.log(this.$refs.file.files[0])
+    },
     async checkId(){
       try{
         let tmpId=this.signupData.email
@@ -141,6 +152,8 @@ export default {
         alert('비밀번호가 다름');
       } else {
         try {
+          console.log(this.$refs.file.files[0])
+          this.signupData.img=this.$refs.file.files[0];
           this.$api.signupp(this.signupData, {
             headers: { 'Content-Type': 'application/json' },
           });
