@@ -10,7 +10,7 @@ import tmpPost from '../pages/tmpPost.vue'
 import MainPage from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
-import Login from '../pages/user/Login.vue'
+import Login from '@/pages/user/Login.vue'
 import Follow from '../pages/user/Follow.vue'
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
