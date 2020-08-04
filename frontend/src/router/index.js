@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-
-
 import tmp from '../pages/tmp.vue'
 import tmpPost from '../pages/tmpPost.vue'
+import test from '../pages/test.vue'
 
 // user
 import MainPage from '../MainPage.vue'
@@ -43,6 +42,11 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/test',
+      name: 'test',
+      component: test
+    },
     {
       path: '/search/:key',
       name: 'tmp',
