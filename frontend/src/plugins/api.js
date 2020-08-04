@@ -117,6 +117,10 @@ export default {
     async deleteComment(id){
         return (await axios.delete(`${baseURL}/comments/${id}`))
     },
+    //다이어리 삭제
+    async deleteDiary(did){
+        return (await axios.delete(`${baseURL}/diaries/${did}`))
+    }   ,
     async getRepoData(){
         return (await axios.get(`${baseURL}/gits/repositories`)).data
     },
@@ -126,6 +130,9 @@ export default {
     },
     async getPostCommit(pid){
         return (await axios.get(`${baseURL}/commits/${pid}`)).data
+    },
+    async googleLogin(){
+        return (await axios.get(`${baseURL}/google`))
     }
 
 }
