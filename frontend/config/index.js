@@ -13,15 +13,23 @@ module.exports = {
     proxyTable: {
       '/api': {
         // local back end 서버를 돌릴 사람만 사용
-        target: 'http://localhost:3000',
+        // target: 'http://localhost:3000',
         // changeOrigin:true,
 
         // 실제 back end 서버를 돌릴 사람만 사용
-        // target: 'http://i3a110.p.ssafy.io:3000',
+        target: 'http://i3a110.p.ssafy.io:3000',
         pathRewrite: {
           '^/api': ''
         },
-      }
+      },
+      '/oauth2': {
+        // target: 'http://localhost:3000',
+        target: 'http://i3a110.p.ssafy.io:3000',
+      },
+      '/login/oauth2': {
+        // target: 'http://localhost:3000',
+        target: 'http://i3a110.p.ssafy.io:3000',
+      },
     },
 
     // Various Dev Server settings
