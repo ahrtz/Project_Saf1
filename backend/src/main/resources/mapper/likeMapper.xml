@@ -45,7 +45,6 @@
     	where l.status = 1
     	group by p.did
     </select>
-    
 </mapper>
 
 
