@@ -1,5 +1,9 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +17,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.ssafy.p.i3a110.dto.GroupDto;
+import io.ssafy.p.i3a110.dto.GroupRelationDto;
+import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -23,19 +32,72 @@ public class GroupController {
 	@Autowired
 	private GroupService groupService;
 	@Autowired
-	private UserService userService;	
-	@GetMapping("/groups/{lid}")
-	@ApiOperation(value = "관리자 별 그룹 정보 조회")
-	public GroupDto getGroupInfoByLeader(@PathVariable String lid) {
-		return groupService.getGroupInfoByLeader(lid);
-	}
-
-	@PostMapping("/groups")
-	@ApiOperation(value = "그룹 생성")
-	public void createGroup(@RequestBody GroupDto groupDto) {
-		groupService.createGroup(groupDto);
+	private UserService userService;
+	
+	@Auth
+	@GetMapping("/groups")
+	@ApiOperation(value = "회원 별 그룹 정보 조회")
+	public List<GroupDto> getGroupListByLeader(HttpSession session) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		
+		return groupService.getGroupInfoByUser(String.valueOf(user.getId()));
 	}
 	
+	@Auth
+	@GetMapping("/groups/{id}")
+	@ApiOperation(value = "그룹 상세 정보")
+	public Object getGroupInfoById(HttpSession session, @PathVariable String id) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		List<GroupDto> gList = groupService.getGroupInfoByUser(String.valueOf(user.getId()));
+		for(GroupDto group : gList) {
+			if(group.getId() == Integer.parseInt(id)) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
+				List<String> uList = new ArrayList<String>();
+				uList = groupService.getUserListById(id);
+				
+				List<UserDto> list = new ArrayList<UserDto>();
+				for(String uid : uList) {
+		    		list.add(userService.findUserById(Integer.parseInt(uid)));
+				}
+				output.put("userinfo", list);
+				return new ResponseEntity<>(output,HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@Auth
+	@PostMapping("/groups")
+	@ApiOperation(value = "그룹 생성")
+	public Object createGroup(HttpSession session, @RequestBody GroupDto groupDto) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		groupDto.setLid(user.getId());
+		groupService.createGroup(groupDto);
+		
+		return new ResponseEntity<>(groupDto.getId(), HttpStatus.OK);
+	}
+
+	@Auth
+	@PostMapping("/groups/signup")
+	@ApiOperation(value = "그룹 가입시키기")
+	public Object inviteGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		String oid = String.valueOf(groupRelationDto.getOid());
+		if(groupService.getGroupInfoById(oid).getLid() == user.getId()) {
+			groupService.inviteGroup(groupRelationDto);
+			return new ResponseEntity<>(groupRelationDto.getId(), HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	@Auth
 	@PutMapping("/groups/{id}")
 	@ApiOperation(value = "그룹 수정")
 	public Object updateGroup(HttpSession session, @PathVariable String id, @RequestBody GroupDto groupDto) {
@@ -49,6 +111,7 @@ public class GroupController {
 		}
 	}
 	
+	@Auth
 	@DeleteMapping("/groups/{id}")
 	@ApiOperation(value = "그룹 삭제")
 	public Object deleteGroup(HttpSession session, @PathVariable String id) {
