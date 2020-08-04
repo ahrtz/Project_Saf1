@@ -34,6 +34,12 @@
 		values(#{oid}, #{uid})
 	</insert>
 	
+	<delete id="withdrawGroup" parameterType="GroupRelationDto">
+		delete
+		from organization_relation
+		where uid = #{uid} and oid = #{oid}
+	</delete>
+	
 	
 	<delete id="deleteCommit">
 		delete

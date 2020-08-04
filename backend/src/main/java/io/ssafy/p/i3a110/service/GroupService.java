@@ -45,4 +45,8 @@ public class GroupService {
 	public void inviteGroup(GroupRelationDto groupRelationDto) {
 		groupDao.inviteGroup(groupRelationDto);
 	}
+
+	public void withdrawGroup(GroupRelationDto groupRelationDto) {
+		groupDao.withdrawGroup(groupRelationDto);
+	}
 }
