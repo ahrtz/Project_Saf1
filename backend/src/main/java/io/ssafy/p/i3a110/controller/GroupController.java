@@ -46,7 +46,7 @@ public class GroupController {
 	
 	@Auth
 	@GetMapping("/groups/{id}")
-	@ApiOperation(value = "그룹 상세 정보")
+	@ApiOperation(value = "그룹 정보 상세 조회")
 	public Object getGroupInfoById(HttpSession session, @PathVariable String id) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
@@ -82,8 +82,8 @@ public class GroupController {
 	}
 
 	@Auth
-	@PostMapping("/groups/signup")
-	@ApiOperation(value = "그룹 가입시키기")
+	@PostMapping("/groups/user")
+	@ApiOperation(value = "그룹 회원 추가")
 	public Object inviteGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
@@ -96,6 +96,24 @@ public class GroupController {
 		}
 	}
 	
+	@Auth
+	@DeleteMapping("/groups/user")
+	@ApiOperation(value = "그룹 회원 삭제")
+	public Object withdrawGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		String oid = String.valueOf(groupRelationDto.getOid());
+		if(groupService.getGroupInfoById(oid).getLid() == groupRelationDto.getUid()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		if(groupService.getGroupInfoById(oid).getLid() == user.getId() || groupRelationDto.getUid()==user.getId()) {
+			groupService.withdrawGroup(groupRelationDto);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@Auth
 	@PutMapping("/groups/{id}")

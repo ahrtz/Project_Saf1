@@ -21,4 +21,6 @@ public interface GroupDao {
 	public List<String> getUserListById(String id);
 
 	public void inviteGroup(GroupRelationDto groupRelationDto);
+
+	public void withdrawGroup(GroupRelationDto groupRelationDto);
 }
