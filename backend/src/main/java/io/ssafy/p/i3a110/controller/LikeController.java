@@ -1,10 +1,14 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +31,13 @@ public class LikeController {
     @ApiOperation(value = "포스트 좋아요 수 조회")
     public int getLikeCnt(@PathVariable int pid) {
         return likeService.getLikeCnt(pid);
+    }
+    
+    @PostMapping("/likes/total")
+    @ApiOperation(value = "포스트 좋아요 수 조회")
+    public List<HashMap<Object, Object>> getLikeCntByType(@RequestBody HashMap<String, String> map) {
+    	String type = map.get("type");
+    	return likeService.getLikeCntByType(type);
     }
 
     @Auth

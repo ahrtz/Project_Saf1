@@ -16,11 +16,6 @@
 		where name like concat('%',#{keyword},'%')
 	</select>
 	
-	<resultMap type="HashMap" id="tagTopN">
-		<id column="name" property="name"/>
-		<id column="cnt" property="cnt"/>
-	</resultMap>
-	
 	<select id="getTopNTags" resultType="HashMap">
 		select t.name name, count(*) cnt
 		from post p join tag t

@@ -30,6 +30,22 @@
     	values (#{uid}, #{pid}, #{status})
     </insert>
     
+    <select id="getLikeCntByUser" resultType="HashMap">
+    	select p.uid uid, count(*) cnt
+    	from post p join likes l
+    	on p.id = l.pid
+    	where l.status = 1
+    	group by p.uid
+    </select>
+    
+    <select id="getLikeCntByDiary" resultType="HashMap">
+    	select p.did did, count(*) cnt
+    	from post p join likes l
+    	on p.id = l.pid
+    	where l.status = 1
+    	group by p.did
+    </select>
+    
 </mapper>
 
 
