@@ -21,7 +21,7 @@
 		where id = #{id}
 	</delete>
 	
-	<select id="getUidById">
+	<select id="getUidById" resultType="Integer">
 		select id
 		from commit_list
 		where uid = #{uid}
