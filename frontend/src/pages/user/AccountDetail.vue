@@ -121,6 +121,7 @@ export default {
       try {
         await this.$api.userUpdate(this.userdata);
         console.log('성공');
+        this.$router.push({name:'DiaryMain'})
       } catch (e) {
         console.log('실패');
         console.log(e);

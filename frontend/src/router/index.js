@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import tmp from '../pages/tmp.vue'
 import tmpPost from '../pages/tmpPost.vue'
-import test from '../pages/test.vue'
 
 // user
 import MainPage from '../MainPage.vue'
@@ -35,6 +34,9 @@ import GroupMain from '../pages/Group/GroupMain.vue'
 import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
 
+//google
+import googleSuccess from '../pages/user/googleSuccess.vue'
+
 Vue.use(Router)
 
 // import Empty from '@/pages/Empty'
@@ -42,11 +44,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/test',
-      name: 'test',
-      component: test
-    },
+    
     {
       path: '/search/:key',
       name: 'tmp',
@@ -150,15 +148,26 @@ const router = new Router({
       component: GroupMain
     },
     {
-      path:'/group/MemberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
+      path:'/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
       name:'MemberList',
       component : MemberList
     },
     {
-      path:'/group/GroupDetail',
+      path:'/group/:gid/groupdetail',
       name:'GroupDetail',
       component: GroupDetail
-    }
+    },
+    //구글로그인용
+   
+    {
+      path:'/google/success-callback',
+      name:'googleSuccess',
+      component:googleSuccess,
+      // redirect: { name: 'DairyMain' }
+
+    },
+
+
   ]
 })
 
