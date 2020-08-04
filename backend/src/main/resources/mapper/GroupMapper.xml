@@ -3,11 +3,37 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.ssafy.p.i3a110.dao.GroupDao">
-	<select id="getGroupInfoByLeader" resultType="GroupDto">
-		select *
-		from organization
-		where pid = #{pid}
+	<select id="getGroupInfoByUser" resultType="GroupDto">
+		select organ.id id, organ.lid lid, organ.name name, organ.intro intro
+		from organization organ join organization_relation relation
+		on organ.id = relation.oid
+		where uid = #{uid};
 	</select>
+	
+	<select id="getGroupInfoById" resultType="GroupDto">
+		select *
+		form organization
+		where id = #{id}
+	</select>
+	
+	<select id="getUserListById" resultType="String">
+		select uid
+		from organization_relation
+		where oid = #{id}		
+	</select>
+	
+	<insert id="createGroup" parameterType="GroupDto" useGeneratedKeys="true" keyProperty="id">
+		insert into organization 
+		(lid, name, intro)
+		values(#{lid}, #{name}, #{intro})
+	</insert>
+	
+	<insert id="inviteGroup" parameterType="GroupRelationDto" useGeneratedKeys="true" keyProperty="id">
+		insert into organization_relation
+		(oid, uid)
+		values(#{oid}, #{uid})
+	</insert>
+	
 	
 	<delete id="deleteCommit">
 		delete

@@ -4,6 +4,6 @@ import lombok.Data;
 @Data
 public class GroupRelationDto {
     private int id;
-    private int gid;
+    private int oid;
     private int uid;
 }
