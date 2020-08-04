@@ -16,15 +16,22 @@
 		where name like concat('%',#{keyword},'%')
 	</select>
 	
-	<select id="getTopNTags" resultType = "TagDto">
-		select name, count(*) cnt
-		from tag
-		group by name
-		order by cnt
+	<resultMap type="HashMap" id="tagTopN">
+		<id column="name" property="name"/>
+		<id column="cnt" property="cnt"/>
+	</resultMap>
+	
+	<select id="getTopNTags" resultType="HashMap">
+		select t.name name, count(*) cnt
+		from post p join tag t
+		on p.id = t.pid
+		where p.uid = #{uid}
+		group by t.name
+		order by cnt desc
 		limit #{num}
 	</select>
 	
-	<insert id="addTag" parameterType="TagDto">
+	<insert id="addTag" parameterType="TagDto" useGeneratedKeys="true" keyProperty="id">
 		insert into tag(pid, name)
 		values (#{pid}, #{name})
 	</insert>
@@ -34,6 +41,12 @@
 		from tag
 		where id = #{id}
 	</delete>
+	
+	<select id="getTagById" resultType="TagDto">
+		select *
+		from tag
+		where id = #{id}
+	</select>
 </mapper>    
     
     
