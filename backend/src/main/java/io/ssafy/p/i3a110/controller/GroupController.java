@@ -106,7 +106,7 @@ public class GroupController {
 	}
 
 	@Auth
-	@PutMapping("/groups/user")
+	@PostMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 추가")
 	public Object inviteGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
@@ -127,7 +127,7 @@ public class GroupController {
 	}
 	
 	@Auth
-	@DeleteMapping("/groups/user")
+	@PutMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 삭제")
 	public Object withdrawGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
