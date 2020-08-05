@@ -59,9 +59,9 @@
           </div>
           <div>
           댓글 작성
-          <v-text-field
+          <!-- v-model="commentData.content" -->
+          <v-text-field id="post-comment-content"
           filled
-          v-model="commentData.content"
           />
           <v-btn class="ma-2" tile color="indigo" dark @click="commentwrite()" >댓글 작성</v-btn>
           </div>
@@ -215,6 +215,7 @@ export default {
             //     .then(alert())
         },
         commentwrite(){
+            this.commentData.content = document.getElementById('post-comment-content').value
             //alert('준비중입니다.')
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
