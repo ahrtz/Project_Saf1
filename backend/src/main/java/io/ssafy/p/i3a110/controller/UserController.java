@@ -3,19 +3,36 @@ package io.ssafy.p.i3a110.controller;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
 public class UserController {
+
+//    private static final String BE_BASE_URL = "http://i3p110.p.ssafy.io:3000";
+
     @Autowired
     private UserService userService;
+
+//    @Value("${application.staticPath}")
+//    private String staticPath;
 
     @PostMapping("/users")
     @ApiOperation(value = "키워드로 회원 조회")
@@ -104,6 +121,7 @@ public class UserController {
 
     @PostMapping("/users/signup")
     @ApiOperation(value = "회원 가입")
+//    public void signup(@RequestBody HashMap<String, String> map, @RequestParam(required = false) MultipartFile file) throws Exception {
     public void signup(@RequestBody HashMap<String, String> map) {
         UserDto user = userService.findUserByEmail(map.get("email"));
         if(user == null) {
@@ -119,8 +137,41 @@ public class UserController {
             user.setIsSocial(Integer.parseInt(map.get("isSocial")));
             user.setIsCertified(Integer.parseInt(map.get("isCertified")));
 
+            // image url과는 별개로 "file" multipart로 받기
+            // 이미지 업데이트
+//            if (file == null) {
+//                user.setImg(null);
+//            } else {
+//                long timestamp = System.currentTimeMillis();
+//                StringBuilder builder = new StringBuilder(staticPath);
+//                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+//                String fileName = timestamp + "." + extension;
+//
+//                file.transferTo(new File(builder.append("/")
+//                        .append(fileName)
+//                        .toString()));
+//                user.setImg(new StringBuilder(BE_BASE_URL)
+//                        .append("/users/image/")
+//                        .append(fileName)
+//                        .toString());
+//            }
+
             userService.insertUser(user);
         }
 
     }
+
+//    @GetMapping("/users/image/{fileName}")
+//    public ResponseEntity<Resource> getImage(
+//            @PathVariable String fileName
+//    ) throws IOException {
+//        Path path = Paths.get(staticPath + "/" + fileName);
+//        String contentType = Files.probeContentType(path);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+//
+//        Resource resource = new InputStreamResource(Files.newInputStream(path));
+//        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+//    }
 }
