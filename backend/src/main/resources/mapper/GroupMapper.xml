@@ -23,7 +23,7 @@
 		group by oid
 	</select>
 	
-	<select id="getGroupInfoByIdAndUser" resultType="GroupRelationDto">
+	<select id="getCheckMember" resultType="GroupRelationDto">
 		select *
 		from organization_relation
 		where uid = #{uid} and oid = #{id}
