@@ -25,4 +25,6 @@ public interface GroupDao {
 	public void withdrawGroup(GroupRelationDto groupRelationDto);
 
 	public GroupRelationDto getGroupInfoByIdAndUser(String id, int uid);
+
+	public int getMemberCntById(int id);
 }

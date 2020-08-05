@@ -16,6 +16,13 @@
 		where id = #{id}
 	</select>
 	
+	<select id="getMemberCntById" resultType="Integer">
+		select count(*)
+		from organization_relation
+		where oid = #{id}
+		group by oid
+	</select>
+	
 	<select id="getGroupInfoByIdAndUser" resultType="GroupRelationDto">
 		select *
 		from organization_relation

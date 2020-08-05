@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.GroupDto;
 import io.ssafy.p.i3a110.dto.GroupRelationDto;
+import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
@@ -37,11 +38,22 @@ public class GroupController {
 	@Auth
 	@GetMapping("/groups")
 	@ApiOperation(value = "회원 별 그룹 정보 조회")
-	public List<GroupDto> getGroupListByLeader(HttpSession session) {
+	public List<HashMap<Object, Object>> getGroupListByLeader(HttpSession session) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		
-		return groupService.getGroupInfoByUser(String.valueOf(user.getId()));
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+    	List<GroupDto> groupList = groupService.getGroupInfoByUser(String.valueOf(user.getId()));
+    	for(GroupDto group: groupList) {
+    		HashMap<Object, Object> form = objectMapper.convertValue(group, HashMap.class);
+    		UserDto leader = userService.findUserById(group.getLid());
+    		form.put("lName", leader.getNickname());
+    		form.put("lEmail", leader.getEmail());
+    		form.put("mCnt", groupService.getMemberCntById(group.getId()));
+    		output.add(form);
+    	}
+    	return output;
 	}
 	
 	@Auth
@@ -61,6 +73,7 @@ public class GroupController {
 			for(String uid : uList) {
 				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
 	    		HashMap<String, String> userinfo = new HashMap<String, String>();
+	    		userinfo.put("id", String.valueOf(tUser.getId()));
 	    		userinfo.put("email", tUser.getEmail());
 	    		userinfo.put("nickname", tUser.getNickname());
 	    		userinfo.put("img", tUser.getImg());
