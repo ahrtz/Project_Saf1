@@ -63,6 +63,7 @@ public class PostController {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		UserDto writer = userService.findUserById(post.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("email", writer.getEmail());
     		userinfo.put("nickname", writer.getNickname());
     		userinfo.put("img", writer.getImg());
     		userinfo.put("intro", writer.getIntro());
