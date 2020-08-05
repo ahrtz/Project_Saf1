@@ -162,5 +162,13 @@ export default {
     async groupDetail(gid) {
         return (await axios.get(`${baseURL}/groups/${gid}`)).data
     },
-
+    async groupRelationAdd(data){
+        return (await axios.post(`${baseURL}/groups/user`,data))
+    },
+    async groupRelationDelete(data){
+        return (await axios.put(`${baseURL}/groups/user`,data))
+    },
+    async groupDetailUpdate(datas){
+        return (await axios.put(`${baseURL}/groups`,datas)).data
+    }
 }
