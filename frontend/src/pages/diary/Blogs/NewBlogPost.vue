@@ -14,6 +14,7 @@
         <br />제목
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
+        
         <v-container v-show="isProj" fluid>
           <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>

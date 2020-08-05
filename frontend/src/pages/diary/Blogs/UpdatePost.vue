@@ -14,20 +14,25 @@
         <br />제목
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
-        <v-container v-show="isProj" fluid>
-          여기 들어오는 곳이 다이어리에서 온건지 프로젝트에서 온건지 구분해서 v-show 걸면 될것
-          <div :id="'t'+commit.cid" v-for="(commit,key,index) in commitList" :key="index">
+        <div v-for="(scommit,index) in selectedCommits" :key="index">
+          {{index}}{{scommit.msg}}<v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+        </div>
+
+        <v-container v-show="this.isProj" fluid>
+
+         <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>
               <input
                 type="checkbox"
-                :id="key"
+                
                 v-model="selected"
-                :value="{'cid':commit.cid,'commit':commit.commitcontent}"
+                :value="commit"
               />
-              <label :for="key">{{commit.commitcontent}}</label>
+              <label :for="commit">{{commit.msg}}</label>
             </p>
           </div>
-          {{post.selected}}
+          
+
         </v-container>내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
@@ -69,6 +74,7 @@ export default {
         tags:[],
         pid:this.$route.params.pid,
         selected:[] ,
+        selectedCommits:[],
         post:{
           uid:'',
           did:this.$route.params.did,
@@ -79,32 +85,9 @@ export default {
           is_temp:0,
           cDate:new Date().toISOString().substr(0, 10)
         },
-        commitList:[
-                {cid:0,
-                commitcontent:'1번 커밋',
-                checked:false
-                },
-                {cid:1,
-                commitcontent:'2번 커밋',
-                checked:false
-                },
-                {cid:2,
-                commitcontent:'3번 커밋',
-                checked:false
-                },
-                {cid:3,
-                commitcontent:'4번 커밋',
-                checked:false
-                },
-                {cid:4,
-                commitcontent:'5번 커밋',
-                checked:false
-                },
-                {cid:5,
-                commitcontent:'6번 커밋',
-                checked:false
-                },
-                ]
+        commitList:[                
+                ],
+        isProj:false
       }
     },
     props:['value'],
@@ -114,9 +97,33 @@ export default {
             let tmpspace = await this.$api.postdetail(this.pid)
             this.post =tmpspace
             console.log('성공')
+            
+            try{
+              let tempspace1= await this.$api.individualDiary(this.post.did)
+              if (tempspace1.gitName.length>0){
+              console.log(tempspace1,'vdsa')
+              this.isProj=true
+              try{
+                let listCommit = await this.$api.getCommitList({repoName:tempspace1.gitName})
+                this.commitList=listCommit
+              }
+              catch(e){
+                console.log('커밋 받아오기  에러')
+              }}
+            }catch(e){
+              console.log('깃네임 받아오기 에러')
+            }
         }catch(e){
-            console.log(e)
+          console.log(e)
         }
+      try{
+        let selectedCommit = await this.$api.getPostCommit(this.pid)
+        this.selectedCommits = selectedCommit
+        console.log('선택한 커밋 불러오기')
+
+      }catch(e){
+
+      }
     },
     methods:{
       clear(){
@@ -150,32 +157,48 @@ export default {
 
 
       },
-      writetmpPost(){
+      async writetmpPost(){
         this.post.isTemp=1
         
-        try{
-          this.$api.updatePost(this.post)
-          console.log('성공')
-          this.$router.go(-1)
-        }catch(e){
-          console.log(e)
-          console.log('실패')
-        }
+        try {
+           await this.$api.savePost(this.post);
+            try{
+                if (this.selected.length !=0){
+                  for (var i=0;i<this.selected.length;i++){
+                    this.selected[i].uid = this.posts.uid
+                    this.selected[i].pid = this.pid
+                    this.selected[i].sha=this.selected[i].sha1
+                    this.selected[i].date=this.selected[i].date.substr(0,10)
+                    delete this.selected[i].sha1
+                    await this.$api.addCommit(this.selected[i])
+                    console.log('성공',i)
+                    }
+                    }
+                    this.$router.go(-1);
+                    console.log(this.selected)
+                }catch(e){
+                console.log(e)
+                }
+
+          } catch (e) {
+            console.log(e);
+            console.log('실패');
+          }
 
         
+      },
+      commitDelete(id,index){
+        this.$api.deleteCommit(id)
+        this.selectedCommits.splice(index,1)
       }
     },
     computed:{
       userid(){
         
       },
-      isProj(){
-        if (this.$route.path[7]=='p'){
-          return true
-        }else{
-          return false
-        }
-      }
+      // isProj(){
+      //   return false
+      // }
     }
 }
 </script>
