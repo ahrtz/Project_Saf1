@@ -44,7 +44,7 @@ export default {
   methods:{
     async scrapDelete(scrapid){
       try{
-      this.$api.deleteScrap(scrapid)
+      await this.$api.deleteScrap(scrapid)
       console.log('삭제 성공')
       
         try{

@@ -40,10 +40,17 @@
 		where uid = #{uid} and oid = #{oid}
 	</delete>
 	
+	<update id="updateGroup">
+		update group
+		set
+		name = #{name},
+		intro = #{intro},
+		where id = #{id}
+	</update>
 	
-	<delete id="deleteCommit">
+	<delete id="deleteGroup">
 		delete
-		from commit_list
+		from group
 		where id = #{id}
 	</delete>
 </mapper>    

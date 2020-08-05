@@ -16,7 +16,7 @@
         where uid=#{uid} and pid=#{pid}
     </select>
 
-    <update id="updateLike">
+    <update id="updateLike" useGeneratedKeys="true" keyProperty="id">
         update likes
         set
         status=#{status}
@@ -24,7 +24,7 @@
         and pid = #{pid}
     </update>
     
-    <insert id="makeLike">
+    <insert id="makeLike" useGeneratedKeys="true" keyProperty="id">
     	insert into likes
     	(uid, pid, status)
     	values (#{uid}, #{pid}, #{status})

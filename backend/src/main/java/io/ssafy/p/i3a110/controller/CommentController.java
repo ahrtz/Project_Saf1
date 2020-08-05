@@ -48,7 +48,13 @@ public class CommentController {
     	List<CommentDto> commentList = commentService.getAllCommentsByPost(pid);
     	for(CommentDto comment : commentList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(comment, HashMap.class);
-    		form.put("userinfo", userService.findUserById(comment.getUid()));
+    		UserDto writer = userService.findUserById(comment.getUid());
+    		HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("nickname", writer.getNickname());
+    		userinfo.put("img", writer.getImg());
+    		userinfo.put("intro", writer.getIntro());
+    		
+    		form.put("userinfo", userinfo);
     		output.add(form);
     	}
     	return output;

@@ -16,12 +16,21 @@ public class ScrapService {
 	public List<ScrapDto> getAllScrapsByUser(int uid) {
 		return scrapDao.getAllScrapsByUser(uid);
 	}
+	
+	public ScrapDto getScrap(int uid, int pid) {
+		return scrapDao.getScrap(uid, pid);
+	}
 
 	public void createScrap(ScrapDto scrapDto) {
 		scrapDao.createScrap(scrapDto);
 	}
 
+	public void updateScrap(ScrapDto scrapDto) {
+		scrapDao.updateScrap(scrapDto);
+	}
+	
 	public void deleteScrap(int uid, int pid) {
 		scrapDao.deleteScrap(uid, pid);
 	}
+
 }

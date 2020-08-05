@@ -50,12 +50,16 @@ export default {
     },
     
 
-    async userUpdate(userdata){
-        return (await axios.put(`${baseURL}/users`,userdata))
+    async userUpdate(userdata,configs){
+        return (await axios.put(`${baseURL}/users`,userdata,configs))
     },
     async signupp(data,configs){
         return (await axios.post(`${baseURL}/users/signup`,data,configs))
     },
+    async getProfileImage(fileName){
+        return (await axios.post(`${baseURL}/users/image/${fileName}`)).data
+    },
+
     async savePost(data){
         return (await axios.post(`${baseURL}/posts`,data))
     },
@@ -148,5 +152,15 @@ export default {
     // 스크랩 삭제
     async deleteScrap(id){
         return (await axios.delete(`${baseURL}/scraps/${id}`))
-    }
+    },
+    async addGroup(data){
+        return (await axios.post(`${baseURL}/groups`,data))
+    },
+    async getGroupList(){
+        return (await axios.get(`${baseURL}/groups`)).data
+    },
+    async groupDetail(gid) {
+        return (await axios.get(`${baseURL}/groups/${gid}`)).data
+    },
+
 }

@@ -32,38 +32,7 @@
           { text: 'Leader', value: 'leader' },
           { text: 'Members', value: 'members' },
         ],
-        groups: [
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-          {
-            name: 'A.93(10th Team of the SSAFY 3rd)',
-            leader : "dominicong@naver.com",
-            members : 5
-          },
-        ],
+        groups : [],
       }
     },
   }

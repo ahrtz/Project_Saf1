@@ -9,7 +9,8 @@
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">Group</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
+
       <div class="d-flex"/>
       <v-text-field
         id="header-text"
@@ -50,6 +51,17 @@ export default {
       signin:false
   }),
   methods: {
+      onGroupBtnClick() {
+        if(this.signin)
+        {
+          this.$router.push({name:'GroupMain'})
+        }
+        else{
+          alert('로그인이 필요합니다.')
+          this.$router.push({name:'Login'})
+        }
+      }
+      ,
       onClickOutside () {
         this.active = false
       },

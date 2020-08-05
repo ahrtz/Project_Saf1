@@ -15,6 +15,7 @@
               required
               type="email"
               style="margin-bottom:16px;"
+              readonly
             ></v-text-field>
             <v-text-field
               class="d-flex justify-center account-detail-input"
@@ -48,8 +49,12 @@
               required
               style="margin-bottom:16px;"
             ></v-text-field>
-            <!-- <v-file-input ref="file" label="프로필 사진" prepend-icon="mdi-camera" style="margin-bottom:16px;"></v-file-input> -->
 
+            <div class="input-wrap">
+              <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
+              <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
+            </div>
+            
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git 아이디"
@@ -109,19 +114,51 @@ export default {
   data() {
     return {
       userdata: {},
-      
+      uploadImageFile: ''
     };
   },
   created() {
     this.userdata = this.$store.state.user;
-    
+    this.uploadImageFile = this.userdata.img;    
   },
   methods: {
+    onFileSelected(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) { 
+        var reader = new FileReader();
+        reader.onload = (e) => { 
+          this.uploadImageFile = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
     async updateUser() {
       try {
-        await this.$api.userUpdate(this.userdata);
+        if(this.$refs.file != null) {
+          this.userdata.file=this.$refs.file.files[0];
+        }
+        console.log(this.userdata.file);
+        const formData = new FormData();
+        formData.append('email', this.userdata.email);
+        formData.append('pwd', this.userdata.pwd);
+        formData.append('file', this.userdata.file);
+        formData.append('img', this.userdata.img);
+        formData.append('nickname',this.userdata.nickname);
+        formData.append('gitId', this.userdata.gitId);
+        formData.append('gitUrl',this.userdata.gitUrl);
+        formData.append('gitToken', this.userdata.gitToken);
+        formData.append('intro',this.userdata.intro);
+        formData.append('isSocial', this.userdata.isSocial);
+        formData.append('isCertified',this.userdata.isCertified);
+        console.log(formData)
+
+        await this.$api.userUpdate(formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          });
         console.log('성공');
-        this.$router.push({name:'DiaryMain'})
+        // location.reload();
       } catch (e) {
         console.log('실패');
         console.log(e);
