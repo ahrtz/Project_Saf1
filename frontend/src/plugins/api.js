@@ -140,5 +140,15 @@ export default {
     },
     async deleteCommit(cid){
         return (await axios.delete(`${baseURL}/commits/${cid}`))
-    }
+    },
+    async addGroup(data){
+        return (await axios.post(`${baseURL}/groups`,data))
+    },
+    async getGroupList(){
+        return (await axios.get(`${baseURL}/groups`)).data
+    },
+    async groupDetail(gid) {
+        return (await axios.get(`${baseURL}/groups/${gid}`)).data
+    },
+
 }
