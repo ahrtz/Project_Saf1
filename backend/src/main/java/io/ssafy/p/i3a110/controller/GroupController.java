@@ -50,23 +50,28 @@ public class GroupController {
 	public Object getGroupInfoById(HttpSession session, @PathVariable String id) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		List<GroupDto> gList = groupService.getGroupInfoByUser(String.valueOf(user.getId()));
-		for(GroupDto group : gList) {
-			if(group.getId() == Integer.parseInt(id)) {
-				ObjectMapper objectMapper = new ObjectMapper();
-				HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
-				List<String> uList = new ArrayList<String>();
-				uList = groupService.getUserListById(id);
-				
-				List<UserDto> list = new ArrayList<UserDto>();
-				for(String uid : uList) {
-		    		list.add(userService.findUserById(Integer.parseInt(uid)));
-				}
-				output.put("userinfo", list);
-				return new ResponseEntity<>(output,HttpStatus.OK);
+		GroupRelationDto group = groupService.getGroupInfoByIdAndUser(id, user.getId());
+		if(group != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
+			List<String> uList = new ArrayList<String>();
+			uList = groupService.getUserListById(id);
+			
+			List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+			for(String uid : uList) {
+				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
+	    		HashMap<String, String> userinfo = new HashMap<String, String>();
+	    		userinfo.put("email", tUser.getEmail());
+	    		userinfo.put("nickname", tUser.getNickname());
+	    		userinfo.put("img", tUser.getImg());
+	    		userinfo.put("intro", tUser.getIntro());
+	    		list.add(userinfo);
 			}
+			output.put("userinfo", list);
+			return new ResponseEntity<>(output,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@Auth
@@ -84,11 +89,17 @@ public class GroupController {
 	@Auth
 	@PostMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 추가")
-	public Object inviteGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
+	public Object inviteGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String oid = String.valueOf(groupRelationDto.getOid());
+		
+		int uid = userService.findUserByEmail(map.get("email")).getId();
+		String oid = map.get("oid");
 		if(groupService.getGroupInfoById(oid).getLid() == user.getId()) {
+			GroupRelationDto groupRelationDto = new GroupRelationDto();
+			groupRelationDto.setUid(uid);
+			groupRelationDto.setOid(Integer.parseInt(oid));
+			
 			groupService.inviteGroup(groupRelationDto);
 			return new ResponseEntity<>(groupRelationDto.getId(), HttpStatus.OK);
 		}else {

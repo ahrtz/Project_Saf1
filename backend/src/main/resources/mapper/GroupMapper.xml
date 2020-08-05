@@ -12,8 +12,14 @@
 	
 	<select id="getGroupInfoById" resultType="GroupDto">
 		select *
-		form organization
+		from organization
 		where id = #{id}
+	</select>
+	
+	<select id="getGroupInfoByIdAndUser" resultType="GroupRelationDto">
+		select *
+		from organization_relation
+		where uid = #{uid} and oid = #{id}
 	</select>
 	
 	<select id="getUserListById" resultType="String">
@@ -53,6 +59,7 @@
 		from group
 		where id = #{id}
 	</delete>
+	
 </mapper>    
     
     
