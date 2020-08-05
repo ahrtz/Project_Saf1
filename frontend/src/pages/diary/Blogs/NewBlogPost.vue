@@ -153,7 +153,7 @@ export default {
       
     },
     writetmpPost() {
-      this.post.is_temp = 1;
+      this.post.isTemp = 1;
 
       try {
         this.$api.savePost(this.post);

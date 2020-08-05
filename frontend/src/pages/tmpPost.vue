@@ -44,7 +44,7 @@ export default {
     this.config.uid = this.$store.state.user.id;
     try {
       let tmpspace = await this.$api.searchTemp(this.config);
-      this.tempPost = tmpspace;
+      this.tempPost = tmpspace.data;
       console.log('성공');
     } catch (e) {
       console.log(e);
@@ -53,14 +53,14 @@ export default {
   methods: {
     async deleteP(postid) {
       try {
-        this.$api.deletePost(postid);
+        await this.$api.deletePost(postid);
         console.log('성공');
         // this.$router.push({ name: 'tmpPost' });
         // 여기 리디렉션? 같은거 해서 삭제한걸 새롭게.. 받아 와야함 라우터 푸시로 안될거같은데
         // FIX: 걍 api 한번 더 불러주면댐~~
         try {
           let tmpspace = await this.$api.searchTemp(this.config);
-          this.tempPost = tmpspace;
+          this.tempPost = tmpspace.data;
           console.log('성공');
         } catch (e) {
           console.log(e);
