@@ -1,11 +1,20 @@
 <template>
   <div>
-      <h2>그룹 리스트 조회 페이지</h2>
-      <router-link :to="{name:'MemberList'}">멤버조회 및 관리</router-link> 
-      <br>우측에 관리자 메뉴 필요 ( 그룹 관련 기본 사항 수정 멤버 관리는 멤버 조회내부에서 )
-      <br>
-      {{desc}}
+      <h2>그룹 상세정보 페이지</h2>
+      <router-link :to="{name:'MemberList',params:{gid:this.groupId}}">멤버 관리 ( 이건 관리자만 보일거임)</router-link> 
       
+      <br>
+      <div>
+        {{groupInfo.introduction}}
+      </div>
+      <br>
+      <div>
+        여기엔 등수를 3분할 쳐서 넣을거고
+      </div>
+      <br>
+      <div>
+        여기엔 그룹에 가입된 사람을 2분할 치고 쫙 뿌려서 넣어줄것이다
+      </div>
   </div>
 </template>
 
@@ -14,8 +23,13 @@ export default {
     name : 'GroupDetail',
     data(){
       return{
-        desc:'그룹소개와 기타 등등이  올 곳 아니면 '
-      }
+        groupId: this.$route.params ,
+        groupInfo:{
+          introduction:"비밀 스러운 디테일",
+          organizationId:1,
+          organizationName:'비밀',
+        }
+}
     }
 }
 </script>
