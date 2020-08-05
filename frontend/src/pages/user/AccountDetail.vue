@@ -54,7 +54,7 @@
               <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
               <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
             </div>
-            
+
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git 아이디"
@@ -119,7 +119,7 @@ export default {
   },
   created() {
     this.userdata = this.$store.state.user;
-    this.uploadImageFile = this.userdata.img;    
+    this.uploadImageFile = this.userdata.img;
   },
   methods: {
     onFileSelected(event) {
