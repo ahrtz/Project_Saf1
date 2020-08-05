@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.GroupDto;
 import io.ssafy.p.i3a110.dto.GroupRelationDto;
+import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
@@ -37,11 +38,22 @@ public class GroupController {
 	@Auth
 	@GetMapping("/groups")
 	@ApiOperation(value = "회원 별 그룹 정보 조회")
-	public List<GroupDto> getGroupListByLeader(HttpSession session) {
+	public List<HashMap<Object, Object>> getGroupListByLeader(HttpSession session) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		
-		return groupService.getGroupInfoByUser(String.valueOf(user.getId()));
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+    	List<GroupDto> groupList = groupService.getGroupInfoByUser(String.valueOf(user.getId()));
+    	for(GroupDto group: groupList) {
+    		HashMap<Object, Object> form = objectMapper.convertValue(group, HashMap.class);
+    		UserDto leader = userService.findUserById(group.getLid());
+    		form.put("lName", leader.getNickname());
+    		form.put("lEmail", leader.getEmail());
+    		form.put("mCnt", groupService.getMemberCntById(group.getId()));
+    		output.add(form);
+    	}
+    	return output;
 	}
 	
 	@Auth
@@ -50,23 +62,35 @@ public class GroupController {
 	public Object getGroupInfoById(HttpSession session, @PathVariable String id) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		List<GroupDto> gList = groupService.getGroupInfoByUser(String.valueOf(user.getId()));
-		for(GroupDto group : gList) {
-			if(group.getId() == Integer.parseInt(id)) {
-				ObjectMapper objectMapper = new ObjectMapper();
-				HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
-				List<String> uList = new ArrayList<String>();
-				uList = groupService.getUserListById(id);
-				
-				List<UserDto> list = new ArrayList<UserDto>();
-				for(String uid : uList) {
-		    		list.add(userService.findUserById(Integer.parseInt(uid)));
-				}
-				output.put("userinfo", list);
-				return new ResponseEntity<>(output,HttpStatus.OK);
+		
+		GroupRelationDto check = groupService.getCheckMember(id, user.getId());
+		if(check != null) {
+			GroupDto group = groupService.getGroupInfoById(id);
+			ObjectMapper objectMapper = new ObjectMapper();
+			HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
+    		UserDto leader = userService.findUserById(group.getLid());
+    		output.put("lName", leader.getNickname());
+    		output.put("lEmail", leader.getEmail());
+    		output.put("mCnt", groupService.getMemberCntById(group.getId()));
+			List<String> uList = new ArrayList<String>();
+			uList = groupService.getUserListById(id);
+			
+			List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+			for(String uid : uList) {
+				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
+	    		HashMap<String, String> userinfo = new HashMap<String, String>();
+	    		userinfo.put("id", String.valueOf(tUser.getId()));
+	    		userinfo.put("email", tUser.getEmail());
+	    		userinfo.put("nickname", tUser.getNickname());
+	    		userinfo.put("img", tUser.getImg());
+	    		userinfo.put("intro", tUser.getIntro());
+	    		list.add(userinfo);
 			}
+			output.put("userinfo", list);
+			return new ResponseEntity<>(output,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@Auth
@@ -84,11 +108,17 @@ public class GroupController {
 	@Auth
 	@PostMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 추가")
-	public Object inviteGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
+	public Object inviteGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String oid = String.valueOf(groupRelationDto.getOid());
+		
+		int uid = userService.findUserByEmail(map.get("email")).getId();
+		String oid = map.get("oid");
 		if(groupService.getGroupInfoById(oid).getLid() == user.getId()) {
+			GroupRelationDto groupRelationDto = new GroupRelationDto();
+			groupRelationDto.setUid(uid);
+			groupRelationDto.setOid(Integer.parseInt(oid));
+			
 			groupService.inviteGroup(groupRelationDto);
 			return new ResponseEntity<>(groupRelationDto.getId(), HttpStatus.OK);
 		}else {

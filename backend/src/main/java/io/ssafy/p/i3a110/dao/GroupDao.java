@@ -23,4 +23,8 @@ public interface GroupDao {
 	public void inviteGroup(GroupRelationDto groupRelationDto);
 
 	public void withdrawGroup(GroupRelationDto groupRelationDto);
+
+	public GroupRelationDto getCheckMember(String id, int uid);
+
+	public int getMemberCntById(int id);
 }

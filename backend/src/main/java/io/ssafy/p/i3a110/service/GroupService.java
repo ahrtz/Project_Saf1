@@ -49,4 +49,12 @@ public class GroupService {
 	public void withdrawGroup(GroupRelationDto groupRelationDto) {
 		groupDao.withdrawGroup(groupRelationDto);
 	}
+
+	public GroupRelationDto getCheckMember(String id, int uid) {
+		return groupDao.getCheckMember(id, uid);
+	}
+
+	public int getMemberCntById(int id) {
+		return groupDao.getMemberCntById(id);
+	}
 }

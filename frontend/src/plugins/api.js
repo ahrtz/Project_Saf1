@@ -57,7 +57,7 @@ export default {
         return (await axios.post(`${baseURL}/users/signup`,data,configs))
     },
     async getProfileImage(fileName){
-        return (await axios.post(`${baseURL}/users/image/${fileName}`)).data
+        return (await axios.get(`${baseURL}/users/image/${fileName}`)).data
     },
 
     async savePost(data){
@@ -140,6 +140,18 @@ export default {
     },
     async deleteCommit(cid){
         return (await axios.delete(`${baseURL}/commits/${cid}`))
+    },
+    // 스크랩 정보 조회
+    async getScrapInfo(){
+        return (await axios.get(`${baseURL}/scraps`)).data
+    },
+    // 스크랩 생성 및 수정
+    async makeScrap(data){
+        return (await axios.post(`${baseURL}/scraps`,data))
+    } ,
+    // 스크랩 삭제
+    async deleteScrap(id){
+        return (await axios.delete(`${baseURL}/scraps/${id}`))
     },
     async addGroup(data){
         return (await axios.post(`${baseURL}/groups`,data))

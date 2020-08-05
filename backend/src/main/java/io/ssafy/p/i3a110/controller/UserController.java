@@ -26,7 +26,7 @@ import java.util.HashMap;
 @RestController
 public class UserController {
 //    private static final String BE_BASE_URL = "http://localhost:3000";
-    private static final String BE_BASE_URL = "http://i3p110.p.ssafy.io:3000";
+    private static final String BE_BASE_URL = "http://i3a110.p.ssafy.io:3000";
 
     @Autowired
     private UserService userService;
@@ -200,9 +200,7 @@ public class UserController {
     }
 
     @GetMapping("/users/image/{fileName}")
-    public ResponseEntity<Resource> getImage(
-            @PathVariable String fileName
-    ) throws IOException {
+    public ResponseEntity<Resource> getImage(@PathVariable String fileName) throws IOException {
         Path path = Paths.get(staticPath + "/" + fileName);
         String contentType = Files.probeContentType(path);
 
