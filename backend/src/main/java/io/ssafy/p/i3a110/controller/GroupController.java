@@ -133,12 +133,12 @@ public class GroupController {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		String oid = map.get("oid");
-		UserDto delUser = userService.findUserByEmail(map.get("email"));
+		int uid = Integer.parseInt(map.get("uid"));
 		
-		if(groupService.getGroupInfoById(oid).getLid() == user.getId() && delUser.getId()!=user.getId()) {
+		if(groupService.getGroupInfoById(oid).getLid() == user.getId() && uid!=user.getId()) {
 			GroupRelationDto delRelation = new GroupRelationDto();
 			delRelation.setOid(Integer.parseInt(oid));
-			delRelation.setUid(delUser.getId());
+			delRelation.setUid(uid);
 			groupService.withdrawGroup(delRelation);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
