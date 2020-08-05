@@ -50,11 +50,10 @@
           required
           style="margin-bottom:16px;"
         ></v-text-field>
-        <div class="input-wrap">
-          
-            <!-- <img :src="$store.state.me.profileImageUrl" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/> -->
-            <!-- <input ref="file" type="file" placeholder="프로필 사진" name="file" accept="image/*" prepend-icon="mdi-camera" outlined dense style="margin-bottom:16px;"></v-file-input> -->
-            <input ref="file" type="file" name="file" accept="image/*"/>
+
+          <div class="input-wrap">
+            <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
+            <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
           </div>
 
         <v-text-field
@@ -63,7 +62,7 @@
           outlined
           dense
           hide-details
-          v-model="signupData.gitid"
+          v-model="signupData.gitId"
           required
           style="margin-bottom:16px;"
         ></v-text-field>
@@ -89,7 +88,6 @@
         ></v-text-field>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>
-      <div @click="onTestClick">test</div>
       <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
       <div class="d-flex justify-center align-center signup-cancel-btn" @click="goback">취소</div>
     </div>
@@ -108,22 +106,29 @@ export default {
         email: '',
         pwd: '',
         pwdconfirm: '',
+        file: {},
         img: '',
         nickname: '',
-        gitid: '',
+        gitId: '',
         gitUrl: '',
         gitToken: '',
         intro: '',
         isSocial: '0',
         isCertified: '0',
       },
-      tempfile: "",
-      fileDeleteYn: null,
+      uploadImageFile: ''
     };
   },
   methods: {
-    onTestClick() {
-      console.log(this.$refs.file.files[0])
+    onFileSelected(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) { 
+        var reader = new FileReader();
+        reader.onload = (e) => { 
+          this.uploadImageFile = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
     },
     async checkId(){
       try{
@@ -152,10 +157,28 @@ export default {
         alert('비밀번호가 다름');
       } else {
         try {
-          console.log(this.$refs.file.files[0])
-          this.signupData.img=this.$refs.file.files[0];
-          this.$api.signupp(this.signupData, {
-            headers: { 'Content-Type': 'application/json' },
+          if(this.$refs.file != null) {
+            this.signupData.file=this.$refs.file.files[0];
+          }
+
+          const formData = new FormData();
+          formData.append('email', this.signupData.email);
+          formData.append('pwd', this.signupData.pwd);
+          formData.append('file', this.signupData.file);
+          formData.append('img', this.signupData.img);
+          formData.append('nickname',this.signupData.nickname);
+          formData.append('gitId', this.signupData.gitId);
+          formData.append('gitUrl',this.signupData.gitUrl);
+          formData.append('gitToken', this.signupData.gitToken);
+          formData.append('intro',this.signupData.intro);
+          formData.append('isSocial', this.signupData.isSocial);
+          formData.append('isCertified',this.signupData.isCertified);
+          console.log(formData)
+
+          await this.$api.signupp(formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
           });
           console.log('성공');
           this.$router.push({ name: 'Login' });
