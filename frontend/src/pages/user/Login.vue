@@ -35,7 +35,7 @@
       >회원가입</div>
       <div class="d-flex justify-center login-logo-container">
         <img @click="onLogoClick" class="login-logo" style="margin-right:16px;" src="/static/git_logo.png"/>
-        <img @click="onLogoClick" class="login-logo" src="/static/google_logo.png"/>
+        <img class="login-logo" src="/static/google_logo.png" @click="googleLogin()"/>
       </div>
     </div>
   </div>
@@ -67,7 +67,12 @@ export default {
           alert("아이디 또는 비밀번호를 확인해주세요.")
           console.log('실패')
         }
-      }
+      },
+    googleLogin(){
+
+      var temp= window.open('/api/google')
+      
+    }
 
   },
 };

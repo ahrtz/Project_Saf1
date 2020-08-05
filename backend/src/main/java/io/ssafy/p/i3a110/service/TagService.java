@@ -1,5 +1,6 @@
 package io.ssafy.p.i3a110.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class TagService {
 		return tagDao.getTagsByKeyword(keyword);
 	}
 
-	public List<TagDto> getTopNTags(String uid, String num) {
+	public List<HashMap<Object, Object>> getTopNTags(String uid, int num) {
 		return tagDao.getTopNTags(uid,num);
 	}
 
@@ -31,6 +32,10 @@ public class TagService {
 
 	public void deleteTag(String id) {
 		tagDao.deleteTag(id);
+	}
+
+	public TagDto getTagById(String id) {
+		return tagDao.getTagById(id);
 	}
 	
 }

@@ -4,6 +4,7 @@
       <Status />
       <div class="d-flex">
         <div class="d-flex" />
+        <v-btn @click="diaryDelete()"> 다이어리 삭제</v-btn>
         <div
           v-if="!isProj"
           class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
@@ -86,7 +87,19 @@ export default {
       postdata: [],
     };
   },
-  methods: {},
+  methods: {
+    diaryDelete(){
+      try {
+        this.$api.deleteDiary(this.diaryid.did)
+        console.log('다이어리 삭제 완료')
+        this.$router.push({name:'DiaryMain'})
+      }catch(e){
+        console.log(e)
+      }
+    }
+
+
+  },
   async created() {
     try {
       let tmpspace = await this.$api.diarydetail(

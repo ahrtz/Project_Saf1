@@ -107,7 +107,7 @@ export default {
     },
     async created(){
         this.uid=this.$store.state.user.id
-        
+        console.log('test' + this.uid)
         //comment 데이터 가져오기
         this.getComment();
 
@@ -168,11 +168,11 @@ export default {
         },
         getcDate(){
             var d = new Date()
-           
+
             var ymd = d.toISOString().substr(0,10)
             var timestamp = ("00" + d.getHours()).slice(-2) + ':' + ("00" + d.getMinutes()).slice(-2)
                             + ':' + ("00" + d.getSeconds()).slice(-2)
-            
+
             this.commentData.cDate = ymd + ' ' + timestamp
             //console.log(this.commentData.cDate)
         }
@@ -219,7 +219,7 @@ export default {
             //alert('준비중입니다.')
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
-            
+
             //console.log(this.commentData)
             this.$api.createComment(this.commentData)
             this.getComment()
@@ -230,11 +230,11 @@ export default {
                 this.$api.deleteComment(commentid)
                 this.getComment()
                 location.reload()
-            
+
         },
         isWritten(authorid){
             this.uid=this.$store.state.user.id
-            
+
             if( authorid== this.uid)
             {
                 console.log("ckck 같다.")

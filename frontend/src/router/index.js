@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-
-
 import tmp from '../pages/tmp.vue'
 import tmpPost from '../pages/tmpPost.vue'
 
@@ -10,7 +8,7 @@ import tmpPost from '../pages/tmpPost.vue'
 import MainPage from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
-import Login from '../pages/user/Login.vue'
+import Login from '@/pages/user/Login.vue'
 import Follow from '../pages/user/Follow.vue'
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
@@ -32,9 +30,12 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 
 
 //Group
-import GroupMain from '../pages/Group/GroupMain.vue'
+import GroupMain from '../pages/Group/TempGroupMain.vue'
 import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
+
+//google
+import googleSuccess from '../pages/user/googleSuccess.vue'
 
 Vue.use(Router)
 
@@ -43,6 +44,7 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [
+    
     {
       path: '/search/:key',
       name: 'tmp',
@@ -146,15 +148,26 @@ const router = new Router({
       component: GroupMain
     },
     {
-      path:'/group/MemberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
+      path:'/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
       name:'MemberList',
       component : MemberList
     },
     {
-      path:'/group/GroupDetail',
+      path:'/group/:gid/groupdetail',
       name:'GroupDetail',
       component: GroupDetail
-    }
+    },
+    //구글로그인용
+   
+    {
+      path:'/google/success-callback',
+      name:'googleSuccess',
+      component:googleSuccess,
+      // redirect: { name: 'DairyMain' }
+
+    },
+
+
   ]
 })
 
