@@ -13,9 +13,9 @@
           flat
           v-for="post in searchResult" :key="post.id"
           style="margin-top:10px; border-bottom:dashed 1px grey"
-
           >
           <!-- card layout -->
+          <!-- TODO : tag title로 검색 / tag로 검색 나누어 주어야 함 -->
           <div>
             <!-- 프로필 이미지, 닉네임  -->
             <header class="search-card-header">
@@ -62,27 +62,47 @@ export default {
               limit:"0",
               isProj:"2"
             },
-            searchResult:{}
+            t_data:{
+              keyword:"",
+            },
+            tagsearchResult:[],
+            searchResult:[]
         }
     },
     async created(){
-        this.s_data.keyword = this.ddd.key;
-        try{
-          let tmpspace = await this.$api.searchTemp(this.s_data)
-          this.searchResult =tmpspace.data;
-          console.log('성공')
-        }catch(e){
+        console.log(this.ddd.key);
+        if(this.ddd.type == 'tag'){
+          console.log("tagsearch");
+          this.t_data.keyword =this.ddd.key;
+          try{
+            let tmpspace = await this.$api.tagSearch(this.t_data)
+            this.tagsearchResult = tmpspace;
+            console.log(this.tagsearchResult);
+            for(var i=0;i<this.tagsearchResult.length;i++){
+              try{
+                //TODO : FIX bug post doesnt have user info
+                console.log(this.tagsearchResult[i].pid);
+                let tmpspace = await this.$api.postdetail(this.tagsearchResult[i].pid)
+                this.searchResult=(tmpspace);
+                console.log(this.searchResult);
+              }catch(e){
+                console.log(e)
+              }
+            }
+          }catch(e){
             console.log(e)
+          }
         }
-        // console.log(this.ddd.key)
-        // axios.post("/api/posts/all/",{
-        //     keyword:this.$route.params.key,
-        //     isTemp:"0",
-        //     uid:"",
-        //     type:"2"
-        // })
-        // .then(res=> (this.searchResult = res.data))
-        console.log(this.searchResult);
+        else{
+          this.s_data.keyword = this.ddd.key;
+          try{
+            let tmpspace = await this.$api.searchTemp(this.s_data)
+            this.searchResult =tmpspace.data;
+            console.log(this.searchResult);
+          }catch(e){
+            console.log(e)
+          }
+        }
     }
 }
 </script>

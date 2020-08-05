@@ -34,7 +34,7 @@
               <v-textarea filled v-model="tmp.content" readonly/>
           </v-container>
 
-          <div v-for="tag in tags" :key="'t-'+tag.id">
+          <div style="float: left;" v-for="tag in tags" :key="'t-'+tag.id">
               <a style="float: left;" @click="searchTag(tag.name)">
                 #{{tag.name}}&nbsp;&nbsp;
               </a>
@@ -192,9 +192,8 @@ export default {
             }
         },
         searchTag(tagName){
-
           document.getElementById('header-text').value=tagName;
-          this.$router.push({name: 'tmp',params:{key:tagName}})
+          this.$router.push({name: 'tmp',params:{key:tagName,type:'tag'}})
         },
         grapurl(){
             alert(this.$route.path)
