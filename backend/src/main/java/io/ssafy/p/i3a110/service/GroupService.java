@@ -53,4 +53,8 @@ public class GroupService {
 	public GroupRelationDto getGroupInfoByIdAndUser(String id, int uid) {
 		return groupDao.getGroupInfoByIdAndUser(id, uid);
 	}
+
+	public int getMemberCntById(int id) {
+		return groupDao.getMemberCntById(id);
+	}
 }
