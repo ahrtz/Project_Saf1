@@ -27,6 +27,7 @@ import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.http.request.GetPostRequest;
 import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.DiaryService;
 import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
@@ -40,6 +41,8 @@ public class PostController {
     private UserService userService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private DiaryService diaryService;
     
     @PostMapping("/posts/all")
     @ApiOperation(value = "회원 별 포스트 전체 조회")
@@ -58,7 +61,14 @@ public class PostController {
     	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, isProj, keyword, isTemp, limit);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
-    		form.put("userinfo", userService.findUserById(post.getUid()));
+    		UserDto writer = userService.findUserById(post.getUid());
+    		HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("nickname", writer.getNickname());
+    		userinfo.put("img", writer.getImg());
+    		userinfo.put("intro", writer.getIntro());
+    		
+    		form.put("userinfo", userinfo);
+    		form.put("dName", diaryService.getDiary(String.valueOf(post.getDid())).getTitle());
     		output.add(form);
     	}
     	return output;
