@@ -106,7 +106,7 @@ public class GroupController {
 	}
 
 	@Auth
-	@PostMapping("/groups/user")
+	@PutMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 추가")
 	public Object inviteGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
@@ -129,16 +129,17 @@ public class GroupController {
 	@Auth
 	@DeleteMapping("/groups/user")
 	@ApiOperation(value = "그룹 회원 삭제")
-	public Object withdrawGroup(HttpSession session, @RequestBody GroupRelationDto groupRelationDto) {
+	public Object withdrawGroup(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String oid = String.valueOf(groupRelationDto.getOid());
-		if(groupService.getGroupInfoById(oid).getLid() == groupRelationDto.getUid()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		String oid = map.get("oid");
+		UserDto delUser = userService.findUserByEmail(map.get("email"));
 		
-		if(groupService.getGroupInfoById(oid).getLid() == user.getId() || groupRelationDto.getUid()==user.getId()) {
-			groupService.withdrawGroup(groupRelationDto);
+		if(groupService.getGroupInfoById(oid).getLid() == user.getId() && delUser.getId()!=user.getId()) {
+			GroupRelationDto delRelation = new GroupRelationDto();
+			delRelation.setOid(Integer.parseInt(oid));
+			delRelation.setUid(delUser.getId());
+			groupService.withdrawGroup(delRelation);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -146,14 +147,14 @@ public class GroupController {
 	}
 	
 	@Auth
-	@PutMapping("/groups/{id}")
+	@PutMapping("/groups")
 	@ApiOperation(value = "그룹 수정")
-	public Object updateGroup(HttpSession session, @PathVariable String id, @RequestBody GroupDto groupDto) {
+	public Object updateGroup(HttpSession session, @RequestBody GroupDto groupDto) {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
 		
-		if(uid == groupService.getGroupInfoById(id).getLid()) {
-			groupService.updateGroup(id, groupDto);
+		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid()) {
+			groupService.updateGroup(groupDto);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

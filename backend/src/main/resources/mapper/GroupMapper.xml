@@ -53,17 +53,17 @@
 		where uid = #{uid} and oid = #{oid}
 	</delete>
 	
-	<update id="updateGroup">
-		update group
+	<update id="updateGroup" parameterType="GroupDto">
+		update organization
 		set
 		name = #{name},
-		intro = #{intro},
+		intro = #{intro}
 		where id = #{id}
 	</update>
 	
 	<delete id="deleteGroup">
 		delete
-		from group
+		from organization
 		where id = #{id}
 	</delete>
 	

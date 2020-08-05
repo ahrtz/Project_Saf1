@@ -14,7 +14,7 @@ public interface GroupDao {
 	
 	public void createGroup(GroupDto groupDto);
 
-	public void updateGroup(String id, GroupDto groupDto);
+	public void updateGroup(GroupDto groupDto);
 
 	public void deleteGroup(String id);
 
