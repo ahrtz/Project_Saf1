@@ -36,6 +36,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String email = principal.getAttribute("email");
         UserDto user = userDao.findUserByEmail(email);
 
+        System.out.println(principal.toString());
+
         if (user == null) {
             user = new UserDto();
             user.setEmail(email);
