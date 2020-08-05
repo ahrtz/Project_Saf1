@@ -135,8 +135,8 @@ export default {
     async getPostCommit(pid){
         return (await axios.get(`${baseURL}/commits/${pid}`)).data
     },
-    async googleLogin(){
-        return (await axios.get(`${baseURL}/google`))
+    async socialLogin(){
+        return (await axios.get(`${baseURL}/social`))
     },
     async deleteCommit(cid){
         return (await axios.delete(`${baseURL}/commits/${cid}`))

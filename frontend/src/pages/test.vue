@@ -6,7 +6,7 @@
 export default {
     methods: {
         openGoogle() {
-            window.open('/api/google')
+            window.open('/api/social')
             // window.open('http://localhost:3000/google')
         }
     }

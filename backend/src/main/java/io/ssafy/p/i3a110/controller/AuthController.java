@@ -29,13 +29,10 @@ public class AuthController {
         loginSuccessHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
-    @GetMapping("/auth")
-    public String healthCheck() {
-        return "healty";
+    @GetMapping("/github")
+    public void loginGithub(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        loginSuccessHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
-    @GetMapping("/auth/restricted")
-    public String restricted() {
-        return "to see this text you need to be logged in";
-    }
 }
