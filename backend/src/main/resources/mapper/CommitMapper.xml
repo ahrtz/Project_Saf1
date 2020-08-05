@@ -19,6 +19,7 @@
 		delete
 		from commit_list
 		where id = #{id}
+		
 	</delete>
 	
 	<select id="getUidById" resultType="Integer">
