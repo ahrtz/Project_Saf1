@@ -13,5 +13,9 @@ public interface ScrapDao {
 	public void createScrap(ScrapDto scrapDto);
 
 	public void deleteScrap(int uid, int pid);
+
+	public ScrapDto getScrap(int uid, int pid);
+
+	public void updateScrap(ScrapDto scrapDto);
 	
 }
