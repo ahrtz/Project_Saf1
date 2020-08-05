@@ -11,8 +11,8 @@
 	
 	<insert id="addCommit" parameterType="CommitListDto">
 		insert into commit_list 
-		(uid, pid, sha, author, msg)
-		values (#{uid}, #{pid}, #{sha}, #{author}, #{msg})
+		(uid, pid, sha, author, msg, date)
+		values (#{uid}, #{pid}, #{sha}, #{author}, #{msg}, #{date})
 	</insert>
 	
 	<delete id="deleteCommit">
