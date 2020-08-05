@@ -17,7 +17,7 @@
               그룹 정보 수정
             </v-btn>
           </template>
-
+      
           <v-card>
             <v-card-title
               class="headline grey lighten-2"
