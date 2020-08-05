@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,8 +55,8 @@ public class LikeController {
 
     @Auth
     @PutMapping("/likes")
-    @ApiOperation(value = "좋아요 수정")
-    public void updateLike(HttpSession httpSession, @RequestBody LikeDto like) {
+    @ApiOperation(value = "좋아요 생성 및 수정")
+    public Object updateLike(HttpSession httpSession, @RequestBody LikeDto like) {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
     	int uid = user.getId();
@@ -64,6 +66,7 @@ public class LikeController {
         }else {
         	likeService.updateLike(like);
         }
+		return new ResponseEntity<>(like.getId(), HttpStatus.OK);
     }
 }
 

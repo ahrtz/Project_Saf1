@@ -36,15 +36,18 @@ public class ScrapController {
 	
 	@Auth
 	@PostMapping("/scraps")
-	@ApiOperation(value = "스크랩 생성")
+	@ApiOperation(value = "스크랩 생성 및 수정")
 	public Object createScrap(HttpSession session, @RequestBody ScrapDto scrapDto) {
 		String email = (String)session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		int uid = user.getId();
 		scrapDto.setUid(uid);
-		
-		scrapService.createScrap(scrapDto);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(scrapService.getScrap(uid, scrapDto.getPid())==null) {
+			scrapService.createScrap(scrapDto);
+		}else {
+			scrapService.updateScrap(scrapDto);
+		}
+		return new ResponseEntity<>(scrapDto.getId(), HttpStatus.OK);
 	}
 	
 	@Auth
