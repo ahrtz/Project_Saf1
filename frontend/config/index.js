@@ -31,7 +31,8 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: 'localhost', // 로컬용 can be overwritten by process.env.HOST
+    //host: '172.26.1.240', // 서버용(EC2)
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
