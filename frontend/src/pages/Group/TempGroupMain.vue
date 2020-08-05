@@ -1,19 +1,36 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="search"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+      <v-row>
+        <v-col cols="11">
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        
+        <v-col  cols="1">
+          <v-btn>dds</v-btn>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-data-table
       :headers="headers"
       :items="group_list"
       :search="search"
-    ></v-data-table>
+      @click:row="goGroup"  
+    >
+      <!-- <template slot="items" slot-scope="props" @click="goGroup(props.item.id)">
+          <tr>
+            <td>{{props.item.name}}</td>
+            <td>{{props.item.leader}}</td>
+            <td>{{props.item.members}}</td>
+          </tr>
+      </template> -->
+    </v-data-table>
   </v-card>
 </template>
 
@@ -24,9 +41,9 @@
         uid : null, 
         search: '',
         headers: [
-          { text: 'Name', align: 'start', value: 'name',},
-          { text: 'Members', value: 'members' },
+          { text: 'Group', align: 'start', value: 'name',},
           { text: 'Leader', value: 'leader',  filterable: false },
+           { text: 'Members', value: 'members', filterable:false },
         ],
         groups : [],  //api에 대응하는 group
         group_list : [] //Table에 띄워줄 data 포멧.
@@ -59,8 +76,13 @@
           obj['name'] = this.groups[i].name;
           obj['members'] = this.groups[i].mCnt;
           obj['leader'] = this.groups[i].lName;
+          obj['id'] = this.groups[i].id;
           this.group_list.push(obj);
         }
+      },
+      goGroup(param){
+        console.log("CKCK :: goGroup()!!! " + param.id)
+        this.$router.push({name:'GroupDetail', params:{gid:param.id}})
       }
     },
   }

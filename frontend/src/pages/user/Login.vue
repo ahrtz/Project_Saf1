@@ -34,7 +34,7 @@
         @click="$router.push({name:'SignUp'})"
       >회원가입</div>
       <div class="d-flex justify-center login-logo-container">
-        <img @click="onLogoClick" class="login-logo" style="margin-right:16px;" src="/static/git_logo.png"/>
+        <img @click="githubLogin()" class="login-logo" style="margin-right:16px;" src="/static/git_logo.png"/>
         <img class="login-logo" src="/static/google_logo.png" @click="googleLogin()"/>
       </div>
     </div>
@@ -68,10 +68,11 @@ export default {
           console.log('실패')
         }
       },
+    githubLogin(){
+      var temp= window.open('/api/oauth2/authorization/github')
+    },
     googleLogin(){
-
-      var temp= window.open('/api/google')
-      
+      var temp= window.open('/api/oauth2/authorization/google')
     }
 
   },
