@@ -1,13 +1,21 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="search"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+      <v-row>
+        <v-col cols="11">
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        
+        <v-col  cols="1">
+          <v-btn>dds</v-btn>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-data-table
       :headers="headers"
