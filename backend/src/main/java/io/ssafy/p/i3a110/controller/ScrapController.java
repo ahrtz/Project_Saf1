@@ -1,5 +1,7 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,9 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.ScrapDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.DiaryService;
+import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.ScrapService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -27,11 +34,31 @@ public class ScrapController {
 	private ScrapService scrapService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private DiaryService diaryService;
 
-	@GetMapping("/scraps/{uid}")
+	@Auth
+	@GetMapping("/scraps")
 	@ApiOperation(value = "회원 스크랩 정보 조회")
-	public List<ScrapDto> getAllScrapsByUser(@PathVariable int uid) {
-		return scrapService.getAllScrapsByUser(uid);
+	public List<HashMap<Object, Object>> getAllScrapsByUser(HttpSession session) {
+		String email = (String) session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+		List<ScrapDto> scrapList = scrapService.getAllScrapsByUser(user.getId());
+		for(ScrapDto scrap : scrapList) {
+			HashMap<Object, Object> form = objectMapper.convertValue(scrap, HashMap.class);
+			PostDto post = postService.getPostById(scrap.getPid());
+			form.put("postinfo", post);
+    		form.put("dName", diaryService.getDiary(String.valueOf(post.getDid())).getTitle());
+    		
+    		output.add(form);
+		}
+		
+		return output;
 	}
 	
 	@Auth
