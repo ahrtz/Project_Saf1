@@ -50,12 +50,16 @@ export default {
     },
     
 
-    async userUpdate(userdata){
-        return (await axios.put(`${baseURL}/users`,userdata))
+    async userUpdate(userdata,configs){
+        return (await axios.put(`${baseURL}/users`,userdata,configs))
     },
     async signupp(data,configs){
         return (await axios.post(`${baseURL}/users/signup`,data,configs))
     },
+    async getProfileImage(fileName){
+        return (await axios.post(`${baseURL}/users/image/${fileName}`)).data
+    },
+
     async savePost(data){
         return (await axios.post(`${baseURL}/posts`,data))
     },
