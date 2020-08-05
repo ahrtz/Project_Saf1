@@ -1,10 +1,19 @@
 <template>
-  <div class="scrap-container">
-    <div class="d-flex scrap-inner">
+  <div class="tmpPost-container">
+    <div class="d-flex tmpPost-inner">
       <div class="d-flex justify-center">
-        <div class="d-flex flex-column" style="width: 500px;">
-          <div class="scrap-title">스크랩 리스트</div>
-          <div>준비중입니다.</div>
+        <div class="d-flex flex-column" style="width: 600px;">
+          <div class="tmpPost-title">스크랩 글</div>
+          <div
+            class="d-flex align-center flex-grow-0 tmpPost-diary"
+            v-for="post in scrapData"
+            :key="post.id"
+          >
+            <div class="d-flex" style="overflow: hidden">다이어리 이름 :{{post.dName}} | 제목: {{post.postinfo.title}}</div>
+            <div class="d-flex align-center justify-center flex-grow-0 tmpPost-btn" @click="$router.push({name:'PostDetail',params:{pid:post.pid}})">보러가기</div>
+            <div class="d-flex align-center justify-center flex-grow-0 tmpPost-btn-white" @click="scrapDelete(post.pid)" >삭제</div>
+          </div>
+          <div v-if="scrapData == null || scrapData.length == 0">저장된 글이 없습니다.</div>
         </div>
       </div>
       <user-sidebar />
@@ -20,6 +29,41 @@ export default {
   components: {
     userSidebar,
   },
+  data(){
+    return{
+      scrapData:[],
+      uid:""
+    }
+  },
+  async created(){
+    this.uid = this.$store.state.user.id
+    let tmpspace  = await this.$api.getScrapInfo(this.uid)
+    this.scrapData = tmpspace
+    
+  },
+  methods:{
+    async scrapDelete(scrapid){
+      try{
+      this.$api.deleteScrap(scrapid)
+      console.log('삭제 성공')
+      
+        try{
+          let tmpspace  = await this.$api.getScrapInfo(this.uid)
+          this.scrapData = tmpspace
+          console.log(tmpspace)
+          }catch(e){
+          console.log(e)
+        }
+      
+      }
+      catch(e){
+        console.log(e)
+      }
+    
+    
+    }
+  }
+
 };
 </script>
 

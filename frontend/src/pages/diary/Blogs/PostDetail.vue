@@ -41,7 +41,7 @@
           <br>
           <v-btn class="ma-2" tile color="grey" dark v-if="likeData.likechecked == false" @click="like()" >좋아요</v-btn>
           <v-btn class="ma-2" tile color="red" dark v-if="likeData.likechecked" @click="like()">좋아요 취소</v-btn>
-          <v-btn class="ma-2" tile color="indigo" dark >스크랩</v-btn>
+          <v-btn class="ma-2" tile color="indigo" dark @click="scrap">스크랩</v-btn>
           <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()" >공유</v-btn>
           <v-btn class="ma-2 float-right" tile color="indigo" dark v-show="this.uid==this.tmp.uid" @click="deleteP(tmp.id)" >삭제</v-btn>
 
@@ -207,12 +207,8 @@ export default {
             }
         },
         scrap(){
-            // axios.post('http://localhost:3000/scraps',{
-            //     uid:this.uid,
-            //     pid:this.id.pid,
-            //     publisher:this.tmp.uid,
-            //     status:1})
-            //     .then(alert())
+            this.$api.makeScrap({pid:this.id.pid,status:1})
+            alert('스크랩 되었습니다')
         },
         commentwrite(){
             //alert('준비중입니다.')

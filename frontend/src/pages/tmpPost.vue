@@ -44,7 +44,7 @@ export default {
     this.config.uid = this.$store.state.user.id;
     try {
       let tmpspace = await this.$api.searchTemp(this.config);
-      this.tempPost = tmpspace;
+      this.tempPost = tmpspace.data;
       console.log('성공');
     } catch (e) {
       console.log(e);
@@ -60,7 +60,7 @@ export default {
         // FIX: 걍 api 한번 더 불러주면댐~~
         try {
           let tmpspace = await this.$api.searchTemp(this.config);
-          this.tempPost = tmpspace;
+          this.tempPost = tmpspace.data;
           console.log('성공');
         } catch (e) {
           console.log(e);
