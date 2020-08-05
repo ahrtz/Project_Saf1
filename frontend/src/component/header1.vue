@@ -9,13 +9,8 @@
     >
       <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
-<<<<<<< HEAD
-      <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="alerts('준비중입니다.')">Group</div> -->
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
-      
-=======
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'GroupMain'})">Group</div>
->>>>>>> origin/develop
+    
       <div class="d-flex"/>
       <v-text-field
         id="header-text"
