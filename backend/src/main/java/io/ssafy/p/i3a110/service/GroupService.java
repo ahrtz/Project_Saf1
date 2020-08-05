@@ -30,8 +30,8 @@ public class GroupService {
 		groupDao.inviteGroup(groupRealtionDto);
 	}
 
-	public void updateGroup(String id, GroupDto groupDto) {
-		groupDao.updateGroup(id, groupDto);
+	public void updateGroup(GroupDto groupDto) {
+		groupDao.updateGroup(groupDto);
 	}
 
 	public void deleteGroup(String id) {
