@@ -24,14 +24,14 @@
             <p>
               <input
                 type="checkbox"
-                
+
                 v-model="selected"
                 :value="commit"
               />
               <label :for="commit">{{commit.msg}}</label>
             </p>
           </div>
-          
+
 
         </v-container>내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
@@ -85,7 +85,7 @@ export default {
           is_temp:0,
           cDate:new Date().toISOString().substr(0, 10)
         },
-        commitList:[                
+        commitList:[
                 ],
         isProj:false
       }
@@ -97,7 +97,7 @@ export default {
             let tmpspace = await this.$api.postdetail(this.pid)
             this.post =tmpspace
             console.log('성공')
-            
+
             try{
               let tempspace1= await this.$api.individualDiary(this.post.did)
               if (tempspace1.gitName.length>0){
@@ -159,7 +159,7 @@ export default {
       },
       async writetmpPost(){
         this.post.isTemp=1
-        
+
         try {
            await this.$api.savePost(this.post);
             try{
@@ -185,7 +185,7 @@ export default {
             console.log('실패');
           }
 
-        
+
       },
       commitDelete(id,index){
         this.$api.deleteCommit(id)
@@ -194,7 +194,7 @@ export default {
     },
     computed:{
       userid(){
-        
+
       },
       // isProj(){
       //   return false
