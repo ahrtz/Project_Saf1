@@ -137,6 +137,8 @@ export default {
     },
     async googleLogin(){
         return (await axios.get(`${baseURL}/google`))
+    },
+    async deleteCommit(cid){
+        return (await axios.delete(`${baseURL}/commits/${cid}`))
     }
-
 }
