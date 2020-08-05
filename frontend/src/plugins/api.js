@@ -57,7 +57,7 @@ export default {
         return (await axios.post(`${baseURL}/users/signup`,data,configs))
     },
     async getProfileImage(fileName){
-        return (await axios.post(`${baseURL}/users/image/${fileName}`)).data
+        return (await axios.get(`${baseURL}/users/image/${fileName}`)).data
     },
 
     async savePost(data){
