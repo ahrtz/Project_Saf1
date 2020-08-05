@@ -121,11 +121,12 @@ public class GroupController {
 	public Object updateGroup(HttpSession session, @PathVariable String id, @RequestBody GroupDto groupDto) {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
+		
 		if(uid == groupService.getGroupInfoById(id).getLid()) {
 			groupService.updateGroup(id, groupDto);
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -135,13 +136,13 @@ public class GroupController {
 	public Object deleteGroup(HttpSession session, @PathVariable String id) {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
+		
 		if(uid == groupService.getGroupInfoById(id).getLid()) {
 			groupService.deleteGroup(id);
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 	
 }
