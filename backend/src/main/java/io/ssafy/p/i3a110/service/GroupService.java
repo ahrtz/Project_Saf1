@@ -50,8 +50,8 @@ public class GroupService {
 		groupDao.withdrawGroup(groupRelationDto);
 	}
 
-	public GroupRelationDto getGroupInfoByIdAndUser(String id, int uid) {
-		return groupDao.getGroupInfoByIdAndUser(id, uid);
+	public GroupRelationDto getCheckMember(String id, int uid) {
+		return groupDao.getCheckMember(id, uid);
 	}
 
 	public int getMemberCntById(int id) {

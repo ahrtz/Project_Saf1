@@ -62,10 +62,16 @@ public class GroupController {
 	public Object getGroupInfoById(HttpSession session, @PathVariable String id) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		GroupRelationDto group = groupService.getGroupInfoByIdAndUser(id, user.getId());
-		if(group != null) {
+		
+		GroupRelationDto check = groupService.getCheckMember(id, user.getId());
+		if(check != null) {
+			GroupDto group = groupService.getGroupInfoById(id);
 			ObjectMapper objectMapper = new ObjectMapper();
 			HashMap<Object, Object> output = objectMapper.convertValue(group, HashMap.class);
+    		UserDto leader = userService.findUserById(group.getLid());
+    		output.put("lName", leader.getNickname());
+    		output.put("lEmail", leader.getEmail());
+    		output.put("mCnt", groupService.getMemberCntById(group.getId()));
 			List<String> uList = new ArrayList<String>();
 			uList = groupService.getUserListById(id);
 			
