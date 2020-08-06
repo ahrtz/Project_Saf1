@@ -20,6 +20,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             AuthenticationException e
     ) throws IOException, ServletException {
         log.info("Failure");
-        httpServletResponse.sendRedirect("/google/failure-callback");   // KCE: 만들긴 했는데 언제 불리는거지? 불릴일이 없을듯
+        httpServletResponse.sendRedirect("/social/failure-callback");
     }
 }
