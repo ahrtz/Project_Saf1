@@ -1,5 +1,6 @@
 package io.ssafy.p.i3a110.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,21 @@ public class GroupService {
 		groupDao.withdrawGroup(groupRelationDto);
 	}
 
-	public GroupRelationDto getCheckMember(String id, int uid) {
-		return groupDao.getCheckMember(id, uid);
+	public GroupRelationDto checkMember(String id, int uid) {
+		return groupDao.checkMember(id, uid);
 	}
 
 	public int getMemberCntById(int id) {
 		return groupDao.getMemberCntById(id);
+	}
+
+	public List<HashMap<String, String>> getTopNUserByType(int oid, int type, int cnt) {
+		if(type == 0) {
+			return groupDao.getTopNUserByLike(oid, cnt);
+		}else if(type == 1){
+			return groupDao.getTopNUserByPost(oid, cnt);
+		}else {
+			return groupDao.getTopNUserByFollower(oid, cnt);
+		}
 	}
 }

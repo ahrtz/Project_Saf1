@@ -23,7 +23,7 @@
 		group by oid
 	</select>
 	
-	<select id="getCheckMember" resultType="GroupRelationDto">
+	<select id="checkMember" resultType="GroupRelationDto">
 		select *
 		from organization_relation
 		where uid = #{uid} and oid = #{id}
@@ -66,6 +66,49 @@
 		from organization
 		where id = #{id}
 	</delete>
+	
+	<select id="getTopNUserByPost" resultType="HashMap">
+		select u.id uid, u.email email, u.nickname nickname, u.intro intro, u.img img, p.cnt cnt
+		from user u
+			join (select u.uid uid, count(*) cnt
+					from (select uid
+							from organization_relation
+							where oid = #{oid}) u join post p
+					on u.uid = p.uid
+					group by u.uid
+					order by cnt desc
+					limit #{cnt}) p
+		on u.id = p.uid
+	</select>
+	
+	<select id="getTopNUserByLike" resultType="HashMap">
+		select u.id uid, u.email email, u.nickname nickname, u.intro intro, u.img img, l.cnt cnt
+		from user u
+			join (select u.uid uid, sum(cnt_like) cnt
+					from (select uid
+							from organization_relation
+							where oid = #{oid}) u join post p
+					on u.uid = p.uid
+					group by u.uid
+					order by cnt desc
+					limit #{cnt}) l
+		on u.id = l.uid
+	</select>
+	
+	<select id="getTopNUserByFollower" resultType="HashMap">
+		select u.id uid, u.email email, u.nickname nickname, u.intro intro, u.img img, f.cnt cnt
+		from user u
+			join (select u.uid uid, count(*) cnt
+					from (select uid
+							from organization_relation
+							where oid = #{oid}) u join follow f
+					on u.uid = f.user_to
+					where f.status = 1
+					group by u.uid
+					order by cnt desc
+					limit #{cnt}) f
+		on u.id = f.uid
+	</select>
 	
 </mapper>    
     
