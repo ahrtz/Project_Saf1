@@ -64,7 +64,7 @@ export default {
           let tmp = await this.$api.login(this.loginData)
           console.log(tmp.data)
           this.$router.push({name:'MainPagefor',params:{uid:tmp.data}})
-          // location.reload()params:{pid:post.id}}
+          location.reload()
         } catch (e) {
           alert("아이디 또는 비밀번호를 확인해주세요.")
           console.log('실패')

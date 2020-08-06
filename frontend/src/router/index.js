@@ -113,7 +113,7 @@ const router = new Router({
     },
     //블로그
     {
-      path: ':uid/diary',
+      path: '/:uid/diary',
       name:'DiaryMain',
       component: DiaryMain,
     },
