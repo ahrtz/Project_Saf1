@@ -129,8 +129,9 @@
         //console.log(this.addItem.name + "//" + this.addItem.intro)
         //this.desserts.push(this.editedItem)
         this.$api.addGroup(this.addItem)
+        this.getGroup()
         //여기 어떻게 해야 깔끔해지지..? 새로고침 싫은데...
-        location.reload()
+        //location.reload()
         this.close()
       },
     },

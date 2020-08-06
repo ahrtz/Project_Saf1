@@ -6,10 +6,11 @@ import tmpPost from '../pages/tmpPost.vue'
 
 // user
 import MainPage from '../MainPage.vue'
+import MainPagefor from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
 import Login from '@/pages/user/Login.vue'
-import Follow from '../pages/user/Follow.vue'
+import Follow from '../pages/user/FollownScrap.vue' //
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
 import DiaryMain from '../pages/diary/DiaryMain.vue'
@@ -17,7 +18,6 @@ import DiaryMain from '../pages/diary/DiaryMain.vue'
 
 //project
 import Project from '../pages/diary/Projects/Projects.vue'
-import ProjectDetail from '../pages/diary/Blogs/BlogDetail.vue'
 import ProjectAdd from '../pages/diary/DiaryAdd.vue'
 import NewProjectPost from '../pages/diary/Blogs/NewBlogPost.vue'
 
@@ -30,12 +30,12 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 
 
 //Group
-import GroupMain from '../pages/Group/TempGroupMain.vue'
+import GroupMain from '../pages/Group/TempGroupMain.vue' //
 import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
 
 //social login
-import oauth2Success from '../pages/user/oauth2Success.vue'
+import socialSuccess from '../pages/user/socialSuccess.vue'
 
 Vue.use(Router)
 
@@ -45,6 +45,11 @@ const router = new Router({
   mode: 'history',
   routes: [
     
+    {
+      path: '/:uid',
+      name:'MainPagefor',
+      component: MainPagefor,
+    },
     {
       path: '/search/:key',
       name: 'tmp',
@@ -87,7 +92,7 @@ const router = new Router({
       component: SignUp,
     },
     // 다이어리
-    
+
         //프로젝트
     {
       path: '/diary/projects',
@@ -100,11 +105,7 @@ const router = new Router({
       component: ProjectAdd,
       
     },
-    {
-      path:'/diary/projects/:did',
-      name:'ProjectDetail',
-      component : ProjectDetail
-    },
+
     {
       path:'/diary/projects/:did/new',
       name:'NewProjectPost',
@@ -112,7 +113,7 @@ const router = new Router({
     },
     //블로그
     {
-      path: '/diary',
+      path: '/:uid/diary',
       name:'DiaryMain',
       component: DiaryMain,
     },
@@ -122,7 +123,7 @@ const router = new Router({
       component : BlogAdd
     },
     {
-      path:'/diary/blogs/:did',
+      path:'/:uid/diary/blogs/:did',
       name:'BlogDetail',
       component:BlogDetail
     },
@@ -159,9 +160,9 @@ const router = new Router({
     },
     //소셜로그인용
     {
-      path:'/oauth2/success-callback',
-      name:'oauth2Success',
-      component: oauth2Success,
+      path:'/social/success-callback',
+      name:'socialSuccess',
+      component: socialSuccess,
       // redirect: { name: 'DairyMain' }
 
     },

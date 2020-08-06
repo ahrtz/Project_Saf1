@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.GroupDto;
 import io.ssafy.p.i3a110.dto.GroupRelationDto;
-import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
+import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -34,6 +34,8 @@ public class GroupController {
 	private GroupService groupService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private PostService postService;
 	
 	@Auth
 	@GetMapping("/groups")
@@ -63,7 +65,7 @@ public class GroupController {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		
-		GroupRelationDto check = groupService.getCheckMember(id, user.getId());
+		GroupRelationDto check = groupService.checkMember(id, user.getId());
 		if(check != null) {
 			GroupDto group = groupService.getGroupInfoById(id);
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -75,15 +77,16 @@ public class GroupController {
 			List<String> uList = new ArrayList<String>();
 			uList = groupService.getUserListById(id);
 			
-			List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+			List<HashMap<Object, Object>> list = new ArrayList<HashMap<Object, Object>>();
 			for(String uid : uList) {
 				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
-	    		HashMap<String, String> userinfo = new HashMap<String, String>();
+	    		HashMap<Object, Object> userinfo = new HashMap<Object, Object>();
 	    		userinfo.put("id", String.valueOf(tUser.getId()));
 	    		userinfo.put("email", tUser.getEmail());
 	    		userinfo.put("nickname", tUser.getNickname());
 	    		userinfo.put("img", tUser.getImg());
 	    		userinfo.put("intro", tUser.getIntro());
+	    		userinfo.put("lastPost", postService.getLastPostDate(Integer.parseInt(uid)));
 	    		list.add(userinfo);
 			}
 			output.put("userinfo", list);
@@ -153,7 +156,7 @@ public class GroupController {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
 		
-		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid()) {
+		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid() && uid == groupDto.getLid()) {
 			groupService.updateGroup(groupDto);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
@@ -176,4 +179,21 @@ public class GroupController {
 		}
 	}
 	
+	@Auth
+	@PostMapping("/groups/top")
+	@ApiOperation(value = "그룹 상위 회원 조회")
+	public Object getTopNUserByType(HttpSession session, @RequestBody HashMap<String, String> map) {
+		String email = (String) session.getAttribute("email");
+		int uid = userService.findUserByEmail(email).getId();
+		int oid = Integer.parseInt(map.get("oid"));
+		int type = Integer.parseInt(map.get("type"));
+		int cnt = Integer.parseInt(map.get("cnt"));
+		GroupRelationDto check = groupService.checkMember(map.get("oid"), uid);
+		if(check==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else {
+			List<HashMap<String, String>> output = groupService.getTopNUserByType(oid,type,cnt);
+			return new ResponseEntity<>(output, HttpStatus.OK);
+		}
+	}
 }

@@ -73,7 +73,7 @@ export default {
 
             },
             blogData:{
-                uid :"" ,// 회원 pk. 임시로 사용 
+                uid :"" ,
                 title : null,
                 intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
@@ -102,20 +102,23 @@ export default {
     async created(){
       this.blogData.uid= this.$store.state.user.id
 
-        try{
-            let tmpspace = await this.$api.getRepoData()
-            console.log(tmpspace)
-            this.repoData = tmpspace
-        }catch(e){
-            console.log(e)
-        }
         if (this.$route.path[7] =='p'){
             this.blogData.isProj=1
+        
+            try{
+                let tmpspace = await this.$api.getRepoData()
+                console.log(tmpspace)
+                this.repoData = tmpspace
+            }catch(e){
+                console.log(e)
+            }
+        
             return true
         }else{
             this.blogData.isProj=0
             return false
         }
+        
     },
     computed:{
         
@@ -135,7 +138,7 @@ export default {
         try{
             await this.$api.AddProject(this.blogData)
             console.log('성공')
-            this.$router.push({name:'DiaryMain'})
+            this.$router.push({name:'DiaryMain',params:{uid:this.blogData.uid}})
         }catch(e){
             console.log('실패')
         }

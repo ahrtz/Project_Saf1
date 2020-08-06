@@ -109,15 +109,17 @@ export default {
         }
     },
     created(){
-        this.uid= this.$store.state.user.id
+        this.uid= this.$route.params.uid
+        this.test = this.$route.params.test
         this.getDiary();
+
     },
     methods:{
         goBlog( param ){
             if (this.test==1){
                 this.$router.push({name : 'BlogDetail', params :{did:param}})
             }else{
-                this.$router.push({name : 'ProjectDetail', params :{did:param}})
+                this.$router.push({name : 'BlogDetail', params :{did:param}})
 
             }
         },

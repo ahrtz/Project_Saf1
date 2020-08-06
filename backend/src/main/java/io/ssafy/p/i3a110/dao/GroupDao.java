@@ -1,5 +1,6 @@
 package io.ssafy.p.i3a110.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -24,7 +25,13 @@ public interface GroupDao {
 
 	public void withdrawGroup(GroupRelationDto groupRelationDto);
 
-	public GroupRelationDto getCheckMember(String id, int uid);
+	public GroupRelationDto checkMember(String id, int uid);
 
 	public int getMemberCntById(int id);
+
+	public List<HashMap<String, String>> getTopNUserByLike(int oid, int cnt);
+
+	public List<HashMap<String, String>> getTopNUserByPost(int oid, int cnt);
+
+	public List<HashMap<String, String>> getTopNUserByFollower(int oid, int cnt);
 }

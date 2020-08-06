@@ -88,7 +88,25 @@
         delete from post
         where id=#{id}
     </delete>
+    
+    <select id="getlastPostDate" resultType="HashMap">
+    	select p.id id, p.title title, p.c_date date
+    	from user u join post p
+    	on u.id = p.uid
+    	where u.id = #{id}
+    	order by c_date desc
+    	limit 1;
+    </select>
 
+	<update id="plusLike">
+		update post
+		set cnt_like = cnt_like + 1
+	</update>
+	
+	<update id="minusLike">
+		update post
+		set cnt_like = cnt_like -1
+	</update>
 </mapper>
 
 

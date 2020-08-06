@@ -6,10 +6,12 @@
 
 <script>
 export default {
-    name:'oauth2Success',
+    name:'socialSuccess',
     created(){
         // window.opener.$root.$router.push({name:'DiaryMain'})
-        window.opener.location.href = '/';
+        let tmp = this.$store.state.user
+        console.log(tmp)
+        window.opener.location.href = '/'+tmp.id;
         self.close();
     }
 

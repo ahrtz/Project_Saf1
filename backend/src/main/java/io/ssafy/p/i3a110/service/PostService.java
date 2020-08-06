@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 public class PostService {
@@ -36,5 +37,9 @@ public class PostService {
     public void deletePost(int id) {
         postDao.deletePost(id);
     }
-
+    
+    public HashMap<Object, Object> getLastPostDate(int id){
+    	return postDao.getlastPostDate(id);
+    }
+    
 }

@@ -86,6 +86,9 @@
           required
           style="margin-bottom:16px;"
         ></v-text-field>
+        <div>
+          <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
+        </div>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>
       <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
@@ -195,6 +198,17 @@ export default {
         alert('비밀번호가 다름');
       }
     },
+    async certifyGit(){
+      try{
+        let tmpid=this.signupData.gitId
+        let tmpToken = this.signupData.gitToken
+        await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
+        this.signupData.isCertified = 1
+        alert('인증되었습니다')
+      }catch(e){
+        console.log(e)
+      }
+    }
   },
 };
 </script>
