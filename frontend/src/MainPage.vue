@@ -153,10 +153,11 @@ export default {
       page: 1,
       list_proj: [],
       list_blog: [],
+      isLogin : false
     };
   },
   created() {
-    // this.getPost();
+    this.isLogin=this.$store.state.isLoggedIn
   },
   methods: {
     getPost() {
@@ -195,9 +196,10 @@ export default {
       //else
     },
     infiniteHandler($state) {
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
-          uid: '',
+          uid: temp,
           isProj: '1',
           isTemp: '0',
           keyword: '',
@@ -219,9 +221,10 @@ export default {
         });
     },
     infiniteHandler2($state) {
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
-          uid: '',
+          uid: temp,
           isProj: '0',
           isTemp: '0',
           keyword: '',
