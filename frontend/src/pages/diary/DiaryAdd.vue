@@ -11,12 +11,39 @@
       <v-col cols="12" v-show="isProject">
       gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
       </v-col> -->
-      <v-radio-group v-model="repoChecked">
-        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo" >
-        
-        </v-radio>
-        
-      </v-radio-group>
+
+        <v-layout row v-show="this.blogData.isProj==1">
+        <v-dialog v-model="dialog" scrollable max-width="300px">
+        <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">repository 선택하기</v-btn>
+        </template>
+        <v-card>
+            <v-card-title>레포 선택</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text style="height: 500px;">
+                <v-radio-group v-model="repoChecked" column>
+                    <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+                    
+                </v-radio-group>
+            </v-card-text>
+            <v-divider></v-divider>
+                <v-card-actions>
+                
+                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </v-layout>
+
+
+
+
+
+
+
+
+
+     
 
       <v-col cols="12">
             대표 이미지
@@ -90,7 +117,9 @@ export default {
             },
             repoChecked:{
                 
-            }
+            },
+            
+            dialog:false
         }
     },
     watch:{
