@@ -62,8 +62,10 @@ public class GroupService {
 	public List<HashMap<String, String>> getTopNUserByType(int oid, int type, int cnt) {
 		if(type == 0) {
 			return groupDao.getTopNUserByLike(oid, cnt);
-		}else {
+		}else if(type == 1){
 			return groupDao.getTopNUserByPost(oid, cnt);
+		}else {
+			return groupDao.getTopNUserByFollower(oid, cnt);
 		}
 	}
 }
