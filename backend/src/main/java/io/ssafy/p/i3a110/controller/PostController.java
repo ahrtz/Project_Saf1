@@ -87,8 +87,20 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     @ApiOperation(value = "상세 조회")
-    public PostDto getPostById(@PathVariable int id) {
-        return postService.getPostById(id);
+    public HashMap<Object, Object> getPostById(@PathVariable int id) {
+    	PostDto post = postService.getPostById(id);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+		UserDto writer = userService.findUserById(post.getUid());
+		HashMap<String, String> userinfo = new HashMap<String, String>();
+		userinfo.put("id", String.valueOf(writer.getId()));
+		userinfo.put("email", writer.getEmail());
+		userinfo.put("nickname", writer.getNickname());
+		userinfo.put("img", writer.getImg());
+		userinfo.put("intro", writer.getIntro());
+		
+		form.put("userinfo", userinfo);
+        return form;
     }
 
     @Auth
