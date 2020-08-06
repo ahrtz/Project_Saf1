@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name:'googleSuccess',
+    name:'oauth2Success',
     created(){
         // window.opener.$root.$router.push({name:'DiaryMain'})
         window.opener.location.href = '/';
