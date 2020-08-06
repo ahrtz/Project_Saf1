@@ -35,7 +35,7 @@ import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
 
 //social login
-import oauth2Success from '../pages/user/oauth2Success.vue'
+import socialSuccess from '../pages/user/socialSuccess.vue'
 
 Vue.use(Router)
 
@@ -159,9 +159,9 @@ const router = new Router({
     },
     //소셜로그인용
     {
-      path:'/oauth2/success-callback',
-      name:'oauth2Success',
-      component: oauth2Success,
+      path:'/social/success-callback',
+      name:'socialSuccess',
+      component: socialSuccess,
       // redirect: { name: 'DairyMain' }
 
     },

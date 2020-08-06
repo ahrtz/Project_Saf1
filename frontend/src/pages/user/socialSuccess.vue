@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name:'oauth2Success',
+    name:'socialSuccess',
     created(){
         // window.opener.$root.$router.push({name:'DiaryMain'})
         window.opener.location.href = '/';
