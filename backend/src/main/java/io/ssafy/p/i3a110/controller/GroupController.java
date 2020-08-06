@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.GroupDto;
 import io.ssafy.p.i3a110.dto.GroupRelationDto;
-import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
+import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -34,6 +34,8 @@ public class GroupController {
 	private GroupService groupService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private PostService postService;
 	
 	@Auth
 	@GetMapping("/groups")
@@ -75,15 +77,16 @@ public class GroupController {
 			List<String> uList = new ArrayList<String>();
 			uList = groupService.getUserListById(id);
 			
-			List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+			List<HashMap<Object, Object>> list = new ArrayList<HashMap<Object, Object>>();
 			for(String uid : uList) {
 				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
-	    		HashMap<String, String> userinfo = new HashMap<String, String>();
+	    		HashMap<Object, Object> userinfo = new HashMap<Object, Object>();
 	    		userinfo.put("id", String.valueOf(tUser.getId()));
 	    		userinfo.put("email", tUser.getEmail());
 	    		userinfo.put("nickname", tUser.getNickname());
 	    		userinfo.put("img", tUser.getImg());
 	    		userinfo.put("intro", tUser.getIntro());
+	    		userinfo.put("lastPost", postService.getLastPostDate(Integer.parseInt(uid)));
 	    		list.add(userinfo);
 			}
 			output.put("userinfo", list);
