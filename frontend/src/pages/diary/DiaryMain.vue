@@ -110,7 +110,9 @@ export default {
     },
     created(){
         this.uid= this.$route.params.uid
+        this.test = this.$route.params.test
         this.getDiary();
+
     },
     methods:{
         goBlog( param ){
