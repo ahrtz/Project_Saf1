@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.ssafy.p.i3a110.dto.LikeDto;
+import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.LikeService;
+import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -28,15 +30,11 @@ public class LikeController {
     private LikeService likeService;
     @Autowired
     private UserService userService;
-
-    @GetMapping("/likes/total/{pid}")
-    @ApiOperation(value = "포스트 좋아요 수 조회")
-    public int getLikeCnt(@PathVariable int pid) {
-        return likeService.getLikeCnt(pid);
-    }
+    @Autowired
+    private PostService postService;
     
     @PostMapping("/likes/total")
-    @ApiOperation(value = "포스트 좋아요 수 조회")
+    @ApiOperation(value = "포스트 좋아요 수 조회 (User || Diary)")
     public List<HashMap<Object, Object>> getLikeCntByType(@RequestBody HashMap<String, String> map) {
     	String type = map.get("type");
     	return likeService.getLikeCntByType(type);
@@ -59,14 +57,16 @@ public class LikeController {
     public Object updateLike(HttpSession httpSession, @RequestBody LikeDto like) {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
-    	int uid = user.getId();
-    	like.setUid(uid);
-        if(likeService.getLike(uid, like.getPid()) == null) {
-        	likeService.makeLike(like);
-        }else {
-        	likeService.updateLike(like);
-        }
-		return new ResponseEntity<>(like.getId(), HttpStatus.OK);
+    	
+    	PostDto post = postService.getPostById(like.getPid());
+    	if(post==null) {
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}else {
+    		int uid = user.getId();
+    		like.setUid(uid);
+    		likeService.updateLike(like);
+    		return new ResponseEntity<>(like.getId(), HttpStatus.OK);
+    	}
     }
 }
 

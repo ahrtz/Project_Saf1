@@ -22,8 +22,8 @@
               <div class="main-page-section-title">Project Post</div>
               <div
                 class="d-flex justify-center flex-grow-0 align-center main-page-btn"
-                style="margin-bottom:5px;"
-              >더보기</div>
+                style="margin-bottom:5px;" @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
+              >프로젝트 보러가기</div>
             </div>
             <v-card
               class="ma-2"
@@ -78,8 +78,8 @@
               <div class="main-page-section-title">Blog Post</div>
               <div
                 class="d-flex justify-center flex-grow-0 align-center main-page-btn"
-                style="margin-bottom:5px;"
-              >더보기</div>
+                style="margin-bottom:5px;" @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
+              >다이어리 보러가기</div>
             </div>
             <v-card
               class="ma-2"
@@ -153,51 +153,21 @@ export default {
       page: 1,
       list_proj: [],
       list_blog: [],
+      isLogin : false,
+      uid:''
     };
   },
   created() {
-    // this.getPost();
+    this.isLogin=this.$store.state.isLoggedIn
+    this.uid = this.$route.params.uid
   },
   methods: {
-    getPost() {
-      //로그인 안 되어 있는 경우 전체 post
-      //TODO : 로그인 세션 추가
-      //if(isLogin)
-
-      //TODO : uid 현재 유저로 확인해야됨
-      axios
-        .post('/api/posts/all/', {
-          uid: '',
-          isProj: '0',
-          isTemp: '0',
-          keyword: '',
-          limit: '1',
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.blog_posts = res.data;
-        });
-
-      axios
-        .post('/api/posts/all/', {
-          uid: '',
-          isProj: '1',
-          isTemp: '0',
-          keyword: '',
-          limit: '2',
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.project_posts = res.data;
-        });
-      //로그인 되어 있는 경우 나의 post
-      //TODO
-      //else
-    },
+   
     infiniteHandler($state) {
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
-          uid: '',
+          uid: temp,
           isProj: '1',
           isTemp: '0',
           keyword: '',
@@ -219,9 +189,10 @@ export default {
         });
     },
     infiniteHandler2($state) {
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
-          uid: '',
+          uid: temp,
           isProj: '0',
           isTemp: '0',
           keyword: '',

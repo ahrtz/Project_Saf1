@@ -92,7 +92,7 @@ export default {
       try {
         this.$api.deleteDiary(this.diaryid.did)
         console.log('다이어리 삭제 완료')
-        this.$router.push({name:'DiaryMain'})
+        this.$router.go(-1)
       }catch(e){
         console.log(e)
       }
