@@ -130,7 +130,7 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴")
     public void deleteById(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
-        UserDto user = findUserByEmail(email);
+        UserDto user = userService.findUserByEmail(email);
 
         userService.deleteById(user.getId());
     }
@@ -176,7 +176,7 @@ public class UserController {
     @ApiOperation(value = "내 정보 조회")
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
-        UserDto user = findUserByEmail(email);
+        UserDto user = userService.findUserByEmail(email);
         return user;
     }
 
