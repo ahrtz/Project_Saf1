@@ -1,7 +1,15 @@
 <template>
   <div class="main-page-container">
     <div class="main-page-inner d-flex flex-column justify-center">
+      
+      
+      
+     
       <Status />
+     
+     
+     
+     
       <br />
       <br />
       <v-container fluid>

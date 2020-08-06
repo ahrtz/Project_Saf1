@@ -153,6 +153,8 @@ export default {
     async deleteScrap(id){
         return (await axios.delete(`${baseURL}/scraps/${id}`))
     },
+
+    // Group 관련
     async addGroup(data){
         return (await axios.post(`${baseURL}/groups`,data))
     },
@@ -170,5 +172,15 @@ export default {
     },
     async groupDetailUpdate(datas){
         return (await axios.put(`${baseURL}/groups`,datas)).data
-    }
+    },
+
+    //팔로우 관련
+    // 팔로우, 팔로잉 유저 목록 확인
+    async searchFollow(data){
+        return (await axios.post(`${baseURL}/follows`),data).data
+    },
+    //팔로우 생성 및 수정
+    async makeFollow(data){
+        return (await axios.put(`${baseURL}`/follows),data)
+    },
 }
