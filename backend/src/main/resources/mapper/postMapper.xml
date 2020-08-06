@@ -98,6 +98,15 @@
     	limit 1;
     </select>
 
+	<update id="plusLike">
+		update post
+		set cnt_like = cnt_like + 1
+	</update>
+	
+	<update id="minusLike">
+		update post
+		set cnt_like = cnt_like -1
+	</update>
 </mapper>
 
 

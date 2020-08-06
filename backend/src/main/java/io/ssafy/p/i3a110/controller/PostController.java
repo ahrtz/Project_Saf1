@@ -111,10 +111,10 @@ public class PostController {
         UserDto user = userService.findUserByEmail(email);
         SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
-        System.out.println( " Timestamp : " + ts);
         
         post.setUid(user.getId());
         post.setCDate(ts.toString());
+        post.setCntLike(0);
         postService.createPost(post);
 		return new ResponseEntity<>(post.getId(), HttpStatus.OK);
     }
