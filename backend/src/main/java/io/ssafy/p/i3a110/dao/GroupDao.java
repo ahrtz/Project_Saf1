@@ -32,4 +32,6 @@ public interface GroupDao {
 	public List<HashMap<String, String>> getTopNUserByLike(int oid, int cnt);
 
 	public List<HashMap<String, String>> getTopNUserByPost(int oid, int cnt);
+
+	public List<HashMap<String, String>> getTopNUserByFollower(int oid, int cnt);
 }
