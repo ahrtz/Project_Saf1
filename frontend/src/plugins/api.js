@@ -181,6 +181,6 @@ export default {
     },
     //팔로우 생성 및 수정
     async makeFollow(data){
-        return (await axios.put(`${baseURL}`/follows),data)
+        return (await axios.put(`${baseURL}/follows`,data))
     },
 }
