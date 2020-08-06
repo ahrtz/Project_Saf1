@@ -188,13 +188,7 @@ export default {
       //else
     },
     infiniteHandler($state) {
-      let temp = ""
-      console.log(temp,'123')
-      if(this.isLogin){
-        temp = this.$store.state.user.id
-      }else{
-        temp = ''
-      }
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
           uid: temp,
@@ -219,13 +213,7 @@ export default {
         });
     },
     infiniteHandler2($state) {
-      let temp = ""
-      console.log(temp,'123')
-      if(this.isLogin){
-        temp = this.$store.state.user.id
-      }else{
-        temp = ''
-      }
+      let temp = this.$route.params.uid
       axios
         .post('/api/posts/all/', {
           uid: temp,

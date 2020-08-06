@@ -60,9 +60,11 @@ export default {
     },
     async login() {
         try {
-          await this.$api.login(this.loginData)
-          this.$router.push({name:'MainPage'})
-          location.reload()
+
+          let tmp = await this.$api.login(this.loginData)
+          console.log(tmp.data)
+          this.$router.push({name:'MainPagefor',params:{uid:tmp.data}})
+          // location.reload()params:{pid:post.id}}
         } catch (e) {
           alert("아이디 또는 비밀번호를 확인해주세요.")
           console.log('실패')
