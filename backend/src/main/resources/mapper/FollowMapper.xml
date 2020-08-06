@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.FollowDao">
+	
+	<select id="getFollower" resultType="Integer">
+		select user_from
+		from follow
+		where user_to = #{uid}
+		and status = 1
+	</select>
+	
+	<select id="getFollowing" resultType="Integer">
+		select user_to
+		from follow
+		where user_from = #{uid}
+		and status = 1	
+	</select>
+	
+	<select id="checkFollow" resultType="FollowDto">
+		select *
+		from follow
+		where user_from = #{userFrom} and user_to = #{userTo}
+	</select>
+	
+	<update id="updateFollow" parameterType="FollowDto" useGeneratedKeys="true" keyProperty="id">
+		update follow
+		set
+		status = #{status}
+		where user_from = #{userFrom} and user_to = #{userTo}
+	</update>
+	
+	<insert id="createFollow" parameterType="FollowDto" useGeneratedKeys="true" keyProperty="id">
+		insert into follow (user_from, user_to, status)
+		values (#{userFrom}, #{userTo}, #{status})
+	</insert>
+</mapper>    
+    
+    
+    
+    
+    
+    

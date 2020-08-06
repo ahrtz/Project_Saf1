@@ -6,4 +6,5 @@ public class FollowDto {
     private int id;
     private int userFrom;
     private int userTo;
+    private int status;
 }
