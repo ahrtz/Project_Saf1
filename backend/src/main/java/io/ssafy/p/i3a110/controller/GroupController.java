@@ -63,7 +63,7 @@ public class GroupController {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		
-		GroupRelationDto check = groupService.getCheckMember(id, user.getId());
+		GroupRelationDto check = groupService.checkMember(id, user.getId());
 		if(check != null) {
 			GroupDto group = groupService.getGroupInfoById(id);
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -176,4 +176,21 @@ public class GroupController {
 		}
 	}
 	
+	@Auth
+	@PostMapping("/groups/top")
+	@ApiOperation(value = "그룹 상위 회원 조회")
+	public Object getTopNUserByType(HttpSession session, @RequestBody HashMap<String, String> map) {
+		String email = (String) session.getAttribute("email");
+		int uid = userService.findUserByEmail(email).getId();
+		int oid = Integer.parseInt(map.get("oid"));
+		int type = Integer.parseInt(map.get("type"));
+		int cnt = Integer.parseInt(map.get("cnt"));
+		GroupRelationDto check = groupService.checkMember(map.get("oid"), uid);
+		if(check==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}else {
+			List<HashMap<String, String>> output = groupService.getTopNUserByType(oid,type,cnt);
+			return new ResponseEntity<>(output, HttpStatus.OK);
+		}
+	}
 }
