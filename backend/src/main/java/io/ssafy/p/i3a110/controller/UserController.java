@@ -147,7 +147,7 @@ public class UserController {
         if (pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(user.getId(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
