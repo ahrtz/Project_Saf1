@@ -7,8 +7,8 @@
       color="#fff"
       height="70"
     >
-      <img class="header-logo" @click="$router.push({name:'MainPage'})" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain'})">Diary</div>
+      <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png"/>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain',params:{uid:target}})">Diary</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
 
       <div class="d-flex"/>
@@ -48,8 +48,14 @@ export default {
         'Myinfo',
       ],
       keyw:'',
-      signin:false
+      signin:false,
+      target:''
+      
   }),
+  created(){
+    this.target =  this.$route.params.uid
+    // this.target = temp
+  },
   methods: {
       onGroupBtnClick() {
         if(this.signin)
@@ -70,9 +76,16 @@ export default {
       },
       alerts(msg){
         alert(msg)
+      },
+      gotomain(){
+        this.$router.push({name:'MainPagefor',params:{uid:this.userid}})
+        location.reload()
       }
   },
   computed:{
+    userid(){
+      return this.$store.state.user.id
+    },
     islogin(){
       return this.signin= this.$store.state.isLoggedIn
     },
