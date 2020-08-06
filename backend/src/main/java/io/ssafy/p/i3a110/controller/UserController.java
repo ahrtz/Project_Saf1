@@ -1,8 +1,16 @@
 package io.ssafy.p.i3a110.controller;
 
-import io.ssafy.p.i3a110.dto.UserDto;
-import io.ssafy.p.i3a110.service.UserService;
-import io.swagger.annotations.ApiOperation;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,17 +19,20 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import io.ssafy.p.i3a110.dto.UserDto;
+import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.UserService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class UserController {
@@ -36,18 +47,36 @@ public class UserController {
 
     @PostMapping("/users")
     @ApiOperation(value = "키워드로 회원 조회")
-    public ArrayList<UserDto> findUsers(@RequestBody HashMap<String, String> map) {
+    public List<HashMap<String, String>> findUsers(@RequestBody HashMap<String, String> map) {
         String keyword = map.get("keyword");
-
-        return userService.findUsers(keyword);
+        List<UserDto> userList = userService.findUsers(keyword);
+        List<HashMap<String, String>> output = new ArrayList<HashMap<String,String>>();
+        for(UserDto user : userList) {
+        	HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("id", String.valueOf(user.getId()));
+    		userinfo.put("email", user.getEmail());
+    		userinfo.put("nickname", user.getNickname());
+    		userinfo.put("img", user.getImg());
+    		userinfo.put("intro", user.getIntro());
+    		output.add(userinfo);
+        }
+        return output;
     }
 
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
-    public UserDto findUserByEmail(@PathVariable String email) {
-        return userService.findUserByEmail(email);
+    public HashMap<String, String> findUserByEmail(@PathVariable String email) {
+    	UserDto user = userService.findUserByEmail(email);
+    	HashMap<String, String> userinfo = new HashMap<String, String>();
+		userinfo.put("id", String.valueOf(user.getId()));
+		userinfo.put("email", user.getEmail());
+		userinfo.put("nickname", user.getNickname());
+		userinfo.put("img", user.getImg());
+		userinfo.put("intro", user.getIntro());
+        return userinfo;
     }
 
+    @Auth
     @PutMapping("/users")
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession,
@@ -96,11 +125,12 @@ public class UserController {
 
     }
 
+    @Auth
     @DeleteMapping("/users")
     @ApiOperation(value = "회원 탈퇴")
     public void deleteById(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
-        UserDto user = findUserByEmail(email);
+        UserDto user = userService.findUserByEmail(email);
 
         userService.deleteById(user.getId());
     }
@@ -117,7 +147,7 @@ public class UserController {
         if (pwd.equals(user.getPwd())) {
             httpSession.setAttribute("isLoggedIn", true);
             httpSession.setAttribute("email", email);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(user.getId(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -141,11 +171,12 @@ public class UserController {
         return result;
     }
 
+    @Auth
     @GetMapping("/users/me")
     @ApiOperation(value = "내 정보 조회")
     public UserDto me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
-        UserDto user = findUserByEmail(email);
+        UserDto user = userService.findUserByEmail(email);
         return user;
     }
 

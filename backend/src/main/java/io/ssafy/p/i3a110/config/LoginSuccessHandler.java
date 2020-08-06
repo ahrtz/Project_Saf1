@@ -5,7 +5,7 @@ import io.ssafy.p.i3a110.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +32,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException {
-        DefaultOidcUser principal = (DefaultOidcUser) authentication.getPrincipal();
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getPrincipal().getClass());
+        DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
+
+
         String email = principal.getAttribute("email");
+
+        if (email == null || "".equals(email)) {
+            email = principal.getAttribute("id") + "@github.com";
+        }
+
         UserDto user = userDao.findUserByEmail(email);
 
         System.out.println(principal.toString());
@@ -49,6 +58,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         HttpSession session = request.getSession();
         session.setAttribute("email", email);
         session.setAttribute("isLoggedIn", true);
-        response.sendRedirect("/google/success-callback");  // 301
+        response.sendRedirect("/social/success-callback");  // 301
     }
 }
