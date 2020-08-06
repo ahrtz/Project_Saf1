@@ -4,6 +4,7 @@ import io.ssafy.p.i3a110.dto.PostDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Mapper
 public interface PostDao {
@@ -23,4 +24,6 @@ public interface PostDao {
     public void updatePost(PostDto post);
     
     public void deletePost(int id);
+
+	public HashMap<Object, Object> getlastPostDate(int id);
 }

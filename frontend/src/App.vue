@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <!-- KCE: 렌더링 타이밍 이슈로 회원 정보 새로고침하면 데이터 다 날아감, 원인은 아래 코드(isLoggedIn) 날려서 그런거임!! 지우지마세요.-->
+  <div id="app" v-if="isLoggedIn != null"> 
     <!-- 모든 페이지 공통 -->
     <header1 />
     <!-- 뷰별 페이지 -->
@@ -16,8 +17,9 @@ export default {
   
   name: 'App',
   components:{ header1 },
-  
-
+  data: () => ({
+    isLoggedIn: null,
+  }),
   async beforeCreate(){
     try {
       let userData = await this.$api.getMe()
@@ -28,8 +30,8 @@ export default {
     }
 
     try {
-      let isLoggedIn = await this.$api.isLoggedIn()
-      this.$store.commit('isLoggedIn',isLoggedIn)
+      this.isLoggedIn = await this.$api.isLoggedIn()
+      this.$store.commit('isLoggedIn',this.isLoggedIn)
     } catch(e) {
       console.log(e)
       this.$store.commit('isLoggedIn',false)

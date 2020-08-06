@@ -34,8 +34,8 @@ import GroupMain from '../pages/Group/TempGroupMain.vue'
 import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
 
-//google
-import googleSuccess from '../pages/user/googleSuccess.vue'
+//social login
+import socialSuccess from '../pages/user/socialSuccess.vue'
 
 Vue.use(Router)
 
@@ -157,12 +157,11 @@ const router = new Router({
       name:'GroupDetail',
       component: GroupDetail
     },
-    //구글로그인용
-   
+    //소셜로그인용
     {
-      path:'/google/success-callback',
-      name:'googleSuccess',
-      component:googleSuccess,
+      path:'/social/success-callback',
+      name:'socialSuccess',
+      component: socialSuccess,
       // redirect: { name: 'DairyMain' }
 
     },
