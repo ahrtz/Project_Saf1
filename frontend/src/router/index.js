@@ -123,7 +123,7 @@ const router = new Router({
       component : BlogAdd
     },
     {
-      path:'/diary/blogs/:did',
+      path:'/:uid/diary/blogs/:did',
       name:'BlogDetail',
       component:BlogDetail
     },

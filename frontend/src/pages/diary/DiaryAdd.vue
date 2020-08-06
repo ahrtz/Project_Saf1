@@ -73,7 +73,7 @@ export default {
 
             },
             blogData:{
-                uid :"" ,// 회원 pk. 임시로 사용 
+                uid :"" ,
                 title : null,
                 intro : null,
                 img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
@@ -138,7 +138,7 @@ export default {
         try{
             await this.$api.AddProject(this.blogData)
             console.log('성공')
-            this.$router.push({name:'DiaryMain'})
+            this.$router.push({name:'DiaryMain',params:{uid:this.blogData.uid}})
         }catch(e){
             console.log('실패')
         }
