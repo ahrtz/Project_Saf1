@@ -11,7 +11,7 @@
               class="d-flex align-center justify-space-between"
               style="margin-bottom:16px; border-bottom:solid 1px grey"
             >
-              <div class="main-page-section-title">Project Post</div>
+              <div class="main-page-section-title">Project Post 개별</div>
               <div
                 class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                 style="margin-bottom:5px;"
@@ -129,7 +129,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 
 var count = 0;
 export default {
-  name: 'MainPage',
+  name: 'EachMainPage',
   components: {
     Status,
     InfiniteLoading,
@@ -188,13 +188,8 @@ export default {
       //else
     },
     infiniteHandler($state) {
-      let temp = ""
-      console.log(temp,'123')
-      if(this.isLogin){
-        temp = this.$store.state.user.id
-      }else{
-        temp = ''
-      }
+      let temp = this.$route.params.uid
+      
       axios
         .post('/api/posts/all/', {
           uid: temp,
@@ -219,13 +214,8 @@ export default {
         });
     },
     infiniteHandler2($state) {
-      let temp = ""
-      console.log(temp,'123')
-      if(this.isLogin){
-        temp = this.$store.state.user.id
-      }else{
-        temp = ''
-      }
+      let temp = this.$route.params.uid
+      console.log(temp)
       axios
         .post('/api/posts/all/', {
           uid: temp,

@@ -102,20 +102,23 @@ export default {
     async created(){
       this.blogData.uid= this.$store.state.user.id
 
-        try{
-            let tmpspace = await this.$api.getRepoData()
-            console.log(tmpspace)
-            this.repoData = tmpspace
-        }catch(e){
-            console.log(e)
-        }
         if (this.$route.path[7] =='p'){
             this.blogData.isProj=1
+        
+            try{
+                let tmpspace = await this.$api.getRepoData()
+                console.log(tmpspace)
+                this.repoData = tmpspace
+            }catch(e){
+                console.log(e)
+            }
+        
             return true
         }else{
             this.blogData.isProj=0
             return false
         }
+        
     },
     computed:{
         

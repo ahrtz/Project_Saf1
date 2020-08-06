@@ -6,6 +6,7 @@ import tmpPost from '../pages/tmpPost.vue'
 
 // user
 import MainPage from '../MainPage.vue'
+import EachMainPage from '../EachMainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
 import Login from '@/pages/user/Login.vue'
@@ -87,7 +88,11 @@ const router = new Router({
       component: SignUp,
     },
     // 다이어리
-    
+    {
+      path: '/:uid',
+      name:'EachMainPage',
+      component:EachMainPage
+    },
         //프로젝트
     {
       path: '/diary/projects',
