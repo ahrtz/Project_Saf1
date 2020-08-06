@@ -41,5 +41,5 @@ public class PostService {
     public HashMap<Object, Object> getLastPostDate(int id){
     	return postDao.getlastPostDate(id);
     }
-
+    
 }

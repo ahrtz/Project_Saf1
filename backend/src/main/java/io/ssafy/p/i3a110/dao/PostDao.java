@@ -26,4 +26,8 @@ public interface PostDao {
     public void deletePost(int id);
 
 	public HashMap<Object, Object> getlastPostDate(int id);
+	
+	public void plusLike(int id);
+	
+	public void minusLike(int id);
 }
