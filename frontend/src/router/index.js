@@ -10,7 +10,7 @@ import MainPagefor from '../MainPage.vue'
 import AccountDetail from '../pages/user/AccountDetail.vue'
 import SignUp from '../pages/user/SignUp.vue'
 import Login from '@/pages/user/Login.vue'
-import Follow from '../pages/user/Follow.vue'
+import Follow from '../pages/user/FollownScrap.vue' //
 import Scrap from '../pages/user/Scrap.vue'
 //Diary
 import DiaryMain from '../pages/diary/DiaryMain.vue'
@@ -30,7 +30,7 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 
 
 //Group
-import GroupMain from '../pages/Group/TempGroupMain.vue'
+import GroupMain from '../pages/Group/TempGroupMain.vue' //
 import MemberList from '../pages/Group/MemberList.vue'
 import GroupDetail from '../pages/Group/GroupDetail.vue'
 

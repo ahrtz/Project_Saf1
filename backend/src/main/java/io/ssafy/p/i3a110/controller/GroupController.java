@@ -156,7 +156,7 @@ public class GroupController {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
 		
-		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid()) {
+		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid() && uid == groupDto.getLid()) {
 			groupService.updateGroup(groupDto);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {

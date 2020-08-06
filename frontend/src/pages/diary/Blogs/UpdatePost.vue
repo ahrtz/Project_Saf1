@@ -8,7 +8,7 @@
           @click="goback()"
         >뒤로가기</div>
       </div>
-      <div class="d-flex flex-column" style="width: 800px;align-self:center">
+      <div class="d-flex flex-column" style="width:60%;align-self:center; ">
         <div>포스트 수정</div>
         <br />
         <br />제목
@@ -24,25 +24,36 @@
             <p>
               <input
                 type="checkbox"
-                
+
                 v-model="selected"
                 :value="commit"
               />
               <label :for="commit">{{commit.msg}}</label>
             </p>
           </div>
-          
-
         </v-container>내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
         <h3>태그</h3>
         <div class="d-flex">
-        <v-text-field label="태그를 검색 혹은 추가" v-model="tag"></v-text-field>
-        <div class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn" @click="addtag()">태그추가</div>
+          <v-text-field label="태그를 추가" v-model="tag"></v-text-field>
+          <div class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn" @click="addtag()">
+          태그추가</div>
         </div>
         <br />
-        {{tags}}
+        <!-- tags -->
+        <!-- TODO : 오른쪽으로 나열하고 싶은데 잘 안됨 -->
+        <div class="d-flex flex-row mb-6" flat tile v-for="tag in tags" :key="'t-'+tag.id">
+          <div class="pa-2">
+            <v-card
+              color="grey lighten-4"
+            >
+              <a @click="searchTag(tag.name)">#{{tag.name}} &nbsp; </a>
+              <button @click="deleteTag(tag.name)"> X </button>
+            </v-card>
+          </div>
+        </div>
+
         <br />
         <div class="d-flex" style="margin-top: 72px">
           <div
@@ -62,7 +73,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from 'axios'
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -71,6 +81,10 @@ export default {
     data(){
       return{
         tag:'',
+        newtag:{
+          pid:'',
+          name:''
+        },
         tags:[],
         pid:this.$route.params.pid,
         selected:[] ,
@@ -85,7 +99,7 @@ export default {
           is_temp:0,
           cDate:new Date().toISOString().substr(0, 10)
         },
-        commitList:[                
+        commitList:[
                 ],
         isProj:false
       }
@@ -97,7 +111,7 @@ export default {
             let tmpspace = await this.$api.postdetail(this.pid)
             this.post =tmpspace
             console.log('성공')
-            
+
             try{
               let tempspace1= await this.$api.individualDiary(this.post.did)
               if (tempspace1.gitName.length>0){
@@ -120,22 +134,54 @@ export default {
         let selectedCommit = await this.$api.getPostCommit(this.pid)
         this.selectedCommits = selectedCommit
         console.log('선택한 커밋 불러오기')
-
       }catch(e){
-
       }
+      //tags 가져오기
+      try{
+          let tmpspace3= await this.$api.tagIndex(this.pid)
+          this.tags = tmpspace3;
+        }catch(e){
+          console.log(e)
+      }
+      // console.log(this.tags);
     },
     methods:{
       clear(){
         this.$refs.form.reset()
       },
+      searchTag(tagName){
+        document.getElementById('header-text').value=tagName;
+        this.$router.push({name: 'tmp',params:{key:tagName}})
+      },
       goback(){
             this.$router.go(-1)
         },
-      addtag(){
-        const tmp = '#'+this.tag
-        this.tags.push(tmp)
-        this.tag=''
+      async addtag(){
+        if(this.tag == '' || this.tag == null){
+          alert('값이 입력되지 않았습니다');
+          return;
+        }
+        for(var i=0;i<this.tags.length;i++){
+          if(this.tags[i].name.toLowerCase() == this.tag.toLowerCase()){
+            alert('중복된 태그 입니다');
+            return;
+          }
+        }
+        this.newtag.pid = this.pid;
+        this.newtag.name = this.tag;
+        try{
+          await this.$api.createTag(this.newtag)
+        }catch(e){
+          console.log(e)
+        }
+        this.tag = '';
+        //tags 가져오기
+        try{
+            let tmpspace3= await this.$api.tagIndex(this.pid)
+            this.tags = tmpspace3;
+        }catch(e){
+          console.log(e)
+        }
       },
       addcommit(commit){
         this.post.selected.push(commit)
@@ -145,7 +191,7 @@ export default {
         console.log(this.post);
       },
       async writePost(){
-      try{
+        try{
           this.post.isTemp=0
           this.$api.updatePost(this.post)
           console.log('성공11')
@@ -154,12 +200,10 @@ export default {
           console.log(e)
           console.log('실패')
         }
-
-
       },
       async writetmpPost(){
         this.post.isTemp=1
-        
+
         try {
            await this.$api.savePost(this.post);
             try{
@@ -184,22 +228,12 @@ export default {
             console.log(e);
             console.log('실패');
           }
-
-        
       },
       commitDelete(id,index){
         this.$api.deleteCommit(id)
         this.selectedCommits.splice(index,1)
       }
     },
-    computed:{
-      userid(){
-        
-      },
-      // isProj(){
-      //   return false
-      // }
-    }
 }
 </script>
 

@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.ssafy.p.i3a110.dao.LikeDao">
 
-    <select id="getLikeCnt" resultType="int">
-        select count(*) as total
-        from likes
-        where pid=#{pid}
-    </select>
-
     <select id="getLike" resultType="LikeDto">
         select *
         from likes
@@ -31,19 +25,15 @@
     </insert>
     
     <select id="getLikeCntByUser" resultType="HashMap">
-    	select p.uid uid, count(*) cnt
-    	from post p join likes l
-    	on p.id = l.pid
-    	where l.status = 1
-    	group by p.uid
+    	select uid, sum(cnt_like) cnt
+    	from post
+    	group by uid
     </select>
     
     <select id="getLikeCntByDiary" resultType="HashMap">
-    	select p.did did, count(*) cnt
-    	from post p join likes l
-    	on p.id = l.pid
-    	where l.status = 1
-    	group by p.did
+    	select did, sum(cnt_like) cnt
+    	from post
+    	group by did
     </select>
 </mapper>
 
