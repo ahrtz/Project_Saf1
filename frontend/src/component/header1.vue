@@ -23,18 +23,17 @@
             @keyup.enter="search()"
           ></v-text-field>
       <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
-      <div v-if="islogin==true" class="d-flex justify-center flex-grow-0" @click="$router.push({name:'Follow'})">
+      <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
+      <div class="d-flex align-center flex-grow-0 header-profile" v-if="islogin==true" @click="$router.push({name:'Follow'})">
         <div>
           <img class="header-profile-image" :src="userImg" />
         </div>
-        <div class="header-menu">{{userNickname}}</div>
+        <div>{{userNickname}}</div>
       </div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="logout()">Logout</div>
-
-
+      <div class="d-flex justify-center flex-grow-0 align-center header-btn-white" v-if="islogin==true" @click="logout()">Logout</div>
+      <div class="d-flex justify-center flex-grow-0 align-center header-btn" style="margin-right:0" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
+      <div class="d-flex justify-center flex-grow-0 align-center header-btn-white" style="margin-left:8px" v-if="islogin==false" @click="$router.push({name:'SignUp'})">Signup</div>
     </v-card>
 
   </div>
@@ -101,7 +100,7 @@ export default {
   },
   computed:{
     userNickname() {
-      return this.$store.state.user.nickName
+      return this.$store.state.user.nickname
     },
     userImg(){
       return this.$store.state.user.img
@@ -181,6 +180,19 @@ export default {
   cursor: pointer;
 }
 
+.header-btn-white {
+  margin-left: 24px;
+  font-size: 14px;
+  background: #fff;
+  font-weight: 600;
+  color: #0051cb;
+  border-radius: 6px;
+  border: solid 1px #0051cb;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+}
+
 .header-flex-container {
   width:100%;
   display:flex;
@@ -189,6 +201,7 @@ export default {
   padding: 0px;
   border-radius: 5px;
 }
+
 .header-flex-item {
   display:flex;
   margin: 10px;
@@ -200,25 +213,17 @@ export default {
   font-family: Recursive;
   font-size:20px;
 }
-.header-search-button{
-  background:#32681c;
-  border:0px;
-  width:50px;
-  height:100%;
-  outline:none;
-  color:#ffffff;
-}
-.header-router-link {
-  text-decoration: none;
-  margin:5px;
-}
-.header-router-link-exact-active  {
-  color: white;
-  background-color:#56c068;
 
+.header-profile {
+  margin-left: 24px;
+  color: #21262e;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .header-profile-image {
+  margin-right: 8px;
   width: 30px;
   height: 30px;
   border: solid 1px #dde3ea;
