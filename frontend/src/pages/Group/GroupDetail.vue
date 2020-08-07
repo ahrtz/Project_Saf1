@@ -53,20 +53,6 @@
         </v-dialog>
       </div>
       <!-- 이거 수정 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <v-layout row >
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
