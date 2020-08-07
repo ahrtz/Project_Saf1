@@ -8,8 +8,8 @@
       height="70"
     >
       <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png"/>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomain()">Overview</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
 
       <div class="d-flex"/>
       <v-text-field
@@ -25,10 +25,16 @@
       <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
+      <div v-if="islogin==true" class="d-flex justify-center flex-grow-0" @click="$router.push({name:'Follow'})">
+        <div>
+          <img class="header-profile-image" :src="userImg" />
+        </div>
+        <div class="header-menu">{{userNickname}}</div>
+      </div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="logout()">Logout</div>
 
 
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==true" @click="$router.push({name:'Follow'})">MyPage</div>
     </v-card>
 
   </div>
@@ -94,6 +100,12 @@ export default {
       }
   },
   computed:{
+    userNickname() {
+      return this.$store.state.user.nickName
+    },
+    userImg(){
+      return this.$store.state.user.img
+    },
     userid(){
       return this.$store.state.user.id
     },
@@ -122,7 +134,12 @@ export default {
 }
 
 .header-container {
+  z-index: 99;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  border-bottom: solid 1px #dde3ea;
 }
 
 .header-inner {
@@ -199,5 +216,12 @@ export default {
   color: white;
   background-color:#56c068;
 
+}
+
+.header-profile-image {
+  width: 30px;
+  height: 30px;
+  border: solid 1px #dde3ea;
+  border-radius: 50%;
 }
 </style>
