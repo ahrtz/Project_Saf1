@@ -17,7 +17,7 @@
                             <v-subheader class="follow-n-scrap-category">followers</v-subheader>
                             <template v-for="(follower,index) in followers.slice(0,3)">
                                 <hr class="hr-css" :key="index">
-                                <v-list-item :key="follower.nickname" > <!--@click=""-->
+                                <v-list-item :key="follower.email" > <!--@click=""-->
                                 <v-list-item-avatar class="mr-3">
                                     <img :src="follower.img">
                                 </v-list-item-avatar>
@@ -42,7 +42,7 @@
                             <v-subheader class="follow-n-scrap-category">following</v-subheader>
                             <template v-for="(followee,index) in followees.slice(0,3)">
                                 <hr class="hr-css" :key="index">
-                                <v-list-item :key="followee.nickname" > <!--@click=""-->
+                                <v-list-item :key="followee.email" > <!--@click=""-->
                                 <v-list-item-avatar class="mr-3">
                                     <img :src="followee.img">
                                 </v-list-item-avatar>
