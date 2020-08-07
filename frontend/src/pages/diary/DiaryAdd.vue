@@ -158,7 +158,7 @@ export default {
         try{
             await this.$api.AddProject(this.blogData)
             console.log('성공')
-            this.$router.push({name:'DiaryMain',params:{uid:this.blogData.uid}})
+            this.$router.push({name:'DiaryMain',params:{uid:this.blogData.uid,test:2}})
         }catch(e){
             console.log('실패')
         }
