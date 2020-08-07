@@ -44,7 +44,11 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   routes: [
-    
+    {
+      path: '/',
+      name:'Login',
+      component: Login,
+    },
     
     {
       path: '/:uid',
@@ -61,11 +65,11 @@ const router = new Router({
       name:'tmpPost',
       component:tmpPost
     },
-    {
-      path: '/',
-      name:'MainPage',
-      component: MainPage,
-    },
+    // {
+    //   path: '/',
+    //   name:'MainPage',
+    //   component: MainPage,
+    // },
     // 회원 관리
     {
       path: '/account/detail',

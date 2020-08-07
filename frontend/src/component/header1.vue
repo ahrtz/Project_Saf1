@@ -8,7 +8,7 @@
       height="70"
     >
       <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="$router.push({name:'DiaryMain',params:{uid:target}})">Diary</div>
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div>
 
       <div class="d-flex"/>
@@ -57,6 +57,17 @@ export default {
     // this.target = temp
   },
   methods: {
+      onDiaryBtnClick() {
+        if(this.signin)
+        {
+          this.$router.push({name:'DiaryMain',params:{uid:this.target,test:2}}
+          )
+        }
+        else{
+          alert('로그인이 필요합니다.')
+          this.$router.push({name:'Login'})
+        }
+      },
       onGroupBtnClick() {
         if(this.signin)
         {
