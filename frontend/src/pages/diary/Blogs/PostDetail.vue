@@ -214,17 +214,14 @@ export default {
             //alert('준비중입니다.')
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
-
-            //console.log(this.commentData)
+            this.commentData.pid = this.id.pid
             this.$api.createComment(this.commentData)
             this.getComment()
-            location.reload()
         },
         commenterase(commentid){
                 // console.log("CKCK commentid")
                 this.$api.deleteComment(commentid)
                 this.getComment()
-                location.reload()
 
         },
         isWritten(authorid){
