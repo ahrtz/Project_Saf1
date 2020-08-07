@@ -101,11 +101,13 @@
 	<update id="plusLike">
 		update post
 		set cnt_like = cnt_like + 1
+		where id = #{id}
 	</update>
 	
 	<update id="minusLike">
 		update post
-		set cnt_like = cnt_like -1
+		set cnt_like = cnt_like - 1
+		where id = #{id}
 	</update>
 </mapper>
 

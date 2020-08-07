@@ -122,18 +122,17 @@ public class PostController {
     @Auth
     @PutMapping("/posts")
     @ApiOperation(value = "포스트 수정")
-    public Object updatePost(HttpSession httpSession, @RequestBody HashMap<String, String> map) {
+    public Object updatePost(HttpSession httpSession, @RequestBody PostDto post) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
 
-        PostDto post = postService.getPostById(Integer.parseInt(map.get("id")));
-        
-        if(user.getId() == post.getUid()) {
-	        post.setTitle(map.get("title"));
-	        post.setContent(map.get("content"));
-	        post.setPriority(Integer.parseInt(map.get("priority")));
-	        post.setIsTemp(Integer.parseInt(map.get("isTemp")));
-	        postService.updatePost(post);
+        PostDto oldPost = postService.getPostById(post.getId());
+        if(user.getId() == oldPost.getUid()) {
+        	oldPost.setTitle(post.getTitle());
+        	oldPost.setContent(post.getContent());
+        	oldPost.setPriority(post.getPriority());
+        	oldPost.setIsTemp(post.getIsTemp());
+	        postService.updatePost(oldPost);
 	        return new ResponseEntity<>(HttpStatus.OK);
         }else {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
