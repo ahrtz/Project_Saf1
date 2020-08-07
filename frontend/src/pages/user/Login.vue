@@ -1,43 +1,63 @@
 <template>
-  <div class="login-container d-flex flex-column align-center">
-    <div class="login-inner">
-      <div class="login-title">Blogit에 오신것을<br> 환영합니다.</div>
-      <div class="login-subtitle">이메일 주소 또는 SNS 간편 로그인을 통하여 로그인 해 주세요.</div>
-      <v-text-field
-        class="d-flex justify-center"
-        placeholder="아이디"
-        outlined
-        dense
-        hide-details
-        v-model="loginData.email"
-        required
-        type="email"
-      ></v-text-field>
-      <v-text-field
-        class="d-flex justify-center"
-        style="margin-top:16px;"
-        placeholder="비밀번호"
-        outlined
-        dense
-        hide-details
-        v-model="loginData.pwd"
-        required
-        type="password"
-        @focus="visi='visible'"
-        @blur="visi='hidden'"
-        @keypress.enter="login()"
-      ></v-text-field>
-      <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
-      <div class="d-flex justify-center align-center login-btn" @click="login()">로그인</div>
-      <div
-        class="d-flex justify-center align-center login-signup-btn"
-        @click="$router.push({name:'SignUp'})"
-      >회원가입</div>
-      <div class="d-flex justify-center login-logo-container">
-        <img @click="githubLogin()" class="login-logo" style="margin-right:16px;" src="/static/git_logo.png"/>
-        <img class="login-logo" src="/static/google_logo.png" @click="googleLogin()"/>
+  <div class="d-flex login-container">
+    <div class="d-flex login-left">
+      <div class="d-flex flex-column" style="width: 100%">
+        <div class="d-flex flex-grow-0 algin-center login-logo-container">
+          <div class="d-flex align-center">
+            <img class="login-logo" src="/static/images/Blogit_logo.png" />
+          </div>
+        </div>
+        <div class="d-flex justify-center">
+          <div class="d-flex flex-column">
+            <div class="login-title">
+              Blogit에 오신것을
+              <br />환영합니다.
+            </div>
+            <div class="login-subtitle">이메일 주소 또는 SNS 간편 로그인을 통하여 로그인 해 주세요.</div>
+            <v-text-field
+              class="d-flex flex-grow-0 justify-center"
+              placeholder="아이디"
+              outlined
+              dense
+              hide-details
+              v-model="loginData.email"
+              required
+              type="email"
+            ></v-text-field>
+            <v-text-field
+              class="d-flex flex-grow-0 justify-center"
+              style="margin-top:16px;"
+              placeholder="비밀번호"
+              outlined
+              dense
+              hide-details
+              v-model="loginData.pwd"
+              required
+              type="password"
+              @focus="visi='visible'"
+              @blur="visi='hidden'"
+              @keypress.enter="login()"
+            ></v-text-field>
+            <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+            <div class="d-flex flex-grow-0 justify-center align-center login-btn" @click="login()">로그인</div>
+            <div
+              class="d-flex flex-grow-0 justify-center align-center login-signup-btn"
+              @click="$router.push({name:'SignUp'})"
+            >회원가입</div>
+            <div class="d-flex justify-center login-social-logo-container">
+              <img
+                @click="githubLogin()"
+                class="login-social-logo"
+                style="margin-right:16px;"
+                src="/static/git_logo.png"
+              />
+              <img class="login-social-logo" src="/static/google_logo.png" @click="googleLogin()" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="d-flex login-right"></div>
   </div>
 </template>
 
@@ -54,52 +74,67 @@ export default {
       visi: 'hidden',
     };
   },
-  created(){
-    this.dummy = this.$store.state.isLoggedIn
-    if(this.dummy){
-      let temp = this.$store.state.user.id
-      this.$router.push({name:'MainPagefor',params:{uid:temp}})
-      console.log('>>>>')
+  created() {
+    this.dummy = this.$store.state.isLoggedIn;
+    if (this.dummy) {
+      let temp = this.$store.state.user.id;
+      this.$router.push({ name: 'MainPagefor', params: { uid: temp } });
+      console.log('>>>>');
     }
   },
   methods: {
     onLogoClick() {
-      alert("준비중입니다.");
+      alert('준비중입니다.');
     },
     async login() {
-        try {
-
-          let tmp = await this.$api.login(this.loginData)
-          console.log(tmp.data)
-          this.$router.push({name:'MainPagefor',params:{uid:tmp.data}})
-          location.reload()
-        } catch (e) {
-          alert("아이디 또는 비밀번호를 확인해주세요.")
-          console.log('실패')
-        }
-      },
-    githubLogin(){
-      var temp= window.open('/api/oauth2/authorization/github')
+      try {
+        let tmp = await this.$api.login(this.loginData);
+        console.log(tmp.data);
+        this.$router.push({ name: 'MainPagefor', params: { uid: tmp.data } });
+        location.reload();
+      } catch (e) {
+        alert('아이디 또는 비밀번호를 확인해주세요.');
+        console.log('실패');
+      }
     },
-    googleLogin(){
-      var temp= window.open('/api/oauth2/authorization/google')
-    }
-
+    githubLogin() {
+      var temp = window.open('/api/oauth2/authorization/github');
+    },
+    googleLogin() {
+      var temp = window.open('/api/oauth2/authorization/google');
+    },
   },
 };
 </script>
 
 <style>
 .login-container {
-  padding-top: 77px;
   width: 100%;
 }
 
-.login-inner {
-  width: 380px;
+.login-left {
+  min-width: 450px;
+  width: 150px;
+}
+
+.login-logo-container {
+  padding: 0 12px;
+  width: 100%;
+  height: 70px;
+}
+
+.login-logo {
+  width: 50px;
+  height: 50px;
+}
+
+.login-right {
+  background: #0051cb;
+  width: 300px;
 }
 
 .login-title {
+  padding-top: 77px;
   font-size: 24px;
   font-weight: 700;
 }
@@ -136,11 +171,11 @@ export default {
   cursor: pointer;
 }
 
-.login-logo-container {
+.login-social-logo-container {
   padding-top: 24px;
 }
 
-.login-logo {
+.login-social-logo {
   width: 40px;
   height: 40px;
   cursor: pointer;
