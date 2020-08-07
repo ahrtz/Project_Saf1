@@ -99,7 +99,7 @@ export default {
     name:'Blogs',
     data(){
         return{
-            test:0,
+            test:2,
             activeBtn: 0,
             showNav: true,
             show: false,

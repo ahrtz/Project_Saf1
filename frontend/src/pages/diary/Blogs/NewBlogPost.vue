@@ -15,7 +15,7 @@
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
         
-        <v-container v-show="isProj" fluid>
+        <v-container  fluid>
           <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>
               <input
@@ -92,10 +92,12 @@ export default {
         let diaryid = this.did
         let tempspace= await this.$api.individualDiary(diaryid)
         this.diarys = tempspace
+        console.log('아이디 받음')
         try{
           let git= this.diarys.gitName
           let listCommit = await this.$api.getCommitList({repoName:git})
           this.commitList=listCommit
+          console.log('커밋 받음')
         }catch(e){
           console.log('커밋쪽 에러')
         }

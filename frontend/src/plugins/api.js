@@ -177,10 +177,10 @@ export default {
     //팔로우 관련
     // 팔로우, 팔로잉 유저 목록 확인
     async searchFollow(data){
-        return (await axios.post(`${baseURL}/follows`,data)).data
+        return (await axios.post(`${baseURL}/follows`,data)).data //이게 내가 만든 api임.
     },
     //팔로우 생성 및 수정
     async makeFollow(data){
-        return (await axios.put(`${baseURL}`/follows),data)
+        return (await axios.put(`${baseURL}/follows`,data))     //이건 일단 나중에 쓸거고! 
     },
 }
