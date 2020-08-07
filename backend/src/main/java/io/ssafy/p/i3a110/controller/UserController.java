@@ -104,9 +104,7 @@ public class UserController {
         user.setIsSocial(Integer.parseInt(isSocial));
         user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (file == null) {
-            user.setImg(null);
-        } else {
+        if (file != null) {
             long timestamp = System.currentTimeMillis();
             StringBuilder builder = new StringBuilder(staticPath);
             String extension = FilenameUtils.getExtension(file.getOriginalFilename());
