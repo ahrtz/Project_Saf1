@@ -95,8 +95,8 @@ export default {
           title:'',
           content:'',
           priority:0,
-          cnt_like:0,
-          is_temp:0,
+          cntLike:0,
+          isTemp:0,
           cDate:new Date().toISOString().substr(0, 10)
         },
         commitList:[
@@ -193,9 +193,26 @@ export default {
       async writePost(){
         try{
           this.post.isTemp=0
-          this.$api.updatePost(this.post)
+          await this.$api.updatePost(this.post)
           console.log('성공11')
-          this.$router.go(-1)
+          try{
+                if (this.selected.length !=0){
+                  for (var i=0;i<this.selected.length;i++){
+                    // this.selected[i].uid = this.post.id
+                    this.selected[i].pid = this.pid
+                    this.selected[i].sha=this.selected[i].sha1
+                    this.selected[i].date=this.selected[i].date.substr(0,10)
+                    delete this.selected[i].sha1
+                    await this.$api.addCommit(this.selected[i])
+                    console.log(this.selected[i],'부악')
+                    console.log('성공',i)
+                    }
+                    }
+                    this.$router.go(-1);
+                    console.log(this.selected)
+                }catch(e){
+                console.log(e)
+                }
         }catch(e){
           console.log(e)
           console.log('실패')
@@ -209,7 +226,7 @@ export default {
             try{
                 if (this.selected.length !=0){
                   for (var i=0;i<this.selected.length;i++){
-                    this.selected[i].uid = this.posts.uid
+                    // this.selected[i].uid = this.post.id
                     this.selected[i].pid = this.pid
                     this.selected[i].sha=this.selected[i].sha1
                     this.selected[i].date=this.selected[i].date.substr(0,10)
