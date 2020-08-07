@@ -218,9 +218,9 @@ export default {
             await this.$api.createComment(this.commentData)
             this.getComment()
         },
-        commenterase(commentid){
+        async commenterase(commentid){
                 // console.log("CKCK commentid")
-                this.$api.deleteComment(commentid)
+                await this.$api.deleteComment(commentid)
                 this.getComment()
 
         },

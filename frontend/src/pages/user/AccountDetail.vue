@@ -150,14 +150,14 @@ export default {
         formData.append('intro',this.userdata.intro);
         formData.append('isSocial', this.userdata.isSocial);
         formData.append('isCertified',this.userdata.isCertified);
-        console.log(formData)
+        // console.log(formData)
 
         await this.$api.userUpdate(formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
           });
-        console.log('성공');
+        alert('정보 수정 성공');
         // location.reload();
       } catch (e) {
         console.log('실패');

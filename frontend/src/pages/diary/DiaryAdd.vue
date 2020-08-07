@@ -17,34 +17,25 @@
         <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on">repository 선택하기</v-btn>
         </template>
-        <v-card>
-            <v-card-title>레포 선택</v-card-title>
-            <v-divider></v-divider>
-            <v-card-text style="height: 500px;">
-                <v-radio-group v-model="repoChecked" column>
-                    <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+            <v-card>
+                <v-card-title>레포 선택</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text style="height: 500px;">
+                    <v-radio-group v-model="repoChecked" column>
+                        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+                        
+                    </v-radio-group>
+                </v-card-text>
+                <v-divider></v-divider>
+                    <v-card-actions>
                     
-                </v-radio-group>
-            </v-card-text>
-            <v-divider></v-divider>
-                <v-card-actions>
-                
-                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-                </v-card-actions>
-            </v-card>
+                    <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
             </v-dialog>
         </v-layout>
-
-
-
-
-
-
-
-
-
      
-
+      <v-text-field  readonly v-model="repoChecked.repoName" ></v-text-field>
       <v-col cols="12">
             대표 이미지
             <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>

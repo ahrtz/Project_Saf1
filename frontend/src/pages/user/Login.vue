@@ -54,6 +54,14 @@ export default {
       visi: 'hidden',
     };
   },
+  created(){
+    this.dummy = this.$store.state.isLoggedIn
+    if(this.dummy){
+      let temp = this.$store.state.user.id
+      this.$router.push({name:'MainPagefor',params:{uid:temp}})
+      console.log('>>>>')
+    }
+  },
   methods: {
     onLogoClick() {
       alert("준비중입니다.");
