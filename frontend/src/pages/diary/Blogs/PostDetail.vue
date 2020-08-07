@@ -209,13 +209,13 @@ export default {
             this.$api.makeScrap({pid:this.id.pid,status:1})
             alert('스크랩 되었습니다')
         },
-        commentwrite(){
+        async commentwrite(){
             this.commentData.content = document.getElementById('post-comment-content').value
             //alert('준비중입니다.')
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
             this.commentData.pid = this.id.pid
-            this.$api.createComment(this.commentData)
+            await this.$api.createComment(this.commentData)
             this.getComment()
         },
         commenterase(commentid){
