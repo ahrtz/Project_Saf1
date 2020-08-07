@@ -209,22 +209,19 @@ export default {
             this.$api.makeScrap({pid:this.id.pid,status:1})
             alert('스크랩 되었습니다')
         },
-        commentwrite(){
+        async commentwrite(){
             this.commentData.content = document.getElementById('post-comment-content').value
             //alert('준비중입니다.')
             this.commentData.uid=this.$store.state.user.id
             // this.getcDate()
-
-            //console.log(this.commentData)
-            this.$api.createComment(this.commentData)
+            this.commentData.pid = this.id.pid
+            await this.$api.createComment(this.commentData)
             this.getComment()
-            location.reload()
         },
-        commenterase(commentid){
+        async commenterase(commentid){
                 // console.log("CKCK commentid")
-                this.$api.deleteComment(commentid)
+                await this.$api.deleteComment(commentid)
                 this.getComment()
-                location.reload()
 
         },
         isWritten(authorid){
