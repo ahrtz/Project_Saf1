@@ -18,7 +18,7 @@
           {{index}}{{scommit.msg}}<v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
         </div>
 
-        <v-container v-show="this.isProj" fluid>
+        <v-container fluid>
 
          <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>

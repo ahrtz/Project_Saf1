@@ -45,6 +45,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     
+    
     {
       path: '/:uid',
       name:'MainPagefor',
