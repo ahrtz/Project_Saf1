@@ -50,7 +50,7 @@ export default {
       keyw:'',
       signin:false,
       target:''
-      
+
   }),
   created(){
     this.target =  this.$route.params.uid
@@ -72,7 +72,7 @@ export default {
         this.active = false
       },
       search(){
-        this.$router.push({name: 'tmp',params:{key:this.keyw}})
+        this.$router.push({name: 'tmp',params:{key:this.keyw,type:'title'}})
       },
       alerts(msg){
         alert(msg)
