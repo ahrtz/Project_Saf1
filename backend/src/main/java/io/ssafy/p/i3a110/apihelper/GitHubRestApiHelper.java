@@ -122,7 +122,6 @@ public class GitHubRestApiHelper {
 	// 사용자가 현재 등록한 Projects에 관한 Commit 수 합산
 	public HashMap<Date, Integer> getAllCommitCnt(List<String> projectNames) {
 		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
-		List<Integer> sum = new ArrayList<Integer>();
 		try {
 			this.github.checkApiUrlValidity();
 			for (String name : projectNames) {
@@ -163,8 +162,8 @@ public class GitHubRestApiHelper {
 			GHCommitQueryBuilder commitqb = repo.queryCommits();
 			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 			
-			if(sDate!=null && sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
-			if(eDate!=null && eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
+			if(sDate!=null && !sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
+			if(eDate!=null && !eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
 			List<GHCommit> commits = commitqb.list().toList();
 			for(GHCommit commit : commits) {
 				String author = commit.getCommitShortInfo().getAuthor().getName();

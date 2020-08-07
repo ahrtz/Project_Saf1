@@ -2,6 +2,7 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -134,4 +135,27 @@ public class GitController {
 //		return map;
 //	}
 	
+	@Auth
+	@PostMapping("gits/rate/odoc")
+	@ApiOperation(value = "")
+	public Object getOdocRate(HttpSession session, @RequestBody HashMap<String, String> map) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		String sDate = map.get("sDate");
+		String eDate = map.get("eDate");
+		if(user.getIsCertified()==1) {
+			HashMap<String, String> output = new HashMap<String, String>();
+			
+			HashMap<Date, Integer> commits = new HashMap<Date, Integer>();
+			commits = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
+			Iterator<Date> keys = commits.keySet().iterator();
+			while(keys.hasNext()) {
+				Date key = keys.next();
+				
+			}
+			return null;
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
