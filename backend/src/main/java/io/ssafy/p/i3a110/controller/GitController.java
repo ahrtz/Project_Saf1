@@ -2,6 +2,7 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -103,13 +104,13 @@ public class GitController {
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
-		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String repoName = input.get("repoName");
+		String repoName = input.get("repoName").trim();
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			if(repoName == null) {
+			if(repoName == null || repoName.equals("")) {
 				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
 			}else {
 				map = helper.getCommitCnt(repoName);
@@ -134,4 +135,18 @@ public class GitController {
 //		return map;
 //	}
 	
+	@Auth
+	@PostMapping("gits/rate/odoc")
+	@ApiOperation(value = "1Day 1Commit 달성률")
+	public Object getOdocRate(HttpSession session) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		if(user.getIsCertified()==1) {
+			helper = new GitHubRestApiHelper(user.getGitToken());
+			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenProjectName(user.getId()));
+			return new ResponseEntity<>(output, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
