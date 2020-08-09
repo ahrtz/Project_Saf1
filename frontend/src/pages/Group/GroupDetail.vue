@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
       <h2>그룹 상세정보 페이지</h2>
  
       
@@ -105,6 +105,34 @@
       <v-container fluid>
         <v-row>
           <v-col cols="6" v-for="member in groupInfo.userinfo" :key="member.id">
+          
+            <v-card
+            class="mx-auto"
+            max-width="450"
+            outlined
+            @click="$router.push({name:'MainPagefor',params:{uid:member.id}})"
+            >
+            일단 메인으로 넘어가게 해놧는데 포스트로 갈지 안갈지는 이야기하고 고르기 
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div class="overline mb-4">멤버</div>
+                  <v-list-item-title class="headline mb-1">{{member.nickname}}</v-list-item-title>
+                  <v-list-item-subtitle>최근에 남긴글: {{member.lastPost.title}}</v-list-item-subtitle>
+                  <v-list-item-subtitle> 작성 시간: {{member.lastPost.date}}</v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-avatar
+                  tile
+                  size="80"
+                  color="grey"
+                ></v-list-item-avatar>
+              </v-list-item>
+
+              
+            </v-card>
+
+
+          
             <div>{{member}}</div>            
           </v-col>
 
