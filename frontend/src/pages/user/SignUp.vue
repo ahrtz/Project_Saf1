@@ -56,6 +56,7 @@
             <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
           </div>
 
+        <span class="login-hint" :style="{visibility:visi}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="Git 아이디"
@@ -65,17 +66,10 @@
           v-model="signupData.gitId"
           required
           style="margin-bottom:16px;"
+          @focus="visi='visible'"
+          @blur="visi='hidden'"
         ></v-text-field>
-        <v-text-field
-          class="d-flex justify-center signup-input"
-          placeholder="Git url"
-          outlined
-          dense
-          hide-details
-          v-model="signupData.gitUrl"
-          required
-          style="margin-bottom:16px;"
-        ></v-text-field>
+        <span class="login-hint" :style="{visibility:visi}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="Git token"
@@ -85,10 +79,22 @@
           v-model="signupData.gitToken"
           required
           style="margin-bottom:16px;"
+          @focus="visi='visible'"
+        @blur="visi='hidden'"
         ></v-text-field>
         <div>
           <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
         </div>
+        <v-text-field
+          class="d-flex justify-center signup-input"
+          placeholder="본인 Blog 주소"
+          outlined
+          dense
+          hide-details
+          v-model="signupData.gitUrl"
+          required
+          style="margin-bottom:16px;"
+        ></v-text-field>
         <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
       </div>
       <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
@@ -104,6 +110,7 @@ export default {
   name: 'SignUp',
   data() {
     return {
+      visi: 'hidden',
       tmpresult:"",
       signupData: {
         email: '',
