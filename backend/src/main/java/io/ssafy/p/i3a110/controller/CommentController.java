@@ -1,7 +1,9 @@
 package io.ssafy.p.i3a110.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -65,13 +67,14 @@ public class CommentController {
 	@Auth
 	@PostMapping("/comments")
 	@ApiOperation(value = "댓글 작성")
-	public Object addComment(HttpSession session, @RequestBody CommentDto commentDto) {
+	public Object addComment(HttpSession session, @RequestBody CommentDto comment) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		int uid = user.getId();
-		commentDto.setUid(uid);
-		commentService.addComment(commentDto);
-		return new ResponseEntity<>(commentDto.getId(), HttpStatus.OK);
+		comment.setUid(uid);
+		comment.setCDate(Calendar.getInstance().getTime());
+		commentService.addComment(comment);
+		return new ResponseEntity<>(comment.getId(), HttpStatus.OK);
 	}
 	
 	@Auth
