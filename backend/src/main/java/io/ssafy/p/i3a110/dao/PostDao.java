@@ -30,4 +30,6 @@ public interface PostDao {
 	public void plusLike(int id);
 	
 	public void minusLike(int id);
+	
+	public int getOdopRate(int uid);
 }

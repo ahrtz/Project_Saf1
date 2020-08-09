@@ -166,9 +166,7 @@ public class GitHubRestApiHelper {
 			for(GHCommit commit : commits) {
 				String author = commit.getCommitShortInfo().getAuthor().getName();
 				String sha1 = commit.getSHA1();
-		        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-		        Timestamp ts = Timestamp.valueOf(formatter.format(commit.getCommitDate()));
-				Date date = ts;
+				Date date = commit.getCommitDate();
 				String msg = commit.getCommitShortInfo().getMessage();
 				list.add(new CommitInfoDto(author, sha1, date, msg));
 			}

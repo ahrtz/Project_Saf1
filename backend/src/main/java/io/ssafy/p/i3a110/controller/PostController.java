@@ -151,4 +151,19 @@ public class PostController {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    
+    @GetMapping("/posts/rate/odop")
+    @ApiOperation(value = "회원 1Day 1Post 달성률")
+    public HashMap<String, String> getOdopRate(HttpSession session, String uid) {
+    	String email = (String) session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	int id = 0;
+    	if(user!=null) id = user.getId();
+    	if(uid!=null) id = Integer.parseInt(uid);
+    	int days = postService.getOdopRate(id);
+    	HashMap<String, String> output = new HashMap<String, String>();
+		output.put("days", String.format("%d/%d", days, 84));
+		output.put("rate", String.format("%.2f", (double)days/84*100));
+		return output;
+    }
 }
