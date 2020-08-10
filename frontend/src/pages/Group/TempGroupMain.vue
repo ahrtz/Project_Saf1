@@ -1,6 +1,7 @@
 <template>
 <div>
-  <v-card>
+  <v-container fluid class="pa-10">
+  <v-card flat>
     <v-card-title>
       <v-row>
         <v-col cols="8">
@@ -55,6 +56,7 @@
     >
     </v-data-table>
   </v-card>
+  </v-container>
 </div>
 </template>
 
