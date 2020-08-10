@@ -79,7 +79,7 @@ public class UserController {
     }
     
     @GetMapping("/users")
-    @ApiOperation(value = "회원 단일 조회")
+    @ApiOperation(value = "회원 단일 조회 (회원 id (PK))")
     public HashMap<String, String> findUserById(int id) {
     	UserDto user = userService.findUserById(id);
     	HashMap<String, String> userinfo = new HashMap<String, String>();
@@ -88,6 +88,7 @@ public class UserController {
     	userinfo.put("nickname", user.getNickname());
     	userinfo.put("img", user.getImg());
     	userinfo.put("intro", user.getIntro());
+    	userinfo.put("gitUrl", user.getGitUrl());
     	return userinfo;
     }
 
