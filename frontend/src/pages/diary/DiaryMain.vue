@@ -151,7 +151,7 @@ export default {
 .diary-main-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding-bottom: 70px;
 }
 
 .diary-main-add-btn {

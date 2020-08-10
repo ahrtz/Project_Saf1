@@ -52,4 +52,12 @@ public class UserService implements UserDetailsService {
 
         return new User(email, user.getPwd(), Collections.emptyList());
     }
+
+	public void cancelToken(int id) {
+		userDao.cancelToken(id);
+	}
+	
+	public void authenticateToken(int id) {
+		userDao.authenticateToken(id);
+	}
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="user-sidebar">
     <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'AccountDetail'})">회원 정보</div>
+    <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'GroupMain'})">그룹</div>
     <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'Follow'})">팔로우</div>
     <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'Scrap'})">스크랩</div>
     <div class="d-flex align-center user-sidebar-menu" @click="$router.push({name:'tmpPost'})">임시 저장 글</div>
