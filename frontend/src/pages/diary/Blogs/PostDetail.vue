@@ -8,98 +8,79 @@
         <div class="d-flex flex-column" style="width:100%">
           <div class="d-flex">
             <div
-              class="d-flex flex-grow-0 align-center justify-center post-detail-list-btn"
+              class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
               @click="goback()"
             >목록</div>
             <div class="d-flex" />
             <div
-            class="d-flex flex-grow-0 align-center justify-center post-detail-edit-btn"
-            v-show="checkWriter"
-            @click="$router.push({name:'UpdatePost',params:{pid:tmp.id}})"
-          >수정</div>
+              class="d-flex flex-grow-0 align-center justify-center post-detail-white-btn"
+              style="margin-right: 4px;"
+              v-show="checkWriter"
+              @click="$router.push({name:'UpdatePost',params:{pid:tmp.id}})"
+            >수정</div>
+            <div
+              class="d-flex flex-grow-0 align-center justify-center post-detail-red-btn"
+              v-show="this.uid==this.tmp.uid"
+              @click="deleteP(tmp.id)"
+            >삭제</div>
           </div>
-          
-          <v-container fluid>
-            제목
-            <v-text-field filled v-model="tmp.title" readonly />우선순위
+
+          <div class="d-flex justify-center post-detail-title">{{tmp.title}}</div>
+          <div class="d-flex">
             <v-rating
               v-model="tmp.priority"
               background-color="orange lighten-3"
               color="orange"
               readonly
             ></v-rating>
-            <div v-show="checkcommit">
-              <p v-show="checkcommit">커밋리스트</p>
-              <v-checkbox
-                class="my-0"
-                v-show="commitcheck == false"
-                :label="commit.msg"
-                v-for="commit in commitList.slice(0,5)"
-                :key="commit.cid"
-                v-model="commit.checked"
-                readonly
-              />
-              <v-btn
-                v-show="commitcheck==false & commitList.length>5"
-                class="ma-2"
-                tile
-                color="indigo"
-                dark
-                @click="commitwide()"
-              >펼치기</v-btn>
+            <div class="d-flex" />
+            <div>{{tmp.cdate}}</div>
+          </div>
+          <div class="post-detail-commit-box" v-if="checkcommit">
+            <p>커밋리스트</p>
+            <div v-if="!commitcheck">
+            <div v-for="commit in commitList.slice(0,5)" :key="commit.cid">{{commit.msg}}</div>
+            </div>
+            <div
+              v-if="commitcheck==false & commitList.length>5"
+              class="d-flex align-center justify-center post-detail-white-btn"
+              @click="commitwide()"
+            >펼치기</div>
+            <div v-if="commitcheck">
+              <div v-for="commit in commitList" :key="commit.cid">{{commit.msg}}</div>
+            </div>
+            <div
+              v-if="commitcheck"
+              class="d-flex align-center justify-center post-detail-white-btn"
+              @click="commitwide()"
+            >접기</div>
+            <br />
+          </div>
+          <div class="post-detail-content">{{tmp.content}}</div>
 
-              <v-checkbox
-                class="my-0"
-                v-show="commitList && commitcheck == true"
-                v-for="commit in commitList"
-                :key="commit.cid"
-                v-model="commit.checked"
-                :label="commit.msg"
-                readonly
-              ></v-checkbox>
-              <v-btn
-                v-show="commitcheck==true"
-                class="ma-2"
-                tile
-                color="indigo"
-                dark
-                @click="commitwide()"
-              >접기</v-btn>
-              <br />
-            </div>내용
-            <v-textarea filled v-model="tmp.content" readonly />
-          </v-container>
-
-          <div style="float: left;" v-for="tag in tags" :key="'t-'+tag.id">
-            <a style="float: left;" @click="searchTag(tag.name)">#{{tag.name}}&nbsp;&nbsp;</a>
+          <div class="d-flex align-center flex-grow-0">
+            <div
+              class="post-detail-tag"
+              v-for="tag in tags"
+              :key="'t-'+tag.id"
+              @click="searchTag(tag.name)"
+            >#{{tag.name}}</div>
           </div>
           <br />
-          <v-btn
-            class="ma-2"
-            tile
-            color="grey"
-            dark
-            v-if="likeData.likechecked == false"
-            @click="like()"
-          >좋아요</v-btn>
-          <v-btn
-            class="ma-2"
-            tile
-            color="red"
-            dark
-            v-if="likeData.likechecked"
-            @click="like()"
-          >좋아요 취소</v-btn>
-          <v-btn class="ma-2" tile color="indigo" dark @click="scrap">스크랩</v-btn>
-          <v-btn class="ma-2" tile color="indigo" dark @click="grapurl()">공유</v-btn>
-          <v-btn
-            class="ma-2 float-right"
-            tile
-            color="indigo"
-            dark
-            v-show="this.uid==this.tmp.uid"
-            @click="deleteP(tmp.id)"
-          >삭제</v-btn>
+          <div class="d-flex">
+            <div v-if="!likeData.likechecked" @click="like()" class="post-detail-icon">
+              <v-icon color="#db4455" size="32">favorite</v-icon>
+            </div>
+            <div v-if="likeData.likechecked" @click="like()" class="post-detail-icon">
+              <v-icon color="#db4455" size="32">favorite_border</v-icon>
+            </div>
+            <div @click="scrap" class="post-detail-icon">
+              <v-icon color="#e8a317" size="32">stars</v-icon>
+            </div>
+            <div @click="grapurl()" class="post-detail-icon">
+              <v-icon color="#808080" size="32">share</v-icon>
+            </div>
+          </div>
 
           <br />댓글
           <div v-for="comment in comments" :key="comment.id">
@@ -115,17 +96,20 @@
             <!-- <p class="my-0 text-end">작성자 : {{comment.uid}} </p> -->
             <v-text-field filled v-model="comment.content" readonly />
           </div>
-          <div>
+          <div class="d-flex align-center">
             댓글 작성
             <!-- v-model="commentData.content" -->
             <v-text-field id="post-comment-content" filled />
-            <v-btn class="ma-2" tile color="indigo" dark @click="commentwrite()">댓글 작성</v-btn>
+            <div
+              class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
+              @click="commentwrite()"
+            >작성</div>
           </div>
         </div>
-        <!-- <aside>
-          <ContentSidebar/>
-        </aside>-->
       </div>
+      <!-- <aside>
+          <ContentSidebar/>
+      </aside>-->
     </div>
   </div>
 </template>
@@ -204,6 +188,8 @@ export default {
     } catch (e) {
       console.log(e);
     }
+
+    console.log('***' + this.commitList[0]);
   },
   methods: {
     async getComment() {
@@ -333,6 +319,10 @@ export default {
 </script>
 
 <style>
+.v-rating .v-icon {
+  padding: 0;
+}
+
 .post-detail-container {
   width: 100%;
 }
@@ -346,7 +336,7 @@ export default {
   width: 300px;
 }
 
-.post-detail-list-btn {
+.post-detail-blue-btn {
   font-size: 14px;
   background: #0051cb;
   font-weight: 600;
@@ -357,7 +347,7 @@ export default {
   cursor: pointer;
 }
 
-.post-detail-edit-btn {
+.post-detail-white-btn {
   font-size: 14px;
   background: #fff;
   font-weight: 600;
@@ -367,6 +357,50 @@ export default {
   padding: 0 16px;
   height: 40px;
   cursor: pointer;
+}
+
+.post-detail-red-btn {
+  font-size: 14px;
+  background: #db4455;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0 16px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.post-detail-title {
+  font-size: 36px;
+}
+
+.post-detail-icon {
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.post-detail-tag {
+  margin-bottom: 8px;
+  margin-right: 8px;
+  padding: 0 12px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0051cb;
+  font-size: 14px;
+}
+
+.post-detail-commit-box {
+    margin-top:32px;
+  padding: 32px;
+  background: #0051cb1f;
+  border-radius: 4px;
+}
+
+.post-detail-content {
+    margin-top: 32px;
+    min-height: 200px;
 }
 
 nav {
