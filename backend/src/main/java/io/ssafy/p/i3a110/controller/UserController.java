@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.UserService;
@@ -94,27 +96,22 @@ public class UserController {
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession,
                            @RequestParam(required = false) MultipartFile file,
-                           @RequestParam String email,
                            @RequestParam String pwd,
                            @RequestParam String nickname,
                            @RequestParam String gitId,
                            @RequestParam String gitUrl,
                            @RequestParam String intro,
-                           @RequestParam String img,
                            @RequestParam String gitToken,
-                           @RequestParam String isSocial,
                            @RequestParam String isCertified) throws Exception {
 
         String userEmail = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(userEmail);
-        user.setEmail(email);
-        user.setPwd(pwd);
+        if(!pwd.equals("")) user.setPwd(pwd);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
         user.setIntro(intro);
         user.setGitToken(gitToken);
-        user.setIsSocial(Integer.parseInt(isSocial));
         user.setIsCertified(Integer.parseInt(isCertified));
 
         if (file != null) {
@@ -131,9 +128,7 @@ public class UserController {
                     .append(fileName)
                     .toString());
         }
-
         userService.updateUser(user);
-
     }
 
     @Auth
@@ -185,10 +180,13 @@ public class UserController {
     @Auth
     @GetMapping("/users/me")
     @ApiOperation(value = "내 정보 조회")
-    public UserDto me(HttpSession httpSession) {
+    public Object me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-        return user;
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashMap<Object, Object> form = objectMapper.convertValue(user, HashMap.class);
+        form.remove("pwd");
+        return form;
     }
 
     @PostMapping("/users/signup")
@@ -200,7 +198,6 @@ public class UserController {
                        @RequestParam String gitId,
                        @RequestParam String gitUrl,
                        @RequestParam String intro,
-                       @RequestParam String img,
                        @RequestParam String gitToken,
                        @RequestParam String isSocial,
                        @RequestParam String isCertified) throws Exception {
@@ -252,4 +249,15 @@ public class UserController {
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
+    
+    @Auth
+    @GetMapping("/users/cancel")
+    @ApiOperation(value = "GitToken 검증 취소")
+    public void cancelToken(HttpSession session) {
+    	String email = (String)session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	
+    	userService.cancelToken(user.getId());
+    }
+    
 }
