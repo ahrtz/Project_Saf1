@@ -110,6 +110,7 @@ export default {
 <style>
 .login-container {
   width: 100%;
+  margin-top: -70px;
 }
 
 .login-left {

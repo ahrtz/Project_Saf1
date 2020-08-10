@@ -1,5 +1,5 @@
 <template>
-<div class="header-container">
+<div v-if="!isLoginPage" class="header-container">
   <div class="header-inner">
     <v-card
       class="header-flex-container justify-center align-center"
@@ -44,6 +44,9 @@
 import axios from 'axios'
 export default {
   name:'header1',
+  props: {
+    isLoginPage: Boolean
+  },
   data: () => ({
       title: [
         'Main',
@@ -54,11 +57,11 @@ export default {
       ],
       keyw:'',
       signin:false,
-      target:''
-
+      target:'',
   }),
   created(){
     this.target =  this.$route.params.uid
+    
     // this.target = temp
   },
   methods: {
