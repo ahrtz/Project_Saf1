@@ -13,4 +13,6 @@ public interface UserDao {
     public void insertUser(UserDto user);
     public void updateUser(UserDto user);
     public void deleteById(int id);
+	public void cancelToken(int id);
+	public void authenticateToken(int id);
 }
