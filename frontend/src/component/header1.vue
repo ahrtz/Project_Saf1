@@ -136,6 +136,7 @@ export default {
 }
 
 .header-container {
+  background: #fff;
   z-index: 99;
   position: fixed;
   top: 0;
