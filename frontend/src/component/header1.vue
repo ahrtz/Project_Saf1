@@ -24,7 +24,7 @@
           ></v-text-field>
       <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
       <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
-      <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
+      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> <!-- 주석해야해! 채은이가 일단 없앤거니까!!! -->
       <div class="d-flex align-center flex-grow-0 header-profile" v-if="islogin==true" @click="$router.push({name:'Follow'})">
         <div>
           <img class="header-profile-image" :src="userImg" />
