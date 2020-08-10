@@ -1,65 +1,71 @@
 <template>
-<div>
-  <v-card>
-    <v-card-title>
-      <v-row>
-        <v-col cols="8">
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="auto">
-          <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{on}">
-              <v-btn v-on="on" color="primary" dark class="mb-2">Add Group</v-btn>
-            </template>     
-            <v-card>
-              <v-card-title>
-                <span class="headline">New Group </span>
-              </v-card-title>
+  <div>
+    
+    <v-card>
+      <v-card-title>
+        <v-row>
+          <v-col cols="8">
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-dialog v-model="dialog" max-width="500px">
+              <template v-slot:activator="{on}">
+                <v-btn v-on="on" color="primary" dark class="mb-2">Add Group</v-btn>
+              </template>     
+              <v-card>
+                <v-card-title>
+                  <span class="headline">New Group </span>
+                </v-card-title>
 
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout column>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout column>
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm6 md4>
+                        <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
-                <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
+                  <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
-        </v-col>
-      </v-row>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="group_list"
-      :search="search"
-      @click:row="goGroup"  
-    >
-    </v-data-table>
-  </v-card>
-</div>
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="group_list"
+        :search="search"
+        @click:row="goGroup"  
+      >
+      </v-data-table>
+    </v-card>
+
+    
+  </div>
 </template>
 
 <script>
+
+
   export default {
+    
     data () {
       return {
         uid : null, 
