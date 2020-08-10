@@ -1,6 +1,6 @@
 <template>
   <div class="s-contact-container d-flex flex-column align-center justify-center">
-    <img :src="user.img?user.img:'/static/Blogit_logo.jpg'" class="s-contact-image" />
+    <img :src="user.img?user.img:'/static/images/user.png'" class="s-contact-image" />
     <div class="s-contact-nickname">{{user.nickname}}</div>
     <div class="s-contact-intro">{{user.intro ? user.intro : "소개말이 없습니다."}}</div>
     <div class="d-flex align-center justify-center s-contact-follow" dark @click="alerting()">Follow</div>
@@ -79,9 +79,10 @@ export default {
 }
 
 .s-contact-image {
-  width: 200px;
-  height: 200px;
+  width: 230px;
+  height: 230px;
   border-radius: 50%;
+  border: solid 1px #e8e8e8;
 }
 
 .s-contact-follow {
