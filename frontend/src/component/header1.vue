@@ -23,11 +23,6 @@
           @keyup.enter="search()"
         ></v-text-field>
         <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
-        <div
-          class="d-flex justify-center flex-grow-0 header-menu"
-          v-if="islogin==false"
-          @click="$router.push({name:'SignUp'})"
-        >signup</div>
         <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
         <div
           class="d-flex align-center flex-grow-0 header-profile"

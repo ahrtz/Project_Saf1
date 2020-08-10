@@ -54,6 +54,9 @@ import SearchSidebar from '../component/SearchSidebar.vue'
 
 export default {
     name: 'tmp',
+    components: {
+      SearchSidebar
+    },
     data(){
         return{
             ddd:this.$route.params,
