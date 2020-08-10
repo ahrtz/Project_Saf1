@@ -22,7 +22,8 @@ export default {
   name:'s-contact',
   data(){
     return{
-      user:{}
+      user:{},
+      dummy:this.$route.params.uid
     }
   },
   methods:{
@@ -34,9 +35,9 @@ export default {
   async created(){
     try{
 
-        let tmpspace = await this.$api.getMe()
-        this.user =tmpspace
-        console.log(this.user)
+        let tmpspace = await this.$api.contactBar(this.$route.params.uid)
+        this.user =tmpspace.data
+        console.log(this.user,'vdasvdsa')
     }catch(e){
         console.log(e)
     }
