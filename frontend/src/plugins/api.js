@@ -173,7 +173,11 @@ export default {
     async groupDetailUpdate(datas){
         return (await axios.put(`${baseURL}/groups`,datas)).data
     },
-
+    //그룹 별 상위회원 조회
+    async getTopMembers(data){
+        return (await axios.post(`${baseURL}/groups/top`,data)).data
+    },
+    
     //팔로우 관련
     // 팔로우, 팔로잉 유저 목록 확인
     async searchFollow(data){
