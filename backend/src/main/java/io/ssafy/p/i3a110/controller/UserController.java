@@ -107,7 +107,7 @@ public class UserController {
 
         String userEmail = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(userEmail);
-        if(!pwd.equals("")) user.setPwd(pwd);
+        if(!pwd.equals("") ||pwd.equals("undefined")) user.setPwd(pwd);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
