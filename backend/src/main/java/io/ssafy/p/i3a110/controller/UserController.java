@@ -40,6 +40,7 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 //    private static final String BE_BASE_URL = "http://localhost:3000";
     private static final String BE_BASE_URL = "http://i3a110.p.ssafy.io:3000";
+    private static final String regExp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,16}$";
 
     @Autowired
     private UserService userService;
@@ -67,19 +68,24 @@ public class UserController {
 
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
-    public HashMap<String, String> findUserByEmail(@PathVariable String email) {
+    public Object findUserByEmail(@PathVariable String email) {
     	UserDto user = userService.findUserByEmail(email);
+    	if(user==null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 회원이 존재하지 않습니다.");
+    		return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+    	}
     	HashMap<String, String> userinfo = new HashMap<String, String>();
 		userinfo.put("id", String.valueOf(user.getId()));
 		userinfo.put("email", user.getEmail());
 		userinfo.put("nickname", user.getNickname());
 		userinfo.put("img", user.getImg());
 		userinfo.put("intro", user.getIntro());
-        return userinfo;
+        return new ResponseEntity<>(userinfo, HttpStatus.OK);
     }
     
     @GetMapping("/users")
-    @ApiOperation(value = "회원 단일 조회")
+    @ApiOperation(value = "회원 단일 조회 (회원 id (PK))")
     public HashMap<String, String> findUserById(int id) {
     	UserDto user = userService.findUserById(id);
     	HashMap<String, String> userinfo = new HashMap<String, String>();
@@ -88,6 +94,7 @@ public class UserController {
     	userinfo.put("nickname", user.getNickname());
     	userinfo.put("img", user.getImg());
     	userinfo.put("intro", user.getIntro());
+    	userinfo.put("gitUrl", user.getGitUrl());
     	return userinfo;
     }
 
@@ -106,7 +113,7 @@ public class UserController {
 
         String userEmail = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(userEmail);
-        if(!pwd.equals("")) user.setPwd(pwd);
+        if(!pwd.equals("") && pwd != null && !pwd.equals("undefined")) user.setPwd(pwd);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
@@ -191,7 +198,7 @@ public class UserController {
 
     @PostMapping("/users/signup")
     @ApiOperation(value = "회원 가입")
-    public void signup(@RequestParam(required = false) MultipartFile file,
+    public Object signup(@RequestParam(required = false) MultipartFile file,
                        @RequestParam String email,
                        @RequestParam String pwd,
                        @RequestParam String nickname,
@@ -203,39 +210,46 @@ public class UserController {
                        @RequestParam String isCertified) throws Exception {
 
         UserDto user = userService.findUserByEmail(email);
+        if(user != null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 Email이 존재합니다.");
+        	return new ResponseEntity<>(msg ,HttpStatus.BAD_REQUEST);
+        }
+        if(!pwd.matches(regExp)) {
+        	HashMap<String, String> msg = new HashMap<String, String>();
+        	msg.put("errMsg", "비밀번호 형식이 잘못되었습니다.");
+        	return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        user = new UserDto();
+        user.setEmail(email);
+        user.setPwd(pwd);
+        user.setNickname(nickname);
+        user.setGitId(gitId);
+        user.setGitUrl(gitUrl);
+        user.setIntro(intro);
+        user.setGitToken(gitToken);
+        user.setIsSocial(Integer.parseInt(isSocial));
+        user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (user == null) {
-            user = new UserDto();
-            user.setEmail(email);
-            user.setPwd(pwd);
-            user.setNickname(nickname);
-            user.setGitId(gitId);
-            user.setGitUrl(gitUrl);
-            user.setIntro(intro);
-            user.setGitToken(gitToken);
-            user.setIsSocial(Integer.parseInt(isSocial));
-            user.setIsCertified(Integer.parseInt(isCertified));
+        if (file == null) {
+            user.setImg(null);
+        } else {
+            long timestamp = System.currentTimeMillis();
+            StringBuilder builder = new StringBuilder(staticPath);
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = timestamp + "." + extension;
 
-            if (file == null) {
-                user.setImg(null);
-            } else {
-                long timestamp = System.currentTimeMillis();
-                StringBuilder builder = new StringBuilder(staticPath);
-                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-                String fileName = timestamp + "." + extension;
-
-                file.transferTo(new File(builder.append("/")
-                        .append(fileName)
-                        .toString()));
-                user.setImg(new StringBuilder(BE_BASE_URL)
-                        .append("/users/image/")
-                        .append(fileName)
-                        .toString());
-            }
-
-            userService.insertUser(user);
+            file.transferTo(new File(builder.append("/")
+                    .append(fileName)
+                    .toString()));
+            user.setImg(new StringBuilder(BE_BASE_URL)
+                    .append("/users/image/")
+                    .append(fileName)
+                    .toString());
         }
 
+        userService.insertUser(user);
+        return new ResponseEntity<>(user.getId(), HttpStatus.OK);
     }
 
     @GetMapping("/users/image/{fileName}")

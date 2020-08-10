@@ -64,6 +64,7 @@
               v-model="userdata.gitId"
               required
               style="margin-bottom:16px;"
+              :disabled="isDisabled"
             ></v-text-field>
             
             <span class="login-hint" :style="{visibility:visi}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
@@ -76,9 +77,12 @@
               v-model="userdata.gitToken"
               required
               style="margin-bottom:16px;"
+              :disabled="isDisabled"
             ></v-text-field>
             <div>
-              <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
+              <v-btn class="primary float-right " style="margin-left:8px; margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
+            
+              <v-btn class="primary float-right " style="margin-bottom:16px;" @click="uncertifyGit()">인증 취소</v-btn>
             </div>
             <v-text-field
               class="d-flex justify-center account-detail-input"
@@ -115,12 +119,23 @@ export default {
   data() {
     return {
       userdata: {},
-      uploadImageFile: ''
+      uploadImageFile: '',
+      visi:'hidden',
+
     };
   },
   created() {
     this.userdata = this.$store.state.user;
     this.uploadImageFile = this.userdata.img;
+  },
+  computed:{
+    isDisabled(){
+      if (this.userdata.isCertified){
+        return true
+      }else{
+        return false
+      }
+    }
   },
   methods: {
     onFileSelected(event) {
@@ -135,35 +150,41 @@ export default {
     },
     async updateUser() {
       try {
-        if(this.$refs.file != null) {
-          this.userdata.file=this.$refs.file.files[0];
-        }
-        console.log(this.userdata.file);
-        const formData = new FormData();
-        formData.append('email', this.userdata.email);
-        formData.append('pwd', this.userdata.pwd);
-        formData.append('file', this.userdata.file);
-        formData.append('img', this.userdata.img);
-        formData.append('nickname',this.userdata.nickname);
-        formData.append('gitId', this.userdata.gitId);
-        formData.append('gitUrl',this.userdata.gitUrl);
-        formData.append('gitToken', this.userdata.gitToken);
-        formData.append('intro',this.userdata.intro);
-        formData.append('isSocial', this.userdata.isSocial);
-        formData.append('isCertified',this.userdata.isCertified);
-        // console.log(formData)
+        if (this.userdata.pwd != this.userdata.pwdconfirm){
+          alert('비밀번호가 일치 하지 않습니다')
+        }else{
 
-        await this.$api.userUpdate(formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-          });
-        alert('정보 수정 성공');
-        // location.reload();
-      } catch (e) {
-        console.log('실패');
-        console.log(e);
-      }
+
+          if(this.$refs.file != null) {
+            this.userdata.file=this.$refs.file.files[0];
+          }
+          console.log(this.userdata.file);
+          const formData = new FormData();
+          formData.append('email', this.userdata.email);
+          formData.append('pwd', this.userdata.pwd);
+          formData.append('file', this.userdata.file);
+          formData.append('img', this.userdata.img);
+          formData.append('nickname',this.userdata.nickname);
+          formData.append('gitId', this.userdata.gitId);
+          formData.append('gitUrl',this.userdata.gitUrl);
+          formData.append('gitToken', this.userdata.gitToken);
+          formData.append('intro',this.userdata.intro);
+          formData.append('isSocial', this.userdata.isSocial);
+          formData.append('isCertified',this.userdata.isCertified);
+          // console.log(formData)
+
+          await this.$api.userUpdate(formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            });
+          alert('정보 수정 성공');
+          // location.reload();
+        }
+        } catch (e) {
+          console.log('실패');
+          console.log(e);
+        }
     },
     async certifyGit(){
       try{
@@ -175,6 +196,13 @@ export default {
       }catch(e){
         console.log(e)
       }
+    },
+    uncertifyGit(){
+      this.userdata.gitId=''
+      this.userdata.gitToken=''
+      this.userdata.isCertified = 0
+      alert('인증이 취소 되었습니다')
+      this.$api.gitCancel()
     }
   },
 };

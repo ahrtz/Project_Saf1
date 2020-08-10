@@ -12,30 +12,58 @@
       gitUrl : <v-text-field v-model="blogData.gitUrl" type = "text" placeholder="깃 주소를 입력하세요 "></v-text-field>
       </v-col> -->
 
-        <v-layout row v-show="this.blogData.isProj==1">
+        <v-layout row v-if="this.$route.path[7] =='p'">
         <v-dialog v-model="dialog" scrollable max-width="300px">
         <template v-slot:activator="{ on }">
             <v-btn color="primary" dark v-on="on">repository 선택하기</v-btn>
         </template>
-            <v-card>
+            <v-card
+                color="primary"
+                dark
+            v-if="repoData.length==0"
+            >
+                <v-card-text>
+                repository 정보 받아 오는중
+                <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-0"
+                    buffer-value="0"
+                    stream
+                ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+
+
+            <v-card v-if="repoData.length!=0">
                 <v-card-title>레포 선택</v-card-title>
                 <v-divider></v-divider>
-                <v-card-text style="height: 500px;">
+                
+                
+                
+
+                <v-card-text style="height: 220px;">
                     <v-radio-group v-model="repoChecked" column>
-                        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+                        <v-radio v-for="repo in repoData.slice((this.page-1)*5,(this.page)*5)" :v-if="repoData!=null" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
                         
                     </v-radio-group>
                 </v-card-text>
+                <div class="text-center">
+                    <v-pagination
+                      v-model="page"
+                      :length="Math.ceil(repoData.length / 5)"
+                      :total-visible="7"
+                    ></v-pagination>
+                </div>
                 <v-divider></v-divider>
                     <v-card-actions>
-                    
                     <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
         </v-layout>
      
-      <v-text-field  readonly v-model="repoChecked.repoName" ></v-text-field>
+        <v-text-field  readonly v-model="repoChecked.repoName" ></v-text-field>
       <v-col cols="12">
             대표 이미지
             <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
@@ -88,7 +116,6 @@ export default {
     data(){
         return {
             config:{
-
             },
             blogData:{
                 uid :"" ,
@@ -103,13 +130,11 @@ export default {
                 modal: false,
                 menu2: false,
             },
-            repoData:{
-
-            },
+            repoData:[],
             repoChecked:{
                 
             },
-            
+            page:1,
             dialog:false
         }
     },
@@ -169,6 +194,8 @@ export default {
 }
 </script>
 
-<style>
+<style >
+
 
 </style>
+

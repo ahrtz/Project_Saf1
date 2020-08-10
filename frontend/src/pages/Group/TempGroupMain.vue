@@ -24,26 +24,26 @@
                 <span class="headline">New Group </span>
               </v-card-title>
 
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout column>
-                    <v-flex xs12 sm6 md4>
-                      <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                      <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout column>
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm6 md4>
+                        <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
-                <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
+                  <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
 
         </v-col>
       </v-row>

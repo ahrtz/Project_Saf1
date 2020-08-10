@@ -8,7 +8,7 @@
         height="70"
       >
         <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png" />
-        <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomain()">Overview</div>
+        <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomaineach()">Overview</div>
         <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
 
         <div class="d-flex" />
@@ -23,16 +23,11 @@
           @keyup.enter="search()"
         ></v-text-field>
         <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
-        <div
-          class="d-flex justify-center flex-grow-0 header-menu"
-          v-if="islogin==false"
-          @click="$router.push({name:'SignUp'})"
-        >signup</div>
         <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
         <div
           class="d-flex align-center flex-grow-0 header-profile"
           v-if="islogin==true"
-          @click="$router.push({name:'Follow'})"
+          @click="$router.push({name:'Follow',params:{uid:userdata.id}})"
         >
           <div>
             <img class="header-profile-image" :src="userImg" />
@@ -71,8 +66,10 @@ export default {
     signin: false,
     target: '',
     isLoginPage: false,
+    userdata:null,
   }),
   created() {
+    this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
     console.log(this.$route.path);
     if (this.$route.path == '/') {
@@ -115,6 +112,10 @@ export default {
     gotomain() {
       this.$router.push({ name: 'MainPagefor', params: { uid: this.userid } });
       location.reload();
+    },
+    gotomaineach() {
+      this.$router.push({ name: 'MainPagefor', params: { uid: this.$route.params.uid } });
+      
     },
   },
   computed: {

@@ -36,16 +36,20 @@ public class GitController {
 	@PostMapping("/gits")
 	@ApiOperation(value = "Git AccessToken 검증")
 	public boolean checkOauth(HttpSession session, @RequestBody HashMap<String, String> map) {
-		if(session.getAttribute("email") != null) {
-			String email = (String)session.getAttribute("email");
-			UserDto user = userService.findUserByEmail(email);
-			userService.authenticateToken(user.getId());
-			return true;
-		}
+		helper = new GitHubRestApiHelper();
 		String gitid = map.get("gitId");
 		String accesstoken = map.get("accessToken");
-		helper = new GitHubRestApiHelper();
-		return helper.checkOauth(gitid, accesstoken);
+		
+		if(helper.checkOauth(gitid, accesstoken)) {
+			if(session.getAttribute("email") != null) {
+				String email = (String)session.getAttribute("email");
+				UserDto user = userService.findUserByEmail(email);
+				userService.authenticateToken(user.getId());
+			}
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	@Auth
