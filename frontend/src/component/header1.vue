@@ -1,138 +1,152 @@
 <template>
-<div v-if="!isLoginPage" class="header-container">
-  <div class="header-inner">
-    <v-card
-      class="header-flex-container justify-center align-center"
-      flat
-      color="#fff"
-      height="70"
-    >
-      <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png"/>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomain()">Overview</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
+  <div v-if="!isLoginPage" class="header-container">
+    <div class="header-inner">
+      <v-card
+        class="header-flex-container justify-center align-center"
+        flat
+        color="#fff"
+        height="70"
+      >
+        <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png" />
+        <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomain()">Overview</div>
+        <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
 
-      <div class="d-flex"/>
-      <v-text-field
-        id="header-text"
-        class="d-flex justify-center flex-grow-0"
-            placeholder="Search by Title"
-            outlined
-            dense
-            hide-details
-            v-model="keyw"
-            @keyup.enter="search()"
-          ></v-text-field>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
-      <div class="d-flex justify-center flex-grow-0 header-menu" v-if="islogin==false" @click="$router.push({name:'SignUp'})">signup</div>
-      <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
-      <div class="d-flex align-center flex-grow-0 header-profile" v-if="islogin==true" @click="$router.push({name:'Follow'})">
-        <div>
-          <img class="header-profile-image" :src="userImg" />
+        <div class="d-flex" />
+        <v-text-field
+          id="header-text"
+          class="d-flex justify-center flex-grow-0"
+          placeholder="Search by Title"
+          outlined
+          dense
+          hide-details
+          v-model="keyw"
+          @keyup.enter="search()"
+        ></v-text-field>
+        <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
+        <div
+          class="d-flex justify-center flex-grow-0 header-menu"
+          v-if="islogin==false"
+          @click="$router.push({name:'SignUp'})"
+        >signup</div>
+        <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
+        <div
+          class="d-flex align-center flex-grow-0 header-profile"
+          v-if="islogin==true"
+          @click="$router.push({name:'Follow'})"
+        >
+          <div>
+            <img class="header-profile-image" :src="userImg" />
+          </div>
+          <div>{{userNickname}}</div>
         </div>
-        <div>{{userNickname}}</div>
-      </div>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn-white" v-if="islogin==true" @click="logout()">Logout</div>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn" style="margin-right:0" v-if="islogin==false" @click="$router.push({name:'Login'})">Login</div>
-      <div class="d-flex justify-center flex-grow-0 align-center header-btn-white" style="margin-left:8px" v-if="islogin==false" @click="$router.push({name:'SignUp'})">Signup</div>
-    </v-card>
-
+        <div
+          class="d-flex justify-center flex-grow-0 align-center header-btn-white"
+          v-if="islogin==true"
+          @click="logout()"
+        >Logout</div>
+        <div
+          class="d-flex justify-center flex-grow-0 align-center header-btn"
+          style="margin-right:0"
+          v-if="islogin==false"
+          @click="$router.push({name:'Login'})"
+        >Login</div>
+        <div
+          class="d-flex justify-center flex-grow-0 align-center header-btn-white"
+          style="margin-left:8px"
+          v-if="islogin==false"
+          @click="$router.push({name:'SignUp'})"
+        >Signup</div>
+      </v-card>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 export default {
-  name:'header1',
-  props: {
-    isLoginPage: Boolean
-  },
+  name: 'header1',
   data: () => ({
-      title: [
-        'Main',
-        'Blog',
-        'Projects',
-        '검색',
-        'Myinfo',
-      ],
-      keyw:'',
-      signin:false,
-      target:'',
+    title: ['Main', 'Blog', 'Projects', '검색', 'Myinfo'],
+    keyw: '',
+    signin: false,
+    target: '',
+    isLoginPage: false,
   }),
-  created(){
-    this.target =  this.$route.params.uid
-    
+  created() {
+    this.target = this.$route.params.uid;
+    console.log(this.$route.path);
+    if (this.$route.path == '/') {
+      this.isLoginPage = true;
+    }
     // this.target = temp
   },
   methods: {
-      onDiaryBtnClick() {
-        if(this.signin)
-        {
-          this.$router.push({name:'DiaryMain',params:{uid:this.target,test:2}}
-          )
-        }
-        else{
-          alert('로그인이 필요합니다.')
-          this.$router.push({name:'Login'})
-        }
-      },
-      onGroupBtnClick() {
-        if(this.signin)
-        {
-          this.$router.push({name:'GroupMain'})
-        }
-        else{
-          alert('로그인이 필요합니다.')
-          this.$router.push({name:'Login'})
-        }
+    onDiaryBtnClick() {
+      if (this.signin) {
+        this.$router.push({
+          name: 'DiaryMain',
+          params: { uid: this.target, test: 2 },
+        });
+      } else {
+        alert('로그인이 필요합니다.');
+        this.$router.push({ name: 'Login' });
       }
-      ,
-      onClickOutside () {
-        this.active = false
-      },
-      search(){
-        this.$router.push({name: 'tmp',params:{key:this.keyw,type:'title'}})
-      },
-      alerts(msg){
-        alert(msg)
-      },
-      gotomain(){
-        this.$router.push({name:'MainPagefor',params:{uid:this.userid}})
-        location.reload()
+    },
+    onGroupBtnClick() {
+      if (this.signin) {
+        this.$router.push({ name: 'GroupMain' });
+      } else {
+        alert('로그인이 필요합니다.');
+        this.$router.push({ name: 'Login' });
       }
+    },
+    onClickOutside() {
+      this.active = false;
+    },
+    search() {
+      this.$router.push({
+        name: 'tmp',
+        params: { key: this.keyw, type: 'title' },
+      });
+    },
+    alerts(msg) {
+      alert(msg);
+    },
+    gotomain() {
+      this.$router.push({ name: 'MainPagefor', params: { uid: this.userid } });
+      location.reload();
+    },
   },
-  computed:{
+  computed: {
     userNickname() {
-      return this.$store.state.user.nickname
+      return this.$store.state.user.nickname;
     },
-    userImg(){
-      return this.$store.state.user.img
+    userImg() {
+      return this.$store.state.user.img;
     },
-    userid(){
-      return this.$store.state.user.id
+    userid() {
+      return this.$store.state.user.id;
     },
-    islogin(){
-      return this.signin= this.$store.state.isLoggedIn
+    islogin() {
+      return (this.signin = this.$store.state.isLoggedIn);
     },
-    async logout(){
+    async logout() {
       try {
-          await this.$api.logout()
-          this.$router.push({name:'MainPage'})
-          location.reload()
-        } catch (e) {
-          console.log('실패')
-        }
+        await this.$api.logout();
+        this.$router.push({ name: 'MainPage' });
+        location.reload();
+      } catch (e) {
+        console.log('실패');
       }
-
-  }
-}
-
+    },
+  },
+};
 </script>
 
 <style>
-@font-face{
-  font-family:Recursive;
-  src:url(https://fonts.googleapis.com/css2?family=Recursive:wght@700&display=swap);
+@font-face {
+  font-family: Recursive;
+  src: url(https://fonts.googleapis.com/css2?family=Recursive:wght@700&display=swap);
 }
 
 .header-container {
@@ -198,8 +212,8 @@ export default {
 }
 
 .header-flex-container {
-  width:100%;
-  display:flex;
+  width: 100%;
+  display: flex;
   flex-direction: row;
   margin: 0px;
   padding: 0px;
@@ -207,15 +221,15 @@ export default {
 }
 
 .header-flex-item {
-  display:flex;
+  display: flex;
   margin: 10px;
   padding: 0px;
   text-align: center;
-  height:40px;
+  height: 40px;
   border-radius: 5px;
-  color:"green accent-2";
+  color: 'green accent-2';
   font-family: Recursive;
-  font-size:20px;
+  font-size: 20px;
 }
 
 .header-profile {

@@ -110,7 +110,7 @@ export default {
 <style>
 .login-container {
   width: 100%;
-  margin-top: -40px;
+  margin-top: -110px;
 }
 
 .login-left {
@@ -119,9 +119,7 @@ export default {
 }
 
 .login-logo-container {
-  padding: 0 12px;
-  width: 100%;
-  height: 40px;
+  padding: 12px;
 }
 
 .login-logo {
@@ -135,7 +133,7 @@ export default {
 }
 
 .login-title {
-  padding-bottom: 70px;
+  padding-top: 70px;
   font-size: 24px;
   font-weight: 700;
 }
