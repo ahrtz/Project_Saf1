@@ -34,7 +34,9 @@
     </div>
     <div class="d-flex">
       <div class="d-flex" />
-      <div class="d-flex flex-grow-0">row----high</div>
+      <div class="d-flex flex-grow-0">
+        <img style="height: 55px" src="/static/images/legend.png" />
+      </div>
     </div>
   </div>
 </template>

@@ -43,7 +43,7 @@
         where id=#{id}
     </delete>
 
-    <insert id="insertUser">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         insert into user
         (email, pwd, nickname, git_id, git_url, intro, img, git_token, is_social, is_certified)
         values
