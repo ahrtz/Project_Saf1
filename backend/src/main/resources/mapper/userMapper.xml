@@ -52,13 +52,13 @@
     
     <update id="cancelToken">
     	update user
-    	set isCertified = 0
+    	set is_certified = 0
     	where id = #{id}
     </update>
 
     <update id="authenticateToken">
     	update user
-    	set isCertified = 1
+    	set is_certified = 1
     	where id = #{id}
     </update>
 </mapper>
