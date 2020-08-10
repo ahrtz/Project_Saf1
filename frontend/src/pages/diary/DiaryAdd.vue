@@ -20,15 +20,21 @@
             <v-card>
                 <v-card-title>레포 선택</v-card-title>
                 <v-divider></v-divider>
-                <v-card-text style="height: 500px;">
+                <v-card-text style="height: 220px;">
                     <v-radio-group v-model="repoChecked" column>
-                        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+                        <v-radio v-for="repo in repoData.slice((this.page-1)*5,(this.page)*5)" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
                         
                     </v-radio-group>
                 </v-card-text>
+                <div class="text-center">
+                    <v-pagination
+                      v-model="page"
+                      :length="Math.ceil(repoData.length / 5)"
+                      :total-visible="7"
+                    ></v-pagination>
+                </div>
                 <v-divider></v-divider>
                     <v-card-actions>
-                    
                     <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -109,7 +115,7 @@ export default {
             repoChecked:{
                 
             },
-            
+            page:1,
             dialog:false
         }
     },

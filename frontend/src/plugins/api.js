@@ -183,4 +183,10 @@ export default {
     async makeFollow(data){
         return (await axios.put(`${baseURL}/follows`,data))     //이건 일단 나중에 쓸거고! 
     },
-}
+    async gitCancel(){
+        return (await axios.get(`${baseURL}/users/cancel`))
+    },
+    async contactBar(userpk){
+        return (await axios.get(`${baseURL}/users?id=${userpk}`))
+    }
+}   
