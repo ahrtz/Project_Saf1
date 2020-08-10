@@ -4,7 +4,7 @@
     <!-- 모든 페이지 공통 -->
     <header1 v-if="isLoggedIn"/>
     <!-- 뷰별 페이지 -->
-    <router-view class="router-view"/>
+    <router-view :class="{'router-view': isLoggedIn}"/>
   </div>
 </template>
 
