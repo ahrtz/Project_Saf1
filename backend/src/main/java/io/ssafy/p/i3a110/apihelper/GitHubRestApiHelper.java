@@ -97,7 +97,12 @@ public class GitHubRestApiHelper {
 		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
 		try {
 			this.github.checkApiUrlValidity();
-			GHRepository repo = this.person.getRepository(repoName);
+			Map<String, GHRepository> map = this.person.getRepositories();
+			if(!map.containsKey(repoName)) {
+				cal.put(Calendar.getInstance().getTime(), -1);
+				return cal;
+			}
+			GHRepository repo = map.get(repoName);
 			GHRepositoryStatistics stat = repo.getStatistics();
 			List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 			for (int i = 0; i < weekActivityList.size(); i++) {
@@ -122,6 +127,10 @@ public class GitHubRestApiHelper {
 			this.github.checkApiUrlValidity();
 			for (String name : projectNames) {
 				Map<String, GHRepository> map = this.person.getRepositories();
+				if(!map.containsKey(name)) {
+					cal.put(Calendar.getInstance().getTime(), -1);
+					continue;
+				}
 				GHRepository repo = map.get(name);
 				
 				GHRepositoryStatistics stat = repo.getStatistics();

@@ -222,7 +222,7 @@ export default {
 
 <style>
 .signup-container {
-  padding-top: 77px;
+  padding-bottom: 70px;
   width: 100%;
 }
 

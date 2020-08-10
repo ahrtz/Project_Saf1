@@ -167,7 +167,7 @@ export default {
 .search-page-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding-bottom: 70px;
 }
 
 .search-page-btn {

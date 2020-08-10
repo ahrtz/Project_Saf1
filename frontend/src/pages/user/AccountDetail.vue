@@ -186,7 +186,7 @@ export default {
 }
 
 .account-detail-inner {
-  padding-top: 77px;
+  padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
