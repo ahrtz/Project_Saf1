@@ -27,7 +27,7 @@
         <div
           class="d-flex align-center flex-grow-0 header-profile"
           v-if="islogin==true"
-          @click="$router.push({name:'Follow'})"
+          @click="$router.push({name:'Follow',params:{uid:userdata.id}})"
         >
           <div>
             <img class="header-profile-image" :src="userImg" />
@@ -66,8 +66,10 @@ export default {
     signin: false,
     target: '',
     isLoginPage: false,
+    userdata:null,
   }),
   created() {
+    this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
     console.log(this.$route.path);
     if (this.$route.path == '/') {

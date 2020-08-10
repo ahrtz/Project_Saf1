@@ -2,8 +2,8 @@
   <div class="tmpPost-container">
     <div class="d-flex tmpPost-inner">
       <div class="d-flex justify-center">
-        <div class="d-flex flex-column" style="width: 500px;">
-          <div class="tmpPost-title">임시 저장 글</div>
+        <div class="d-flex flex-column" style="width: 850px;">
+          <div class="tmpPost-title d-flex">임시 저장 글</div>
           <div
             class="d-flex align-center flex-grow-0 tmpPost-diary"
             v-for="post in tempPost"

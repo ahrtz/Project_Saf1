@@ -59,8 +59,8 @@
                 </v-col>
             </v-row>
             <!-- Scrap 글 뿌려줄 곳 -->
-            <v-row>
-                <div class="d-flex flex-column" style="width: 600px;">
+            <v-row class="justify-center">
+                <div class="d-flex flex-column align-center" style="width: 900px;">
           <div class="tmpPost-title">스크랩 글</div>
           <div
             class="d-flex align-center flex-grow-0 tmpPost-diary"
