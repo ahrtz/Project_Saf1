@@ -93,11 +93,16 @@ public class GitHubRestApiHelper {
 	}
 	
 	// 날짜(Date) ,커밋수 형태로 리턴(오늘 날짜 포함 1년) 
-	public HashMap<String, Integer> getCommitCnt(String repoName) {
-		HashMap<String, Integer> cal = new HashMap<String, Integer>();
+	public HashMap<Date, Integer> getCommitCnt(String repoName) {
+		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
 		try {
 			this.github.checkApiUrlValidity();
-			GHRepository repo = this.person.getRepository(repoName);
+			Map<String, GHRepository> map = this.person.getRepositories();
+			if(!map.containsKey(repoName)) {
+				cal.put(Calendar.getInstance().getTime(), -1);
+				return cal;
+			}
+			GHRepository repo = map.get(repoName);
 			GHRepositoryStatistics stat = repo.getStatistics();
 			List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 			for (int i = 0; i < weekActivityList.size(); i++) {
@@ -105,9 +110,7 @@ public class GitHubRestApiHelper {
 				List<Integer> dayCnt = weekActivity.getDays();
 				Long weekStart = weekActivityList.get(i).getWeek();
 				for (int j = 0; j < dayCnt.size(); j++) {
-			        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-			        Timestamp ts = Timestamp.valueOf(formatter.format(new Date(weekStart * 1000)));
-					cal.put(ts.toString(), dayCnt.get(j));
+					cal.put(new Date(weekStart * 1000), dayCnt.get(j));
 					weekStart += 86400L;
 				}
 			}
@@ -118,13 +121,16 @@ public class GitHubRestApiHelper {
 	}
 	
 	// 사용자가 현재 등록한 Projects에 관한 Commit 수 합산
-	public HashMap<String, Integer> getAllCommitCnt(List<String> projectNames) {
-		HashMap<String, Integer> cal = new HashMap<String, Integer>();
+	public HashMap<Date, Integer> getAllCommitCnt(List<String> projectNames) {
+		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
 		try {
 			this.github.checkApiUrlValidity();
 			for (String name : projectNames) {
-				System.out.println(name);
 				Map<String, GHRepository> map = this.person.getRepositories();
+				if(!map.containsKey(name)) {
+					cal.put(Calendar.getInstance().getTime(), -1);
+					continue;
+				}
 				GHRepository repo = map.get(name);
 				
 				GHRepositoryStatistics stat = repo.getStatistics();
@@ -134,15 +140,12 @@ public class GitHubRestApiHelper {
 					List<Integer> dayCnt = weekActivity.getDays();
 					Long weekStart = weekActivityList.get(i).getWeek();
 					for (int j = 0; j < dayCnt.size(); j++) {
-				        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-				        Timestamp ts = Timestamp.valueOf(formatter.format(new Date(weekStart * 1000)));
-				        String date = ts.toString();
+				        Date date = new Date(weekStart * 1000);
 						if(cal.containsKey(date)) {
 							cal.put(date, cal.get(date) + dayCnt.get(j));
 						}else {
 							cal.put(date, dayCnt.get(j));
 						}
-						System.out.println(date + " : " + dayCnt.get(j));
 						weekStart += 86400L;
 					}
 				}
@@ -191,7 +194,8 @@ public class GitHubRestApiHelper {
 			boolean[] days = new boolean[84];
 			int doCommitDays = 0;
 			for (String name : projectNames) {
-				GHRepository repo = this.person.getRepository(name);
+				Map<String, GHRepository> map = this.person.getRepositories();
+				GHRepository repo = map.get(name);
 				GHRepositoryStatistics stat = repo.getStatistics();
 				List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 				for (int i = 39, idx = 0; i < 51; i++) {

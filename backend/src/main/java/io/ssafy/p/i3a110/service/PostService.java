@@ -42,4 +42,8 @@ public class PostService {
     	return postDao.getlastPostDate(id);
     }
     
+    public int getOdopRate(int uid){
+    	return postDao.getOdopRate(uid);
+    }
+    
 }

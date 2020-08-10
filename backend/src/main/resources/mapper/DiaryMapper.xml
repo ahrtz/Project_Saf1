@@ -18,7 +18,7 @@
 		where id = #{id}
 	</select>
 
-	<insert id="createDiary" useGeneratedKeys="true" keyProperty="id">
+	<insert id="createDiary" parameterType="DiaryDto" useGeneratedKeys="true" keyProperty="id">
 		insert into diary 
 		(uid, title, intro,	img, git_name, git_url, is_proj, s_date, e_date)
 		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})

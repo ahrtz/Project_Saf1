@@ -41,7 +41,6 @@ public class CommitController {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		commit.setUid(user.getId());
-		
 		commitService.addCommit(commit);
 		return new ResponseEntity<>(commit.getId(), HttpStatus.OK);
 	}

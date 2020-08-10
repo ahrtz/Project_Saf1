@@ -35,7 +35,13 @@ public class GitController {
 
 	@PostMapping("/gits")
 	@ApiOperation(value = "Git AccessToken 검증")
-	public boolean checkOauth(@RequestBody HashMap<String, String> map) {
+	public boolean checkOauth(HttpSession session, @RequestBody HashMap<String, String> map) {
+		if(session.getAttribute("email") != null) {
+			String email = (String)session.getAttribute("email");
+			UserDto user = userService.findUserByEmail(email);
+			userService.authenticateToken(user.getId());
+			return true;
+		}
 		String gitid = map.get("gitId");
 		String accesstoken = map.get("accessToken");
 		helper = new GitHubRestApiHelper();
@@ -71,18 +77,18 @@ public class GitController {
 	
 	@Auth
 	@PostMapping("/gits/commits")
-	@ApiOperation(value = "Repoitory 전체 Commit 조회")
+	@ApiOperation(value = "회원 Git Repository 별 Commit 정보 조회")
 	public Object getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
 		List<CommitInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		String repoName = map.get("repoName");
-		String sDate = map.get("sDate");
-		String eDate = map.get("eDate");
+		String sdate = map.get("sdate");
+		String edate = map.get("edate");
 		
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+			list = helper.getCommitInfoListByPeriod(repoName, sdate, edate);
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -104,7 +110,7 @@ public class GitController {
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		String repoName = input.get("repoName").trim();
@@ -136,8 +142,8 @@ public class GitController {
 //	}
 	
 	@Auth
-	@PostMapping("gits/rate/odoc")
-	@ApiOperation(value = "1Day 1Commit 달성률")
+	@GetMapping("gits/rate/odoc")
+	@ApiOperation(value = "회원 1Day 1Commit 달성률")
 	public Object getOdocRate(HttpSession session) {
 		String email = (String)session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);

@@ -2,9 +2,9 @@
   <!-- KCE: 렌더링 타이밍 이슈로 회원 정보 새로고침하면 데이터 다 날아감, 원인은 아래 코드(isLoggedIn) 날려서 그런거임!! 지우지마세요.-->
   <div id="app" v-if="isLoggedIn != null"> 
     <!-- 모든 페이지 공통 -->
-    <header1 v-if="isLoggedIn"/>
+    <header1 />
     <!-- 뷰별 페이지 -->
-    <router-view class="router-view"/>
+    <router-view class="router-view" />
   </div>
 </template>
 
@@ -37,6 +37,8 @@ export default {
       this.$store.commit('isLoggedIn',false)
     }
   },
+  created() {
+  }
 
 }
 
@@ -49,6 +51,6 @@ export default {
 }
 
 .router-view {
-  padding-top: 70px;
+  padding-top: 110px;
 }
 </style>

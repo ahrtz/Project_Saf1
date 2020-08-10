@@ -64,7 +64,6 @@ public class FollowController {
 		UserDto user = userService.findUserByEmail(email);
 		follow.setUserFrom(user.getId());
 		followService.updateFollow(follow);
-		
 		return new ResponseEntity<>(follow.getId(), HttpStatus.OK);
 	}
 }
