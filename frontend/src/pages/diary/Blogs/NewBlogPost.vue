@@ -15,7 +15,47 @@
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
         
-        <v-container  fluid>
+
+      <v-layout row v-show="this.diarys.isProj==1">
+        <v-dialog v-model="dialog" scrollable max-width="500px">
+        <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">커밋 선택하기</v-btn>
+        </template>
+            <v-card>
+                <v-card-title>커밋 고르기</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
+                  
+                    
+                    <input
+                      type="checkbox"
+                      
+                      v-model="selected"
+                      :value="commit"
+                    />
+                    <label :for="commit">{{commit.msg}}</label>
+                  
+                </div>
+                </v-card-text>
+                <v-divider></v-divider>
+                    <v-card-actions>
+                    
+                    <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-layout>
+
+
+
+
+
+
+
+
+
+        <!-- <v-container  fluid>
           <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
             <p>
               <input
@@ -28,7 +68,8 @@
             </p>
           </div>
           
-        </v-container>내용
+        </v-container> -->
+        내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
         <h3>태그</h3>
@@ -64,6 +105,7 @@ export default {
   name: 'NewBlogPost',
   data() {
     return {
+      dialog:false,
       diarys:'',
       tag: '',
       tags: [],

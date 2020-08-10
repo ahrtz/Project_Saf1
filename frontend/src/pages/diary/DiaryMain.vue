@@ -28,14 +28,14 @@
         <!-- <h2>블로그 카드 뷰</h2> -->
         
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
+        <router-link v-show="test==1 || test==2" class="float-right" :to="{name:'BlogAdd'}" tag="button">
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
+        </router-link>
 
-        <router-link v-show="test==0" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+        <router-link v-show="test==0 ||test==2" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
           <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">프로젝트 추가</div>
         </router-link>
 
-        <router-link v-show="test==1" class="float-right" :to="{name:'BlogAdd'}" tag="button">
-          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
-        </router-link>
         <br>
         <br>
 

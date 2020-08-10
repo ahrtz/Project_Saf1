@@ -1,9 +1,11 @@
 package io.ssafy.p.i3a110.apihelper;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,9 +37,7 @@ public class GitHubRestApiHelper {
 		try {
 			this.github = new GitHubBuilder().withOAuthToken(accessToken).build();
 			this.person = this.github.getMyself();
-			System.out.println("Authentication Success");
 		} catch (IOException e) {
-			System.out.println("Authentication Failed");
 			e.printStackTrace();
 		}
 	}
@@ -60,9 +60,7 @@ public class GitHubRestApiHelper {
 		try {
 			this.github = new GitHubBuilder().withOAuthToken(accessToken).build();
 			this.person = this.github.getMyself();
-			System.out.println("Authentication Success");
 		} catch (IOException e) {
-			System.out.println("Authentication Failed");
 			e.printStackTrace();
 		}
 	}
@@ -86,7 +84,6 @@ public class GitHubRestApiHelper {
 				}
 				
 				RepositoryInfoDto ghrepo = new RepositoryInfoDto(name,ownerName,url,isPrivate, languages);
-				System.out.println(ghrepo);
 				list.add(ghrepo);
 			}
 		} catch (IOException e) {
@@ -108,8 +105,7 @@ public class GitHubRestApiHelper {
 				List<Integer> dayCnt = weekActivity.getDays();
 				Long weekStart = weekActivityList.get(i).getWeek();
 				for (int j = 0; j < dayCnt.size(); j++) {
-					Date date = new Date(weekStart * 1000);
-					cal.put(date, dayCnt.get(j));
+					cal.put(new Date(weekStart * 1000), dayCnt.get(j));
 					weekStart += 86400L;
 				}
 			}
@@ -122,11 +118,12 @@ public class GitHubRestApiHelper {
 	// 사용자가 현재 등록한 Projects에 관한 Commit 수 합산
 	public HashMap<Date, Integer> getAllCommitCnt(List<String> projectNames) {
 		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
-		List<Integer> sum = new ArrayList<Integer>();
 		try {
 			this.github.checkApiUrlValidity();
 			for (String name : projectNames) {
-				GHRepository repo = this.person.getRepository(name);
+				Map<String, GHRepository> map = this.person.getRepositories();
+				GHRepository repo = map.get(name);
+				
 				GHRepositoryStatistics stat = repo.getStatistics();
 				List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 				for (int i = 0; i < weekActivityList.size(); i++) {
@@ -134,7 +131,7 @@ public class GitHubRestApiHelper {
 					List<Integer> dayCnt = weekActivity.getDays();
 					Long weekStart = weekActivityList.get(i).getWeek();
 					for (int j = 0; j < dayCnt.size(); j++) {
-						Date date = new Date(weekStart * 1000);
+				        Date date = new Date(weekStart * 1000);
 						if(cal.containsKey(date)) {
 							cal.put(date, cal.get(date) + dayCnt.get(j));
 						}else {
@@ -163,8 +160,8 @@ public class GitHubRestApiHelper {
 			GHCommitQueryBuilder commitqb = repo.queryCommits();
 			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 			
-			if(sDate!=null && sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
-			if(eDate!=null && eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
+			if(sDate!=null && !sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
+			if(eDate!=null && !eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
 			List<GHCommit> commits = commitqb.list().toList();
 			for(GHCommit commit : commits) {
 				String author = commit.getCommitShortInfo().getAuthor().getName();
@@ -179,5 +176,35 @@ public class GitHubRestApiHelper {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public HashMap<String, String> getOdocRate(List<String> projectNames) {
+		HashMap<String, String> output = new HashMap<String, String>();
+		try {
+			this.github.checkApiUrlValidity();
+			boolean[] days = new boolean[84];
+			int doCommitDays = 0;
+			for (String name : projectNames) {
+				Map<String, GHRepository> map = this.person.getRepositories();
+				GHRepository repo = map.get(name);
+				GHRepositoryStatistics stat = repo.getStatistics();
+				List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
+				for (int i = 39, idx = 0; i < 51; i++) {
+					CommitActivity weekActivity = weekActivityList.get(i);
+					List<Integer> dayCnt = weekActivity.getDays();
+					for (int j = 0; j < dayCnt.size(); j++,idx++) {	
+						if(dayCnt.get(j)>1 && !days[idx]) {
+							days[idx] = true;
+							doCommitDays++;
+						}
+					}
+				}
+			}
+			output.put("days", String.format("%d/%d", doCommitDays, 84));
+			output.put("rate", String.format("%.2f", (double)doCommitDays/84*100));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return output;
 	}
 }
