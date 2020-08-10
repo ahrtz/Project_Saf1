@@ -40,6 +40,7 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 //    private static final String BE_BASE_URL = "http://localhost:3000";
     private static final String BE_BASE_URL = "http://i3a110.p.ssafy.io:3000";
+    private static final String regExp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,16}$";
 
     @Autowired
     private UserService userService;
@@ -107,7 +108,7 @@ public class UserController {
 
         String userEmail = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(userEmail);
-        if(!pwd.equals("") ||pwd != null ) user.setPwd(pwd);
+        if(!pwd.equals("") && pwd != null && !pwd.equals("undefined")) user.setPwd(pwd);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
@@ -192,7 +193,7 @@ public class UserController {
 
     @PostMapping("/users/signup")
     @ApiOperation(value = "회원 가입")
-    public void signup(@RequestParam(required = false) MultipartFile file,
+    public Object signup(@RequestParam(required = false) MultipartFile file,
                        @RequestParam String email,
                        @RequestParam String pwd,
                        @RequestParam String nickname,
@@ -204,39 +205,38 @@ public class UserController {
                        @RequestParam String isCertified) throws Exception {
 
         UserDto user = userService.findUserByEmail(email);
+        if(user != null) return new ResponseEntity<>("중복된 Email이 존재합니다.",HttpStatus.BAD_REQUEST);
+        if(!pwd.matches(regExp)) return new ResponseEntity<>("비밀번호 형식이 잘못되었습니다.", HttpStatus.BAD_REQUEST);
+        user = new UserDto();
+        user.setEmail(email);
+        user.setPwd(pwd);
+        user.setNickname(nickname);
+        user.setGitId(gitId);
+        user.setGitUrl(gitUrl);
+        user.setIntro(intro);
+        user.setGitToken(gitToken);
+        user.setIsSocial(Integer.parseInt(isSocial));
+        user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (user == null) {
-            user = new UserDto();
-            user.setEmail(email);
-            user.setPwd(pwd);
-            user.setNickname(nickname);
-            user.setGitId(gitId);
-            user.setGitUrl(gitUrl);
-            user.setIntro(intro);
-            user.setGitToken(gitToken);
-            user.setIsSocial(Integer.parseInt(isSocial));
-            user.setIsCertified(Integer.parseInt(isCertified));
+        if (file == null) {
+            user.setImg(null);
+        } else {
+            long timestamp = System.currentTimeMillis();
+            StringBuilder builder = new StringBuilder(staticPath);
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = timestamp + "." + extension;
 
-            if (file == null) {
-                user.setImg(null);
-            } else {
-                long timestamp = System.currentTimeMillis();
-                StringBuilder builder = new StringBuilder(staticPath);
-                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-                String fileName = timestamp + "." + extension;
-
-                file.transferTo(new File(builder.append("/")
-                        .append(fileName)
-                        .toString()));
-                user.setImg(new StringBuilder(BE_BASE_URL)
-                        .append("/users/image/")
-                        .append(fileName)
-                        .toString());
-            }
-
-            userService.insertUser(user);
+            file.transferTo(new File(builder.append("/")
+                    .append(fileName)
+                    .toString()));
+            user.setImg(new StringBuilder(BE_BASE_URL)
+                    .append("/users/image/")
+                    .append(fileName)
+                    .toString());
         }
 
+        userService.insertUser(user);
+        return new ResponseEntity<>(user.getId(), HttpStatus.OK);
     }
 
     @GetMapping("/users/image/{fileName}")
