@@ -55,7 +55,7 @@ public class DiaryController {
     	String email = (String) session.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
     	diary.setUid(user.getId());
-    	
+    	System.out.println(diary);
     	diaryService.createDiary(diary);
     	return new ResponseEntity<>(diary.getId(), HttpStatus.OK);
     }

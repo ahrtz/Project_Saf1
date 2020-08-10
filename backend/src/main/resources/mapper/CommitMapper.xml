@@ -9,7 +9,7 @@
 		where pid = #{pid}
 	</select>
 	
-	<insert id="addCommit" parameterType="CommitListDto">
+	<insert id="addCommit" parameterType="CommitListDto" useGeneratedKeys="true" keyProperty="id">
 		insert into commit_list 
 		(uid, pid, sha, author, msg, date)
 		values (#{uid}, #{pid}, #{sha}, #{author}, #{msg}, #{date})

@@ -75,6 +75,19 @@ public class UserController {
 		userinfo.put("intro", user.getIntro());
         return userinfo;
     }
+    
+    @GetMapping("/users")
+    @ApiOperation(value = "회원 단일 조회")
+    public HashMap<String, String> findUserById(int id) {
+    	UserDto user = userService.findUserById(id);
+    	HashMap<String, String> userinfo = new HashMap<String, String>();
+    	userinfo.put("id", String.valueOf(user.getId()));
+    	userinfo.put("email", user.getEmail());
+    	userinfo.put("nickname", user.getNickname());
+    	userinfo.put("img", user.getImg());
+    	userinfo.put("intro", user.getIntro());
+    	return userinfo;
+    }
 
     @Auth
     @PutMapping("/users")
@@ -104,9 +117,7 @@ public class UserController {
         user.setIsSocial(Integer.parseInt(isSocial));
         user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (file == null) {
-            user.setImg(null);
-        } else {
+        if (file != null) {
             long timestamp = System.currentTimeMillis();
             StringBuilder builder = new StringBuilder(staticPath);
             String extension = FilenameUtils.getExtension(file.getOriginalFilename());
