@@ -15,7 +15,7 @@
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
         
-
+<!-- 여기서 부터 모달 커밋 -->
       <v-layout row v-show="this.diarys.isProj==1">
         <v-dialog v-model="dialog" scrollable max-width="500px">
         <template v-slot:activator="{ on }">
@@ -25,7 +25,7 @@
                 <v-card-title>커밋 고르기</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
+                <div :id="'t'+commit.msg" v-for="(commit,index) in commitList.slice((this.page-1)*10,(this.page*10))" :key="index">
                   
                     
                     <input
@@ -38,6 +38,13 @@
                   
                 </div>
                 </v-card-text>
+                <div class="text-center">
+                    <v-pagination
+                      v-model="page"
+                      :length="Math.ceil(commitList.length/10)"
+                      :total-visible="7"
+                    ></v-pagination>
+                  </div>
                 <v-divider></v-divider>
                     <v-card-actions>
                     
@@ -55,20 +62,7 @@
 
 
 
-        <!-- <v-container  fluid>
-          <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
-            <p>
-              <input
-                type="checkbox"
-                
-                v-model="selected"
-                :value="commit"
-              />
-              <label :for="commit">{{commit.msg}}</label>
-            </p>
-          </div>
-          
-        </v-container> -->
+      
         내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
@@ -111,6 +105,7 @@ export default {
       tags: [],
       did: this.$route.params.did,
       selected: [],
+      page:1,
       post: {
         uid: '',
         did: this.$route.params.did,
@@ -209,7 +204,12 @@ export default {
       }
     },
   },
+  // watch:{
+  //   commitList: tempcommit()
+  // },
+  
   computed: {
+        
     userid() {},
     isProj() {
       if (this.$route.path[7] == 'p') {
@@ -217,6 +217,7 @@ export default {
       } else {
         return false;
       }
+    
     },
   },
 };

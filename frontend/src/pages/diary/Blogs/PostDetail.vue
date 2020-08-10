@@ -2,7 +2,7 @@
   <div>
       <section>
         <nav>
-          <PostSidebar />
+          <scontact />
         </nav>
         <article>
           <v-btn class="ma-2" tile color="indigo" dark @click="goback()">목록으로</v-btn>
@@ -76,13 +76,13 @@
 </template>
 
 <script>
-import PostSidebar from '../../../component/PostSidebar.vue'
+import scontact from '../../../component/s-contact.vue'
 import ContentSidebar from '../../../component/ContentSidebar.vue'
 import axios from 'axios'
 
 export default {
     name:'PostDetail',
-    components:{PostSidebar, ContentSidebar},
+    components:{scontact, ContentSidebar},
     data(){
         return{
         uid:null,

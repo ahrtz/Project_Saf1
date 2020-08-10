@@ -20,15 +20,21 @@
             <v-card>
                 <v-card-title>레포 선택</v-card-title>
                 <v-divider></v-divider>
-                <v-card-text style="height: 500px;">
+                <v-card-text style="height: 220px;">
                     <v-radio-group v-model="repoChecked" column>
-                        <v-radio v-for="repo in repoData" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
+                        <v-radio v-for="repo in repoData.slice((this.page-1)*5,(this.page)*5)" :key="repo.url" :label="repo.repoName" :value="repo"></v-radio>
                         
                     </v-radio-group>
                 </v-card-text>
+                <div class="text-center">
+                    <v-pagination
+                      v-model="page"
+                      :length="Math.ceil(repoData.length / 5)"
+                      :total-visible="7"
+                    ></v-pagination>
+                </div>
                 <v-divider></v-divider>
                     <v-card-actions>
-                    
                     <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -51,7 +57,7 @@
         >
             <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="blogData.sDate"
+                v-model="blogData.sdate"
                 label="시작날짜"
                 prepend-icon="event"
                 readonly
@@ -59,7 +65,7 @@
                 v-on="on"
             ></v-text-field>
             </template>
-            <v-date-picker v-model="blogData.sDate" @input="blogData.menu2 = false"></v-date-picker>
+            <v-date-picker v-model="blogData.sdate" @input="blogData.menu2 = false"></v-date-picker>
         </v-menu>
         </v-col>
       
@@ -98,8 +104,8 @@ export default {
                 gitUrl : null, //얘는 블로그에선 필요없는 요소. 맞지?
                 gitName: null,
                 isProj : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
-                sDate: new Date().toISOString().substr(0, 10),
-                eDate: new Date().toISOString().substr(0, 10),
+                sdate: new Date().toISOString().substr(0, 10),
+                edate: new Date().toISOString().substr(0, 10),
                 modal: false,
                 menu2: false,
             },
@@ -109,7 +115,7 @@ export default {
             repoChecked:{
                 
             },
-            
+            page:1,
             dialog:false
         }
     },
