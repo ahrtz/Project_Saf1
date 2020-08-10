@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="s-contact-container d-flex flex-column">
     <h2>Contacts</h2>
     <img :src="user.img?user.img:'../../static/Blogit_logo.jpg'" alt="Girl in a jacket" width="100" height="150" class="side-img">
     <div style="margin-left:120px;">
@@ -48,5 +48,10 @@ export default {
 .side-img{
   float: left;
 
+}
+
+.s-contact-container {
+    border: solid 1px #dde3ea;
+    padding: 16px;
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div class="d-flex main-page-container">
     <div class="d-flex flex-grow-0 main-page-inner">
-      <div class="d-flex flex-grow-0 main-page-contact">
-        <s-contact />
+      <div class="d-flex flex-grow-0" style="width: 300px">
+        <div class="main-page-contact">
+          <s-contact />
+        </div>
       </div>
       <div class="d-flex justify-center">
         <div class="d-flex flex-column" style="width:100%">
@@ -133,8 +135,7 @@
 import axios from 'axios';
 import Status from '@/component/Status.vue';
 import InfiniteLoading from 'vue-infinite-loading';
-import SContact from '@/component/s-contact.vue'
-
+import SContact from '@/component/s-contact.vue';
 
 var count = 0;
 export default {
@@ -142,7 +143,7 @@ export default {
   components: {
     Status,
     InfiniteLoading,
-    SContact
+    SContact,
   },
   data() {
     return {
@@ -250,12 +251,14 @@ export default {
 .main-page-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding-bottom: 70px;
 }
 
 .main-page-contact {
-  width: 300px;
-  height: 100%;
+  background: #fff;
+  z-index: 99;
+  position: fixed;
+  width: 268px;
 }
 
 .main-page-btn {

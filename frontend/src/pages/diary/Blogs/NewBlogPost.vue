@@ -228,7 +228,7 @@ export default {
 }
 
 .new-blog-post-inner {
-  padding-top: 77px;
+  padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
