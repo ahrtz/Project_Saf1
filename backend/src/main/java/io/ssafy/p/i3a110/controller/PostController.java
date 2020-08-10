@@ -1,9 +1,8 @@
 package io.ssafy.p.i3a110.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +60,8 @@ public class PostController {
     	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, isProj, keyword, isTemp, limit);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+    		long cdate = (long) form.get("cdate");
+    		form.put("cdate", new Date(cdate));
     		UserDto writer = userService.findUserById(post.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
     		userinfo.put("id", String.valueOf(writer.getId()));
@@ -91,6 +92,8 @@ public class PostController {
     	PostDto post = postService.getPostById(id);
     	ObjectMapper objectMapper = new ObjectMapper();
     	HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+		long cdate = (long) form.get("cdate");
+		form.put("cdate", new Date(cdate));
 		UserDto writer = userService.findUserById(post.getUid());
 		HashMap<String, String> userinfo = new HashMap<String, String>();
 		userinfo.put("id", String.valueOf(writer.getId()));

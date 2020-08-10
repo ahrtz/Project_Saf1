@@ -68,7 +68,7 @@ export default {
     return {
       loginData: {
         email: null,
-        pwd: null,
+        pwd: "",
       },
       dummy: null,
       visi: 'hidden',

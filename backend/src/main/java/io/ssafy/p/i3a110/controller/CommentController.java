@@ -2,6 +2,7 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +51,8 @@ public class CommentController {
     	List<CommentDto> commentList = commentService.getAllCommentsByPost(pid);
     	for(CommentDto comment : commentList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(comment, HashMap.class);
+    		long cdate = (long) form.get("cdate");
+    		form.put("cdate", new Date(cdate));
     		UserDto writer = userService.findUserById(comment.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
     		userinfo.put("id", String.valueOf(writer.getId()));

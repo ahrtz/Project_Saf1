@@ -48,7 +48,7 @@
                       </div>
                     </header>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <article class="blog-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
+                    <article class="blog-card-article" @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})" style="cursor:pointer">
                       <h3 style="margin-left:10px;">{{post.title}}</h3>
                       <p style="margin-left:10px; margin-top:5px;">
                           {{post.content}}
@@ -90,8 +90,8 @@ export default {
   methods: {
     diaryDelete(){
       try {
-        this.$api.deleteDiary(this.diaryid.did)
         console.log('다이어리 삭제 완료')
+        this.$api.deleteDiary(this.diaryid.did)
         this.$router.go(-1)
       }catch(e){
         console.log(e)

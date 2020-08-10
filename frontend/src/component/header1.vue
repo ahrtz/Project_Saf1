@@ -8,7 +8,7 @@
         height="70"
       >
         <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png" />
-        <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomain()">Overview</div>
+        <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomaineach()">Overview</div>
         <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
 
         <div class="d-flex" />
@@ -109,6 +109,10 @@ export default {
     },
     gotomain() {
       this.$router.push({ name: 'MainPagefor', params: { uid: this.userid } });
+      location.reload();
+    },
+    gotomaineach() {
+      this.$router.push({ name: 'MainPagefor', params: { uid: this.$route.params.uid } });
       location.reload();
     },
   },

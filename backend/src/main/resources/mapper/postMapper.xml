@@ -115,7 +115,7 @@
 		from
 		(select DATE_FORMAT(c_date, '%Y%m%d') as date, count(*) cnt
 		from post
-		where uid = #{uid}
+		where uid = #{uid} and is_temp = 0
 		group by date
 		having date>DATE_FORMAT(date_sub(now(), interval 84 day), '%Y%m%d')) temp;
 	</select>
