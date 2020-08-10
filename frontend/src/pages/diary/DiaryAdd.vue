@@ -51,7 +51,7 @@
         >
             <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="blogData.sDate"
+                v-model="blogData.sdate"
                 label="시작날짜"
                 prepend-icon="event"
                 readonly
@@ -59,7 +59,7 @@
                 v-on="on"
             ></v-text-field>
             </template>
-            <v-date-picker v-model="blogData.sDate" @input="blogData.menu2 = false"></v-date-picker>
+            <v-date-picker v-model="blogData.sdate" @input="blogData.menu2 = false"></v-date-picker>
         </v-menu>
         </v-col>
       
@@ -98,8 +98,8 @@ export default {
                 gitUrl : null, //얘는 블로그에선 필요없는 요소. 맞지?
                 gitName: null,
                 isProj : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
-                sDate: new Date().toISOString().substr(0, 10),
-                eDate: new Date().toISOString().substr(0, 10),
+                sdate: new Date().toISOString().substr(0, 10),
+                edate: new Date().toISOString().substr(0, 10),
                 modal: false,
                 menu2: false,
             },

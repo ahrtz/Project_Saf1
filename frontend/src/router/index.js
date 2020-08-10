@@ -133,7 +133,7 @@ const router = new Router({
       component:BlogDetail
     },
     {
-      path:'/diary/:pid',
+      path:'/:uid/diary/:pid',
       name:'PostDetail',
       component:PostDetail
     },
