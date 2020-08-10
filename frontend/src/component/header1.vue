@@ -113,7 +113,7 @@ export default {
     },
     gotomaineach() {
       this.$router.push({ name: 'MainPagefor', params: { uid: this.$route.params.uid } });
-      location.reload();
+      
     },
   },
   computed: {
