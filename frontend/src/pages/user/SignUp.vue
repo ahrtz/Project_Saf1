@@ -18,6 +18,7 @@
         <div>
           <v-btn @click="checkId()" style="margin-bottom:16px;" class="primary float-right">이메일 체크</v-btn>
         </div>
+        <span class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -28,7 +29,10 @@
           required
           type="password"
           style="margin-bottom:16px;"
+          @focus="visipw='visible'"
+          @blur="visipw='hidden'"
         ></v-text-field>
+        <span class="login-hint" :style="{visibility:visipw2}">다시한번 입력해주세요</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호 확인"
@@ -39,6 +43,8 @@
           required
           type="password"
           style="margin-bottom:16px;"
+          @focus="visipw2='visible'"
+          @blur="visipw2='hidden'"
         ></v-text-field>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -56,7 +62,7 @@
             <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
           </div>
 
-        <span class="login-hint" :style="{visibility:visi}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
+        <span class="login-hint" :style="{visibility:visigit}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="Git 아이디"
@@ -66,10 +72,10 @@
           v-model="signupData.gitId"
           required
           style="margin-bottom:16px;"
-          @focus="visi='visible'"
-          @blur="visi='hidden'"
+          @focus="visigit='visible'"
+          @blur="visigit='hidden'"
         ></v-text-field>
-        <span class="login-hint" :style="{visibility:visi}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
+        <span class="login-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="Git token"
@@ -79,8 +85,8 @@
           v-model="signupData.gitToken"
           required
           style="margin-bottom:16px;"
-          @focus="visi='visible'"
-        @blur="visi='hidden'"
+          @focus="visig='visible'"
+          @blur="visig='hidden'"
         ></v-text-field>
         <div>
           <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
@@ -110,7 +116,11 @@ export default {
   name: 'SignUp',
   data() {
     return {
-      visi: 'hidden',
+
+      visipw: 'hidden',
+      visipw2: 'hidden',
+      visig: 'hidden',
+      visigit: 'hidden',
       tmpresult:"",
       signupData: {
         email: '',
@@ -193,7 +203,7 @@ export default {
           console.log('성공');
           this.$router.push({ name: 'Login' });
         } catch (e) {
-          console.log(e);
+          console.log(e.res);
           console.log('실패');
         }
       }
