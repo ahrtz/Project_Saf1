@@ -54,7 +54,7 @@
               <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
               <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
             </div>
-
+            <span class="login-hint" :style="{visibility:visi}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git 아이디"
@@ -66,16 +66,7 @@
               style="margin-bottom:16px;"
             ></v-text-field>
             
-            <v-text-field
-              class="d-flex justify-center account-detail-input"
-              placeholder="Git url"
-              outlined
-              dense
-              hide-details
-              v-model="userdata.gitUrl"
-              required
-              style="margin-bottom:16px;"
-            ></v-text-field>
+            <span class="login-hint" :style="{visibility:visi}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git token"
@@ -89,6 +80,16 @@
             <div>
               <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
             </div>
+            <v-text-field
+              class="d-flex justify-center account-detail-input"
+              placeholder="Git url"
+              outlined
+              dense
+              hide-details
+              v-model="userdata.gitUrl"
+              required
+              style="margin-bottom:16px;"
+            ></v-text-field>
                         
             
             <v-textarea solo label="자기소개" v-model="userdata.intro"></v-textarea>

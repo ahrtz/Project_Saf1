@@ -2,6 +2,7 @@ package io.ssafy.p.i3a110.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -70,18 +71,18 @@ public class GitController {
 	
 	@Auth
 	@PostMapping("/gits/commits")
-	@ApiOperation(value = "Repoitory 전체 Commit 조회")
+	@ApiOperation(value = "회원 Git Repository 별 Commit 정보 조회")
 	public Object getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
 		List<CommitInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		String repoName = map.get("repoName");
-		String sDate = map.get("sDate");
-		String eDate = map.get("eDate");
+		String sdate = map.get("sdate");
+		String edate = map.get("edate");
 		
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+			list = helper.getCommitInfoListByPeriod(repoName, sdate, edate);
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -106,10 +107,10 @@ public class GitController {
 		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String repoName = input.get("repoName");
+		String repoName = input.get("repoName").trim();
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			if(repoName == null) {
+			if(repoName == null || repoName.equals("")) {
 				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
 			}else {
 				map = helper.getCommitCnt(repoName);
@@ -134,4 +135,18 @@ public class GitController {
 //		return map;
 //	}
 	
+	@Auth
+	@GetMapping("gits/rate/odoc")
+	@ApiOperation(value = "회원 1Day 1Commit 달성률")
+	public Object getOdocRate(HttpSession session) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		if(user.getIsCertified()==1) {
+			helper = new GitHubRestApiHelper(user.getGitToken());
+			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenProjectName(user.getId()));
+			return new ResponseEntity<>(output, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

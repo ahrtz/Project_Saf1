@@ -109,6 +109,16 @@
 		set cnt_like = cnt_like - 1
 		where id = #{id}
 	</update>
+	
+	<select id="getOdopRate" resultType="Integer">
+		select count(*) cnt
+		from
+		(select DATE_FORMAT(c_date, '%Y%m%d') as date, count(*) cnt
+		from post
+		where uid = #{uid}
+		group by date
+		having date>DATE_FORMAT(date_sub(now(), interval 84 day), '%Y%m%d')) temp;
+	</select>
 </mapper>
 
 
