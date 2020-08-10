@@ -68,15 +68,20 @@ public class UserController {
 
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
-    public HashMap<String, String> findUserByEmail(@PathVariable String email) {
+    public Object findUserByEmail(@PathVariable String email) {
     	UserDto user = userService.findUserByEmail(email);
+    	if(user==null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 회원이 존재하지 않습니다.");
+    		return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+    	}
     	HashMap<String, String> userinfo = new HashMap<String, String>();
 		userinfo.put("id", String.valueOf(user.getId()));
 		userinfo.put("email", user.getEmail());
 		userinfo.put("nickname", user.getNickname());
 		userinfo.put("img", user.getImg());
 		userinfo.put("intro", user.getIntro());
-        return userinfo;
+        return new ResponseEntity<>(userinfo, HttpStatus.OK);
     }
     
     @GetMapping("/users")
@@ -205,8 +210,16 @@ public class UserController {
                        @RequestParam String isCertified) throws Exception {
 
         UserDto user = userService.findUserByEmail(email);
-        if(user != null) return new ResponseEntity<>("중복된 Email이 존재합니다.",HttpStatus.BAD_REQUEST);
-        if(!pwd.matches(regExp)) return new ResponseEntity<>("비밀번호 형식이 잘못되었습니다.", HttpStatus.BAD_REQUEST);
+        if(user != null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 Email이 존재합니다.");
+        	return new ResponseEntity<>(msg ,HttpStatus.BAD_REQUEST);
+        }
+        if(!pwd.matches(regExp)) {
+        	HashMap<String, String> msg = new HashMap<String, String>();
+        	msg.put("errMsg", "비밀번호 형식이 잘못되었습니다.");
+        	return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
         user = new UserDto();
         user.setEmail(email);
         user.setPwd(pwd);

@@ -73,6 +73,7 @@ public class GroupController {
     		UserDto leader = userService.findUserById(group.getLid());
     		output.put("lName", leader.getNickname());
     		output.put("lEmail", leader.getEmail());
+    		output.put("lImg", leader.getImg());
     		output.put("mCnt", groupService.getMemberCntById(group.getId()));
 			List<String> uList = new ArrayList<String>();
 			uList = groupService.getUserListById(id);
