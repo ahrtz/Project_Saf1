@@ -53,4 +53,8 @@ export default {
 .router-view {
   padding-top: 110px;
 }
+
+input, .v-text-field__slot, label {
+  font-size: 12px !important;
+}
 </style>

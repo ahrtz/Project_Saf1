@@ -9,6 +9,32 @@
 		from rate
 		where uid = #{uid};
 	</select>
+	
+	<insert id="createOdocOfAllUsers" parameterType="RateDto">
+		insert into rate(uid, odoc_rate, odoc_cnt)
+		values (#{uid}, #{odoc_rate}, #{odoc_cnt})
+	</insert>
+	
+	<update id="updateOdocOfAllUsers" parameterType="RateDto">
+		update rate
+		set
+		odoc_rate = #{odoc_rate},
+		odoc_cnt = #{odoc_cnt}
+		where uid = #{uid}
+	</update>
+	
+	<insert id="createOdopOfAllUsers" parameterType="RateDto">
+		insert into rate(uid, odop_rate, odop_cnt)
+		values (#{uid}, #{odop_rate}, #{odop_cnt})
+	</insert>
+	
+	<update id="updateOdopOfAllUsers" parameterType="RateDto">
+		update rate
+		set
+		odop_rate = #{odop_rate},
+		odop_cnt = #{odop_cnt}
+		where uid = #{uid}
+	</update>
 </mapper>    
     
     
