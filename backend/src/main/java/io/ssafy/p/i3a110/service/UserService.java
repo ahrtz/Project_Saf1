@@ -63,6 +63,10 @@ public class UserService implements UserDetailsService {
 		userDao.authenticateToken(id);
 	}
 	
+	public List<UserDto> getAllGitUsers(){
+		return userDao.getAllGitUsers();
+	}
+	
 	public List<UserDto> getAllUsers(){
 		return userDao.getAllUsers();
 	}
