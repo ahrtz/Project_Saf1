@@ -36,10 +36,23 @@
             <div class="d-flex" />
             <div>{{tmp.cdate}}</div>
           </div>
-          <div class="post-detail-commit-box" v-if="checkcommit">
-            <p>커밋리스트</p>
+          <div class="post-detail-commit-container" v-if="checkcommit">
             <div v-if="!commitcheck">
-            <div v-for="commit in commitList.slice(0,5)" :key="commit.cid">{{commit.msg}}</div>
+              <div
+                class="post-detail-commit-box"
+                v-for="commit in commitList.slice(0,5)"
+                :key="commit.cid"
+              >
+                <div class="post-detail-commit-date">Commits on {{commit.date}}</div>
+                <div class="d-flex flex-column justify-center post-detail-commit">
+                  <div class="post-detail-commit-title">{{commit.msg}}</div>
+                  <div class="d-flex">
+                    <div class="post-detail-commit-author">{{commit.author}}</div>
+                    <div class="d-flex" />
+                    <div class="post-detail-commit-sha">{{commit.sha}}</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               v-if="commitcheck==false & commitList.length>5"
@@ -47,18 +60,27 @@
               @click="commitwide()"
             >펼치기</div>
             <div v-if="commitcheck">
-              <div v-for="commit in commitList" :key="commit.cid">{{commit.msg}}</div>
+              <div class="post-detail-commit-box" v-for="commit in commitList" :key="commit.cid">
+                <div class="post-detail-commit-date">Commits on {{commit.date}}</div>
+                <div class="d-flex flex-column justify-center post-detail-commit">
+                  <div class="post-detail-commit-title">{{commit.msg}}</div>
+                  <div class="d-flex">
+                    <div class="post-detail-commit-author">{{commit.author}}</div>
+                    <div class="d-flex" />
+                    <div class="post-detail-commit-sha">{{commit.sha}}</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               v-if="commitcheck"
               class="d-flex align-center justify-center post-detail-white-btn"
               @click="commitwide()"
             >접기</div>
-            <br />
           </div>
           <div class="post-detail-content">{{tmp.content}}</div>
 
-          <div class="d-flex align-center flex-grow-0">
+          <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
             <div
               class="post-detail-tag"
               v-for="tag in tags"
@@ -66,14 +88,14 @@
               @click="searchTag(tag.name)"
             >#{{tag.name}}</div>
           </div>
-          <br />
-          <div class="d-flex">
-            <div v-if="!likeData.likechecked" @click="like()" class="post-detail-icon">
+          <div class="d-flex algin-center">
+            <div v-if="likeData.likechecked" @click="like()" class="post-detail-icon">
               <v-icon color="#db4455" size="32">favorite</v-icon>
             </div>
-            <div v-if="likeData.likechecked" @click="like()" class="post-detail-icon">
+            <div v-if="!likeData.likechecked" @click="like()" class="post-detail-icon">
               <v-icon color="#db4455" size="32">favorite_border</v-icon>
             </div>
+            <div class="post-detail-like">{{tmp.cntLike}}</div>
             <div @click="scrap" class="post-detail-icon">
               <v-icon color="#e8a317" size="32">stars</v-icon>
             </div>
@@ -81,29 +103,38 @@
               <v-icon color="#808080" size="32">share</v-icon>
             </div>
           </div>
-
-          <br />댓글
-          <div v-for="comment in comments" :key="comment.id">
-            <p class="my-0 text-start">작성자 : {{comment.uid}}</p>
-            <v-btn
-              class="ma-2 text-end"
-              tile
-              color="indigo"
-              style="float:right; color:white"
-              v-show="isWritten(comment.uid)"
-              @click="commenterase(comment.id)"
-            >댓글 삭제</v-btn>
-            <!-- <p class="my-0 text-end">작성자 : {{comment.uid}} </p> -->
-            <v-text-field filled v-model="comment.content" readonly />
-          </div>
-          <div class="d-flex align-center">
-            댓글 작성
-            <!-- v-model="commentData.content" -->
-            <v-text-field id="post-comment-content" filled />
+          <div class="post-detail-comment-container">
             <div
-              class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
-              @click="commentwrite()"
-            >작성</div>
+              class="d-flex flex-column post-detail-comment-list-box"
+              v-for="comment in comments"
+              :key="comment.id"
+            >
+              <div class="d-flex align-center">
+                <div class="d-flex flex-grow-0">
+                  <img class="post-detail-comment-img" :src="comment.userinfo.img" />
+                </div>
+                <div class="post-detail-comment-id">{{comment.userinfo.nickname}}</div>
+              </div>
+              <div class="d-flex align-center">
+                <div class="d-flex post-detail-comment-content">{{comment.content}}</div>
+                <div
+                  class="d-flex justify-center align-center flex-grow-0 post-detail-red-btn"
+                  style="margin-left: 8px;"
+                  v-if="isWritten(comment.uid)"
+                  @click="commenterase(comment.id)"
+                >삭제</div>
+              </div>
+              <div class="d-flex post-detail-comment-date">{{comment.cdate}}</div>
+            </div>
+            <div class="d-flex justify-center align-center post-detail-comment-box">
+              <!-- v-model="commentData.content" -->
+              <v-text-field id="post-comment-content" dense outlined hide-details />
+              <div
+                style="margin-left: 8px"
+                class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
+                @click="commentwrite()"
+              >작성</div>
+            </div>
           </div>
         </div>
       </div>
@@ -218,7 +249,7 @@ export default {
     goback() {
       this.$router.go(-1);
     },
-    like() {
+    async like() {
       if (this.likeData.likechecked == true) {
         this.likeData.likechecked = false;
         this.$api.likeDislike({ pid: this.id.pid, status: 0 });
@@ -228,6 +259,15 @@ export default {
         this.likeData.likechecked = true;
         this.$api.likeDislike({ pid: this.id.pid, status: 1 });
       }
+
+      try {
+        let tmpspace = await this.$api.postdetail(this.id.pid);
+        this.tmp = tmpspace;
+        // console.log('성공')
+      } catch (e) {
+        console.log(e);
+      }
+      this.$forceUpdate();
     },
     searchTag(tagName) {
       document.getElementById('header-text').value = tagName;
@@ -371,12 +411,18 @@ export default {
 }
 
 .post-detail-title {
+  margin-top: 16px;
+  min-height: 100px;
   font-size: 36px;
 }
 
 .post-detail-icon {
   margin-right: 4px;
   cursor: pointer;
+}
+
+.post-detail-tag-container {
+  margin: 32px 0;
 }
 
 .post-detail-tag {
@@ -391,37 +437,104 @@ export default {
   font-size: 14px;
 }
 
+.post-detail-like {
+    color: #db4455;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.post-detail-commit-container {
+  margin-top: 32px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: solid 1px #dde3ea;
+}
+
 .post-detail-commit-box {
-    margin-top:32px;
-  padding: 32px;
-  background: #0051cb1f;
-  border-radius: 4px;
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
+}
+
+.post-detail-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.post-detail-commit:hover {
+  background: #0051cb11;
+}
+
+.post-detail-commit-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.post-detail-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.post-detail-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.post-detail-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 
 .post-detail-content {
-    margin-top: 32px;
-    min-height: 200px;
+  margin: 48px 0;
+  min-height: 150px;
 }
 
-nav {
-  float: left;
-  width: 20%;
-  height: 100%;
-  background: #ccc;
-  padding: 20px;
+.post-detail-comment-container {
+  margin-top: 32px;
+  border-radius: 6px;
+  background: #0051cb11;
+  padding: 24px 32px;
 }
-aside {
-  float: left;
-  width: 20%;
-  height: 100%;
-  background: #ccc;
-  padding: 20px;
+
+.post-detail-comment-box {
+  background: #fff;
+  border: solid 1px #dde3ea;
+  border-radius: 6px;
+  padding: 32px 16px;
 }
-article {
-  float: left;
-  padding: 20px;
-  width: 60%;
-  background-color: #f1f1f1;
-  height: 100%;
+
+.post-detail-comment-list-box {
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: solid 1px #dde3ea;
+}
+
+.post-detail-comment-img {
+  margin-right: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: solid 1px #dde3ea;
+}
+
+.post-detail-comment-date {
+  color: rgb(102, 102, 102);
+  font-size: 12px;
+}
+
+.post-detail-comment-id {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.post-detail-comment-content {
+  font-size: 14px;
 }
 </style>
