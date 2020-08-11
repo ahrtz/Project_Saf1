@@ -61,6 +61,10 @@
     	set is_certified = 1
     	where id = #{id}
     </update>
+    
+    <select id="getAllUsers" resultType="UserDto">
+    	select * from user;
+    </select>
 </mapper>
 
 
