@@ -6,6 +6,7 @@
           <div class="account-detail-title">회원 정보</div>
           <div class="d-flex flex-column">
             <v-text-field
+              v-if="!userdata.isSocial"
               class="d-flex justify-center account-detail-input"
               placeholder="이메일"
               outlined
@@ -18,6 +19,7 @@
               readonly
             ></v-text-field>
             <v-text-field
+              v-if="!userdata.isSocial"
               class="d-flex justify-center account-detail-input"
               placeholder="비밀번호"
               outlined
@@ -29,6 +31,7 @@
               style="margin-bottom:16px;"
             ></v-text-field>
             <v-text-field
+              v-if="!userdata.isSocial"
               class="d-flex justify-center account-detail-input"
               placeholder="비밀번호 확인"
               outlined
@@ -47,14 +50,26 @@
               hide-details
               v-model="userdata.nickname"
               required
-              style="margin-bottom:16px;"
+              style="margin-bottom:32px;"
             ></v-text-field>
 
-            <div class="input-wrap">
-              <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
-              <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
+            <div class="d-flex flex-column input-wrap">
+              <img
+                :src="uploadImageFile"
+                style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;margin-bottom: 24px;"
+              />
+              <input
+                @change="onFileSelected($event)"
+                ref="file"
+                type="file"
+                name="file"
+                accept="image/*"
+              />
             </div>
-            <span class="login-hint" :style="{visibility:visi}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
+            <span
+              class="login-hint"
+              :style="{visibility:visi}"
+            >아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
             <v-text-field
               class="d-flex justify-center account-detail-input"
               placeholder="Git 아이디"
@@ -66,7 +81,7 @@
               style="margin-bottom:16px;"
               :disabled="isDisabled"
             ></v-text-field>
-            
+
             <span class="login-hint" :style="{visibility:visi}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
             <v-text-field
               class="d-flex justify-center account-detail-input"
@@ -79,10 +94,17 @@
               style="margin-bottom:16px;"
               :disabled="isDisabled"
             ></v-text-field>
-            <div>
-              <v-btn class="primary float-right " style="margin-left:8px; margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
-            
-              <v-btn class="primary float-right " style="margin-bottom:16px;" @click="uncertifyGit()">인증 취소</v-btn>
+            <div class="d-flex" style="margin-bottom:32px;">
+              <div class="d-flex" />
+              <div
+                class="d-flex align-center justify-center flex-grow-0 account-detail-white-btn"
+                @click="uncertifyGit()"
+              >인증 취소</div>
+              <div
+                class="d-flex align-center justify-center flex-grow-0 account-detail-blue-btn"
+                style="margin-left:8px;"
+                @click="certifyGit()"
+              >토큰 검증</div>
             </div>
             <v-text-field
               class="d-flex justify-center account-detail-input"
@@ -94,11 +116,14 @@
               required
               style="margin-bottom:16px;"
             ></v-text-field>
-                        
-            
+
             <v-textarea solo label="자기소개" v-model="userdata.intro"></v-textarea>
           </div>
-          <div class="d-flex justify-center align-center account-detail-btn" @click="updateUser">수정</div>
+          <div
+            class="d-flex justify-center align-center account-detail-white-btn"
+            style="margin-top: 32px;"
+            @click="updateUser"
+          >수정</div>
         </div>
       </div>
       <user-sidebar />
@@ -120,43 +145,40 @@ export default {
     return {
       userdata: {},
       uploadImageFile: '',
-      visi:'hidden',
-
+      visi: 'hidden',
     };
   },
   created() {
     this.userdata = this.$store.state.user;
     this.uploadImageFile = this.userdata.img;
   },
-  computed:{
-    isDisabled(){
-      if (this.userdata.isCertified){
-        return true
-      }else{
-        return false
+  computed: {
+    isDisabled() {
+      if (this.userdata.isCertified) {
+        return true;
+      } else {
+        return false;
       }
-    }
+    },
   },
   methods: {
     onFileSelected(event) {
       var input = event.target;
-      if (input.files && input.files[0]) { 
+      if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = (e) => { 
+        reader.onload = (e) => {
           this.uploadImageFile = e.target.result;
-        }
+        };
         reader.readAsDataURL(input.files[0]);
       }
     },
     async updateUser() {
       try {
-        if (this.userdata.pwd != this.userdata.pwdconfirm){
-          alert('비밀번호가 일치 하지 않습니다')
-        }else{
-
-
-          if(this.$refs.file != null) {
-            this.userdata.file=this.$refs.file.files[0];
+        if (this.userdata.pwd != this.userdata.pwdconfirm) {
+          alert('비밀번호가 일치 하지 않습니다');
+        } else {
+          if (this.$refs.file != null) {
+            this.userdata.file = this.$refs.file.files[0];
           }
           console.log(this.userdata.file);
           const formData = new FormData();
@@ -164,46 +186,46 @@ export default {
           formData.append('pwd', this.userdata.pwd);
           formData.append('file', this.userdata.file);
           formData.append('img', this.userdata.img);
-          formData.append('nickname',this.userdata.nickname);
+          formData.append('nickname', this.userdata.nickname);
           formData.append('gitId', this.userdata.gitId);
-          formData.append('gitUrl',this.userdata.gitUrl);
+          formData.append('gitUrl', this.userdata.gitUrl);
           formData.append('gitToken', this.userdata.gitToken);
-          formData.append('intro',this.userdata.intro);
+          formData.append('intro', this.userdata.intro);
           formData.append('isSocial', this.userdata.isSocial);
-          formData.append('isCertified',this.userdata.isCertified);
+          formData.append('isCertified', this.userdata.isCertified);
           // console.log(formData)
 
           await this.$api.userUpdate(formData, {
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-            });
-          alert('정보 수정 성공');
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          alert('회원 정보를 수정하였습니다.');
           // location.reload();
         }
-        } catch (e) {
-          console.log('실패');
-          console.log(e);
-        }
-    },
-    async certifyGit(){
-      try{
-        let tmpid=this.userdata.gitId
-        let tmpToken = this.userdata.gitToken
-        await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
-        this.userdata.isCertified = 1
-        alert('인증되었습니다')
-      }catch(e){
-        console.log(e)
+      } catch (e) {
+        console.log('실패');
+        console.log(e);
       }
     },
-    uncertifyGit(){
-      this.userdata.gitId=''
-      this.userdata.gitToken=''
-      this.userdata.isCertified = 0
-      alert('인증이 취소 되었습니다')
-      this.$api.gitCancel()
-    }
+    async certifyGit() {
+      try {
+        let tmpid = this.userdata.gitId;
+        let tmpToken = this.userdata.gitToken;
+        await this.$api.certgitToken({ gitId: tmpid, accessToken: tmpToken });
+        this.userdata.isCertified = 1;
+        alert('인증되었습니다');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    uncertifyGit() {
+      this.userdata.gitId = '';
+      this.userdata.gitToken = '';
+      this.userdata.isCertified = 0;
+      alert('인증이 취소 되었습니다');
+      this.$api.gitCancel();
+    },
   },
 };
 </script>
@@ -231,9 +253,8 @@ export default {
   color: #21262e;
 }
 
-.account-detail-btn {
-  margin-top: 32px;
-  width: 100%;
+.account-detail-blue-btn {
+  padding: 0 16px;
   font-size: 14px;
   background: #0051cb;
   font-weight: 600;
@@ -243,9 +264,8 @@ export default {
   cursor: pointer;
 }
 
-.account-detail-cancel-btn {
-  margin-top: 8px;
-  width: 100%;
+.account-detail-white-btn {
+  padding: 0 16px;
   font-size: 14px;
   background: #fff;
   font-weight: 600;

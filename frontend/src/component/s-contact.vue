@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     alerting() {
-      alert('구현 예정');
+      alert('업데이트 예정입니다.');
     },
   },
   async created() {

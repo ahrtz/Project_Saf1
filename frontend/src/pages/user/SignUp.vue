@@ -156,9 +156,9 @@ export default {
         let tmpres=await this.$api.isthere(tmpId)
         
         if (tmpres.length==''){
-          alert('가입가능 ID')
+          alert('가입 가능한 아이디입니다.')
         }else{
-          alert('가입 불가능한 ID')
+          alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.')
         }
 
       } catch(e){
@@ -174,7 +174,7 @@ export default {
       if (this.signupData.pwd != this.signupData.pwdconfirm) {
         this.signupData.pwdconfirm = '';
         console.log('dnajk');
-        alert('비밀번호가 다름');
+        alert('비밀번호가 다릅니다.');
       } else {
         try {
           if(this.$refs.file != null) {
@@ -212,7 +212,7 @@ export default {
       if (this.pwd != this.pwdconfirm) {
         this.pwdconfirm = '';
         console.log('dnajk');
-        alert('비밀번호가 다름');
+        alert('비밀번호가 다릅니다.');
       }
     },
     async certifyGit(){
