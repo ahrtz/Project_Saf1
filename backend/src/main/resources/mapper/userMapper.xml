@@ -62,8 +62,15 @@
     	where id = #{id}
     </update>
     
+    <select id="getAllGitUsers" resultType="UserDto">
+    	select *
+    	from user 
+		where is_certified = 1;
+    </select>
+    
     <select id="getAllUsers" resultType="UserDto">
-    	select * from user;
+    	select *
+    	from user
     </select>
 </mapper>
 

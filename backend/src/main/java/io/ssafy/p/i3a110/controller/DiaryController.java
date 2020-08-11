@@ -16,10 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.ssafy.p.i3a110.dto.DiaryDto;
 import io.ssafy.p.i3a110.dto.UserDto;
@@ -27,7 +37,6 @@ import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.DiaryService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class DiaryController {
@@ -65,15 +74,14 @@ public class DiaryController {
     public Object createDiary(
                             HttpSession httpSession,
                             @RequestParam(required = false) MultipartFile file,
-                              @RequestParam int uid,
                               @RequestParam String gitName,
                               @RequestParam String title,
                               @RequestParam String intro,
                               @RequestParam String img,
                               @RequestParam String gitUrl,
                               @RequestParam int isProj,
-                              @RequestParam Date sdate,
-                              @RequestParam Date edate) throws IOException {
+                              @RequestParam @DateTimeFormat(iso = ISO.DATE) Date sdate ,
+                              @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
     	DiaryDto diary = new DiaryDto();
@@ -101,7 +109,6 @@ public class DiaryController {
                     .toString());
         }
 
-    	System.out.println(diary);
     	diaryService.createDiary(diary);
     	return new ResponseEntity<>(diary.getId(), HttpStatus.OK);
     }
@@ -116,8 +123,8 @@ public class DiaryController {
                               @RequestParam String title,
                               @RequestParam String intro,
                               @RequestParam String img,
-                              @RequestParam Date sdate,
-                              @RequestParam Date edate
+                              @RequestParam @DateTimeFormat(iso = ISO.DATE) Date sdate,
+                              @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate
                               ) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
