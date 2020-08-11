@@ -112,6 +112,7 @@ export default {
         isTemp: 0,
       },
       postdata: [],
+      diarydata:{}
     };
   },
   methods: {
@@ -137,10 +138,16 @@ export default {
     } catch (e) {
       console.log('실패');
     }
+    try{
+      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did)
+      this.diarydata = tmpspace1
+    }catch(e){
+      console.log('fdas')
+    }
   },
   computed: {
     isProj() {
-      if (this.$route.path[7] == 'p') {
+      if (this.diarydata.isProj==1) {
         return true;
       } else {
         return false;

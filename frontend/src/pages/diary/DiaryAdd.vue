@@ -66,7 +66,7 @@
         <v-text-field  readonly v-model="repoChecked.repoName" ></v-text-field>
       <v-col cols="12">
             대표 이미지
-            <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
+            <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
       </v-col>
       <v-col cols="6">
         <v-menu
@@ -135,7 +135,8 @@ export default {
                 
             },
             page:1,
-            dialog:false
+            dialog:false,
+            uploadImageFile:''
         }
     },
     watch:{
@@ -175,17 +176,49 @@ export default {
         
     },
     methods:{
+    onFileSelected(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) { 
+        var reader = new FileReader();
+        reader.onload = (e) => { 
+          this.uploadImageFile = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
     
     goback(){
             this.$router.go(-1)
         },
     async AddProj(){
         try{
-            await this.$api.AddProject(this.blogData)
+            if(this.$refs.file != null){
+                this.blogData.file=this.$refs.file.files[0];
+            }
+            const formData = new FormData()
+            formData.append("uid",this.blogData.uid)
+            formData.append("title",this.blogData.title)
+            formData.append("intro",this.blogData.intro)
+            formData.append("img",this.blogData.img)
+            formData.append('gitUrl',this.blogData.gitUrl)
+            formData.append('gitName',this.blogData.gitName)
+            formData.append('isProj',this.blogData.isProj)
+            formData.append('sdate',this.blogData.sdate)
+            formData.append('edate',this.blogData.edate)
+            formData.append('file',this.blogData.file)
+
+
+
+            await this.$api.AddProject(formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            })
             console.log('성공')
             this.$router.push({name:'DiaryMain',params:{uid:this.blogData.uid,test:2}})
         }catch(e){
             console.log('실패')
+            console.log(e)
         }
         
     
