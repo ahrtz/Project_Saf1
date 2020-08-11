@@ -72,8 +72,8 @@ public class DiaryController {
                               @RequestParam String img,
                               @RequestParam String gitUrl,
                               @RequestParam int isProj,
-                              @RequestParam Date sDate,
-                              @RequestParam Date eDate) throws IOException {
+                              @RequestParam Date sdate,
+                              @RequestParam Date edate) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
     	DiaryDto diary = new DiaryDto();
@@ -83,8 +83,8 @@ public class DiaryController {
     	diary.setIntro(intro);
         diary.setGitUrl(gitUrl);
         diary.setIsProj(isProj);
-        diary.setSDate(sDate);
-        diary.setEDate(eDate);
+        diary.setSDate(sdate);
+        diary.setEDate(edate);
 
         if (file != null) {
             long timestamp = System.currentTimeMillis();
@@ -116,8 +116,8 @@ public class DiaryController {
                               @RequestParam String title,
                               @RequestParam String intro,
                               @RequestParam String img,
-                              @RequestParam Date sDate,
-                              @RequestParam Date eDate
+                              @RequestParam Date sdate,
+                              @RequestParam Date edate
                               ) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
@@ -126,8 +126,8 @@ public class DiaryController {
     	    DiaryDto diary = diaryService.getDiary(String.valueOf(id));
             diary.setTitle(title);
             diary.setIntro(intro);
-            diary.setSDate(sDate);
-            diary.setEDate(eDate);
+            diary.setSDate(sdate);
+            diary.setEDate(edate);
 
             if (file != null) {
                 long timestamp = System.currentTimeMillis();
