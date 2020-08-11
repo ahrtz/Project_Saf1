@@ -32,7 +32,7 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 //Group
 import GroupMain from '../pages/Group/TempGroupMain.vue' //
 import MemberList from '../pages/Group/MemberList.vue'
-import GroupDetail from '../pages/Group/GroupDetail.vue'
+import GroupDetail from '../pages/Group/TempGroupDetail.vue'
 
 //social login
 import socialSuccess from '../pages/user/socialSuccess.vue'
