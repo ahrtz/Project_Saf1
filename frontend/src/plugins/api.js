@@ -187,6 +187,11 @@ export default {
     async makeFollow(data){
         return (await axios.put(`${baseURL}/follows`,data))     //이건 일단 나중에 쓸거고! 
     },
+    //단일 팔로우 확인
+    async confirmFollow(pid){
+        return (await axios.get(`${baseURL}/follows/${pid}`))
+    }
+    ,
     async gitCancel(){
         return (await axios.get(`${baseURL}/users/cancel`))
     },

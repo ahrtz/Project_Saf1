@@ -4,90 +4,7 @@
       <Status />
       <div class="d-flex">
         <div class="d-flex" />
-        <v-btn @click="diaryDelete()"> 다이어리 삭제</v-btn>
-
-
-        <v-dialog v-model="dialog" scrollable max-width="600px">
-            <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on" @click="updateData()">다이어리 수정</v-btn>
-            </template>
-
-            <v-card >
-                <v-card-title>다이어리 수정</v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                  
-                  다이어리 타이틀 : <v-text-field v-model="updatediary.title" type = "text" placeholder="다이어리 이름을 입력하세요"></v-text-field>
-                  간단 설명
-                  <v-textarea v-model="updatediary.intro" label="intro"></v-textarea>
-                  대표 이미지
-                  <v-file-input ref="file" label="imagefile" prepend-icon="mdi-camera" ></v-file-input>
-                  
-                  <v-menu
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                  >
-                      <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="updatediary.sdate"
-                          label="시작날짜"
-                          prepend-icon="event"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="updatediary.sdate" @input="menu2 = false"></v-date-picker>
-                  </v-menu>
-                  <v-menu
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                  >
-                      <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="updatediary.edate"
-                          label="시작날짜"
-                          prepend-icon="event"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="updatediary.edate" @input="menu2 = false"></v-date-picker>
-                  </v-menu>
-                  
-                </v-card-text>
-                
-                <v-divider></v-divider>
-                    <v-card-actions>
-                    
-                    <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-                    </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <v-btn @click="diaryDelete()"> 다이어리 삭제</v-btn>s
         <div
           v-if="!isProj"
           class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
@@ -162,24 +79,13 @@ export default {
   },
   data() {
     return {
-      menu2:false,
-      dialog:false,
       diaryid: this.$route.params,
-      diarydata:{},
       config: {
         keyword: '',
         isTemp: 0,
       },
       postdata: [],
-      updatediary:{
-        id:"",
-        title:"",
-        intro:"",
-        img:null,
-        sdate:"",
-        edate:new Date().toISOString().substr(0, 10),
-
-      }
+      diarydata:{}
     };
   },
   methods: {
@@ -191,14 +97,6 @@ export default {
       }catch(e){
         console.log(e)
       }
-    },
-    updateData(){
-      this.updatediary.id=this.diarydata.id
-      this.updatediary.title = this.diarydata.title
-      this.updatediary.intro = this.diarydata.intro
-      this.updatediary.img = this.diarydata.img
-      this.updatediary.sdate =this.diarydata.sdate.substr(0,10)
-      
     }
 
 
@@ -209,22 +107,22 @@ export default {
         this.$route.params.did,
         this.config
       );
+      console.log(tmpspace);
       this.postdata = tmpspace;
       console.log('성공');
     } catch (e) {
       console.log('실패');
     }
-    try { 
-      let tmpspace1 = await this.$api.individualDiary(this.diaryid.did)
+    try{
+      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did)
       this.diarydata = tmpspace1
     }catch(e){
-      console.log(e)
+      console.log('fdas')
     }
-
   },
   computed: {
     isProj() {
-      if (this.$route.path[7] == 'p') {
+      if (this.diarydata.isProj==1) {
         return true;
       } else {
         return false;

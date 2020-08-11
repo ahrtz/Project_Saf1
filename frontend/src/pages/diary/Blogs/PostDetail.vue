@@ -125,11 +125,11 @@ export default {
                 this.likedummy = tmpspace1
             if (tmpspace1.length!=0){
 
-            if(tmpspace1.status==1){
-                this.likeData.likechecked=true
-            }else{
-                this.likeData.likechecked=false
-            }}
+                if(tmpspace1.status==1){
+                    this.likeData.likechecked=true
+                }else{
+                    this.likeData.likechecked=false
+                }}
             else{
                 this.likeData.likechecked=false
             }
