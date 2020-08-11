@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +56,17 @@ public class FollowController {
 		}
 		output.put("userinfo", form);
 		return output;
+	}
+	
+	@Auth
+	@GetMapping("/follows/{userTo}")
+	@ApiOperation(value = "사용자 팔로우 여부 조회")
+	public FollowDto getFollow(HttpSession session, @PathVariable int userTo) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		int userFrom = user.getId();
+		
+		return followService.getFollow(userFrom, userTo);
 	}
 	
 	@Auth

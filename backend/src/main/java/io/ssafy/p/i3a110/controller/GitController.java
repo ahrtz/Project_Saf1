@@ -1,9 +1,12 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -114,17 +117,23 @@ public class GitController {
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
 	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
-		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
+		Map<Date, Integer> map = new TreeMap<Date, Integer>();
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		String repoName = input.get("repoName").trim();
+		Date eDate = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(eDate);
+		cal.add(Calendar.DATE, -84);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
+			List<String> projectNames = new ArrayList<String>();
 			if(repoName == null || repoName.equals("")) {
-				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
+				projectNames = diaryService.getAllWrittenProjectName(user.getId());
 			}else {
-				map = helper.getCommitCnt(repoName);
+				projectNames.add(repoName);
 			}
+			map = helper.getAllCommitCnt(projectNames, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

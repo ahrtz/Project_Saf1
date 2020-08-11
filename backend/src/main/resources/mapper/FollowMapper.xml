@@ -35,6 +35,12 @@
 		insert into follow (user_from, user_to, status)
 		values (#{userFrom}, #{userTo}, #{status})
 	</insert>
+	
+	<select id="getFollw" resultType="FollowDto">
+		select *
+		from follow
+		where user_from = #{userFrom} and user_to = #{userTo}
+	</select>
 </mapper>    
     
     

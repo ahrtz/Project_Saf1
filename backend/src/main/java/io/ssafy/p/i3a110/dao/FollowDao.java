@@ -19,4 +19,6 @@ public interface FollowDao {
 	public void updateFollow(FollowDto follow);
 
 	public void createFollow(FollowDto follow);
+
+	public FollowDto getFollw(int userFrom, int userTo);
 }
