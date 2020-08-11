@@ -192,5 +192,8 @@ export default {
     },
     async contactBar(userpk){
         return (await axios.get(`${baseURL}/users?id=${userpk}`))
+    },
+    async updateDiary(data){
+        return (await axios.post(`${baseURL}/diaries`,data))
     }
 }   
