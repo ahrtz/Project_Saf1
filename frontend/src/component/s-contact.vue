@@ -3,8 +3,8 @@
     <img :src="user.img?user.img:'/static/images/user.png'" class="s-contact-image" />
     <div class="s-contact-nickname">{{user.nickname}}</div>
     <div class="s-contact-intro">{{user.intro ? user.intro : "소개말이 없습니다."}}</div>
-    <div class="d-flex align-center justify-center s-contact-follow" v-if="!followcheck" dark @click="alerting()">Follow</div>
-    <div class="d-flex align-center justify-center s-contact-follow" v-if="followcheck" dark @click="alerting()">Un Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="!followcheck" dark @click="follow()">Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="followcheck" dark @click="follow()">Un Follow</div>
     <div class="d-flex flex-column s-contact-contents">
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>

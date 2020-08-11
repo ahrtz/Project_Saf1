@@ -199,6 +199,6 @@ export default {
         return (await axios.get(`${baseURL}/users?id=${userpk}`))
     },
     async updateDiary(data){
-        return (await axios.post(`${baseURL}/diaries`,data))
+        return (await axios.put(`${baseURL}/diaries`,data))
     }
 }   
