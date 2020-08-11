@@ -255,9 +255,6 @@ export default {
 }
 
 .main-page-contact {
-  background: #fff;
-  z-index: 99;
-  position: fixed;
   width: 268px;
 }
 
