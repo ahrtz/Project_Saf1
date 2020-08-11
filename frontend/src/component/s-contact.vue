@@ -8,7 +8,7 @@
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
         <a
-            class="d-flex"
+          class="d-flex"
           v-if="!user.isSocial"
           :href="`mailto:${user.email}`"
           target="_top"
@@ -18,7 +18,7 @@
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">link</v-icon>
         <a
-        class="d-flex"
+          class="d-flex"
           v-if="user.gitUrl"
           :href="user.gitUrl"
           target="_top"
@@ -33,36 +33,37 @@
 import axios from 'axios';
 
 export default {
-  name:'s-contact',
-  data(){
-    return{
-      user:{},
-      dummy:this.$route.params.uid
-    }
+  name: 's-contact',
+  data() {
+    return {
+      user: {},
+      dummy: this.$route.params.uid,
+    };
   },
   methods: {
     alerting() {
       alert('구현 예정');
     },
   },
-  async created(){
-    try{
-
-        let tmpspace = await this.$api.contactBar(this.$route.params.uid)
-        this.user =tmpspace.data
-        console.log(this.user,'vdasvdsa')
-    }catch(e){
-        console.log(e)
+  async created() {
+    try {
+      let tmpspace = await this.$api.contactBar(this.$route.params.uid);
+      this.user = tmpspace.data;
+      console.log(this.user, 'vdasvdsa');
+    } catch (e) {
+      console.log(e);
     }
-    console.log(this.user)
+    console.log(this.user);
   },
 };
 </script>
 
 <style>
 .s-contact-container {
+  position: fixed;
   border: solid 1px #dde3ea;
   padding: 16px;
+  background: #fff;
 }
 
 .s-contact-nickname {
@@ -100,7 +101,7 @@ export default {
 }
 
 .s-contact-contents {
-    width: 100%;
+  width: 100%;
   margin-top: 32px;
   font-size: 12px;
   white-space: nowrap;
