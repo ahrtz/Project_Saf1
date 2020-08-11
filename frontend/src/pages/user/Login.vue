@@ -83,9 +83,6 @@ export default {
     }
   },
   methods: {
-    onLogoClick() {
-      alert('준비중입니다.');
-    },
     async login() {
       try {
         let tmp = await this.$api.login(this.loginData);

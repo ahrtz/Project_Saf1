@@ -31,16 +31,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.ssafy.p.i3a110.apihelper.GitHubRestApiHelper;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import lombok.experimental.Helper;
 
 @RestController
 public class UserController {
 //    private static final String BE_BASE_URL = "http://localhost:3000";
     private static final String BE_BASE_URL = "http://i3a110.p.ssafy.io:3000";
     private static final String regExp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,16}$";
+    
+    private GitHubRestApiHelper helper;
 
     @Autowired
     private UserService userService;
@@ -119,6 +123,11 @@ public class UserController {
         user.setGitUrl(gitUrl);
         user.setIntro(intro);
         user.setGitToken(gitToken);
+        helper = new GitHubRestApiHelper();
+        if(!helper.checkOauth(gitId, gitToken)) {
+        	user.setGitId("");
+        	user.setGitToken("");
+        }
         user.setIsCertified(Integer.parseInt(isCertified));
 
         if (file != null) {
@@ -228,6 +237,11 @@ public class UserController {
         user.setGitUrl(gitUrl);
         user.setIntro(intro);
         user.setGitToken(gitToken);
+        helper = new GitHubRestApiHelper();
+        if(!helper.checkOauth(gitId, gitToken)) {
+        	user.setGitId("");
+        	user.setGitToken("");
+        }
         user.setIsSocial(Integer.parseInt(isSocial));
         user.setIsCertified(Integer.parseInt(isCertified));
 

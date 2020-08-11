@@ -9,7 +9,7 @@
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
         <a
-            class="d-flex"
+          class="d-flex"
           v-if="!user.isSocial"
           :href="`mailto:${user.email}`"
           target="_top"
@@ -19,7 +19,7 @@
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">link</v-icon>
         <a
-        class="d-flex"
+          class="d-flex"
           v-if="user.gitUrl"
           :href="user.gitUrl"
           target="_top"
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     alerting() {
-      alert('구현 예정');
+      alert('업데이트 예정입니다.');
     },
     follow(){
       if (this.followcheck==false){
@@ -90,8 +90,10 @@ export default {
 
 <style>
 .s-contact-container {
+  position: fixed;
   border: solid 1px #dde3ea;
   padding: 16px;
+  background: #fff;
 }
 
 .s-contact-nickname {
@@ -129,7 +131,7 @@ export default {
 }
 
 .s-contact-contents {
-    width: 100%;
+  width: 100%;
   margin-top: 32px;
   font-size: 12px;
   white-space: nowrap;

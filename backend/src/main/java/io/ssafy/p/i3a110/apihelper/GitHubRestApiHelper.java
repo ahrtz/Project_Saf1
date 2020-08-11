@@ -1,7 +1,6 @@
 package io.ssafy.p.i3a110.apihelper;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHCommitQueryBuilder;
@@ -20,6 +20,7 @@ import org.kohsuke.github.GHRepositoryStatistics;
 import org.kohsuke.github.GHRepositoryStatistics.CommitActivity;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.HttpException;
 
 import io.ssafy.p.i3a110.dto.CommitInfoDto;
 import io.ssafy.p.i3a110.dto.RepositoryInfoDto;
@@ -42,6 +43,18 @@ public class GitHubRestApiHelper {
 		}
 	}
 	
+	public boolean checkAuth() {
+		GitHubBuilder builder = new GitHubBuilder();
+		try {
+			this.github = builder.build();
+			github.checkAuth("", "");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
 	//OAuth 토큰값과 ID 동일한지 확인
 	public boolean checkOauth(String gitId, String accessToken) {
 		try {
@@ -50,6 +63,8 @@ public class GitHubRestApiHelper {
 			String id = person.getLogin();
 			if(id.equals(gitId)) return true;
 			else return false;
+		} catch(HttpException e) {
+			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -215,5 +230,86 @@ public class GitHubRestApiHelper {
 			e.printStackTrace();
 		}
 		return output;
+	}
+	
+	//////////////////////////////////NEW//////////////////////////////////////
+	
+	public Map<Date, Integer> getAllCommitCnt(List<String> projectNames, String gitid, Date sDate, Date eDate) {
+		eDate = cutTime(eDate);
+		sDate = cutTime(sDate);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(eDate);
+		calendar.add(Calendar.DATE, 1);
+		eDate = new Date(calendar.getTimeInMillis());
+		Map<Date, Integer> output = getDateMap(sDate, eDate);
+		try {
+			this.github.checkApiUrlValidity();
+			for (String name : projectNames) {
+				Map<String, GHRepository> map = this.person.getRepositories();
+				if(!map.containsKey(name)) continue;
+				GHRepository repo = map.get(name);
+				
+				GHCommitQueryBuilder commitqb = repo.queryCommits();
+		    	
+				commitqb.since(sDate);
+				commitqb.until(eDate);
+				List<GHCommit> commits = commitqb.list().toList();
+				for(GHCommit commit : commits) {
+					String author = commit.getCommitShortInfo().getAuthor().getName();
+					if(!author.equals(gitid)) continue;
+					Date date = cutTime(commit.getCommitDate());
+					output.put(date, output.get(date)+1);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+	
+	public Map<String, String> getOdocRate(List<String> projectNames, String gitid) {
+		HashMap<String, String> output = new HashMap<String, String>();
+		
+		Calendar calendar = Calendar.getInstance();
+		Date eDate = new Date();
+		calendar.setTime(eDate);
+		calendar.add(Calendar.MONTH, -3);
+		Date sDate = new Date(calendar.getTimeInMillis());
+		Map<Date, Integer> map = getAllCommitCnt(projectNames, gitid, sDate, eDate);
+    	int commitDays = 0;
+    	int days = map.size();
+    	
+    	Iterator<Date> keys = map.keySet().iterator();
+    	while(keys.hasNext()) {
+    		Date key = keys.next();
+    		if(map.get(key)>0) commitDays++;
+    	}
+		output.put("days", String.format("%d/%d", commitDays, days));
+		output.put("rate", String.format("%.2f", (double)commitDays/days*100));
+    	
+		return output;
+	}
+	
+	private Date cutTime(Date x) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(x);
+    	calendar.set(Calendar.HOUR_OF_DAY, 0);
+    	calendar.set(Calendar.MINUTE, 0);
+    	calendar.set(Calendar.SECOND, 0);
+    	calendar.set(Calendar.MILLISECOND, 0);
+    	return new Date(calendar.getTimeInMillis());
+	}
+	
+	private Map<Date, Integer> getDateMap(Date sDate, Date eDate){
+		Map<Date, Integer> map = new TreeMap<Date, Integer>();
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTimeInMillis(eDate.getTime()-sDate.getTime());
+    	int days = calendar.get(Calendar.DAY_OF_YEAR);
+    	calendar.setTime(sDate);
+    	for (int i = 0; i < days-2; i++) {
+			map.put(new Date(calendar.getTimeInMillis()), 0);
+			calendar.add(Calendar.DATE, 1);
+		}
+		return map;
 	}
 }
