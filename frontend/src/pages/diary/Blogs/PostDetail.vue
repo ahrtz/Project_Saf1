@@ -82,7 +82,7 @@
 
           <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
             <div
-              class="post-detail-tag"
+              class="d-flex flex-grow-0 post-detail-tag"
               v-for="tag in tags"
               :key="'t-'+tag.id"
               @click="searchTag(tag.name)"
@@ -373,7 +373,7 @@ export default {
 }
 
 .post-detail-contact {
-  width: 300px;
+  width: 300px !important;
 }
 
 .post-detail-blue-btn {
@@ -422,7 +422,10 @@ export default {
 }
 
 .post-detail-tag-container {
+  width: 100%;
+  overflow: hidden;
   margin: 32px 0;
+  flex-wrap: wrap;
 }
 
 .post-detail-tag {
