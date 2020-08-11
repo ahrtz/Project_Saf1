@@ -17,15 +17,15 @@
                             <v-subheader class="follow-n-scrap-category">followers</v-subheader>
                             <template v-for="(follower,index) in followers.slice(0,3)">
                                 <hr class="hr-css" :key="index">
-                                <v-list-item :key="follower.email" > <!--@click=""-->
-                                <v-list-item-avatar class="mr-3">
-                                    <img :src="follower.img">
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                    <v-list-item-title> {{follower.nickname}} </v-list-item-title>
-                                    <v-list-item-subtitle class="font-weight-bold"> {{follower.email}} </v-list-item-subtitle>
-                                </v-list-item-content>
-                                </v-list-item>
+                                  <v-list-item :key="follower.email" @click="$router.push({ name: 'MainPagefor', params: { uid: follower.id } })" > <!-- @click="" -->
+                                    <v-list-item-avatar class="mr-3">
+                                        <img :src="follower.img">
+                                    </v-list-item-avatar>
+                                  <v-list-item-content>
+                                      <v-list-item-title> {{follower.nickname}} </v-list-item-title>
+                                      <v-list-item-subtitle class="font-weight-bold"> {{follower.email}} </v-list-item-subtitle>
+                                  </v-list-item-content>
+                                  </v-list-item>
                                
                             </template>
                             </v-list>
@@ -42,7 +42,7 @@
                             <v-subheader class="follow-n-scrap-category">following</v-subheader>
                             <template v-for="(followee,index) in followees.slice(0,3)">
                                 <hr class="hr-css" :key="index">
-                                <v-list-item :key="followee.email" > <!--@click=""-->
+                                <v-list-item :key="followee.email" @click="$router.push({ name: 'MainPagefor', params: { uid: followee.id } })" > <!--@click=""-->
                                 <v-list-item-avatar class="mr-3">
                                     <img :src="followee.img">
                                 </v-list-item-avatar>
@@ -59,21 +59,21 @@
                 </v-col>
             </v-row>
             <!-- Scrap 글 뿌려줄 곳 -->
-            <v-row class="justify-center">
-                <div class="d-flex flex-column align-center" style="width: 900px;">
-          <div class="tmpPost-title">스크랩 글</div>
-          <div
-            class="d-flex align-center flex-grow-0 tmpPost-diary"
-            v-for="post in scrapData"
-            :key="post.id"
-          >
-            <div class="d-flex" style="overflow: hidden">다이어리 이름 :{{post.dName}} | 제목: {{post.postinfo.title}}</div>
-            <div class="d-flex align-center justify-center flex-grow-0 tmpPost-btn" @click="$router.push({name:'PostDetail',params:{pid:post.pid}})">보러가기</div>
-            <div class="d-flex align-center justify-center flex-grow-0 tmpPost-btn-white" @click="scrapDelete(post.pid)" >삭제</div>
-          </div>
-          <div v-if="scrapData == null || scrapData.length == 0">저장된 글이 없습니다.</div>
-        </div>
-            </v-row>
+          <v-row class="justify-center">
+              <div class="d-flex flex-column align-center" style="width: 900px;">
+              <div class="scrap-title">스크랩 글</div>
+              <div
+                class="d-flex align-center flex-grow-0 scrap-diary"
+                v-for="post in scrapData"
+                :key="post.id"
+              >
+                <div class="d-flex" style="overflow: hidden">다이어리 이름 :{{post.dName}} | 제목: {{post.postinfo.title}}</div>
+                <div class="d-flex align-center justify-center flex-grow-0 scrap-btn" @click="$router.push({name:'PostDetail',params:{pid:post.pid}})">보러가기</div>
+                <div class="d-flex align-center justify-center flex-grow-0 scrap-btn-white" @click="scrapDelete(post.pid)" >삭제</div>
+              </div>
+              <div v-if="scrapData == null || scrapData.length == 0">저장된 글이 없습니다.</div>
+            </div>
+          </v-row>
         </v-container>
       </div>
       <user-sidebar />
@@ -91,7 +91,7 @@ export default {
         userSidebar,
     },
     data: () => ({
-      uid : null,
+      uid : "",
       followers :[],
       followees :[],
       followertype :{
@@ -132,23 +132,23 @@ export default {
                 console.log('getFollowees() 실패.');
             }
         },
-         async scrapDelete(scrapid){
-      try{
-      await this.$api.deleteScrap(scrapid)
-      console.log('삭제 성공')
-      
+      async scrapDelete(scrapid){
         try{
-          let tmpspace  = await this.$api.getScrapInfo(this.uid)
-          this.scrapData = tmpspace
-          console.log(tmpspace)
-          }catch(e){
+        await this.$api.deleteScrap(scrapid)
+        console.log('삭제 성공')
+        
+          try{
+            let tmpspace  = await this.$api.getScrapInfo(this.uid)
+            this.scrapData = tmpspace
+            console.log(tmpspace)
+            }catch(e){
+            console.log(e)
+          }
+        
+        }
+        catch(e){
           console.log(e)
         }
-      
-      }
-      catch(e){
-        console.log(e)
-      }
     
     
     }
@@ -169,6 +169,14 @@ export default {
 .scrap-container {
   width: 100%;
 }
+.scrap-diary {
+  margin-bottom: 16px;
+  padding: 20px;
+  height: 70px;
+  width: 100%;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+}
 
 .scrap-inner {
   padding-bottom: 70px;
@@ -179,5 +187,28 @@ export default {
 .scrap-title {
   font-weight: 600;
   margin-bottom: 32px;
+}
+.scrap-btn {
+    margin-right: 8px;
+  padding: 0 16px;
+  font-size: 14px;
+  background: #0051cb;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.scrap-btn-white {
+  padding: 0 16px;
+  font-size: 14px;
+  background: #fff;
+  font-weight: 600;
+  color: #0051cb;
+  border: solid 1px #0051cb;
+  border-radius: 6px;
+  height: 40px;
+  cursor: pointer;
 }
 </style>

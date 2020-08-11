@@ -4,21 +4,21 @@
         <div class="d-flex justify-center">
             <div @click="test=0;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==0}">
                 <div>
-                    <img class="diary-main-toggle-img" src="/static/images/branch.png" />
-                </div>
-                <div>
-                    <div class="diary-main-toggle-text">Project</div>
-                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
-                </div>
-
-            </div>
-            <div @click="test=1;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==1}">
-                <div>
                     <img class="diary-main-toggle-img" src="/static/images/blog.png" />
                 </div>
                 <div>
                     <div class="diary-main-toggle-text">Blog</div>
                     <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Daily life, etc...</div>
+                </div>
+
+            </div>
+            <div @click="test=1;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==1}">
+                <div>
+                    <img class="diary-main-toggle-img" src="/static/images/branch.png" />
+                </div>
+                <div>
+                    <div class="diary-main-toggle-text">Project</div>
+                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
                 </div>
 
             </div>
@@ -28,11 +28,11 @@
         <!-- <h2>블로그 카드 뷰</h2> -->
         
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
-        <router-link v-show="test==1 || test==2" class="float-right" :to="{name:'BlogAdd'}" tag="button">
+        <router-link v-show="test==0 || test==2" class="float-right" :to="{name:'BlogAdd'}" tag="button">
           <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
         </router-link>
 
-        <router-link v-show="test==0 ||test==2" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+        <router-link v-show="test==1 ||test==2" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
           <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">프로젝트 추가</div>
         </router-link>
 
@@ -128,7 +128,7 @@ export default {
 
             try{
 
-                let tempspace= await this.$api.getDiaries(this.uid,{isProj:(this.test+1)%2,keyword:""})
+                let tempspace= await this.$api.getDiaries(this.uid,{isProj:(this.test),keyword:""})
                 this.diarys = tempspace
                 console.log('성공')
             }catch(e){
@@ -151,7 +151,7 @@ export default {
 .diary-main-inner {
   width: 1140px;
   margin: 0 auto;
-  padding-bottom: 70px;
+  padding: 70px 0;
 }
 
 .diary-main-add-btn {

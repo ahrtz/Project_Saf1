@@ -4,7 +4,7 @@
     <!-- 모든 페이지 공통 -->
     <header1 />
     <!-- 뷰별 페이지 -->
-    <router-view class="router-view" />
+    <router-view :key="$route.fullPath" class="router-view" />
   </div>
 </template>
 
@@ -52,5 +52,9 @@ export default {
 
 .router-view {
   padding-top: 110px;
+}
+
+input, .v-text-field__slot, label {
+  font-size: 12px !important;
 }
 </style>
