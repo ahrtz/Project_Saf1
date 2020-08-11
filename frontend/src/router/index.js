@@ -32,7 +32,7 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 //Group
 import GroupMain from '../pages/Group/TempGroupMain.vue' //
 import MemberList from '../pages/Group/MemberList.vue'
-import GroupDetail from '../pages/Group/GroupDetail.vue'
+import GroupDetail from '../pages/Group/TempGroupDetail.vue'
 
 //social login
 import socialSuccess from '../pages/user/socialSuccess.vue'
@@ -61,7 +61,7 @@ const router = new Router({
       component: tmp
     },
     {
-      path:'/tmppost',
+      path:'/:uid/tmppost',
       name:'tmpPost',
       component:tmpPost
     },
@@ -72,17 +72,17 @@ const router = new Router({
     // },
     // 회원 관리
     {
-      path: '/account/detail',
+      path: '/:uid/account/detail',
       name:'AccountDetail',
       component: AccountDetail,
     },
     {
-      path: '/account/follow',
+      path: '/:uid/account/follow',
       name :'Follow',
       component: Follow
     },
     {
-      path: '/account/scrap',
+      path: '/:uid/account/scrap',
       name : 'Scrap',
       component: Scrap
     },
@@ -149,7 +149,7 @@ const router = new Router({
     },
     // 그룹
     {
-      path:'/group',
+      path:'/:uid/group',
       name:'GroupMain',
       component: GroupMain
     },

@@ -28,7 +28,7 @@
             <v-card
                 color="primary"
                 dark
-            v-if="commitList.length==0"
+                v-if="commitList.length==0"
             >
                 <v-card-text>
                 commit 정보 받아 오는중
