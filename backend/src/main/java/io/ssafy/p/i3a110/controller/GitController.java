@@ -47,7 +47,9 @@ public class GitController {
 			if(session.getAttribute("email") != null) {
 				String email = (String)session.getAttribute("email");
 				UserDto user = userService.findUserByEmail(email);
-				userService.authenticateToken(user.getId());
+				user.setGitId(gitid);
+				user.setGitToken(accesstoken);
+				userService.authenticateToken(user);
 			}
 			return true;
 		}else {

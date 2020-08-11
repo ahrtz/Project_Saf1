@@ -56,9 +56,12 @@
     	where id = #{id}
     </update>
 
-    <update id="authenticateToken">
+    <update id="authenticateToken" parameterType="UserDto">
     	update user
-    	set is_certified = 1
+    	set
+    	is_certified = 1,
+    	git_id = #{gitId},
+    	git_token = #{gitToken}
     	where id = #{id}
     </update>
     
