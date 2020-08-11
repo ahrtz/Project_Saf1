@@ -18,7 +18,7 @@
                         <!-- 그룹장 썸네일 -->
                         <v-row>
                             <v-col>
-                                <img class = "groupdetail-leader-thumbnail" :src="group_info.lImg">
+                                <img class = "groupdetail-leader-thumbnail" :src="group_info.lImg == null ? '/static/images/user.png' : group_info.lImg">
                             </v-col>
                             <!-- 그룹장 닉네임 이메일 -->
                             <v-col>
@@ -46,7 +46,7 @@
                               v-for="like_item in lRateList"
                               :key="like_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="like_item.img"></v-img>
+                                <v-img :src="like_item.img == null ? '/static/images/user.png' : like_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{like_item.nickname}} <v-spacer></v-spacer>{{like_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -63,7 +63,7 @@
                               v-for="follower_item in fRateList"
                               :key="follower_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="follower_item.img"></v-img>
+                                <v-img :src="follower_item.img == null ? '/static/images/user.png' : follower_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{follower_item.nickname}} <v-spacer></v-spacer>{{follower_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -80,7 +80,7 @@
                               v-for="post_item in pRateList"
                               :key="post_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="post_item.img"></v-img>
+                                <v-img :src="post_item.img == null ? '/static/images/user.png' : post_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{post_item.nickname}} <v-spacer></v-spacer>{{post_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -94,6 +94,11 @@
             <!-- 아랫 부분 (그룹에 속한 멤버 리스트) -->
             <v-row>
                 <v-container fluid class="pa-10">
+                    <v-row>Member List</v-row>
+                    <v-row>
+                        <v-text-field v-model="newMember" type="text" placeholder="추가할 사용자의 이메일을 입력하세요"/>
+                        <v-btn class="ma-2" tile color="indigo" dark @click="addMember">멤버 추가</v-btn>
+                    </v-row>
                     <v-card flat>
                         <v-card-title>
                             <v-row>
@@ -140,12 +145,13 @@ export default {
             rateFlag : {
                 oid : "",
                 type : "",
-                cnt : "4",
+                cnt : "5",
             },
             //아래 3개의 RateList 중 commit, post 는 rate 테이블 이용해야함. 
             lRateList : [],
             fRateList : [],
             pRateList : [],
+            newMember : "",
             members : [],   //그룹원 데이터 테이블에 넣어줄 자료구조.
             
             
@@ -162,8 +168,14 @@ export default {
     },
 
     methods:{
+        async addMember() {
+            await this.$api.groupRelationAdd({email:this.newMember, oid: this.$route.params.gid});
+            this.newMember="";
+            this.getMembers();
+        },
         async getMembers(){
             try{
+                this.members=[];
                 let temp = await this.$api.groupDetail(this.$route.params.gid);
                 this.group_info = temp;
                 // this.members = this.group_info.userinfo;
@@ -172,11 +184,11 @@ export default {
                     var member = {};
                     member['nickname'] = this.group_info.userinfo[i].nickname;
                     member['email'] = this.group_info.userinfo[i].email;
-                    //member['recent_post'] = this.getRecentPost(this.group_info.userinfo[i].lastPost.date);
-                    
-                    
+                    this.group_info.userinfo[i].lastPost == null ?
+                     member['recent_post'] = "-" : member['recent_post'] = this.getRecentPost(this.group_info.userinfo[i].lastPost.date); 
                     // member['odoc'] = 
                     // member['odop'] = 
+                    
                     this.members.push(member);
 
                 }
@@ -224,7 +236,7 @@ export default {
             var ymd = recentPost.substr(0,10)
             // var timestamp = ("00" + recentPost.getHours()).slice(-2) + ':' + ("00" + recentPost.getMinutes()).slice(-2)
                             // + ':' + ("00" + recentPost.getSeconds()).slice(-2)
-            var timestamp = recentPost.substr(11,19)
+            var timestamp = recentPost.substr(11,8)
             return ymd + ' ' + timestamp;
             //console.log(this.commentData.cDate)
         }
