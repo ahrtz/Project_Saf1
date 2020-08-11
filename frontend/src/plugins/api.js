@@ -158,6 +158,10 @@ export default {
     async addGroup(data){
         return (await axios.post(`${baseURL}/groups`,data))
     },
+    async deleteGroup(id)
+    {
+        return (await axios.delete(`${baseURL}/groups/${id}`))
+    },
     async getGroupList(){
         return (await axios.get(`${baseURL}/groups`)).data
     },

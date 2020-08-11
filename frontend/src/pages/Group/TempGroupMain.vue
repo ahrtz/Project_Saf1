@@ -1,7 +1,6 @@
 <template>
 <div>
-  <v-container fluid class="pa-10">
-  <v-card flat>
+  <v-card>
     <v-card-title>
       <v-row>
         <v-col cols="8">
@@ -24,26 +23,26 @@
                 <span class="headline">New Group </span>
               </v-card-title>
 
-                <v-card-text>
-                  <v-container grid-list-md>
-                    <v-layout column>
-                      <v-flex xs12 sm6 md4>
-                        <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
-                      </v-flex>
-                      <v-flex xs12 sm6 md4>
-                        <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-text>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout column>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field v-model="addItem.name" label="Group name" class="group-text-box"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-textarea v-model="addItem.intro" label="Description" class="group-text-box"></v-textarea>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
+                <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
         </v-col>
       </v-row>
@@ -56,7 +55,6 @@
     >
     </v-data-table>
   </v-card>
-  </v-container>
 </div>
 </template>
 
@@ -100,22 +98,27 @@
           let temp = await this.$api.getGroupList()
           this.groups = temp
 
-          for(var i =0; i<this.groups.length; i++)
-          {
-            var obj = {}
-            obj['name'] = this.groups[i].name;
-            obj['members'] = this.groups[i].mCnt;
-            obj['leader'] = this.groups[i].lName;
-            obj['id'] = this.groups[i].id;
-            this.group_list.push(obj);
-          }
-
+          this.setDataTable()
           console.log('CKCK:: Group 가져오기 성공')
         }
         catch(e)
         {
           console.log(e)
         }
+      },
+      setDataTable(){
+        console.log('CKCK:: Group 정보' + this.groups.length)
+        var templist = [];
+        for(var i =0; i<this.groups.length; i++)
+        {
+          var obj = {}
+          obj['name'] = this.groups[i].name;
+          obj['members'] = this.groups[i].mCnt;
+          obj['leader'] = this.groups[i].lName;
+          obj['id'] = this.groups[i].id;
+          templist.push(obj);
+        }
+        this.group_list = templist;
       },
       goGroup(param){
         console.log("CKCK :: goGroup()!!! " + param.id)
@@ -124,10 +127,13 @@
       close () {
         this.dialog = false
       },
-      async add() {
-        await this.$api.addGroup(this.addItem)
+      add() {
+        //console.log(this.addItem.name + "//" + this.addItem.intro)
+        //this.desserts.push(this.editedItem)
+        this.$api.addGroup(this.addItem)
         this.getGroup()
-  
+        //여기 어떻게 해야 깔끔해지지..? 새로고침 싫은데...
+        //location.reload()
         this.close()
       },
     },
