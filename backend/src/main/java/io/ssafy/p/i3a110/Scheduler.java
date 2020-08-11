@@ -1,6 +1,7 @@
 package io.ssafy.p.i3a110;
 
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import io.ssafy.p.i3a110.apihelper.GitHubRestApiHelper;
 import io.ssafy.p.i3a110.dto.RateDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.service.DiaryService;
+import io.ssafy.p.i3a110.service.PostService;
 import io.ssafy.p.i3a110.service.RateService;
 import io.ssafy.p.i3a110.service.UserService;
 
@@ -24,9 +26,11 @@ public class Scheduler {
 	private RateService rateService;
 	@Autowired
 	private DiaryService diaryService;
+	@Autowired
+	private PostService postService;
 	
-	@Scheduled(cron = "0 0 5 * * *")
-	public void doJobsch() {
+	@Scheduled(cron = "0/20 * * * * ?")
+	public void setRate() {
 		List<UserDto> uList = userService.getAllGitUsers();
 		GitHubRestApiHelper checkHelper = new GitHubRestApiHelper();
 		for(UserDto user : uList) {
@@ -43,15 +47,26 @@ public class Scheduler {
 			rateService.setOdocOfAllUsers(rate);
 		}
 		
+    	Calendar cal = Calendar.getInstance();
+    	Date eDate = new Date(cal.getTimeInMillis());
+    	cal.add(Calendar.MONTH, -3);
+    	Date sDate = new Date(cal.getTimeInMillis());
+    	cal.setTimeInMillis(eDate.getTime()-sDate.getTime());
+    	int days = cal.get(Calendar.DAY_OF_YEAR)-1;
+    	
 		uList = userService.getAllUsers();
-//		for(UserDto user : uList) {
-//			int uid = user.getId();
-//	    	int days = postService.getOdopRate(id);
-//	    	HashMap<String, String> output = new HashMap<String, String>();
-//			output.put("days", String.format("%d/%d", days, 84));
-//			output.put("rate", String.format("%.2f", (double)days/84*100));
-//			return output;
-//		}
+		for(UserDto user : uList) {
+			int uid = user.getId();
+	    	int doPostDay = postService.getOdopRate(uid);
+	    	RateDto rate = new RateDto();
+	    	rate.setUid(uid);
+	    	String odop_cnt = String.format("%d/%d", doPostDay, days);
+	    	String odop_rate = String.format("%.2f", (double)doPostDay/days*100);
+	    	rate.setOdop_cnt(odop_cnt);
+	    	rate.setOdop_rate(odop_rate);
+	    	rateService.setOdopOfAllUsers(rate);
+		}
+		System.out.println("SETTING DONE");
 	}
 	
 }

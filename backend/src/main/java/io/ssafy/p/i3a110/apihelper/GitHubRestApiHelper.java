@@ -20,6 +20,7 @@ import org.kohsuke.github.GHRepositoryStatistics;
 import org.kohsuke.github.GHRepositoryStatistics.CommitActivity;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.HttpException;
 
 import io.ssafy.p.i3a110.dto.CommitInfoDto;
 import io.ssafy.p.i3a110.dto.RepositoryInfoDto;
@@ -42,6 +43,18 @@ public class GitHubRestApiHelper {
 		}
 	}
 	
+	public boolean checkAuth() {
+		GitHubBuilder builder = new GitHubBuilder();
+		try {
+			this.github = builder.build();
+			github.checkAuth("", "");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
 	//OAuth 토큰값과 ID 동일한지 확인
 	public boolean checkOauth(String gitId, String accessToken) {
 		try {
@@ -50,6 +63,8 @@ public class GitHubRestApiHelper {
 			String id = person.getLogin();
 			if(id.equals(gitId)) return true;
 			else return false;
+		} catch(HttpException e) {
+			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -231,11 +246,7 @@ public class GitHubRestApiHelper {
 			this.github.checkApiUrlValidity();
 			for (String name : projectNames) {
 				Map<String, GHRepository> map = this.person.getRepositories();
-				if(!map.containsKey(name)) {
-					output.clear();
-					output.put(Calendar.getInstance().getTime(), -1);
-					return output;
-				}
+				if(!map.containsKey(name)) continue;
 				GHRepository repo = map.get(name);
 				
 				GHCommitQueryBuilder commitqb = repo.queryCommits();
