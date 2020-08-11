@@ -17,5 +17,6 @@ public interface UserDao {
     public void deleteById(int id);
 	public void cancelToken(int id);
 	public void authenticateToken(int id);
+	public List<UserDto> getAllGitUsers();
 	public List<UserDto> getAllUsers();
 }
