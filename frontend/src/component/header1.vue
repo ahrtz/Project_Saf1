@@ -104,14 +104,16 @@ export default {
       this.$router.push({
         name: 'tmp',
         params: { key: this.keyw, type: 'title' },
+        
       });
+      
     },
     alerts(msg) {
       alert(msg);
     },
     gotomain() {
       this.$router.push({ name: 'MainPagefor', params: { uid: this.userid } });
-      location.reload();
+      location.reload()
     },
     gotomaineach() {
       this.$router.push({ name: 'MainPagefor', params: { uid: this.$route.params.uid } });

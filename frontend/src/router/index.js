@@ -86,11 +86,11 @@ const router = new Router({
       name : 'Scrap',
       component: Scrap
     },
-    {
-      path: '/login',
-      name:'Login',
-      component: Login,
-    },
+    // {
+    //   path: '/login',
+    //   name:'Login',
+    //   component: Login,
+    // },
     {
       path: '/signup',
       name:'SignUp',

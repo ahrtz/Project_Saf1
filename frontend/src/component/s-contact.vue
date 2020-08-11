@@ -3,7 +3,8 @@
     <img :src="user.img?user.img:'/static/images/user.png'" class="s-contact-image" />
     <div class="s-contact-nickname">{{user.nickname}}</div>
     <div class="s-contact-intro">{{user.intro ? user.intro : "소개말이 없습니다."}}</div>
-    <div class="d-flex align-center justify-center s-contact-follow" dark @click="alerting()">Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="!followcheck" dark @click="follow()">Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="followcheck" dark @click="follow()">Un Follow</div>
     <div class="d-flex flex-column s-contact-contents">
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
@@ -33,27 +34,56 @@
 import axios from 'axios';
 
 export default {
-  name: 's-contact',
-  data() {
-    return {
-      user: {},
-      dummy: this.$route.params.uid,
-    };
+  name:'s-contact',
+  data(){
+    return{
+      user:{},
+      dummy:this.$route.params.uid,
+      mydata:"",
+      followcheck:false
+    }
   },
   methods: {
     alerting() {
       alert('업데이트 예정입니다.');
     },
-  },
-  async created() {
-    try {
-      let tmpspace = await this.$api.contactBar(this.$route.params.uid);
-      this.user = tmpspace.data;
-      console.log(this.user, 'vdasvdsa');
-    } catch (e) {
-      console.log(e);
+    follow(){
+      if (this.followcheck==false){
+        this.followcheck=true
+        this.$api.makeFollow({userTo:this.dummy,status:1})
+      }else{
+        this.followcheck=false
+        this.$api.makeFollow({userTo:this.dummy,status:0})
+      }
+
     }
-    console.log(this.user);
+  },
+  async created(){
+    this.mydata = this.$store.state.user
+    try{
+
+        let tmpspace = await this.$api.contactBar(this.$route.params.uid)
+        this.user =tmpspace.data
+        console.log(this.user,'vdasvdsa')
+    }catch(e){
+        console.log(e)
+    }
+    console.log(this.user)
+    try{
+      let tmpspace1 = await this.$api.confirmFollow(this.dummy)
+      if (tmpspace1.length !=0){
+        if (tmpspace1.data.status==1){
+          this.followcheck=true
+        }else{
+          this.followcheck=false
+        }
+      }else{
+        this.followcheck=false
+      }
+      
+    }catch(e){
+      console.log(e)
+    }
   },
 };
 </script>

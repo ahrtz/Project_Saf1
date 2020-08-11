@@ -232,18 +232,55 @@ export default {
         console.log(e);
       }
     },
-    getcDate() {
-      var d = new Date();
+    async created(){
+        this.uid=this.$store.state.user.id
+        //comment 데이터 가져오기
+        this.getComment();
 
-      var ymd = d.toISOString().substr(0, 10);
-      var timestamp =
-        ('00' + d.getHours()).slice(-2) +
-        ':' +
-        ('00' + d.getMinutes()).slice(-2) +
-        ':' +
-        ('00' + d.getSeconds()).slice(-2);
+        //post 데이터 가져오기
+        try{
+            let tmpspace = await this.$api.postdetail(this.id.pid)
+            this.tmp =tmpspace
+            // console.log('성공')
+        }catch(e){
+            console.log(e)
+        }
+        //좋아요 데이터 가져오기
+        try{
+            let tmpspace1= await this.$api.likedatas(this.id.pid)
+                this.likedummy = tmpspace1
+            if (tmpspace1.length!=0){
 
-      this.commentData.cDate = ymd + ' ' + timestamp;
+                if(tmpspace1.status==1){
+                    this.likeData.likechecked=true
+                }else{
+                    this.likeData.likechecked=false
+                }}
+            else{
+                this.likeData.likechecked=false
+            }
+        }catch(e){
+            console.log(e)
+        }
+        //commit data가져오기
+        try{
+            let tmpspace2 = await this.$api.getPostCommit(this.id.pid)
+            this.commitList= tmpspace2
+            console.log('커밋 부르기 성공')
+
+        }catch(e){
+            console.log(e)
+        }
+
+    //   var ymd = d.toISOString().substr(0, 10);
+    //   var timestamp =
+    //     ('00' + d.getHours()).slice(-2) +
+    //     ':' +
+    //     ('00' + d.getMinutes()).slice(-2) +
+    //     ':' +
+    //     ('00' + d.getSeconds()).slice(-2);
+
+    //   this.commentData.cDate = ymd + ' ' + timestamp;
       //console.log(this.commentData.cDate)
     },
     goback() {
