@@ -113,13 +113,9 @@ public class DiaryController {
     public Object updateDiary(HttpSession httpSession,
                               @RequestParam(required = false) MultipartFile file,
                               @RequestParam int id,
-                              @RequestParam int uid,
-                              @RequestParam String gitName,
                               @RequestParam String title,
                               @RequestParam String intro,
                               @RequestParam String img,
-                              @RequestParam String gitUrl,
-                              @RequestParam int isProj,
                               @RequestParam Date sDate,
                               @RequestParam Date eDate
                               ) throws IOException {
@@ -127,13 +123,9 @@ public class DiaryController {
     	UserDto user = userService.findUserByEmail(email);
 
     	if(diaryService.getUidById(id) == user.getId()) {
-    	    DiaryDto diary = new DiaryDto();
-            diary.setUid(user.getId());
-            diary.setGitName(gitName);
+    	    DiaryDto diary = diaryService.getDiary(String.valueOf(id));
             diary.setTitle(title);
             diary.setIntro(intro);
-            diary.setGitUrl(gitUrl);
-            diary.setIsProj(isProj);
             diary.setSDate(sDate);
             diary.setEDate(eDate);
 

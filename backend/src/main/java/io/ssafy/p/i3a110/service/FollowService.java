@@ -29,4 +29,8 @@ public class FollowService {
 			followDao.createFollow(follow);
 		}
 	}
+
+	public FollowDto getFollow(int userFrom, int userTo) {
+		return followDao.getFollw(userFrom, userTo);
+	}
 }
