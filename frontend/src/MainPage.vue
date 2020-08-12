@@ -20,7 +20,7 @@
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
-                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
                   >more projects</div>
                 </div>
                 <v-card
@@ -77,7 +77,7 @@
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
-                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
                   >more diaries</div>
                 </div>
                 <v-card
