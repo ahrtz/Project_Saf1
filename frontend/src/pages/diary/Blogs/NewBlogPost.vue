@@ -91,7 +91,7 @@
 
         <h3>태그</h3>
         <div class="d-flex">
-        <v-text-field label="태그를 검색 혹은 추가" v-model="tag"></v-text-field>
+        <v-text-field label="태그를 검색 혹은 추가" v-model="tag" @keyup.enter="addtag()" @keyup.space="addtag()"></v-text-field>
         <div class="d-flex justify-center align-center flex-grow-0 new-blog-post-btn" @click="addtag()">태그추가</div>
         </div>
         <br />
@@ -216,13 +216,30 @@ export default {
       }
       
     },
-    writetmpPost() {
+    async writetmpPost() {
       this.post.isTemp = 1;
 
       try {
-        this.$api.savePost(this.post);
-        console.log('성공');
+        let post = await this.$api.savePost(this.post);
+        console.log(post.data,'vdas');
+        try{
+        if (this.selected.length !=0){
+          for (var i=0;i<this.selected.length;i++){
+            this.selected[i].uid = this.diarys.uid
+            this.selected[i].pid = post.data
+            this.selected[i].sha=this.selected[i].sha1
+            this.selected[i].date=this.selected[i].date.substr(0,10)
+            delete this.selected[i].sha1
+            await this.$api.addCommit(this.selected[i])
+            console.log('성공',i)
+            }
+        }
         this.$router.go(-1);
+        console.log(this.selected)
+      }catch(e){
+        console.log(e)
+      }
+
       } catch (e) {
         console.log(e);
         console.log('실패');
