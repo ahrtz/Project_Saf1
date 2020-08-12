@@ -12,4 +12,5 @@ public class CommitListDto {
     private String author;
     private String msg;
     private Date date;
+    private String url;
 }
