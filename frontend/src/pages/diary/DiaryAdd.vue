@@ -129,6 +129,7 @@ export default {
                 edate: new Date().toISOString().substr(0, 10),
                 modal: false,
                 menu2: false,
+                languages : [],
             },
             repoData:[],
             repoChecked:{
@@ -143,6 +144,7 @@ export default {
         repoChecked(){
             this.blogData.gitUrl = this.repoChecked.url
             this.blogData.gitName = this.repoChecked.repoName
+            this.blogData.languages = this.repoChecked.languages
         }
     },
     async created(){
@@ -206,6 +208,7 @@ export default {
             formData.append('sdate',this.blogData.sdate)
             formData.append('edate',this.blogData.edate)
             formData.append('file',this.blogData.file)
+            formData.append('languages', this.blogData.languages)
 
 
 
