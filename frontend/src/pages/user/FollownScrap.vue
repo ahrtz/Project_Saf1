@@ -19,7 +19,7 @@
                                 <hr class="hr-css" :key="index">
                                   <v-list-item :key="follower.email" @click="$router.push({ name: 'MainPagefor', params: { uid: follower.id } })" > <!-- @click="" -->
                                     <v-list-item-avatar class="mr-3">
-                                        <img :src="follower.img">
+                                        <img :src="follower.img == null ? '/static/images/user.png' : follower.img">
                                     </v-list-item-avatar>
                                   <v-list-item-content>
                                       <v-list-item-title> {{follower.nickname}} </v-list-item-title>
@@ -44,7 +44,7 @@
                                 <hr class="hr-css" :key="index">
                                 <v-list-item :key="followee.email" @click="$router.push({ name: 'MainPagefor', params: { uid: followee.id } })" > <!--@click=""-->
                                 <v-list-item-avatar class="mr-3">
-                                    <img :src="followee.img">
+                                    <img :src="followee.img == null ? '/static/images/user.png' : followee.img">
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title> {{followee.nickname}} </v-list-item-title>

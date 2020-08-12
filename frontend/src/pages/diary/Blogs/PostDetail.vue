@@ -111,7 +111,7 @@
             >
               <div class="d-flex align-center">
                 <div class="d-flex flex-grow-0">
-                  <img class="post-detail-comment-img" :src="comment.userinfo.img" />
+                  <img class="post-detail-comment-img" :src="comment.userinfo.img == null ? '/static/images/user.png' : comment.userinfo.img" />
                 </div>
                 <div class="post-detail-comment-id">{{comment.userinfo.nickname}}</div>
               </div>
