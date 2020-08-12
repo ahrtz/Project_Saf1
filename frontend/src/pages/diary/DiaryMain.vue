@@ -26,7 +26,21 @@
      </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-        
+        <v-text-field
+          id="header-text"
+          class="d-flex justify-center flex-grow-0"
+          placeholder="Search by Title"
+          outlined
+          dense
+          type="text"
+          hide-details
+          v-model="keyw"
+          
+        ></v-text-field>
+
+
+
+
         <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
         <router-link v-show="test==0 || test==2 " v-if="mydata.id==uid"  class="float-right" :to="{name:'BlogAdd'}" tag="button">
           <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
@@ -41,7 +55,7 @@
 
        <v-container fluid>
            <v-row>
-               <v-col cols="4" v-for="blog in diarys" :key="blog.id">
+               <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-if="blog.title.includes(keyw)">
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
@@ -105,7 +119,11 @@ export default {
             show: false,
             diarys:{},
             uid:'',
-            mydata:[]
+            mydata:[],
+            keyw:'',
+            blog:{
+                title:''
+            },
         }
     },
     created(){

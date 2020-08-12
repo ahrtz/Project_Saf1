@@ -91,7 +91,17 @@
         <Status />
         <div class="d-flex">
           <div class="d-flex" />
-
+          <v-text-field
+          id="header-text"
+          class="d-flex justify-center flex-grow-0"
+          placeholder="Search by Title"
+          outlined
+          dense
+          type="text"
+          hide-details
+          v-model="keyw"
+          
+        ></v-text-field>
           <div
             v-if="!isProj"
             class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
@@ -122,6 +132,7 @@
                   v-for="post in postdata"
                   :key="post.id"
                   style="margin-top:10px; border-bottom:dashed 1px grey"
+                  v-if="post.title.includes(keyw)"
                 >
                   <router-link :to="{name:'PostDetail',params:{pid:post.id}}">
                     <!-- {{post}} -->
@@ -179,6 +190,7 @@ export default {
   },
   data() {
     return {
+      keyw:'',
       diaryid: this.$route.params,
       config: {
         keyword: '',

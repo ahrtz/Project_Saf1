@@ -81,8 +81,8 @@
 
         <h3>태그</h3>
         <div class="d-flex">
-          <v-text-field label="태그를 추가" v-model="tag"></v-text-field>
-          <div class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn" @click="addtag()">
+          <v-text-field label="태그를 추가" v-model="tag" @keyup.enter="addtag()" @keyup.space="addtag()"></v-text-field>
+          <div class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"  @click="addtag()">
           태그추가</div>
         </div>
         <br />
