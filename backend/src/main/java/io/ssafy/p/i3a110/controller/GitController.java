@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -115,13 +116,11 @@ public class GitController {
 //		return list;
 //	}
 	
-	@Auth
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
-	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
-		Map<Date, Integer> map = new TreeMap<Date, Integer>();
-		String email = (String) session.getAttribute("email");
-		UserDto user = userService.findUserByEmail(email);
+	public Object getAllCommitCnt(@RequestBody HashMap<String, String> input) {
+		int uid = Integer.parseInt(input.get("uid"));
+		UserDto user = userService.findUserById(uid);
 		String repoName = input.get("repoName").trim();
 		Date eDate = new Date();
 		Calendar cal = Calendar.getInstance();
@@ -135,7 +134,7 @@ public class GitController {
 			}else {
 				projectNames.add(repoName);
 			}
-			map = helper.getAllCommitCnt(projectNames, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
+			Map<Date, Integer> map = helper.getAllCommitCnt(projectNames, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

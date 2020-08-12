@@ -78,7 +78,7 @@
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
-                  >more diaries</div>
+                  >more blogs</div>
                 </div>
                 <v-card
                   class="ma-2"

@@ -22,12 +22,12 @@
           v-model="keyw"
           @keyup.enter="search()"
         ></v-text-field>
-        <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">검색</div>
+        <div class="d-flex justify-center flex-grow-0 align-center header-btn" @click="search()">Search</div>
         <!-- <div class="d-flex justify-center flex-grow-0 header-menu" @click="onGroupBtnClick()">Group</div> -->
         <div
           class="d-flex align-center flex-grow-0 header-profile"
           v-if="islogin==true"
-          @click="$router.push({name:'Follow',params:{uid:userdata.id}})"
+          @click="$router.push({name:'AccountDetail',params:{uid:userdata.id}})"
         >
           <div>
             <img class="header-profile-image" :src="userImg ? userImg : '/static/images/user.png'" />
@@ -196,7 +196,7 @@ export default {
   font-weight: 600;
   color: #fff;
   border-radius: 6px;
-  width: 80px;
+  padding: 0 16px;
   height: 40px;
   cursor: pointer;
 }

@@ -253,7 +253,7 @@ export default {
             this.selected[i].uid = this.diarys.uid
             this.selected[i].pid = post.data
             this.selected[i].sha=this.selected[i].sha1
-            this.selected[i].date=this.selected[i].date.substr(0,10)
+            this.selected[i].date=this.selected[i].date
             delete this.selected[i].sha1
             await this.$api.addCommit(this.selected[i])
             console.log('성공',i)
@@ -283,7 +283,7 @@ export default {
             this.selected[i].uid = this.diarys.uid
             this.selected[i].pid = post.data
             this.selected[i].sha=this.selected[i].sha1
-            this.selected[i].date=this.selected[i].date.substr(0,10)
+            this.selected[i].date=this.selected[i].date
             delete this.selected[i].sha1
             await this.$api.addCommit(this.selected[i])
             console.log('성공',i)
