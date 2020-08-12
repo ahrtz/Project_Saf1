@@ -112,6 +112,45 @@
         </div>
       </div>
     </div>
+    <!-- drawer 만들기 -->
+    <v-card height="500px">
+      <v-container fill-height>
+        <v-layout
+          
+        >
+          <v-btn
+            color="blue"
+            dark
+            @click.stop="drawer = !drawer"
+          >
+            임시저장글 보기
+          </v-btn>
+        </v-layout>
+      </v-container>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        absolute
+        temporary
+        right
+      >
+        <!-- 여따가 시작 -->
+        <div v-for="temp in tmppost" :key="temp.id">
+          {{temp.dName}}다이어리 <br>
+          제목 : {{temp.title}} 
+
+          <v-btn @click="$router.push({name:'UpdatePost',params:{pid:temp.id}})" > 수정 </v-btn>
+        </div>
+        <v-divider></v-divider>
+
+        
+      </v-navigation-drawer>
+    </v-card>
+
+
+
+
+
   </div>
 </template>
 
@@ -122,6 +161,7 @@ export default {
   name: 'NewBlogPost',
   data() {
     return {
+      drawer:null,
       dialog:false,
       diarys:'',
       tag: '',
@@ -129,6 +169,13 @@ export default {
       did: this.$route.params.did,
       selected: [],
       page:1,
+      config: {
+        uid: '',
+        isProj: 2,
+        keyword: '',
+        isTemp: 1,
+        limit:10
+      },
       post: {
         uid: '',
         did: this.$route.params.did,
@@ -140,7 +187,7 @@ export default {
         cDate: new Date().toISOString().substr(0, 10),
       },
       commitList: [],
-
+      tmppost:[],
     
     
     };
@@ -148,6 +195,7 @@ export default {
   props: ['value'],
   async created() {
     this.post.uid = this.$store.state.user.id;
+    this.config.uid = this.$store.state.user.id;
     try{
         let diaryid = this.did
         let tempspace= await this.$api.individualDiary(diaryid)
@@ -168,6 +216,13 @@ export default {
         }catch(e){
             console.log(e)
         }
+    try {
+      let tmpspace = await this.$api.searchTemp(this.config);
+      this.tmppost = tmpspace.data;
+      console.log('성공');
+    } catch (e) {
+      console.log(e);
+    }
   },
   methods: {
     clear() {
@@ -204,7 +259,7 @@ export default {
             console.log('성공',i)
             }
         }
-        this.$router.go(-1);
+        this.$router.push({name : 'BlogDetail', params :{uid:this.config.uid,did:this.did}});
         console.log(this.selected)
       }catch(e){
         console.log(e)
@@ -234,7 +289,7 @@ export default {
             console.log('성공',i)
             }
         }
-        this.$router.go(-1);
+        this.$router.push({name : 'BlogDetail', params :{uid:this.config.uid,did:this.did}});
         console.log(this.selected)
       }catch(e){
         console.log(e)
@@ -245,6 +300,7 @@ export default {
         console.log('실패');
       }
     },
+
   },
   // watch:{
   //   commitList: tempcommit()
