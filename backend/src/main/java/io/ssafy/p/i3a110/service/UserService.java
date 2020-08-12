@@ -59,8 +59,8 @@ public class UserService implements UserDetailsService {
 		userDao.cancelToken(id);
 	}
 	
-	public void authenticateToken(int id) {
-		userDao.authenticateToken(id);
+	public void authenticateToken(UserDto user) {
+		userDao.authenticateToken(user);
 	}
 	
 	public List<UserDto> getAllGitUsers(){

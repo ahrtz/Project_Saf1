@@ -18,7 +18,7 @@
                         <!-- 그룹장 썸네일 -->
                         <v-row>
                             <v-col>
-                                <img class = "groupdetail-leader-thumbnail" :src="group_info.lImg">
+                                <img class = "groupdetail-leader-thumbnail" :src="group_info.lImg == null ? '/static/images/user.png' : group_info.lImg">
                             </v-col>
                             <!-- 그룹장 닉네임 이메일 -->
                             <v-col>
@@ -46,7 +46,7 @@
                               v-for="like_item in lRateList"
                               :key="like_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="like_item.img"></v-img>
+                                <v-img :src="like_item.img == null ? '/static/images/user.png' : like_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{like_item.nickname}} <v-spacer></v-spacer>{{like_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -63,7 +63,7 @@
                               v-for="follower_item in fRateList"
                               :key="follower_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="follower_item.img"></v-img>
+                                <v-img :src="follower_item.img == null ? '/static/images/user.png' : follower_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{follower_item.nickname}} <v-spacer></v-spacer>{{follower_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -80,7 +80,7 @@
                               v-for="post_item in pRateList"
                               :key="post_item.nickname"> <!--@click="" -->
                               <v-list-item-avatar>
-                                <v-img :src="post_item.img"></v-img>
+                                <v-img :src="post_item.img == null ? '/static/images/user.png' : post_item.img"></v-img>
                               </v-list-item-avatar>
                                 <v-list-item-title>{{post_item.nickname}} <v-spacer></v-spacer>{{post_item.cnt}}</v-list-item-title>
                               <v-list-item-content>
@@ -89,11 +89,65 @@
                         </v-list>
                     </v-col>
                 </v-row>
+                <v-row>
+                    
+                </v-row>
+            </v-row>
+            <v-row>
+                <v-dialog v-model="dialog" max-width="500px">
+                    <template v-slot:activator="{on}">
+                    <v-btn v-on="on" color="primary" dark class="mr-2">그룹 수정</v-btn>
+                    </template>     
+                    <v-card>
+                    <v-card-title>
+                        <span class="headline">그룹 내용 수정 </span>
+                    </v-card-title>
+
+                    <v-card-text>
+                        <v-container grid-list-md>
+                        <v-layout column>
+                            <v-flex xs12 sm6 md4>
+                            <v-text-field v-model="group_info.name" label="Group name" class="group-text-box"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                            <v-textarea v-model="group_info.intro" label="Description" class="group-text-box"></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                        </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn class="ma-2" color="blue darken-1" dark @click="close()">cancel</v-btn>
+                        <v-btn class="ma-2" color="blue darken-1" dark @click="updateGroup()">confirm</v-btn>
+                    </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <v-btn color="primary" dark @click="removeGroup"> 그룹 해체 </v-btn>
+
             </v-row>
             <hr>
             <!-- 아랫 부분 (그룹에 속한 멤버 리스트) -->
             <v-row>
                 <v-container fluid class="pa-10">
+                    <v-row>Member List</v-row>
+                    <v-row v-if="isLeader">
+                        <v-text-field v-model="newMember" type="text" placeholder="추가할 사용자의 이메일을 입력하세요"/>
+                        <v-btn class="ma-2" tile color="indigo" dark @click="addMember">멤버 추가</v-btn>
+                    </v-row>
                     <v-card flat>
                         <v-card-title>
                             <v-row>
@@ -109,11 +163,22 @@
                             </v-row>
                         </v-card-title>
                         <v-data-table
+                        v-if="members != null"
                         :headers="headers"
                         :items="members"
                         :search="search"
+                        @click:row="goUser"
                         >
                         <!-- @click:row="goGroup" -->
+                        <template v-if="isLeader" v-slot:[`item.actions`]="{ item }">
+                            <v-icon
+                            small
+                            class="mr-2"
+                            @click="deleteMember(item)"
+                            >
+                            mdi-close
+                            </v-icon>
+                        </template>
                         </v-data-table>
                     </v-card>
                 </v-container>
@@ -127,6 +192,8 @@ export default {
     data() {
         return {
             gid : this.$route.params.gid, //gid를 디폴트로 갖추고 있어야 얘네들이 다 구성할 수 있다!
+            uid : this.$store.state.user.id,
+            isLeader : false,
             group_info : {},
             search : '',
             headers: [
@@ -135,98 +202,154 @@ export default {
                 { text : '최근 Post 날짜', value : 'recent_post',},
                 { text : '1D1C 달성률(3 months)', value : 'odoc', filterable : false, },
                 { text : '1D1P 달성률(3 months)', value : 'odop', filterable : false, },
-                { text : 'Action' , value : 'action', filterable :false, },
+                { text : 'Actions' , value : 'actions', filterable :false, sortable : false, },
             ],
             rateFlag : {
                 oid : "",
                 type : "",
-                cnt : "4",
+                cnt : "5",
             },
             //아래 3개의 RateList 중 commit, post 는 rate 테이블 이용해야함. 
             lRateList : [],
             fRateList : [],
             pRateList : [],
+            newMember : "",
             members : [],   //그룹원 데이터 테이블에 넣어줄 자료구조.
-            
+            dialog : false,
             
         }
     },
     async created() {
-        console.log("CKCK : " + this.$route.params.gid);
         this.rateFlag.oid = this.$route.params.gid;
-        
-        this.getMembers();
-        this.getLikeRate();
-        this.getFollowerRate();
-        this.getPostRate();
-    },
+        this.uid = this.$store.state.user.id;
 
+        await this.getMembers();
+
+        await this.getRatingInfo();
+        
+
+        if(this.group_info.lid == this.$store.state.user.id)
+        {
+            this.isLeader = true;
+        }   
+        
+    },
+    watch : {
+      dialog (val) {
+        val || this.close()
+      }
+    },
     methods:{
+        async addMember() {
+            await this.$api.groupRelationAdd({email:this.newMember, oid: this.$route.params.gid});
+            this.newMember="";
+            await this.getMembers();
+            await this.getRatingInfo();
+        },
         async getMembers(){
-            try{
+            try{ 
                 let temp = await this.$api.groupDetail(this.$route.params.gid);
                 this.group_info = temp;
-                // this.members = this.group_info.userinfo;
+                var templist = [];
                 for(var i = 0; i < this.group_info.userinfo.length; i++)
                 {
                     var member = {};
+                    member['id'] = this.group_info.userinfo[i].id
                     member['nickname'] = this.group_info.userinfo[i].nickname;
                     member['email'] = this.group_info.userinfo[i].email;
-                    //member['recent_post'] = this.getRecentPost(this.group_info.userinfo[i].lastPost.date);
-                    
-                    
+                    this.group_info.userinfo[i].lastPost == null ?
+                     member['recent_post'] = "-" : member['recent_post'] = this.getRecentPost(this.group_info.userinfo[i].lastPost.date); 
                     // member['odoc'] = 
                     // member['odop'] = 
-                    this.members.push(member);
-
+                    
+                    templist.push(member);
                 }
-                console.log("GroupDetail API 성공");
+                this.members = templist;
             }catch(e){
-                console.log("GroupDetail API 실패");
-                console.log(e);
             }
         },
-        async getLikeRate(){
+        async getRatingInfo(){
             try{
                 this.rateFlag.type = "0";
                 let temp2 = await this.$api.getTopMembers(this.rateFlag);
                 this.lRateList = temp2;
-            
-                console.log("getLikeRate API 성공");
-            }
-            catch(e){
-                console.log("getLikeRate API 실패");
-            }
-        },
-        async getPostRate(){
-            try{
+
                 this.rateFlag.type = "1";
                 let temp3 = await this.$api.getTopMembers(this.rateFlag);
                 this.pRateList = temp3;
 
-                console.log("getPostRate API 성공");                
-            }catch(e){
-                console.log("getPostRate API 실패");
-            }
-        },
-        async getFollowerRate(){
-            try{
                 this.rateFlag.type = "2";
                 let temp4 = await this.$api.getTopMembers(this.rateFlag);
                 this.fRateList = temp4;
+            
+            }
+            catch(e){
+            }
+        },
+        // async getPostRate(){
+        //     try{
+        //         this.rateFlag.type = "1";
+        //         let temp3 = await this.$api.getTopMembers(this.rateFlag);
+        //         this.pRateList = temp3;
+                
+        //     }catch(e){
+        //     }
+        // },
+        // async getFollowerRate(){
+        //     try{
+        //         this.rateFlag.type = "2";
+        //         let temp4 = await this.$api.getTopMembers(this.rateFlag);
+        //         this.fRateList = temp4;
+                               
+        //     }catch(e){ }
+        // },
+        async deleteMember(item){
+            console.log("deleteMember " + item.id);
+            this.$api.groupRelationDelete({oid:this.$route.params.gid,uid:item.id})
+    
+            await this.getMembers();
+            await this.getRatingInfo();
+        },
+        async updateGroup(){
+            try{
+                await this.$api.groupDetailUpdate({
+                id:this.$route.params.gid,
+                name:this.group_info.name,
+                intro:this.group_info.intro
+            })
+            await this.getMembers();
+            }
+            catch(e)
+            {
+                console.log(e);
+            }
+            
+            this.close();
+        },
+        async removeGroup()
+        {
+            try{
+                await this.$api.deleteGroup(this.$route.params.gid)
+                console.log("그룹 삭제 성공")
+                this.$router.go(-1)
+            }
+            catch(e)
+            {
 
-                console.log("getFollowerRate API 성공");                
-            }catch(e){
-                console.log("getFollowerRate API 실패");
             }
         },
         getRecentPost(recentPost){
             var ymd = recentPost.substr(0,10)
-            // var timestamp = ("00" + recentPost.getHours()).slice(-2) + ':' + ("00" + recentPost.getMinutes()).slice(-2)
-                            // + ':' + ("00" + recentPost.getSeconds()).slice(-2)
-            var timestamp = recentPost.substr(11,19)
+            var timestamp = recentPost.substr(11,8)
             return ymd + ' ' + timestamp;
-            //console.log(this.commentData.cDate)
+        },
+        close () {
+            this.dialog = false
+        },
+        goUser(param)
+        {
+            console.log("GoUser()!!!" + param.id);
+            this.$router.push({ name: 'MainPagefor', params: { uid: param.id } })
         }
     },
 }
