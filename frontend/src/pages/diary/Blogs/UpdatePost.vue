@@ -17,21 +17,66 @@
         <div v-for="(scommit,index) in selectedCommits" :key="index">
           {{index}}{{scommit.msg}}<v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
         </div>
+        <v-layout row v-show="this.isProj==true">
+          <v-dialog v-model="dialog" scrollable max-width="500px">
+          <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark v-on="on">커밋 선택하기</v-btn>
+          </template>
 
-        <v-container fluid>
+              <v-card
+                  color="primary"
+                  dark
+                  v-if="commitList.length==0"
+              >
+                  <v-card-text>
+                  commit 정보 받아 오는중
+                  <v-progress-linear
+                      indeterminate
+                      color="white"
+                      class="mb-0"
+                      buffer-value="0"
+                      stream
+                  ></v-progress-linear>
+                  </v-card-text>
+              </v-card>
 
-         <div :id="'t'+commit.msg" v-for="(commit,index) in commitList" :key="index">
-            <p>
-              <input
-                type="checkbox"
 
-                v-model="selected"
-                :value="commit"
-              />
-              <label :for="commit">{{commit.msg}}</label>
-            </p>
-          </div>
-        </v-container>내용
+
+              <v-card v-if="commitList.length!=0">
+                  <v-card-title>커밋 고르기</v-card-title>
+                  <v-divider></v-divider>
+                  <v-card-text>
+                  <div :id="'t'+commit.msg" v-for="(commit,index) in commitList.slice((this.page-1)*10,(this.page*10))" :key="index">
+                    
+                      
+                      <input
+                        type="checkbox"
+                        
+                        v-model="selected"
+                        :value="commit"
+                      />
+                      <label :for="commit">{{commit.msg}}</label>
+                    
+                  </div>
+                  </v-card-text>
+                  <div class="text-center">
+                      <v-pagination
+                        v-model="page"
+                        :length="Math.ceil(commitList.length/10)"
+                        :total-visible="7"
+                      ></v-pagination>
+                    </div>
+                  <v-divider></v-divider>
+                    <v-card-actions>
+                      
+                      <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-layout>
+
+
+        내용
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
 
         <h3>태그</h3>
@@ -80,6 +125,7 @@ export default {
     name:'UpdatePost',
     data(){
       return{
+        dialog:false,
         tag:'',
         newtag:{
           pid:'',
@@ -89,6 +135,7 @@ export default {
         pid:this.$route.params.pid,
         selected:[] ,
         selectedCommits:[],
+        page:1,
         post:{
           uid:'',
           did:this.$route.params.did,
