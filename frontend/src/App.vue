@@ -57,4 +57,35 @@ export default {
 input, .v-text-field__slot, label {
   font-size: 12px !important;
 }
+
+.v-application .primary {
+  background-color: #0051cb !important;
+  border-color: #0051cb !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.v-pagination__item {
+  background-color: #fff !important;
+  color: #0051cb !important;
+  box-shadow: none !important;
+  border: solid 1px #0051cb !important;
+}
+
+.v-subheader {
+  color: #21262e !important;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.v-list-item__title {
+  font-size: 12px !important;
+  color: #21262e !important;
+  font-weight: 600;
+}
+
+.v-list-item__subtitle {
+  font-size: 12px !important;
+  font-weight: 600;
+}
 </style>
