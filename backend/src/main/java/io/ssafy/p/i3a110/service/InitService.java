@@ -38,8 +38,8 @@ public class InitService {
 			Map<String, String> map = helper.getOdocRate(diaryService.getAllWrittenProjectName(uid), gitId);
 			RateDto rate = new RateDto();
 			rate.setUid(uid);
-			rate.setOdoc_cnt(map.get("days"));
-			rate.setOdoc_rate(map.get("rate"));
+			rate.setOdocCnt(map.get("days"));
+			rate.setOdocRate(map.get("rate"));
 			rateService.setOdocOfAllUsers(rate);
 		}
 		
@@ -56,10 +56,10 @@ public class InitService {
 	    	int doPostDay = postService.getOdopRate(uid);
 	    	RateDto rate = new RateDto();
 	    	rate.setUid(uid);
-	    	String odop_cnt = String.format("%d/%d", doPostDay, days);
-	    	String odop_rate = String.format("%.2f", (double)doPostDay/days*100);
-	    	rate.setOdop_cnt(odop_cnt);
-	    	rate.setOdop_rate(odop_rate);
+	    	String odopCnt = String.format("%d/%d", doPostDay, days);
+	    	String odopRate = String.format("%.2f", (double)doPostDay/days*100);
+	    	rate.setOdopCnt(odopCnt);
+	    	rate.setOdopRate(odopRate);
 	    	rateService.setOdopOfAllUsers(rate);
 		}
 		System.out.println("SETTING DONE");
