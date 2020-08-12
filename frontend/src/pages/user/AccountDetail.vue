@@ -204,7 +204,7 @@ export default {
             },
           });
           alert('회원 정보를 수정하였습니다.');
-          // location.reload();
+          this.$router.push({ name: 'MainPagefor', params: { uid: this.userdata.id } });
         }
       } catch (e) {
         console.log('실패');

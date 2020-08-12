@@ -238,6 +238,7 @@ export default {
       try {
         let temp = await this.$api.getCommentlist(this.id.pid);
         this.comments = temp;
+        console.log(temp,'vdasdfsafbvfad')
         // console.log('Comment 목록 가져오기 성공')
       } catch (e) {
         console.log(e);
@@ -278,6 +279,7 @@ export default {
             let tmpspace2 = await this.$api.getPostCommit(this.id.pid)
             this.commitList= tmpspace2
             console.log('커밋 부르기 성공')
+            
 
         }catch(e){
             console.log(e)
