@@ -15,12 +15,12 @@
             <div
               class="d-flex flex-grow-0 align-center justify-center post-detail-white-btn"
               style="margin-right: 4px;"
-              v-show="checkWriter"
+              v-if="checkWriter"
               @click="$router.push({name:'UpdatePost',params:{pid:tmp.id}})"
             >수정</div>
             <div
               class="d-flex flex-grow-0 align-center justify-center post-detail-red-btn"
-              v-show="this.uid==this.tmp.uid"
+              v-if="uid==tmp.uid"
               @click="deleteP(tmp.id)"
             >삭제</div>
           </div>
@@ -111,7 +111,7 @@
             >
               <div class="d-flex align-center">
                 <div class="d-flex flex-grow-0">
-                  <img class="post-detail-comment-img" :src="comment.userinfo.img" />
+                  <img class="post-detail-comment-img" :src="comment.userinfo.img == null ? '/static/images/user.png' : comment.userinfo.img" />
                 </div>
                 <div class="post-detail-comment-id">{{comment.userinfo.nickname}}</div>
               </div>
@@ -128,11 +128,19 @@
             </div>
             <div class="d-flex justify-center align-center post-detail-comment-box">
               <!-- v-model="commentData.content" -->
-              <v-text-field id="post-comment-content" dense outlined hide-details />
+              <v-text-field v-if="isLogin" id="post-comment-content" dense outlined hide-details />
               <div
                 style="margin-left: 8px"
                 class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
                 @click="commentwrite()"
+                v-if="isLogin"
+              >작성</div>
+              <v-text-field v-if="!isLogin" id="post-comment-content" dense outlined hide-details placeholder="댓글은 로그인이 필요한 서비스입니다." @click="$router.push({name:'Login'})"/>
+              <div
+                style="margin-left: 8px"
+                class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
+                @click="$router.push({name:'Login'})"
+                v-if="!isLogin"
               >작성</div>
             </div>
           </div>
@@ -172,9 +180,12 @@ export default {
       tags: {},
       commitList: [],
       comments: [],
+      isLogin:false
+      
     };
   },
   async created() {
+    this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$store.state.user.id;
     //comment 데이터 가져오기
     this.getComment();

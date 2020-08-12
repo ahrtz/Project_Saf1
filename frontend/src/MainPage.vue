@@ -20,8 +20,8 @@
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
-                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
-                  >프로젝트 보러가기</div>
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
+                  >more projects</div>
                 </div>
                 <v-card
                   class="ma-2"
@@ -77,8 +77,8 @@
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
-                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
-                  >다이어리 보러가기</div>
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
+                  >more diaries</div>
                 </div>
                 <v-card
                   class="ma-2"
@@ -260,18 +260,18 @@ export default {
 
 .main-page-btn {
   margin-left: 4px;
-  font-size: 14px;
+  font-size: 12px;
   background: #0051cb;
-  font-weight: 600;
+  font-weight: normal;
   color: #fff;
   border-radius: 6px;
   padding: 0 16px;
-  height: 40px;
+  height: 30px;
   cursor: pointer;
 }
 
 .main-page-section-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 </style>

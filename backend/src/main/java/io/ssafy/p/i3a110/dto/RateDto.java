@@ -5,8 +5,8 @@ import lombok.Data;
 public class RateDto {
     private int id;
     private int uid;
-    private String odoc_cnt;
-    private String odoc_rate;
-    private String odop_cnt;
-    private String odop_rate;
+    private String odocCnt;
+    private String odocRate;
+    private String odopCnt;
+    private String odopRate;
 }

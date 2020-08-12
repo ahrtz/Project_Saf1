@@ -22,8 +22,8 @@ public class TagService {
 		return tagDao.getTagsByKeyword(keyword);
 	}
 
-	public List<HashMap<Object, Object>> getTopNTags(String uid, int num) {
-		return tagDao.getTopNTags(uid,num);
+	public List<HashMap<Object, Object>> getTopNTags(int did, int uid, int num) {
+		return tagDao.getTopNTags(did,uid,num);
 	}
 
 	public void addTag(TagDto tagDto) {

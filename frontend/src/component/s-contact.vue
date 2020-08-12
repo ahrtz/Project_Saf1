@@ -3,20 +3,19 @@
     <img :src="user.img?user.img:'/static/images/user.png'" class="s-contact-image" />
     <div class="s-contact-nickname">{{user.nickname}}</div>
     <div class="s-contact-intro">{{user.intro ? user.intro : "소개말이 없습니다."}}</div>
-    <div class="d-flex align-center justify-center s-contact-follow" v-if="!followcheck" dark @click="follow()">Follow</div>
-    <div class="d-flex align-center justify-center s-contact-follow" v-if="followcheck" dark @click="follow()">Un Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="!followcheck && mydata.id!=dummy" dark @click="follow()">Follow</div>
+    <div class="d-flex align-center justify-center s-contact-follow" v-if="followcheck && mydata.id!=dummy" dark @click="follow()">UnFollow</div>
     <div class="d-flex flex-column s-contact-contents">
-      <div class="d-flex">
+      <div v-if="!user.isSocial" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
         <a
           class="d-flex"
-          v-if="!user.isSocial"
           :href="`mailto:${user.email}`"
           target="_top"
           style="text-decoration:none;margin-left:8px;color:#21262e"
         >{{user.email}}</a>
       </div>
-      <div class="d-flex">
+      <div v-if="user.gitUrl != 'null' || user.gitUrl != ''" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">link</v-icon>
         <a
           class="d-flex"

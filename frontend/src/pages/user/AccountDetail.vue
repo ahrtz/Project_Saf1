@@ -54,10 +54,13 @@
             ></v-text-field>
 
             <div class="d-flex flex-column input-wrap">
-              <img
-                :src="uploadImageFile"
-                style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;margin-bottom: 24px;"
-              />
+              <div class="account-detail-profile-image-container">
+                <img
+                  class="account-detail-profile-image"
+                  :src="uploadImageFile ? uploadImageFile : '/static/images/user.png'"
+                />
+              </div>
+              <div class="account-detail-image-notice">* 1x1 규격으로 업로드해주세요.</div>
               <input
                 @change="onFileSelected($event)"
                 ref="file"
@@ -278,5 +281,25 @@ export default {
 
 .account-detail-input {
   margin-bottom: 8px;
+}
+
+.account-detail-image-notice {
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.account-detail-profile-image-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.account-detail-profile-image {
+  width: 100px;
+  height: 100px;
 }
 </style>
