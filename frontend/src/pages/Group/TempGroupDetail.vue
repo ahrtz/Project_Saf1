@@ -14,7 +14,9 @@
                         </v-row>
                     </v-col>
                     <!-- 그룹장 정보 -->
-                    <v-col cols="6">
+                    <v-col cols="6"
+                     style="cursor:pointer"
+                     @click="$router.push({ name: 'MainPagefor', params: { uid: group_info.lid } })">
                         <!-- 그룹장 썸네일 -->
                         <v-row>
                             <v-col>
@@ -44,7 +46,9 @@
 
                             <v-list-item
                               v-for="like_item in lRateList"
-                              :key="like_item.nickname"> <!--@click="" -->
+                              :key="like_item.nickname"
+                              style="cursor:pointer"
+                              @click="$router.push({ name: 'MainPagefor', params: { uid: like_item.uid } })"> 
                               <v-list-item-avatar>
                                 <v-img :src="like_item.img == null ? '/static/images/user.png' : like_item.img"></v-img>
                               </v-list-item-avatar>
@@ -61,7 +65,9 @@
 
                             <v-list-item
                               v-for="follower_item in fRateList"
-                              :key="follower_item.nickname"> <!--@click="" -->
+                              :key="follower_item.nickname"
+                              style="cursor:pointer"
+                              @click="$router.push({ name: 'MainPagefor', params: { uid: follower_item.uid } })"> 
                               <v-list-item-avatar>
                                 <v-img :src="follower_item.img == null ? '/static/images/user.png' : follower_item.img"></v-img>
                               </v-list-item-avatar>
@@ -78,7 +84,10 @@
 
                             <v-list-item
                               v-for="post_item in pRateList"
-                              :key="post_item.nickname"> <!--@click="" -->
+                              :key="post_item.nickname"
+                              style="cursor:pointer"
+                              @click="$router.push({ name: 'MainPagefor', params: { uid: post_item.uid } })"
+                              > <!--@click="" -->
                               <v-list-item-avatar>
                                 <v-img :src="post_item.img == null ? '/static/images/user.png' : post_item.img"></v-img>
                               </v-list-item-avatar>
@@ -168,10 +177,11 @@
                         :items="members"
                         :search="search"
                         @click:row="goUser"
+                        style="cursor:pointer"
                         >
                         <!-- @click:row="goGroup" -->
                         <template v-if="isLeader" v-slot:[`item.actions`]="{ item }">
-                            <v-icon
+                            <v-icon v-if="item.id != group_info.lid"
                             small
                             class="mr-2"
                             @click="deleteMember(item)"
@@ -349,7 +359,7 @@ export default {
         goUser(param)
         {
             console.log("GoUser()!!!" + param.id);
-            this.$router.push({ name: 'MainPagefor', params: { uid: param.id } })
+            this.$router.push({ name: 'MainPagefor', params: { uid: param.id } });
         }
     },
 }

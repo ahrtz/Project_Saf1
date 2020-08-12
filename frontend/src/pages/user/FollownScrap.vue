@@ -15,7 +15,7 @@
                         <v-card>
                             <v-list two-line>
                             <v-subheader class="follow-n-scrap-category">followers</v-subheader>
-                            <template v-for="(follower,index) in followers.slice(0,3)">
+                            <template v-for="(follower,index) in followers.slice((this.page1-1)*3,(this.page1)*3)">
                                 <hr class="hr-css" :key="index">
                                   <v-list-item :key="follower.email" @click="$router.push({ name: 'MainPagefor', params: { uid: follower.id } })" > <!-- @click="" -->
                                     <v-list-item-avatar class="mr-3">
@@ -26,9 +26,16 @@
                                       <v-list-item-subtitle class="font-weight-bold"> {{follower.email}} </v-list-item-subtitle>
                                   </v-list-item-content>
                                   </v-list-item>
-                               
+                                  
                             </template>
                             </v-list>
+                            <div class="text-center">
+                                <v-pagination
+                                  v-model="page1"
+                                  :length="Math.ceil(followers.length / 3)"
+                                  :total-visible="7"
+                                ></v-pagination>
+                            </div>
                         </v-card>
                         </v-col>
                     </v-row>                    
@@ -40,7 +47,7 @@
                         <v-card>
                             <v-list two-line>
                             <v-subheader class="follow-n-scrap-category">following</v-subheader>
-                            <template v-for="(followee,index) in followees.slice(0,3)">
+                            <template v-for="(followee,index) in followees.slice((this.page2 - 1)*3,(this.page2)*3)">
                                 <hr class="hr-css" :key="index">
                                 <v-list-item :key="followee.email" @click="$router.push({ name: 'MainPagefor', params: { uid: followee.id } })" > <!--@click=""-->
                                 <v-list-item-avatar class="mr-3">
@@ -53,6 +60,13 @@
                                 </v-list-item>
                             </template>
                             </v-list>
+                            <div class="text-center">
+                                <v-pagination
+                                  v-model="page2"
+                                  :length="Math.ceil(followees.length / 3)"
+                                  :total-visible="7"
+                                ></v-pagination>
+                            </div>
                         </v-card>
                         </v-col>
                     </v-row>                    
@@ -91,6 +105,8 @@ export default {
         userSidebar,
     },
     data: () => ({
+      page1:1,
+      page2:1,
       uid : "",
       followers :[],
       followees :[],
