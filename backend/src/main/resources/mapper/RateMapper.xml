@@ -12,27 +12,27 @@
 	
 	<insert id="createOdocOfAllUsers" parameterType="RateDto">
 		insert into rate(uid, odoc_rate, odoc_cnt)
-		values (#{uid}, #{odoc_rate}, #{odoc_cnt})
+		values (#{uid}, #{odocRate}, #{odocCnt})
 	</insert>
 	
 	<update id="updateOdocOfAllUsers" parameterType="RateDto">
 		update rate
 		set
-		odoc_rate = #{odoc_rate},
-		odoc_cnt = #{odoc_cnt}
+		odoc_rate = #{odocRate},
+		odoc_cnt = #{odocCnt}
 		where uid = #{uid}
 	</update>
 	
 	<insert id="createOdopOfAllUsers" parameterType="RateDto">
 		insert into rate(uid, odop_rate, odop_cnt)
-		values (#{uid}, #{odop_rate}, #{odop_cnt})
+		values (#{uid}, #{odopRate}, #{odopCnt})
 	</insert>
 	
 	<update id="updateOdopOfAllUsers" parameterType="RateDto">
 		update rate
 		set
-		odop_rate = #{odop_rate},
-		odop_cnt = #{odop_cnt}
+		odop_rate = #{odopRate},
+		odop_cnt = #{odopCnt}
 		where uid = #{uid}
 	</update>
 </mapper>    
