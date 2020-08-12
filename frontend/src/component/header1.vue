@@ -27,7 +27,7 @@
         <div
           class="d-flex align-center flex-grow-0 header-profile"
           v-if="islogin==true"
-          @click="$router.push({name:'Follow',params:{uid:userdata.id}})"
+          @click="$router.push({name:'AccountDetail',params:{uid:userdata.id}})"
         >
           <div>
             <img class="header-profile-image" :src="userImg ? userImg : '/static/images/user.png'" />
