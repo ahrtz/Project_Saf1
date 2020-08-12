@@ -30,7 +30,7 @@
           @click="$router.push({name:'Follow',params:{uid:userdata.id}})"
         >
           <div>
-            <img class="header-profile-image" :src="userImg" />
+            <img class="header-profile-image" :src="userImg ? userImg : '/static/images/user.png'" />
           </div>
           <div>{{userNickname}}</div>
         </div>
