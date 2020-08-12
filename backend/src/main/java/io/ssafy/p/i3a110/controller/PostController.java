@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -153,6 +154,15 @@ public class PostController {
         }else {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @PostMapping("/posts/cnt")
+    @ApiOperation(value = "Diary에 작성된 전체 Post 수 조회 (84일)")
+    public Map<Date, Integer> getAllPostCnt(@RequestBody HashMap<String, Integer> input) {
+    	int uid = input.get("uid");
+    	int did = input.get("did");
+    	
+    	return postService.getAllPostCnt(uid, did); 
     }
     
     @GetMapping("/posts/rate/odop")

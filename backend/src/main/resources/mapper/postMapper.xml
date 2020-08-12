@@ -119,6 +119,16 @@
 		group by date
 		having date>=DATE_FORMAT(date_sub(now(), interval 84 day), '%Y%m%d')) temp;
 	</select>
+	
+	<select id="getAllPostCnt" resultType="Map">
+		select date_format(c_date, '%Y-%m-%d') as date, count(*) cnt
+		from post
+		where uid = #{uid}
+		and is_temp = 0
+		<if test='did != "0"'>and did = #{did}</if>
+		group by date
+		having date between date_format(date_sub(now(), interval 3 month), '%Y-%m-%d') and date_format(date_sub(now(), interval 1 day), '%Y-%m-%d')
+	</select>
 </mapper>
 
 
