@@ -51,7 +51,8 @@
       :headers="headers"
       :items="group_list"
       :search="search"
-      @click:row="goGroup"  
+      @click:row="goGroup"
+      style="cursor:pointer"
     >
     </v-data-table>
   </v-card>
