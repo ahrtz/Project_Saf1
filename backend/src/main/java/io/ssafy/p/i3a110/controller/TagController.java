@@ -46,10 +46,13 @@ public class TagController {
 		return tagService.getTagsByKeyword(keyword);
 	}
 	
-	@GetMapping("/tags")
+	@PostMapping("/tags/rank")
 	@ApiOperation(value = "회원 별 태그 상위 num개 조회")
-	public List<HashMap<Object, Object>> getTopNTags(String uid, int num){
-		return tagService.getTopNTags(uid,num);
+	public List<HashMap<Object, Object>> getTopNTags(@RequestBody HashMap<String, Integer> map){
+		int did = map.get("did");
+		int uid = map.get("uid");
+		int num = map.get("num");
+		return tagService.getTopNTags(did,uid,num);
 	}
 	
 	@Auth
