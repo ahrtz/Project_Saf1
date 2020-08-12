@@ -55,7 +55,7 @@
 
        <v-container fluid>
            <v-row>
-               <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-if="blog.title.includes(keyw)">
+               <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-show="blog.title.includes(keyw)">
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
@@ -98,7 +98,9 @@
                     </v-card>
                 </v-hover>
                 </v-col>
-
+                <img v-if="!blog.title.includes(keyw)" src="/static/images/Blogit_logo_grey.png">
+   
+    
            </v-row>
        </v-container>
     </div>
