@@ -64,7 +64,7 @@ public class GitHubRestApiHelper {
 			if(id.equals(gitId)) return true;
 			else return false;
 		} catch(HttpException e) {
-			System.out.println(e.getMessage());
+			System.out.println("GitID : " + gitId + " / AccesToken : " + accessToken +" / Error : "+ e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

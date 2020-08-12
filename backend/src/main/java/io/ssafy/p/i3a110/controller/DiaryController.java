@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,10 +33,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.ssafy.p.i3a110.dto.DiaryDto;
+import io.ssafy.p.i3a110.dto.LangDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.DiaryService;
+import io.ssafy.p.i3a110.service.LangService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -46,6 +52,8 @@ public class DiaryController {
     private DiaryService diaryService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LangService langService;
 
     @Value("${application.staticPath}")
     private String staticPath;
@@ -53,11 +61,24 @@ public class DiaryController {
     // 전체 Diary 검색 (type - 0: Blog, 1: Project, 2 or Other: All)
     @PostMapping("/diaries/{uid}")
     @ApiOperation(value = "전체 다이어리 조회")
-    public List<DiaryDto> getAllDiaries(@PathVariable String uid, @RequestBody HashMap<String, String> map) {
+    public Object getAllDiaries(@PathVariable String uid, @RequestBody HashMap<String, String> map) {
         int isProj = Integer.parseInt(map.get("isProj"));
         String keyword = map.get("keyword");
         
-    	return diaryService.getAllDiariesByKeyword(Integer.parseInt(uid), isProj, keyword);
+        List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+        List<DiaryDto> diaries = diaryService.getAllDiariesByKeyword(Integer.parseInt(uid), isProj, keyword);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	for(DiaryDto diary : diaries) {
+    		if(diary.getIsProj()==1) {
+	    		HashMap<Object, Object> form = objectMapper.convertValue(diary, HashMap.class);
+	    		form.put("sdate", diary.getSDate());
+	    		form.put("edate", diary.getEDate());
+	    		ArrayList<String> languages = langService.getLanguagesByDid(diary.getId());
+	    		form.put("languages",languages);
+	    		output.add(form);
+    		}
+    	}
+    	return output;
     }
 
     // Diary 상세 조회
@@ -80,6 +101,7 @@ public class DiaryController {
                               @RequestParam String img,
                               @RequestParam String gitUrl,
                               @RequestParam int isProj,
+                              @RequestParam (required = false) String languages,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date sdate ,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
@@ -93,7 +115,7 @@ public class DiaryController {
         diary.setIsProj(isProj);
         diary.setSDate(sdate);
         diary.setEDate(edate);
-
+        
         if (file != null) {
             long timestamp = System.currentTimeMillis();
             StringBuilder builder = new StringBuilder(staticPath);
@@ -110,6 +132,17 @@ public class DiaryController {
         }
 
     	diaryService.createDiary(diary);
+    	
+    	if(languages != null) {
+    		StringTokenizer st = new StringTokenizer(languages, ",");
+    		while(st.hasMoreTokens()) {
+    			String language = st.nextToken();
+    			LangDto lang = new LangDto();
+    			lang.setDid(diary.getId());
+    			lang.setLanguage(language);
+    			langService.createLang(lang);
+    		}
+    	}
     	return new ResponseEntity<>(diary.getId(), HttpStatus.OK);
     }
 

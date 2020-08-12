@@ -1,15 +1,15 @@
 ﻿use ssafy;
-Drop TABLE if exists `organization_relation`;
-Drop TABLE if exists `organization`;
-Drop TABLE if exists `likes`;
-Drop TABLE if exists `commit_list`;
-Drop TABLE if exists `comment`;
-Drop TABLE if exists `tag`;
-Drop TABLE if exists `follow`;
-Drop TABLE if exists `scrap`;
-Drop TABLE if exists `post`;
-Drop TABLE if exists `diary`;
-Drop TABLE if exists `user`;
+-- Drop TABLE if exists `organization_relation`;
+-- Drop TABLE if exists `organization`;
+-- Drop TABLE if exists `likes`;
+-- Drop TABLE if exists `commit_list`;
+-- Drop TABLE if exists `comment`;
+-- Drop TABLE if exists `tag`;
+-- Drop TABLE if exists `follow`;
+-- Drop TABLE if exists `scrap`;
+-- Drop TABLE if exists `post`;
+-- Drop TABLE if exists `diary`;
+-- Drop TABLE if exists `user`;
 CREATE TABLE `user` (
     `id` int NOT NULL auto_increment primary key,
     `email` varchar(128) NOT NULL,
@@ -30,6 +30,7 @@ CREATE TABLE `diary` (
     `intro` varchar(256) NULL,
     `img` varchar(256) NULL,
     `git_url` varchar(256) NULL,
+    `git_name` varchar(256) NULL,
     `is_proj` Boolean NULL,
     `s_date` datetime NULL,
     `e_date` datetime NULL,
@@ -64,6 +65,7 @@ CREATE TABLE `commit_list` (
     `author` varchar(256) NULL,
     `msg` varchar(1000) NULL,
     `date` datetime NOT NULL,
+    `url` varchar(256) NOT NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
@@ -123,7 +125,12 @@ CREATE TABLE `rate` (
     FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
-
+create table `lang` (
+	`id` int NOT NULL auto_increment primary key,
+    `did` int not null,
+    `language` varchar(128),
+    FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('dominicong@naver.com', '1234','창교이','github.com/dominicong','test@test.com','창경입니다.',NULL,NULL,false,false);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test@test.com', 'test','test','test','github.com/test','for test user',NULL,NULL,false,false);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test2@test.com', NULL,'test2','test2','github.com/test2','for test user2',NULL,'hashed_git_token',true,true);
@@ -188,8 +195,9 @@ INSERT INTO likes(uid,pid,status) VALUES(2,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(3,2,true);
 INSERT INTO likes(uid,pid,status) VALUES(4,2,true);
 -- //여기서부터는 diary 테이블에 'git_name'이라는 컬럼 추가합니다. 컬럼 순서는 기존의 img 컬럼과 git_url 컬럼 사이에 위치합니다.
-alter table `diary` add column `git_name` varchar(128);
-alter table `diary` modify column `git_name` varchar(128) after `img`;
+-- alter table `diary` add column `git_name` varchar(128);
+-- alter table `diary` modify column `git_name` varchar(128) after `img`;
+-- alter table `commit_list` add column `url` varchar(256) not null;
 
 set sql_safe_updates=0;
 
@@ -227,4 +235,5 @@ select * from user;
 select * from commit_list;
 select * from follow;
 select * from rate;
+select * from lang;
 commit;

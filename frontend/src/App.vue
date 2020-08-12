@@ -58,6 +58,15 @@ input, .v-text-field__slot, label {
   font-size: 12px !important;
 }
 
+.v-btn {
+  font-family: NoTo Sans KR,sans-serif !important;
+  padding: 0 16px !important;
+  font-weight: 600;
+  letter-spacing: 0px;
+  height: 40px !important;
+  border-radius: 6px;
+}
+
 .v-application .primary {
   background-color: #0051cb !important;
   border-color: #0051cb !important;
@@ -70,6 +79,21 @@ input, .v-text-field__slot, label {
   color: #0051cb !important;
   box-shadow: none !important;
   border: solid 1px #0051cb !important;
+}
+
+.v-application .error {
+  background-color: #db4455 !important;
+  border-color: #db4455 !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.v-application .info {
+  background-color: #fff !important;
+  border-color: #0051cb !important;
+  border: solid 1px;
+  box-shadow: none !important;
+  color: #0051cb !important;
 }
 
 .v-subheader {

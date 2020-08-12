@@ -46,13 +46,13 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name:'Login',
+      name: 'Login',
       component: Login,
     },
-    
+
     {
       path: '/:uid',
-      name:'MainPagefor',
+      name: 'MainPagefor',
       component: MainPagefor,
     },
     {
@@ -61,9 +61,9 @@ const router = new Router({
       component: tmp
     },
     {
-      path:'/:uid/tmppost',
-      name:'tmpPost',
-      component:tmpPost
+      path: '/:uid/tmppost',
+      name: 'tmpPost',
+      component: tmpPost
     },
     // {
     //   path: '/',
@@ -73,17 +73,17 @@ const router = new Router({
     // 회원 관리
     {
       path: '/:uid/account/detail',
-      name:'AccountDetail',
+      name: 'AccountDetail',
       component: AccountDetail,
     },
     {
       path: '/:uid/account/follow',
-      name :'Follow',
+      name: 'Follow',
       component: Follow
     },
     {
       path: '/:uid/account/scrap',
-      name : 'Scrap',
+      name: 'Scrap',
       component: Scrap
     },
     // {
@@ -93,80 +93,80 @@ const router = new Router({
     // },
     {
       path: '/signup',
-      name:'SignUp',
+      name: 'SignUp',
       component: SignUp,
     },
     // 다이어리
 
-        //프로젝트
+    //프로젝트
     {
       path: '/diary/projects',
-      name:'Project',
+      name: 'Project',
       component: Project,
     },
     {
-      path:'/diary/projects/add',
-      name:'ProjectAdd',
+      path: '/diary/projects/add',
+      name: 'ProjectAdd',
       component: ProjectAdd,
-      
+
     },
 
     {
-      path:'/diary/projects/:did/new',
-      name:'NewProjectPost',
+      path: '/diary/projects/:did/new',
+      name: 'NewProjectPost',
       component: NewProjectPost
     },
     //블로그
     {
       path: '/:uid/diary',
-      name:'DiaryMain',
+      name: 'DiaryMain',
       component: DiaryMain,
     },
     {
-      path : '/diary/blogs/add',
-      name : 'BlogAdd',
-      component : BlogAdd
+      path: '/diary/blogs/add',
+      name: 'BlogAdd',
+      component: BlogAdd
     },
     {
-      path:'/:uid/diary/blogs/:did',
-      name:'BlogDetail',
-      component:BlogDetail
+      path: '/:uid/diary/blogs/:did',
+      name: 'BlogDetail',
+      component: BlogDetail
     },
     {
-      path:'/:uid/diary/:pid',
-      name:'PostDetail',
-      component:PostDetail
+      path: '/:uid/diary/:pid',
+      name: 'PostDetail',
+      component: PostDetail
     },
     {
-      path:'/diary/blog/:did/new',
-      name:'NewBlogPost',
-      component:NewBlogPost
+      path: '/diary/blog/:did/new',
+      name: 'NewBlogPost',
+      component: NewBlogPost
     },
     {
-      path:'/diary/:pid/update',
-      name:'UpdatePost',
-      component:UpdatePost
+      path: '/diary/:pid/update',
+      name: 'UpdatePost',
+      component: UpdatePost
     },
     // 그룹
     {
-      path:'/:uid/group',
-      name:'GroupMain',
+      path: '/:uid/group',
+      name: 'GroupMain',
       component: GroupMain
     },
     {
-      path:'/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
-      name:'MemberList',
-      component : MemberList
+      path: '/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
+      name: 'MemberList',
+      component: MemberList
     },
     {
-      path:'/group/:gid/groupdetail',
-      name:'GroupDetail',
+      path: '/group/:gid/groupdetail',
+      name: 'GroupDetail',
       component: GroupDetail
     },
     //소셜로그인용
     {
-      path:'/social/success-callback',
-      name:'socialSuccess',
+      path: '/social/success-callback',
+      name: 'socialSuccess',
       component: socialSuccess,
       // redirect: { name: 'DairyMain' }
 

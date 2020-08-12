@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.ssafy.p.i3a110.dao.LangDao">
+
+	<insert id="createLang" parameterType="LangDto">
+       	insert into lang(did, language)
+       	values (#{did}, #{language})
+	</insert>
+
+	<select id="getLanguagesByDid" resultType="String">
+		select language
+		from lang
+		where did = #{did}
+	</select>
+</mapper>    
+    
+    
+    
+    
+    
+    

@@ -78,8 +78,11 @@
                            {{blog.title}}
                         </v-card-title>
                         <v-card-subtitle>
-                            <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
+                            <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
+                            </div> -->
+                            <div style="color:white;font-weight:bold;">
+                                생성일자 : {{blog.sdate}}
                             </div>
                         </v-card-subtitle>
                         <v-card-text style="color:white;font-weight:bold;">
