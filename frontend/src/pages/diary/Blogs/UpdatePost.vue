@@ -88,16 +88,31 @@
         <br />
         <!-- tags -->
         <!-- TODO : 오른쪽으로 나열하고 싶은데 잘 안됨 -->
-        <div class="d-flex flex-row mb-6" flat tile v-for="tag in tags" :key="'t-'+tag.id">
+        <div class="d-flex flex-row mb-6" flat tile v-for="(tag,index) in originaltag" :key="'t-1'+index">
           <div class="pa-2">
             <v-card
               color="grey lighten-4"
             >
-              <a @click="searchTag(tag.name)">#{{tag.name}} &nbsp; </a>
-              <button @click="deleteTag(tag.name)"> X </button>
+              <a >#{{tag}} &nbsp; </a>
+              <button @click="tagdelete(tag.id)"> X </button>
             </v-card>
           </div>
         </div>
+<!-- 새태그 넣기 -->
+        <div class="d-flex flex-row mb-6" flat tile v-for="(tag,index) in tags" :key="'t-'+index">
+          <div class="pa-2">
+            <v-card
+              color="grey lighten-4"
+            >
+              <a >#{{tag}} &nbsp; </a>
+              <button @click="removetag(tag)"> X </button>
+            </v-card>
+          </div>
+        </div>
+
+
+
+
 
         <br />
         <div class="d-flex" style="margin-top: 72px">
@@ -166,6 +181,7 @@ export default {
           name:''
         },
         tags:[],
+        originaltag:{},
         pid:this.$route.params.pid,
         selected:[] ,
         selectedCommits:[],
@@ -229,7 +245,7 @@ export default {
       //tags 가져오기
       try{
           let tmpspace3= await this.$api.tagIndex(this.pid)
-          this.tags = tmpspace3;
+          this.originaltag = tmpspace3;
         }catch(e){
           console.log(e)
       }
@@ -253,40 +269,55 @@ export default {
       goback(){
             this.$router.go(-1)
         },
-      async addtag(){
+      removetag(data){
+      let index = this.tags.indexOf(data)
+      this.tags.splice(index,1)
+      },
+      async tagdelete(id){
+        this.$api.deleteTag(id)
+        let tmpspace3= await this.$api.tagIndex(this.pid)
+        this.originaltag = tmpspace3;
+      }
+      ,
+      addtag(){
         if(this.tag == '' || this.tag == null){
           alert('값이 입력되지 않았습니다');
-          return;
+          
         }
-        for(var i=0;i<this.tags.length;i++){
-          if(this.tags[i].name.toLowerCase() == this.tag.toLowerCase()){
-            alert('중복된 태그 입니다');
-            return;
+        else if(this.tags.length!=0){
+            for(var i=0;i<this.tags.length;i++){
+              if(this.tags[i].toLowerCase() == this.tag.toLowerCase()){
+                alert('중복된 태그 입니다');
+                this.tag = '';
+                return
+                
+          
+              }
+            }
+        }
+        else if (this.originaltag.length!=0){
+          for(var i=0;i<this.originaltag.length;i++){
+            if(this.originaltag[i].name.toLowerCase()==this.tag.toLowerCase()){
+              alert('중복된 태그 입니다');
+                this.tag = '';
+                return
+            }
           }
         }
-        this.newtag.pid = this.pid;
-        this.newtag.name = this.tag;
-        try{
-          await this.$api.createTag(this.newtag)
-        }catch(e){
-          console.log(e)
-        }
-        this.tag = '';
+          this.tags.push(this.tag)
+          this.tag = '';
+        
+        
         //tags 가져오기
-        try{
-            let tmpspace3= await this.$api.tagIndex(this.pid)
-            this.tags = tmpspace3;
-        }catch(e){
-          console.log(e)
-        }
+        
       },
+
+
+
       addcommit(commit){
         this.post.selected.push(commit)
       },
-      toggle(){
-        this.$emit('input', !this.value);
-        console.log(this.post);
-      },
+
       async writePost(){
         try{
           this.post.isTemp=0
@@ -305,6 +336,13 @@ export default {
                     console.log('성공',i)
                     }
                     }
+                if (this.tags.length!=0){
+                  for(var i=0;i<this.tags.length;i++){
+                    this.newtag.pid=this.pid
+                    this.newtag.name=this.tags[i]
+                    await this.$api.createTag(this.newtag)
+                  }
+                }
                     this.$router.push({name : 'PostDetail', params :{uid:this.config.uid,pid:this.pid}})
                     console.log(this.selected)
                 }catch(e){

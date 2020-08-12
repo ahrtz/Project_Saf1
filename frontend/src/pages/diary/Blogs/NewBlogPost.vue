@@ -91,12 +91,27 @@
 
         <h3>태그</h3>
         <div class="d-flex">
-        <v-text-field label="태그를 검색 혹은 추가" v-model="tag" @keyup.enter="addtag()" @keyup.space="addtag()"></v-text-field>
+        <v-text-field label="태그를  추가" v-model="tag" @keyup.enter="addtag()" @keyup.space="addtag()"></v-text-field>
         <div class="d-flex justify-center align-center flex-grow-0 new-blog-post-btn" @click="addtag()">태그추가</div>
         </div>
+
         <br />
-        {{tags}}
+        <div class="d-flex flex-row mb-6" flat tile v-for="(tag,index) in tags" :key="'t-'+index">
+          <div class="pa-2">
+            <v-card
+              color="grey lighten-4"
+            >
+              <a >#{{tag}} &nbsp; </a>
+              <button @click="removetag(tag)"> X </button>
+            </v-card>
+          </div>
+        </div>
+        
         <br />
+
+
+
+
         <div class="d-flex" style="margin-top: 72px">
           <div
             class="d-flex justify-center align-center flex-grow-0 new-blog-post-btn-white"
@@ -165,6 +180,7 @@ export default {
       dialog:false,
       diarys:'',
       tag: '',
+      
       tags: [],
       did: this.$route.params.did,
       selected: [],
@@ -188,7 +204,9 @@ export default {
       },
       commitList: [],
       tmppost:[],
-    
+      newtag:{
+
+      }
     
     };
   },
@@ -231,18 +249,38 @@ export default {
     goback() {
       this.$router.go(-1);
     },
-    addtag() {
-      const tmp = '#' + this.tag;
-      this.tags.push(tmp);
-      this.tag = '';
-    },
+    removetag(data){
+      let index = this.tags.indexOf(data)
+      this.tags.splice(index,1)
+    }
+    ,
+    addtag(){
+        if(this.tag == '' || this.tag == null){
+          alert('값이 입력되지 않았습니다');
+          
+        }
+        else if(this.tags.length!=0){
+            for(var i=0;i<this.tags.length;i++){
+              if(this.tags[i].toLowerCase() == this.tag.toLowerCase()){
+                alert(this.tags[i],this.tag.toLowerCase(),"###");
+                this.tag = '';
+                return
+                
+          
+              }
+            }
+        }
+          this.tags.push(this.tag)
+          this.tag = '';
+        
+        
+        //tags 가져오기
+        
+      },
     addcommit(commit) {
       this.post.selected.push(commit);
     },
-    toggle() {
-      this.$emit('input', !this.value);
-      console.log(this.post);
-    },
+    
     async writePost() {
       try {
         let post = await this.$api.savePost(this.post);
@@ -259,6 +297,16 @@ export default {
             console.log('성공',i)
             }
         }
+        // 여기선 태그를 저장해줘야댐 
+        if (this.tags.length!=0){
+          for(var i=0;i<this.tags.length;i++){
+            this.newtag.pid=post.data
+            this.newtag.name=this.tags[i]
+            await this.$api.createTag(this.newtag)
+          }
+        }
+
+
         this.$router.push({name : 'BlogDetail', params :{uid:this.config.uid,did:this.did}});
         console.log(this.selected)
       }catch(e){
@@ -289,6 +337,13 @@ export default {
             console.log('성공',i)
             }
         }
+        if (this.tags.length!=0){
+          for(var i=0;i<this.tags.length;i++){
+            this.newtag.pid=post.data
+            this.newtag.name=this.tags[i]
+            await this.$api.createTag(this.newtag)
+          }
+        }
         this.$router.push({name : 'BlogDetail', params :{uid:this.config.uid,did:this.did}});
         console.log(this.selected)
       }catch(e){
@@ -302,9 +357,7 @@ export default {
     },
 
   },
-  // watch:{
-  //   commitList: tempcommit()
-  // },
+
   
   computed: {
         
