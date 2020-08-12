@@ -16,7 +16,7 @@
         >{{user.email}}</a>
       </div>
       <div v-if="user.gitUrl != 'null' || user.gitUrl != ''" class="d-flex">
-        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">link</v-icon>
+        <v-icon v-if="user.gitUrl != ''" class="d-flex flex-grow-0" color="#21262e" size="20">link</v-icon>
         <a
           class="d-flex"
           v-if="user.gitUrl"
