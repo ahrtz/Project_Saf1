@@ -192,7 +192,8 @@ public class GitHubRestApiHelper {
 				String sha1 = commit.getSHA1();
 				Date date = commit.getCommitDate();
 				String msg = commit.getCommitShortInfo().getMessage();
-				list.add(new CommitInfoDto(author, sha1, date, msg));
+				String url = commit.getHtmlUrl().toString();
+				list.add(new CommitInfoDto(author, sha1, date, msg, url));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
