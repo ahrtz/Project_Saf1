@@ -30,9 +30,9 @@ import UpdatePost from '../pages/diary/Blogs/UpdatePost.vue'
 
 
 //Group
-import GroupMain from '../pages/Group/TempGroupMain.vue' //
+import GroupMain from '../pages/Group/GroupMain.vue' //
 import MemberList from '../pages/Group/MemberList.vue'
-import GroupDetail from '../pages/Group/TempGroupDetail.vue'
+import GroupDetail from '../pages/Group/GroupDetail.vue'
 
 //social login
 import socialSuccess from '../pages/user/socialSuccess.vue'

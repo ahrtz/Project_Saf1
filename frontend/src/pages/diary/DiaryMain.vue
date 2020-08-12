@@ -55,7 +55,7 @@
 
        <v-container fluid>
            <v-row>
-               <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-if="blog.title.includes(keyw)">
+               <v-col cols="4" v-for="blog in diarys" :key="blog.id" >  <!--v-if="blog.title.includes(keyw)"-->
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
