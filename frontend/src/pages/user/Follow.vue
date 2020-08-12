@@ -27,7 +27,7 @@
                             />
                           </v-list-item-avatar>
                           <v-list-item-content class="follow">
-                            <v-list-item-title >{{follower.nickname}}</v-list-item-title>
+                            <v-list-item-title>{{follower.nickname}}</v-list-item-title>
                             <v-list-item-subtitle class="font-weight-bold">{{follower.email}}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -112,7 +112,6 @@ export default {
     followeetype: {
       type: '1',
     },
-    followData: [],
   }),
   // 한번 쓰고 냅둘 것은 함수화 하지 말고 created 안에 넣는 걸 선호.
   // update와 같이 수정 작업으로 인한 재호출이 필요할 떈 함수화가 더 낫다.
@@ -121,9 +120,6 @@ export default {
     this.uid = this.$store.state.user.id;
     this.getFollowers();
     this.getFollowees();
-    let tmpspace = await this.$api.getfollowInfo(this.uid);
-    this.followData = tmpspace;
-    this.isDataIn = true;
   },
   methods: {
     async getFollowers() {
@@ -142,22 +138,6 @@ export default {
       } catch (e) {
         console.log(e);
         console.log('getFollowees() 실패.');
-      }
-    },
-    async followDelete(followid) {
-      try {
-        await this.$api.deletefollow(followid);
-        console.log('삭제 성공');
-
-        try {
-          let tmpspace = await this.$api.getfollowInfo(this.uid);
-          this.followData = tmpspace;
-          console.log(tmpspace);
-        } catch (e) {
-          console.log(e);
-        }
-      } catch (e) {
-        console.log(e);
       }
     },
   },

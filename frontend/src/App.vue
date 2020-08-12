@@ -58,6 +58,11 @@ input, .v-text-field__slot, label {
   font-size: 12px !important;
 }
 
+.v-btn {
+  font-family: NoTo Sans KR,sans-serif !important;
+  padding: 0 16px !important;
+}
+
 .v-application .primary {
   background-color: #0051cb !important;
   border-color: #0051cb !important;
