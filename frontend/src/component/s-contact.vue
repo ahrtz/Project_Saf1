@@ -54,6 +54,7 @@ export default {
   name: 's-contact',
   data() {
     return {
+      loginCheck : '',
       user: {},
       dummy: this.$route.params.uid,
       mydata: '',
@@ -65,13 +66,22 @@ export default {
       alert('업데이트 예정입니다.');
     },
     follow() {
-      if (this.followcheck == false) {
+      if(this.loginCheck)
+      {
+        if (this.followcheck == false) {
         this.followcheck = true;
         this.$api.makeFollow({ userTo: this.dummy, status: 1 });
-      } else {
+        } else {
         this.followcheck = false;
         this.$api.makeFollow({ userTo: this.dummy, status: 0 });
+        } 
       }
+      else
+      {
+        alert('로그인이 필요합니다.');
+        this.$router.push({name : 'Login'});
+      }
+      
     },
   },
   async created() {
@@ -79,6 +89,8 @@ export default {
     try {
       let tmpspace = await this.$api.contactBar(this.$route.params.uid);
       this.user = tmpspace.data;
+      this.loginCheck = this.$store.state.isLoggedIn;
+
       console.log(this.user, 'vdasvdsa');
     } catch (e) {
       console.log(e);
