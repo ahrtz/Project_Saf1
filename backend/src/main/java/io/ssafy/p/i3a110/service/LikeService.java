@@ -39,4 +39,8 @@ public class LikeService {
 			return likeDao.getLikeCntByDiary();
 		}
 	}
+	
+	public int getLikeCntByUid(int uid) {
+		return likeDao.getLikeCntByUid(uid);
+	}
 }

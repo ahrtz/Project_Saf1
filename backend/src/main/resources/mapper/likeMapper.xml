@@ -35,6 +35,12 @@
     	from post
     	group by did
     </select>
+    
+    <select id="getLikeCntByUid" resultType="Integer">
+    	select ifnull(sum(cnt_like), 0) as cnt
+    	from post
+    	where uid = #{uid}
+    </select>
 </mapper>
 
 
