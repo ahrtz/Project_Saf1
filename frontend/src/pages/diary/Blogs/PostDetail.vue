@@ -44,7 +44,7 @@
                 :key="commit.cid"
               >
                 <div class="post-detail-commit-date">Commits on {{commit.date}}</div>
-                <div class="d-flex flex-column justify-center post-detail-commit">
+                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(commit.url)">
                   <div class="post-detail-commit-title">{{commit.msg}}</div>
                   <div class="d-flex">
                     <div class="post-detail-commit-author">{{commit.author}}</div>
@@ -62,7 +62,7 @@
             <div v-if="commitcheck">
               <div class="post-detail-commit-box" v-for="commit in commitList" :key="commit.cid">
                 <div class="post-detail-commit-date">Commits on {{commit.date}}</div>
-                <div class="d-flex flex-column justify-center post-detail-commit">
+                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(commit.url)">
                   <div class="post-detail-commit-title">{{commit.msg}}</div>
                   <div class="d-flex">
                     <div class="post-detail-commit-author">{{commit.author}}</div>
@@ -373,6 +373,9 @@ export default {
         console.log(e);
       }
     },
+    mvUrl(url){
+      window.open(url, "_blank");
+    }
   },
   computed: {
     limited: function () {
@@ -520,6 +523,7 @@ export default {
 
 .post-detail-commit:hover {
   background: #0051cb11;
+  cursor: pointer;
 }
 
 .post-detail-commit-title {
