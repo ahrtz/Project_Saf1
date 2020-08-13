@@ -1,0 +1,142 @@
+show tables;
+
+-- Table delete --
+DROP TABLE if exists `organization_relation`;
+DROP TABLE if exists `organization`;
+DROP TABLE if exists `likes`;
+DROP TABLE if exists `commit_list`;
+DROP TABLE if exists `comment`;
+DROP TABLE if exists `tag`;
+DROP TABLE if exists `follow`;
+DROP TABLE if exists `scrap`;
+DROP TABLE if exists `post`;
+DROP TABLE if exists `diary`;
+DROP TABLE if exists `user`;
+DROP TABLE if exists `rate`;
+DROP TABLE if exists `lang`;
+
+
+-- Table initialize --
+CREATE TABLE `user` (
+    `id` int NOT NULL auto_increment primary key,
+    `email` varchar(128) NOT NULL unique key,
+    `pwd` varchar(128) NOT NULL,
+    `nickname` varchar(128) NOT NULL,
+    `git_id` varchar(128) NULL,
+    `git_url` varchar(128) NULL,
+    `intro` varchar(256) NULL,
+    `img` varchar(128) NULL,
+    `git_token` varchar(128) NULL,
+    `is_social` boolean default false,
+    `is_certified` boolean default false
+) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `diary` (
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `title` varchar(128) NOT NULL,
+    `intro` varchar(256) NULL,
+    `img` varchar(256) NULL,
+    `git_url` varchar(256) NULL,
+    `git_name` varchar(256) NULL,
+    `is_proj` Boolean default false,
+    `s_date` datetime NULL,
+    `e_date` datetime NULL,
+    `repo_id` varchar(128) NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `post` (
+    `id` int NOT NULL auto_increment primary key,
+    `did` int NOT NULL,
+    `uid` int NOT NULL,
+    `title` varchar(128) NOT NULL,
+    `content` Text NULL,
+    `c_date` datetime NULL,
+    `priority` int default 0,
+    `cnt_like` int default 0,
+    `is_temp` boolean default false,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `likes` (
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `pid` int NOT NULL,
+    `status` boolean default false,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `commit_list` (
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `pid` int NOT NULL,
+    `sha` VARCHAR(255) NOT NULL,
+    `author` varchar(256) NOT NULL,
+    `msg` varchar(1000) NOT NULL,
+    `date` datetime NOT NULL,
+    `url` varchar(256) NOT NULL,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `tag` (
+    `id` int NOT NULL auto_increment primary key,
+    `pid` int NOT NULL,
+    `name` varchar(128) NOT NULL,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `scrap` (
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `pid` int NOT NULL,
+    `status` boolean default false,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `follow` (
+    `id` int NOT NULL auto_increment primary key,
+    `user_from` int NOT NULL,
+    `user_to` int NOT NULL,
+    `status` boolean default false,
+   FOREIGN KEY (user_from) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (user_to) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `organization` (
+    `id` int NOT NULL auto_increment primary key,
+    `lid` int NOT NULL,
+    `name` varchar(128) NOT NULL,
+    `intro` varchar(256) NULL,
+  FOREIGN KEY (lid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `organization_relation` (
+    `id` int NOT NULL auto_increment primary key,
+    `oid` int NOT NULL,
+    `uid` int NOT NULL ,
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (oid) REFERENCES organization(id) ON UPDATE CASCADE ON DELETE CASCADE  
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `comment` (
+    `id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `pid` int NOT NULL,
+    `content` varchar(200) NOT NULL,
+    `c_date` timestamp default now(),
+  FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (pid) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+)DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `rate` (
+	`id` int NOT NULL auto_increment primary key,
+    `uid` int NOT NULL,
+    `odoc_cnt` varchar(128) null,
+    `odoc_rate` varchar(128) null,
+    `odop_cnt` varchar(128) null,
+    `odop_rate` varchar(128) null,
+    FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+CREATE TABLE `lang` (
+	`id` int NOT NULL auto_increment primary key,
+    `did` int not null,
+    `language` varchar(128) null,
+    FOREIGN KEY (did) REFERENCES diary(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+commit;
+
