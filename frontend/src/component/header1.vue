@@ -80,8 +80,12 @@ export default {
           params: { uid: this.target, test: 2 },
         });
       } else {
-        alert('로그인이 필요합니다.');
-        this.$router.push({ name: 'Login' });
+        this.$router.push({
+          name: 'DiaryMain',
+          params: { uid: this.target, test: 2 },  //이거 test 의도를 모르겠심.. written by 창경.
+        });
+        // alert('로그인이 필요합니다.');
+        // this.$router.push({ name: 'Login' });
       }
     },
     onGroupBtnClick() {
