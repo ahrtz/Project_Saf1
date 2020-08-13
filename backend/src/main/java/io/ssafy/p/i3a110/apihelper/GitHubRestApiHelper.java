@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHCommitQueryBuilder;
+import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositoryStatistics;
@@ -90,6 +91,7 @@ public class GitHubRestApiHelper {
 				String ownerName = repo.getOwnerName();
 				String url = repo.getHtmlUrl().toString();
 				boolean isPrivate = repo.isPrivate();
+				String repoId = String.valueOf(repo.getId());
 				List<String> languages = new ArrayList<String>();
 				
 				Map<String, Long> map = repo.listLanguages();
@@ -98,7 +100,7 @@ public class GitHubRestApiHelper {
 					languages.add(keys.next());
 				}
 				
-				RepositoryInfoDto ghrepo = new RepositoryInfoDto(name,ownerName,url,isPrivate, languages);
+				RepositoryInfoDto ghrepo = new RepositoryInfoDto(name,ownerName,url,isPrivate, languages, repoId);
 				list.add(ghrepo);
 			}
 		} catch (IOException e) {
@@ -108,16 +110,18 @@ public class GitHubRestApiHelper {
 	}
 	
 	// 날짜(Date) ,커밋수 형태로 리턴(오늘 날짜 포함 1년) 
-	public HashMap<Date, Integer> getCommitCnt(String repoName) {
+	public HashMap<Date, Integer> getCommitCnt(String repoId) {
 		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
 		try {
 			this.github.checkApiUrlValidity();
-			Map<String, GHRepository> map = this.person.getRepositories();
-			if(!map.containsKey(repoName)) {
-				cal.put(Calendar.getInstance().getTime(), -1);
-				return cal;
+			
+			GHRepository repo = null;
+			try {
+				repo = this.github.getRepositoryById(repoId);
+			} catch(GHFileNotFoundException e) {
+				System.out.println(e);
+				return null;
 			}
-			GHRepository repo = map.get(repoName);
 			GHRepositoryStatistics stat = repo.getStatistics();
 			List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 			for (int i = 0; i < weekActivityList.size(); i++) {
@@ -129,25 +133,29 @@ public class GitHubRestApiHelper {
 					weekStart += 86400L;
 				}
 			}
+			return cal;
+		} catch(GHFileNotFoundException e) {
+			System.out.println(e);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		cal.put(Calendar.getInstance().getTime(), -1);
 		return cal;
 	}
 	
 	// 사용자가 현재 등록한 Projects에 관한 Commit 수 합산
-	public HashMap<Date, Integer> getAllCommitCnt(List<String> projectNames) {
+	public HashMap<Date, Integer> getAllCommitCnt(List<String> repoIds) {
 		HashMap<Date, Integer> cal = new HashMap<Date, Integer>();
 		try {
 			this.github.checkApiUrlValidity();
-			for (String name : projectNames) {
-				Map<String, GHRepository> map = this.person.getRepositories();
-				if(!map.containsKey(name)) {
-					cal.put(Calendar.getInstance().getTime(), -1);
+			for(String repoId : repoIds) {
+				GHRepository repo = null;
+				try {
+					repo = this.github.getRepositoryById(repoId);
+				} catch(GHFileNotFoundException e) {
+					System.out.println(e);
 					continue;
 				}
-				GHRepository repo = map.get(name);
-				
 				GHRepositoryStatistics stat = repo.getStatistics();
 				List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 				for (int i = 0; i < weekActivityList.size(); i++) {
@@ -155,7 +163,7 @@ public class GitHubRestApiHelper {
 					List<Integer> dayCnt = weekActivity.getDays();
 					Long weekStart = weekActivityList.get(i).getWeek();
 					for (int j = 0; j < dayCnt.size(); j++) {
-				        Date date = new Date(weekStart * 1000);
+						Date date = new Date(weekStart * 1000);
 						if(cal.containsKey(date)) {
 							cal.put(date, cal.get(date) + dayCnt.get(j));
 						}else {
@@ -171,16 +179,22 @@ public class GitHubRestApiHelper {
 		return cal;
 	}
 	
-	public List<CommitInfoDto> getCommitInfoListByDate(String repoName, String date){
-		return getCommitInfoListByPeriod(repoName, date, date);
+	public List<CommitInfoDto> getCommitInfoListByDate(String repoId, String date){
+		return getCommitInfoListByPeriod(repoId, date, date);
 	}
 	
 	// 날짜(Date type) 입력 
-	public List<CommitInfoDto> getCommitInfoListByPeriod(String repoName, String sDate, String eDate){
+	public List<CommitInfoDto> getCommitInfoListByPeriod(String repoId, String sDate, String eDate){
 		List<CommitInfoDto> list = new ArrayList<CommitInfoDto>();
 		try {
 			this.github.checkApiUrlValidity();
-			GHRepository repo = person.getRepository(repoName);
+			GHRepository repo = null;
+			try {
+				repo = this.github.getRepositoryById(repoId);
+			} catch(GHFileNotFoundException e) {
+				System.out.println(e);
+				return null;
+			}
 			GHCommitQueryBuilder commitqb = repo.queryCommits();
 			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 			
@@ -203,15 +217,20 @@ public class GitHubRestApiHelper {
 		return list;
 	}
 	
-	public HashMap<String, String> getOdocRate(List<String> projectNames) {
+	public HashMap<String, String> getOdocRate(List<String> repoIds) {
 		HashMap<String, String> output = new HashMap<String, String>();
 		try {
 			this.github.checkApiUrlValidity();
 			boolean[] days = new boolean[84];
 			int doCommitDays = 0;
-			for (String name : projectNames) {
-				Map<String, GHRepository> map = this.person.getRepositories();
-				GHRepository repo = map.get(name);
+			for (String repoId : repoIds) {
+				GHRepository repo = null;
+				try {
+					repo = this.github.getRepositoryById(repoId);
+				} catch(GHFileNotFoundException e) {
+					System.out.println(e);
+					continue;
+				}
 				GHRepositoryStatistics stat = repo.getStatistics();
 				List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 				for (int i = 39, idx = 0; i < 51; i++) {
@@ -235,7 +254,7 @@ public class GitHubRestApiHelper {
 	
 	//////////////////////////////////NEW//////////////////////////////////////
 	
-	public Map<Date, Integer> getAllCommitCnt(List<String> projectNames, String gitid, Date sDate, Date eDate) {
+	public Map<Date, Integer> getAllCommitCnt(List<String> repoIds, String gitid, Date sDate, Date eDate) {
 		eDate = cutTime(eDate);
 		sDate = cutTime(sDate);
 		Calendar calendar = Calendar.getInstance();
@@ -245,11 +264,14 @@ public class GitHubRestApiHelper {
 		Map<Date, Integer> output = getDateMap(sDate, eDate);
 		try {
 			this.github.checkApiUrlValidity();
-			for (String name : projectNames) {
-				Map<String, GHRepository> map = this.person.getRepositories();
-				if(!map.containsKey(name)) continue;
-				GHRepository repo = map.get(name);
-				
+			for (String repoId : repoIds) {
+				GHRepository repo = null;
+				try {
+					repo = this.github.getRepositoryById(repoId);
+				} catch(GHFileNotFoundException e) {
+					System.out.println(e);
+					continue;
+				}
 				GHCommitQueryBuilder commitqb = repo.queryCommits();
 		    	
 				commitqb.since(sDate);
@@ -268,7 +290,7 @@ public class GitHubRestApiHelper {
 		return output;
 	}
 	
-	public Map<String, String> getOdocRate(List<String> projectNames, String gitid) {
+	public Map<String, String> getOdocRate(List<String> repoIds, String gitid) {
 		HashMap<String, String> output = new HashMap<String, String>();
 		
 		Calendar calendar = Calendar.getInstance();
@@ -276,7 +298,7 @@ public class GitHubRestApiHelper {
 		calendar.setTime(eDate);
 		calendar.add(Calendar.MONTH, -3);
 		Date sDate = new Date(calendar.getTimeInMillis());
-		Map<Date, Integer> map = getAllCommitCnt(projectNames, gitid, sDate, eDate);
+		Map<Date, Integer> map = getAllCommitCnt(repoIds, gitid, sDate, eDate);
     	int commitDays = 0;
     	int days = map.size();
     	

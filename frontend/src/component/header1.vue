@@ -1,12 +1,7 @@
 <template>
   <div v-if="!isLoginPage" class="header-container">
     <div class="header-inner">
-      <v-card
-        class="header-flex-container justify-center align-center"
-        flat
-        color="#fff"
-        height="70"
-      >
+      <div class="d-flex align-center">
         <img class="header-logo" @click="gotomain()" src="/static/images/Blogit_simple.png" />
         <div class="d-flex justify-center flex-grow-0 header-menu" @click="gotomaineach()">Overview</div>
         <div class="d-flex justify-center flex-grow-0 header-menu" @click="onDiaryBtnClick()">Diary</div>
@@ -51,7 +46,7 @@
           v-if="islogin==false"
           @click="$router.push({name:'SignUp'})"
         >Signup</div>
-      </v-card>
+      </div>
     </div>
   </div>
 </template>

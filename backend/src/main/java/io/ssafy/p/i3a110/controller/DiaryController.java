@@ -69,14 +69,14 @@ public class DiaryController {
         List<DiaryDto> diaries = diaryService.getAllDiariesByKeyword(Integer.parseInt(uid), isProj, keyword);
     	ObjectMapper objectMapper = new ObjectMapper();
     	for(DiaryDto diary : diaries) {
+    		HashMap<Object, Object> form = objectMapper.convertValue(diary, HashMap.class);
+    		form.put("sdate", diary.getSDate());
+    		form.put("edate", diary.getEDate());
     		if(diary.getIsProj()==1) {
-	    		HashMap<Object, Object> form = objectMapper.convertValue(diary, HashMap.class);
-	    		form.put("sdate", diary.getSDate());
-	    		form.put("edate", diary.getEDate());
 	    		ArrayList<String> languages = langService.getLanguagesByDid(diary.getId());
 	    		form.put("languages",languages);
-	    		output.add(form);
     		}
+    		output.add(form);
     	}
     	return output;
     }
@@ -101,6 +101,7 @@ public class DiaryController {
                               @RequestParam String img,
                               @RequestParam String gitUrl,
                               @RequestParam int isProj,
+                              @RequestParam String repoId,
                               @RequestParam (required = false) String languages,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date sdate ,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate) throws IOException {
@@ -112,6 +113,7 @@ public class DiaryController {
     	diary.setTitle(title);
     	diary.setIntro(intro);
         diary.setGitUrl(gitUrl);
+        diary.setRepoId(repoId);
         diary.setIsProj(isProj);
         diary.setSDate(sdate);
         diary.setEDate(edate);

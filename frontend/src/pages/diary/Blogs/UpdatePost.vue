@@ -218,7 +218,7 @@ export default {
               console.log(tempspace1,'vdsa')
               this.isProj=true
               try{
-                let listCommit = await this.$api.getCommitList({repoName:tempspace1.gitName})
+                let listCommit = await this.$api.getCommitList({repoId:tempspace1.repoId})
                 this.commitList=listCommit
               }
               catch(e){

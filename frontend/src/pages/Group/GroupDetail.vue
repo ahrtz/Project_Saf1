@@ -46,7 +46,7 @@
 
           <v-row style="width: 768px;margin:0 auto;">
             <!-- 그룹 이름 & 그룹 디테일 -->
-            <v-col class="group-detail-info-box">
+            <v-col class="group-detail-ino-box">
                 <div class="group-detail-info-title">그룹 정보</div>
               <div class="group-detail-info-name">{{ group_info.name }}</div>
               <div class="group-detail-info-content">{{ group_info.intro }}</div>
@@ -300,8 +300,8 @@ export default {
             : (member['recent_post'] = this.getRecentPost(
                 this.group_info.userinfo[i].lastPost.date
               ));
-          // member['odoc'] =
-          // member['odop'] =
+          member['odoc'] = this.group_info.userinfo[i].odocRate + "%( " + this.group_info.userinfo[i].odocCnt + " )"
+          member['odop'] = this.group_info.userinfo[i].odopRate + "%( " + this.group_info.userinfo[i].odopCnt + " )" 
 
           templist.push(member);
         }

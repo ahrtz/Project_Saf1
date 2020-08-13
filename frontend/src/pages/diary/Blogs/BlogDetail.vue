@@ -13,7 +13,7 @@
               <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
             </div>
             <div class="d-flex end align-self-end">
-              <p>{{diarydata.sdate.substr(0,10)}} ~ {{diarydata.edate.substr(0,10)}}</p>
+              <p>{{diarydata.sdate ? diarydata.sdate.substr(0,10) : ""}} ~ {{diarydata.sdate ? diarydata.edate.substr(0,10) : ""}}</p>
             </div>            
           </div>
           <div
@@ -96,7 +96,7 @@
 
 
         </div>
-        <Status />
+        <Status v-if="diarydata.gitName" :uid="diaryid.uid" :repoId="diarydata.repoId" :did="diaryid.did" type="project"/>
         <div class="d-flex">
           <div class="d-flex" />
           <v-text-field

@@ -204,5 +204,13 @@ export default {
     },
     async updateDiary(data){
         return (await axios.put(`${baseURL}/diaries`,data))
-    }
+    },
+
+    // status 관련 ~
+    async getCommitStatus(data) {
+        return (await axios.post(`${baseURL}/gits/commits/cnt`, data)).data
+    },
+    async getPostStatus(data) {
+        return (await axios.post(`${baseURL}/posts/cnt`, data)).data
+    },
 }   
