@@ -34,6 +34,7 @@ CREATE TABLE `diary` (
     `is_proj` Boolean NULL,
     `s_date` datetime NULL,
     `e_date` datetime NULL,
+    `repo_id` varchar(128) NULL,
   FOREIGN KEY (uid) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
 )DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 CREATE TABLE `post` (
@@ -135,6 +136,7 @@ INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_soc
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test@test.com', 'test','test','test','github.com/test','for test user',NULL,NULL,false,false);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test2@test.com', NULL,'test2','test2','github.com/test2','for test user2',NULL,'hashed_git_token',true,true);
 INSERT INTO user( email, pwd, nickname,git_id,git_url,intro,img,git_token,is_social,is_certified) VALUES('test3@test.com', NULL,'test3','test3','github.com/test3','for test user3','https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS2pu5gU8U_jMw2G-iOgyG0OwVnK3nRWqi77w&usqp=CAU','hashed_git_token',true,true);
+select * from diary;
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project1','나의 프로젝트1 입니다',NULL,'github.com',true,'2020-07-01','2020-07-22');
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project2','나의 프로젝트2 입니다',NULL,'github.com',true,'2020-06-01','2020-06-22');
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(1,'Project3','나의 프로젝트3 입니다',NULL,'github.com',true,'2020-05-01','2020-05-22');
@@ -151,6 +153,7 @@ INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'B
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Blog2','나의 블로그2 입니다',NULL,'github.com',false,NULL,NULL);
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Blog3','나의 블로그3 입니다',NULL,'github.com',false,NULL,NULL);
 INSERT INTO diary(uid,title,intro,img,git_url,is_proj,s_date,e_date) VALUES(2,'Blog4','나의 블로그4 입니다',NULL,'github.com',false,NULL,NULL);
+select * from post;
 INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 1입니다','글1에대한 컨텐츠입니다','2020-07-02',0,2,false);
 INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 2입니다','글2에대한 컨텐츠입니다','2020-07-03',0,2,false);
 INSERT INTO post(did,uid,title,content,c_date,priority,cnt_like,is_temp) VALUES(1,1,'프로젝트 1 글 3입니다','글3에대한 컨텐츠입니다','2020-07-04',0,2,false);
@@ -236,4 +239,5 @@ select * from commit_list;
 select * from follow;
 select * from rate;
 select * from lang;
+select * from `likes`;
 commit;
