@@ -73,6 +73,10 @@ public class CommentController {
 	public Object addComment(HttpSession session, @RequestBody CommentDto comment) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
+		
+		String content = comment.getContent();
+		if(content.equals("") || content.length()>100) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 		int uid = user.getId();
 		comment.setUid(uid);
 		comment.setCDate(Calendar.getInstance().getTime());

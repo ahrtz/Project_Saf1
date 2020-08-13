@@ -114,6 +114,8 @@ public class PostController {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
         
+        if(post.getContent().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
         post.setUid(user.getId());
         post.setCDate(Calendar.getInstance().getTime());
         post.setCntLike(0);
@@ -127,7 +129,7 @@ public class PostController {
     public Object updatePost(HttpSession httpSession, @RequestBody PostDto post) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-
+        if(post.getContent().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         PostDto oldPost = postService.getPostById(post.getId());
         if(user.getId() == oldPost.getUid()) {
         	oldPost.setTitle(post.getTitle());

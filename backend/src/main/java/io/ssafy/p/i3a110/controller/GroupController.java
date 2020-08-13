@@ -112,6 +112,9 @@ public class GroupController {
 	public Object createGroup(HttpSession session, @RequestBody GroupDto groupDto) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
+		
+		if(groupDto.getName().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 		groupDto.setLid(user.getId());
 		groupService.createGroup(groupDto);
 		
@@ -165,6 +168,7 @@ public class GroupController {
 	public Object updateGroup(HttpSession session, @RequestBody GroupDto groupDto) {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
+		if(groupDto.getName().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid()) {
 			groupService.updateGroup(groupDto);
 			return new ResponseEntity<>(HttpStatus.OK);
