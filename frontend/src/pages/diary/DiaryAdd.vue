@@ -195,6 +195,11 @@ export default {
             this.$router.go(-1)
         },
     async AddProj(){
+        if (this.blogData.title=="" || this.blogData.title==null){
+            alert('title은 필수 값입니다.')
+        }else{
+
+
         try{
             if(this.$refs.file != null){
                 this.blogData.file=this.$refs.file.files[0];
@@ -225,7 +230,7 @@ export default {
             console.log(e)
         }
         
-    
+        }
     }
     }
 }
