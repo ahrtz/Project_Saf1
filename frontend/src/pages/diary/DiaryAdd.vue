@@ -63,7 +63,7 @@
             </v-dialog>
         </v-layout>
      
-        <v-text-field  readonly v-model="repoChecked.repoName" ></v-text-field>
+        <v-text-field  v-if="repoData.length!=0" readonly v-model="repoChecked.repoName" ></v-text-field>
       <v-col cols="12">
             대표 이미지
             <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
@@ -119,11 +119,11 @@ export default {
             },
             blogData:{
                 uid :"" ,
-                title : null,
-                intro : null,
-                img : null, //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
-                gitUrl : null, //얘는 블로그에선 필요없는 요소. 맞지?
-                gitName: null,
+                title : "",
+                intro : "",
+                img : "", //얘는 이미지의 주소가 string 형태로 들어가는거겠지?
+                gitUrl : "", //얘는 블로그에선 필요없는 요소. 맞지?
+                gitName: "",
                 isProj : 0, // 블로그는 프로젝트가 아니니까 무조건 0으로 해놓음.
                 sdate: new Date().toISOString().substr(0, 10),
                 edate: new Date().toISOString().substr(0, 10),
