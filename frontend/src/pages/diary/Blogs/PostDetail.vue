@@ -95,7 +95,8 @@
             <div v-if="!likeData.likechecked" @click="like()" class="post-detail-icon">
               <v-icon color="#db4455" size="32">favorite_border</v-icon>
             </div>
-            <div class="post-detail-like">{{tmp.cntLike}}</div>
+            <!-- <div class="post-detail-like">{{tmp.cntLike}}</div> -->
+            <div class="post-detail-like">{{printLikeCnt}}</div>
             <div @click="scrap" class="post-detail-icon">
               <v-icon color="#e8a317" size="32">stars</v-icon>
             </div>
@@ -186,8 +187,8 @@ export default {
       tags: {},
       commitList: [],
       comments: [],
-      isLogin:false
-      
+      isLogin:false,
+      printLikeCnt :'',
     };
   },
   async created() {
@@ -200,7 +201,8 @@ export default {
     try {
       let tmpspace = await this.$api.postdetail(this.id.pid);
       this.tmp = tmpspace;
-      // console.log('성공')
+      this.printLikeCnt = this.tmp.cntLike;
+      
     } catch (e) {
       console.log(e);
     }
@@ -310,11 +312,13 @@ export default {
         if (this.likeData.likechecked == true) {
           this.likeData.likechecked = false;
           this.$api.likeDislike({ pid: this.id.pid, status: 0 });
+          this.printLikeCnt -= 1;
           console.log('좋아요 취소');
         } else {
           console.log('좋아요');
           this.likeData.likechecked = true;
           this.$api.likeDislike({ pid: this.id.pid, status: 1 });
+          this.printLikeCnt += 1;
         }
 
         try {
