@@ -221,8 +221,8 @@ export default {
         console.log('아이디 받음')
         if (tempspace.isProj){
           try{
-            let git= this.diarys.gitName
-            let listCommit = await this.$api.getCommitList({repoName:git})
+            let repoId= this.diarys.repoId
+            let listCommit = await this.$api.getCommitList({repoId:repoId})
             this.commitList=listCommit
             console.log('커밋 받음')
           }catch(e){
