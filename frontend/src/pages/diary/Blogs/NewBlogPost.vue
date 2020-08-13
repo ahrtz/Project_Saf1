@@ -96,17 +96,17 @@
         </div>
 
         <br />
-        <div class="d-flex flex-row mb-6" flat tile v-for="(tag,index) in tags" :key="'t-'+index">
-          <div class="pa-2">
-            <v-card
-              color="grey lighten-4"
-            >
-              <a >#{{tag}} &nbsp; </a>
-              <button @click="removetag(tag)"> X </button>
-            </v-card>
+        <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
+          <div class="d-flex flex-grow-0 post-detail-tag" 
+          v-for="(tag,index) in tags" 
+          :key="'t-'+index">
+            
+                #{{tag}} &nbsp; 
+                <button @click="removetag(tag)"> X </button>
+            
           </div>
         </div>
-        
+
         <br />
 
 
@@ -395,6 +395,24 @@ export default {
   border-radius: 6px;
   height: 40px;
   cursor: pointer;
+}
+.post-detail-tag-container {
+  width: 100%;
+  overflow: hidden;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+
+.post-detail-tag {
+  margin-bottom: 8px;
+  margin-right: 8px;
+  padding: 0 12px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0051cb;
+  font-size: 14px;
 }
 
 .new-blog-post-btn-white {
