@@ -1,32 +1,45 @@
 <template>
   <div class="d-flex flex-column status-board">
-    <!-- 스테이터스를 넣어보자
-      <br>
-    이건 메인이랑 블로그 디테일이랑 다이어리 디테일에서 쓰일 겁니다.-->
-    <!-- <profile class="" v-for="(i,index) in 3" :key="index">
-    </profile>-->
-
-    <!-- <img style="width: 100%" src="/static/images/grass.png" /> -->
     <div class="d-flex">
       <div v-for="(t, ti) in 3" :key="ti" class="d-flex flex-grow-0">
         <div class="d-flex flex-column">
-          <div v-for="(r, ri) in 4" :key="ri" class="d-flex flex-grow-0">
+          <div
+            v-for="(r, ri) in 4"
+            :key="ri"
+            class="status-board-tile-container d-flex flex-grow-0"
+          >
             <div
-              v-for="(c, ci) in data.slice(ri * 7, ri * 7 + 7)"
-              :key="ci"
+              v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+              :key="`ci-${ci}`"
               class="d-flex flex-grow-0 align-center justify-center status-board-tile"
               :class="{
             'status-board-level0': c == 0,
-            'status-board-level1': c == 1,
-            'status-board-level2': c == 2,
-            'status-board-level3': c == 3,
-            'status-board-level4': c == 4
+            'status-board-level1': c >= 1 && c <= 2,
+            'status-board-level2': c >= 3 && c <= 4,
+            'status-board-level3': c >= 5 && c <= 6,
+            'status-board-level4': c >= 7,
         }"
+            ></div>
+            <div
+              v-for="(i, ii) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+              :key="`ii-${ii}`"
+              class="status-board-tile-img"
             >
-            <img v-if="c==3" style="height: 24px;opacity:0.7;" src="/static/images/flower.png"/>
-            <!-- <v-icon v-if="c==3" color='#ffa6c5' size="20">local_florist</v-icon> -->
-            <img v-if="c==2" style="height: 36px" src="/static/images/sprout.png"/>
-            <img v-if="c==4" style="height: 28px;opacity:0.6" src="/static/images/tree.png"/>
+              <img
+                v-if="type == 'project' && i >= 1"
+                style="height: 36px"
+                src="/static/images/sprout.png"
+              />
+              <img
+                v-if="type == 'blog' && i >= 1"
+                style="height: 24px;opacity:0.7;"
+                src="/static/images/flower.png"
+              />
+              <img
+                v-if="type == 'all' && i >= 1"
+                style="height: 28px;opacity:0.6"
+                src="/static/images/tree.png"
+              />
             </div>
           </div>
         </div>
@@ -35,7 +48,7 @@
     <div class="d-flex">
       <div class="d-flex" />
       <div class="d-flex flex-grow-0">
-        <img style="height: 55px" src="/static/images/legend.png" />
+        <img style="height: 40px" src="/static/images/legend.png" />
       </div>
     </div>
   </div>
@@ -48,38 +61,48 @@ export default {
   components: {
     profile,
   },
+  props: {
+    uid: 0,
+    did: 0,
+    repo: '',
+    type: '',
+  },
   data: () => ({
-    data: [
-      1,
-      3,
-      0,
-      0,
-      1,
-      2,
-      4,
-      2,
-      0,
-      4,
-      1,
-      2,
-      3,
-      0,
-      3,
-      1,
-      2,
-      2,
-      0,
-      4,
-      0,
-      1,
-      3,
-      0,
-      4,
-      1,
-      2,
-      1,
-    ],
+    dreq: {},
+    dres: [],
+    req: {},
+    res: [],
   }),
+  methods: {
+    async getDStatus() {
+      try {
+        let tmp = await this.$api.getCommitStatus(this.dreq);
+        this.dres = tmp;
+      } catch (e) {
+        console.log('commit status 가져오기 실패');
+      }
+      this.dres = Object.values(this.dres);
+    },
+    async getStatus() {
+      try {
+        let tmp = await this.$api.getPostStatus(this.req);
+        this.res = tmp;
+      } catch (e) {
+        console.log('post status 가져오기 실패');
+      }
+
+      this.res = Object.values(this.res);
+      console.log('***' + this.res);
+    },
+  },
+  async created() {
+    this.dreq.uid = this.req.uid = this.uid;
+    this.req.did = this.did;
+    this.dreq.repoName = this.repo;
+
+    this.getDStatus();
+    this.getStatus();
+  },
 };
 </script>
 
@@ -87,6 +110,10 @@ export default {
 .status-board {
   width: 100%;
   padding-bottom: 40px;
+}
+
+.status-board-tile-container {
+  position: relative;
 }
 
 .status-board-tile {
@@ -114,5 +141,9 @@ export default {
 
 .status-board-level4 {
   background-color: rgba(169, 230, 154, 0.5);
+}
+
+.status-board-tile-img {
+  position: absolute;
 }
 </style>
