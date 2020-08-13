@@ -10,6 +10,7 @@
 		where uid = #{uid}
 		and title like concat('%',#{keyword},'%')
 		<if test='isProj != "2"'>and is_proj = #{isProj}</if>
+		order by id desc
 	</select>
 
 	<select id="getDiary" resultType="DiaryDto">
@@ -21,7 +22,7 @@
 	<insert id="createDiary" parameterType="DiaryDto" useGeneratedKeys="true" keyProperty="id">
 		insert into diary 
 		(uid, title, intro,	img, git_name, git_url, repo_id, is_proj, s_date, e_date)
-		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{repo_id}, #{isProj}, #{sDate}, #{eDate})
+		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{repoId}, #{isProj}, #{sDate}, #{eDate})
 	</insert>
 
 	<update id="updateDiary" parameterType="DiaryDto">

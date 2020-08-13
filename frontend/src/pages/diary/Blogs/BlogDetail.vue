@@ -96,7 +96,7 @@
 
 
         </div>
-        <Status v-if="diarydata.gitName" :uid="diaryid.uid" :repo="diarydata.gitName" :did="diaryid.did" type="project"/>
+        <Status v-if="diarydata.gitName" :uid="diaryid.uid" :repoId="diarydata.repoId" :did="diaryid.did" type="project"/>
         <div class="d-flex">
           <div class="d-flex" />
           <v-text-field

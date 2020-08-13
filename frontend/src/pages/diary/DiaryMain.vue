@@ -82,7 +82,7 @@
                                 {{tag}}
                             </div> -->
                             
-                            <span v-if="blog.languages.length>0" style="color:white;font-weight:bold;"> 언 어 : </span>
+                            <span v-if="blog.languages != null && blog.languages.length>0" style="color:white;font-weight:bold;"> 언 어 : </span>
                             
                             <span style="color:white;font-weight:bold;" v-for="language in blog.languages" :key="language.id">
                                 {{language}}
