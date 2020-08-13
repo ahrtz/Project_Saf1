@@ -64,7 +64,7 @@ export default {
   props: {
     uid: 0,
     did: 0,
-    repo: '',
+    repoId: '',
     type: '',
   },
   data: () => ({
@@ -98,8 +98,7 @@ export default {
   async created() {
     this.dreq.uid = this.req.uid = this.uid;
     this.req.did = this.did;
-    this.dreq.repoName = this.repo;
-
+    this.dreq.repoId = this.repoId;
     this.getDStatus();
     this.getStatus();
   },

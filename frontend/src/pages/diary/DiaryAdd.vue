@@ -145,6 +145,7 @@ export default {
         repoChecked(){
             this.blogData.gitUrl = this.repoChecked.url
             this.blogData.gitName = this.repoChecked.repoName
+            this.blogData.repoId = this.repoChecked.repoId
             this.blogData.languages = this.repoChecked.languages
         }
     },
