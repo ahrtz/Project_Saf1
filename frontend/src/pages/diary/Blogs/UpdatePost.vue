@@ -313,6 +313,9 @@ export default {
       },
 
       async writePost(){
+        if(this.post.title==''||this.post.title==null){
+          alert('제목은 빈칸이 올 수 없습니다')
+        }else{
         try{
           this.post.isTemp=0
           await this.$api.updatePost(this.post)
@@ -345,9 +348,12 @@ export default {
         }catch(e){
           console.log(e)
           console.log('실패')
-        }
+        }}
       },
       async writetmpPost(){
+        if(this.post.title==''||this.post.title==null){
+          alert('제목은 빈칸이 올 수 없습니다')
+        }else{
         this.post.isTemp=1
 
         try {
@@ -373,7 +379,7 @@ export default {
 
           } catch (e) {
             console.log(e);
-            console.log('실패');
+            console.log('실패');}
           }
       },
       commitDelete(id,index){
