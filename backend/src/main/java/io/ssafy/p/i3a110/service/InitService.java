@@ -27,13 +27,21 @@ public class InitService {
 	
 	@PostConstruct
 	public void setRate() {
+		System.out.println("Start Setting Rate...");
 		List<UserDto> uList = userService.getAllGitUsers();
+		int userCnt = uList.size();
+		int idx = 0;
+		System.out.println("OneDayOneCommit Start...");
 		GitHubRestApiHelper checkHelper = new GitHubRestApiHelper();
 		for(UserDto user : uList) {
+			System.out.println(String.format("%d/%d ...", ++idx,userCnt));
 			int uid = user.getId();
 			String gitId = user.getGitId();
 			String accessToken = user.getGitToken();
-			if(!checkHelper.checkOauth(gitId, accessToken)) continue;
+			if(!checkHelper.checkOauth(gitId, accessToken)) {
+				System.out.println(String.format("Please Check User DB Table id = %d", idx));
+				continue;
+			}
 			GitHubRestApiHelper helper = new GitHubRestApiHelper(accessToken);
 			Map<String, String> map = helper.getOdocRate(diaryService.getAllWrittenRepoId(uid), gitId);
 			RateDto rate = new RateDto();
@@ -42,7 +50,7 @@ public class InitService {
 			rate.setOdocRate(map.get("rate"));
 			rateService.setOdocOfAllUsers(rate);
 		}
-		
+		System.out.println("OneDayOneCommit Done...");
     	Calendar cal = Calendar.getInstance();
     	Date eDate = new Date(cal.getTimeInMillis());
     	cal.add(Calendar.MONTH, -3);
@@ -51,7 +59,11 @@ public class InitService {
     	int days = cal.get(Calendar.DAY_OF_YEAR)-1;
     	
 		uList = userService.getAllUsers();
+		userCnt = uList.size();
+		idx = 0;
+		System.out.println("OneDayOnePost Start...");
 		for(UserDto user : uList) {
+			System.out.println(String.format("%d/%d ...", ++idx,userCnt));
 			int uid = user.getId();
 	    	int doPostDay = postService.getOdopRate(uid);
 	    	RateDto rate = new RateDto();
@@ -62,6 +74,7 @@ public class InitService {
 	    	rate.setOdopRate(odopRate);
 	    	rateService.setOdopOfAllUsers(rate);
 		}
+		System.out.println("OneDayOnePost Done...");
 		System.out.println("SETTING DONE");
 	}
 }

@@ -107,6 +107,9 @@ public class DiaryController {
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate) throws IOException {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
+    	
+    	if(title.equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	
     	DiaryDto diary = new DiaryDto();
     	diary.setUid(user.getId());
     	diary.setGitName(gitName);
@@ -164,6 +167,8 @@ public class DiaryController {
     	String email = (String) httpSession.getAttribute("email");
     	UserDto user = userService.findUserByEmail(email);
 
+    	if(title.equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	
     	if(diaryService.getUidById(id) == user.getId()) {
     	    DiaryDto diary = diaryService.getDiary(String.valueOf(id));
             diary.setTitle(title);
