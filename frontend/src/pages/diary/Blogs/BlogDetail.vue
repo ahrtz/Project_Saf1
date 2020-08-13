@@ -8,7 +8,14 @@
       </div>
       <div class="d-flex flex-column">
         <div class="d-flex">
-          <div class="d-flex" />
+          <div class="d-flex align-center">
+            <div class="d-flex start">
+              <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
+            </div>
+            <div class="d-flex end align-self-end" style="text-align: center">
+              <p>{{diarydata.sdate.substr(0,10)}} ~ {{diarydata.edate.substr(0,10)}}</p>
+            </div>            
+          </div>
           <div
             class="d-flex flex-grow-0 align-center justify-center blog-detail-red-btn"
             style="margin-bottom: 32px;"
