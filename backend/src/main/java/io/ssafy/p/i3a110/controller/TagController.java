@@ -52,7 +52,18 @@ public class TagController {
     	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
 		for(TagDto tag : tags) {
 			HashMap<Object, Object> form = objectMapper.convertValue(tag, HashMap.class);
-			form.put("postinfo", postService.getPostById(tag.getPid()));
+			PostDto postinfo = postService.getPostById(tag.getPid());
+			form.put("postinfo", postinfo);
+			
+    		UserDto writer = userService.findUserById(postinfo.getUid());
+    		HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("id", String.valueOf(writer.getId()));
+    		userinfo.put("email", writer.getEmail());
+    		userinfo.put("nickname", writer.getNickname());
+    		userinfo.put("img", writer.getImg());
+    		userinfo.put("intro", writer.getIntro());
+    		form.put("userinfo", userinfo);
+    		
 			output.add(form);
 		}
 		return output;
