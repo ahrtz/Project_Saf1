@@ -12,7 +12,7 @@
             <div class="d-flex start">
               <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
             </div>
-            <div class="d-flex end align-self-end" style="text-align: center">
+            <div class="d-flex end align-self-end">
               <p>{{diarydata.sdate.substr(0,10)}} ~ {{diarydata.edate.substr(0,10)}}</p>
             </div>            
           </div>
