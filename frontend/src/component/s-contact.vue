@@ -16,13 +16,13 @@
     <div class="d-flex flex-column s-contact-contents">
       <div class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20"></v-icon>
-        팔로우 아이콘좀
+        팔로워 아이콘좀
         <p
           class="d-flex"
           target="_top"
           style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px"
           
-        >{{user.followingCnt}}</p>
+        >{{printfollowerCnt}}</p>
       </div>
       <div v-if="!user.isSocial" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
@@ -59,6 +59,8 @@ export default {
       dummy: this.$route.params.uid,
       mydata: '',
       followcheck: false,
+      printfollowerCnt : '',
+      printfollowingCnt : '',
     };
   },
   methods: {
@@ -71,9 +73,11 @@ export default {
         if (this.followcheck == false) {
         this.followcheck = true;
         this.$api.makeFollow({ userTo: this.dummy, status: 1 });
+        this.printfollowerCnt = this.printfollowerCnt *1 +1;  //integer casting
         } else {
         this.followcheck = false;
         this.$api.makeFollow({ userTo: this.dummy, status: 0 });
+        this.printfollowerCnt -= 1;
         } 
       }
       else
@@ -89,6 +93,8 @@ export default {
     try {
       let tmpspace = await this.$api.contactBar(this.$route.params.uid);
       this.user = tmpspace.data;
+      this.printfollowerCnt = this.user.followerCnt;
+      this.printfollowingCnt = this.user.followingCnt;
       this.loginCheck = this.$store.state.isLoggedIn;
 
       console.log(this.user, 'vdasvdsa');
