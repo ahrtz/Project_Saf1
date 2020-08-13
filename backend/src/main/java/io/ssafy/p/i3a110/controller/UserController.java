@@ -34,9 +34,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.p.i3a110.apihelper.GitHubRestApiHelper;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.FollowService;
+import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import lombok.experimental.Helper;
 
 @RestController
 public class UserController {
@@ -48,6 +49,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FollowService followService;
+    @Autowired
+    private LikeService likeService;
 
     @Value("${application.staticPath}")
     private String staticPath;
@@ -99,6 +104,13 @@ public class UserController {
     	userinfo.put("img", user.getImg());
     	userinfo.put("intro", user.getIntro());
     	userinfo.put("gitUrl", user.getGitUrl());
+    	
+    	List<Integer> follower = followService.getFollowInfo(0, user.getId());
+    	List<Integer> following = followService.getFollowInfo(1, user.getId());
+    	userinfo.put("followerCnt", String.valueOf(follower.size()));
+    	userinfo.put("followingCnt", String.valueOf(following.size()));
+    	userinfo.put("likeCnt", String.valueOf(likeService.getLikeCntByUid(user.getId())));
+    	
     	return userinfo;
     }
 
