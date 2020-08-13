@@ -81,8 +81,14 @@
                             <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
                             </div> -->
+                            
+                            <span v-if="blog.languages.length>0" style="color:white;font-weight:bold;"> 언 어 : </span>
+                            
+                            <span style="color:white;font-weight:bold;" v-for="language in blog.languages" :key="language.id">
+                                {{language}}
+                            </span>
                             <div style="color:white;font-weight:bold;">
-                                생성일자 : {{blog.sdate}}
+                                기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}
                             </div>
                         </v-card-subtitle>
                         <v-card-text style="color:white;font-weight:bold;">
