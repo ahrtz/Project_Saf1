@@ -129,12 +129,15 @@
             </div>
             <div class="d-flex justify-center align-center post-detail-comment-box">
               <!-- v-model="commentData.content" -->
-              <v-text-field v-if="isLogin" id="post-comment-content" dense outlined hide-details />
+              <v-text-field v-if="isLogin" id="post-comment-content" dense outlined hide-details 
+              placeholder='최대 길이는 100자입니다.'
+              />
               <div
                 style="margin-left: 8px"
                 class="d-flex flex-grow-0 align-center justify-center post-detail-blue-btn"
                 @click="commentwrite()"
                 v-if="isLogin"
+                
               >작성</div>
               <v-text-field v-if="!isLogin" id="post-comment-content" dense outlined hide-details placeholder="댓글은 로그인이 필요한 서비스입니다." @click="$router.push({name:'Login'})"/>
               <div
@@ -349,15 +352,26 @@ export default {
       }
     },
     async commentwrite() {
+      
+
       this.commentData.content = document.getElementById(
         'post-comment-content'
       ).value;
+      if (this.commentData.content =="" || this.commentData.content==null){
+        alert('빈 댓글은 허용하지 않습니다')
+      }else if(this.commentData.content.length >100 ){
+        alert('댓글 최대 허용 길이는 100자 입니다')
+        document.getElementById(
+        'post-comment-content'
+        ).value = ""
+      }
+      else{
       //alert('준비중입니다.')
       this.commentData.uid = this.$store.state.user.id;
       // this.getcDate()
       this.commentData.pid = this.id.pid;
       await this.$api.createComment(this.commentData);
-      this.getComment();
+      this.getComment();}
     },
     async commenterase(commentid) {
       // console.log("CKCK commentid")

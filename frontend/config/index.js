@@ -4,8 +4,8 @@
 
 const path = require('path')
 
-const URL = 'http://localhost:3000' // local back end 서버를 돌릴 사람만 사용
-// const URL = 'http://i3a110.p.ssafy.io:3000'  // 실제 back end 서버를 돌릴 사람만 사용
+// const URL = 'http://localhost:3000' // local back end 서버를 돌릴 사람만 사용
+const URL = 'http://i3a110.p.ssafy.io:3000'  // 실제 back end 서버를 돌릴 사람만 사용
 
 module.exports = {
   dev: {
