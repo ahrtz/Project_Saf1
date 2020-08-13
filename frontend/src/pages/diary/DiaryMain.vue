@@ -135,11 +135,18 @@ export default {
             blog:{
                 title:''
             },
+            tmp:''
         }
     },
     created(){
+        this.tmp =this.$route.params 
         this.uid= this.$route.params.uid
         this.test = this.$route.params.test
+        if(this.test){
+        }else{
+            this.test=2
+        }
+
         this.mydata =  this.$store.state.user
         this.getDiary();
 
