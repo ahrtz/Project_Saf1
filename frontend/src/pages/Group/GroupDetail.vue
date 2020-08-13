@@ -19,14 +19,14 @@
                     <v-layout column>
                       <v-flex xs12 sm6 md4>
                         <v-text-field
-                          v-model="group_info.name"
+                          v-model="updateItem.name"
                           label="Group name"
                           class="group-text-box"
                         ></v-text-field>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
                         <v-textarea
-                          v-model="group_info.intro"
+                          v-model="updateItem.intro"
                           label="Description"
                           class="group-text-box"
                         ></v-textarea>
@@ -256,6 +256,10 @@ export default {
       newMember: '',
       members: [], //그룹원 데이터 테이블에 넣어줄 자료구조.
       dialog: false,
+      updateItem : {
+        name : '',
+        intro : '',
+      }
     };
   },
   async created() {
@@ -300,8 +304,12 @@ export default {
             : (member['recent_post'] = this.getRecentPost(
                 this.group_info.userinfo[i].lastPost.date
               ));
-          member['odoc'] = this.group_info.userinfo[i].odocRate + "%( " + this.group_info.userinfo[i].odocCnt + " )"
-          member['odop'] = this.group_info.userinfo[i].odopRate + "%( " + this.group_info.userinfo[i].odopCnt + " )" 
+          this.group_info.userinfo[i].odocRate == null 
+          ? member['odoc'] = '-'
+          : member['odoc'] = this.group_info.userinfo[i].odocRate + "% (" + this.group_info.userinfo[i].odocCnt + ")"
+          this.group_info.userinfo[i].odocRate == null 
+          ? member['odop'] = '-'
+          : member['odop'] = this.group_info.userinfo[i].odopRate + "% (" + this.group_info.userinfo[i].odopCnt + ")" 
 
           templist.push(member);
         }
@@ -323,25 +331,7 @@ export default {
         this.fRateList = temp4;
       } catch (e) {}
     },
-    // async getPostRate(){
-    //     try{
-    //         this.rateFlag.type = "1";
-    //         let temp3 = await this.$api.getTopMembers(this.rateFlag);
-    //         this.pRateList = temp3;
-
-    //     }catch(e){
-    //     }
-    // },
-    // async getFollowerRate(){
-    //     try{
-    //         this.rateFlag.type = "2";
-    //         let temp4 = await this.$api.getTopMembers(this.rateFlag);
-    //         this.fRateList = temp4;
-
-    //     }catch(e){ }
-    // },
     async deleteMember(item) {
-      console.log('deleteMember ' + item.id);
       this.$api.groupRelationDelete({
         oid: this.$route.params.gid,
         uid: item.id,
@@ -352,22 +342,29 @@ export default {
     },
     async updateGroup() {
       try {
-        await this.$api.groupDetailUpdate({
+        if(this.updateItem.name != '')
+        {
+          await this.$api.groupDetailUpdate({
           id: this.$route.params.gid,
-          name: this.group_info.name,
-          intro: this.group_info.intro,
-        });
-        await this.getMembers();
+          name: this.updateItem.name,
+          intro: this.updateItem.intro,
+          });
+          await this.getMembers();
+          this.close();
+          this.updateItem.name='';
+          this.updateItem.intro='';
+        }
+        else
+        {
+          alert("수정할 그룹의 이름을 기입하세요.");
+        }
       } catch (e) {
         console.log(e);
       }
-
-      this.close();
     },
     async removeGroup() {
       try {
         await this.$api.deleteGroup(this.$route.params.gid);
-        console.log('그룹 삭제 성공');
         this.$router.go(-1);
       } catch (e) {}
     },
@@ -380,7 +377,6 @@ export default {
       this.dialog = false;
     },
     goUser(param) {
-      console.log('GoUser()!!!' + param.id);
       this.$router.push({ name: 'MainPagefor', params: { uid: param.id } });
     },
   },

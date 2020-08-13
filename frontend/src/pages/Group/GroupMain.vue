@@ -103,7 +103,6 @@ export default {
   },
   async created() {
     this.uid = this.$store.state.user.id;
-    console.log('CKCK' + this.uid);
     this.getGroup();
   },
 
@@ -117,15 +116,12 @@ export default {
       try {
         let temp = await this.$api.getGroupList();
         this.groups = temp;
-
-        this.setDataTable();
-        console.log('CKCK:: Group 가져오기 성공');
+        await this.setDataTable();
       } catch (e) {
         console.log(e);
       }
     },
     setDataTable() {
-      console.log('CKCK:: Group 정보' + this.groups.length);
       var templist = [];
       for (var i = 0; i < this.groups.length; i++) {
         var obj = {};
@@ -138,23 +134,27 @@ export default {
       this.group_list = templist;
     },
     goGroup(param) {
-      console.log('CKCK :: goGroup()!!! ' + param.id);
       this.$router.push({ name: 'GroupDetail', params: { gid: param.id } });
     },
     close() {
       this.dialog = false;
     },
-    add() {
-      //console.log(this.addItem.name + "//" + this.addItem.intro)
-      //this.desserts.push(this.editedItem)
-      this.$api.addGroup(this.addItem);
-      this.getGroup();
-      //여기 어떻게 해야 깔끔해지지..? 새로고침 싫은데...
-      //location.reload()
-      this.close();
+    async add() {
+      if(this.addItem.name=='')
+      {
+        alert('생성할 그룹의 이름을 적어주세요.');
+      }
+      else{
+        await this.$api.addGroup(this.addItem);
+        await this.getGroup();
+        this.close();
+        this.addItem.name='';
+        this.addItem.intro='';
+      }
+      
     },
   },
-};
+}; 
 </script>
 
 <style>
