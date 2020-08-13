@@ -101,6 +101,7 @@ public class DiaryController {
                               @RequestParam String img,
                               @RequestParam String gitUrl,
                               @RequestParam int isProj,
+                              @RequestParam String repoId,
                               @RequestParam (required = false) String languages,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date sdate ,
                               @RequestParam @DateTimeFormat(iso = ISO.DATE) Date edate) throws IOException {
@@ -112,6 +113,7 @@ public class DiaryController {
     	diary.setTitle(title);
     	diary.setIntro(intro);
         diary.setGitUrl(gitUrl);
+        diary.setRepoId(repoId);
         diary.setIsProj(isProj);
         diary.setSDate(sdate);
         diary.setEDate(edate);
