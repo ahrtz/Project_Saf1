@@ -303,28 +303,32 @@ export default {
       this.$router.go(-1);
     },
     async like() {
-      if (this.likeData.likechecked == true) {
-        this.likeData.likechecked = false;
-        this.$api.likeDislike({ pid: this.id.pid, status: 0 });
-        console.log('좋아요 취소');
-      } else {
-        console.log('좋아요');
-        this.likeData.likechecked = true;
-        this.$api.likeDislike({ pid: this.id.pid, status: 1 });
-      }
+      if(this.isLogin){
+        if (this.likeData.likechecked == true) {
+          this.likeData.likechecked = false;
+          this.$api.likeDislike({ pid: this.id.pid, status: 0 });
+          console.log('좋아요 취소');
+        } else {
+          console.log('좋아요');
+          this.likeData.likechecked = true;
+          this.$api.likeDislike({ pid: this.id.pid, status: 1 });
+        }
 
-      try {
-        let tmpspace = await this.$api.postdetail(this.id.pid);
-        this.tmp = tmpspace;
-        // console.log('성공')
-      } catch (e) {
-        console.log(e);
-      }
-      this.$forceUpdate();
+        try {
+          let tmpspace = await this.$api.postdetail(this.id.pid);
+          this.tmp = tmpspace;
+          // console.log('성공')
+        } catch (e) {
+          console.log(e);
+        }
+        this.$forceUpdate();}
+        else{
+          alert("로그인을 먼저 해주세요")
+        }
     },
     searchTag(tagName) {
       document.getElementById('header-text').value = tagName;
-      this.$router.push({ name: 'tmp', params: { key: tagName, type: 'tag' } });
+      this.$router.push({ name: 'tmp', params: { key: tagName, type: 'title' } });
     },
     grapurl() {
       alert(this.$route.path);
@@ -337,8 +341,12 @@ export default {
       }
     },
     scrap() {
+      if(this.isLogin){
       this.$api.makeScrap({ pid: this.id.pid, status: 1 });
-      alert('스크랩 되었습니다');
+      alert('스크랩 되었습니다');}
+      else{
+        alert('로그인을 먼저 해주세요')
+      }
     },
     async commentwrite() {
       this.commentData.content = document.getElementById(

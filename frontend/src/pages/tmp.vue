@@ -6,8 +6,8 @@
         <br>
           <v-col cols="2">
             
-              <v-btn @click="res=0" >제목검색</v-btn>
-              <v-btn @click="res=1" >태그검색</v-btn>
+              <v-btn @click="res=0" >제목검색 ({{searchResult.length}})</v-btn>
+              <v-btn @click="res=1" >태그검색 ({{tagResult.length}})</v-btn>
             
           </v-col>
           <v-col cols="10" >
