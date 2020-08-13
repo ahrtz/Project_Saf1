@@ -130,6 +130,7 @@ export default {
                 modal: false,
                 menu2: false,
                 languages : [],
+                repoId : "",
             },
             repoData:[],
             repoChecked:{
@@ -209,8 +210,7 @@ export default {
             formData.append('edate',this.blogData.edate)
             formData.append('file',this.blogData.file)
             formData.append('languages', this.blogData.languages)
-
-
+            formData.append('repoId', this.blogData.repoId)
 
             await this.$api.AddProject(formData,{
                 headers:{
