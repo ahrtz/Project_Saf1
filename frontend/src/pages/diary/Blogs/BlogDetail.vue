@@ -132,7 +132,7 @@
                   v-for="post in postdata"
                   :key="post.id"
                   style="margin-top:10px; border-bottom:dashed 1px grey"
-                  v-if="post.title.includes(keyw)"
+                  v-show="post.title.includes(keyw)"
                 >
                   <router-link :to="{name:'PostDetail',params:{pid:post.id}}">
                     <!-- {{post}} -->
