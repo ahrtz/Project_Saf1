@@ -125,6 +125,7 @@
                 >삭제</div>
               </div>
               <div class="d-flex post-detail-comment-date">{{comment.cdate}}</div>
+
             </div>
             <div class="d-flex justify-center align-center post-detail-comment-box">
               <!-- v-model="commentData.content" -->
@@ -157,6 +158,8 @@
 import SContact from '../../../component/s-contact.vue';
 import ContentSidebar from '../../../component/ContentSidebar.vue';
 import axios from 'axios';
+import moment from 'moment';  //
+
 
 export default {
   name: 'PostDetail',
