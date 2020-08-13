@@ -32,13 +32,13 @@ module.exports = {
 
     // Various Dev Server settings
     // ------ EC2에서 설정 (창경 전용) ------------
-    // host: '172.26.1.240', // 서버용(EC2)
-    // port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: '172.26.1.240', // 서버용(EC2)
+    port: 80, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     // ----------------------------------------------
 
     // ------ 프론트 Local에서 돌리는 사람 설정 -------
-    host: 'localhost', // 로컬용 can be overwritten by process.env.HOST
-    port: 8080,
+    // host: 'localhost', // 로컬용 can be overwritten by process.env.HOST
+    // port: 8080,
     // ----------------------------------------------
     autoOpenBrowser: false,
     errorOverlay: true,
