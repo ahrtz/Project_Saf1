@@ -254,6 +254,10 @@ export default {
       
     },
     async diaryUpdate(){
+      if(this.updatediary.title==""|| this.updatediary.title == null){
+        alert('타이틀은 빈칸이 올수 없습니다')
+      }else{
+
       try{
         if (this.$refs.file != null){
           this.updatediary.file=this.$refs.file.files[0]
@@ -280,7 +284,7 @@ export default {
     } catch(e){
       console.log(e)
     }
-
+      }
   },
     
   },
