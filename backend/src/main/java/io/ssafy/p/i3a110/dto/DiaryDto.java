@@ -12,6 +12,7 @@ public class DiaryDto {
     private String intro;
     private String img;
     private String gitUrl;
+    private String repoId;
     private int isProj;
     private Date sDate;
     private Date eDate;

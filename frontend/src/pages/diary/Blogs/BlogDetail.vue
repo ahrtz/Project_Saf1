@@ -13,17 +13,18 @@
               <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
             </div>
             <div class="d-flex end align-self-end">
-              <p>{{diarydata.sdate.substr(0,10)}} ~ {{diarydata.edate.substr(0,10)}}</p>
+              <p>{{diarydata.sdate ? diarydata.sdate.substr(0,10) : ""}} ~ {{diarydata.sdate ? diarydata.edate.substr(0,10) : ""}}</p>
             </div>            
           </div>
           <div
             class="d-flex flex-grow-0 align-center justify-center blog-detail-red-btn"
             style="margin-bottom: 32px;"
             @click="diaryDelete()"
+            v-if="diaryid.uid==mydata.id"
           >다이어리 삭제</div>
           
 
-          <v-dialog v-model="dialog" scrollable max-width="600px">
+          <v-dialog v-model="dialog" scrollable max-width="600px" v-if="diaryid.uid==mydata.id">
             <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark v-on="on" @click="updateData()">다이어리 수정</v-btn>
             </template>
@@ -40,7 +41,7 @@
                   <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
                   
                   <v-menu
-                      v-model="menu2"
+                      v-model="menu1"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -57,7 +58,7 @@
                           v-on="on"
                       ></v-text-field>
                       </template>
-                      <v-date-picker v-model="updatediary.sdate" @input="menu2 = false"></v-date-picker>
+                      <v-date-picker v-model="updatediary.sdate" @input="menu1 = false"></v-date-picker>
                   </v-menu>
                   <v-menu
                       v-model="menu2"
@@ -95,7 +96,7 @@
 
 
         </div>
-        <Status />
+        <Status v-if="diarydata.gitName" :uid="diaryid.uid" :repo="diarydata.gitName" :did="diaryid.did" type="project"/>
         <div class="d-flex">
           <div class="d-flex" />
           <v-text-field
@@ -110,15 +111,16 @@
           
         ></v-text-field>
           <div
-            v-if="!isProj"
+            v-if="!isProj && diaryid.uid==mydata.id"
             class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
             @click="$router.push({name:'NewBlogPost',params:{did:diaryid.did}})"
           >글 작성</div>
 
           <div
-            v-if="isProj"
+            v-if="isProj && diaryid.uid==mydata.id"
             class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
             @click="$router.push({name:'NewProjectPost',params:{did:diaryid.did}})"
+            
           >글 작성</div>
         </div>
         <div>
@@ -215,7 +217,9 @@ export default {
         edate:new Date().toISOString().substr(0, 10),
 
       },
-      menu2:false
+      menu2:false,
+      menu1:false,
+      mydata:{}
     };
   },
   methods: {
@@ -233,7 +237,10 @@ export default {
       try {
         console.log('다이어리 삭제 완료');
         this.$api.deleteDiary(this.diaryid.did);
-        this.$router.go(-1);
+        this.$router.push({
+          name: 'DiaryMain',
+          params: { uid: this.diaryid.uid, test: 2 },
+        });
       } catch (e) {
         console.log(e);
       }
@@ -265,8 +272,11 @@ export default {
         headers:{
                     'Content-Type':'multipart/form-data'
                 }
-      
+        
       })
+      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did)
+      this.diarydata = tmpspace1
+  
     } catch(e){
       console.log(e)
     }
@@ -275,6 +285,7 @@ export default {
     
   },
   async created() {
+    this.mydata = this.$store.state.user
     try {
       let tmpspace = await this.$api.diarydetail(
         this.$route.params.did,

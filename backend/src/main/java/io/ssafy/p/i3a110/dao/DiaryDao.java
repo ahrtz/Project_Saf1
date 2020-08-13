@@ -21,7 +21,7 @@ public interface DiaryDao {
 
 	public void deleteDiary(String id);
 	
-	public List<String> getAllWrittenProjcetName(int uid);
+	public List<String> getAllWrittenRepoId(int uid);
 
 	public int getUidById(int id);
 

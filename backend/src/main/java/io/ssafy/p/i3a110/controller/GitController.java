@@ -92,13 +92,13 @@ public class GitController {
 		List<CommitInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String repoName = map.get("repoName");
+		String repoId = map.get("repoId");
 		String sdate = map.get("sdate");
 		String edate = map.get("edate");
 		
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			list = helper.getCommitInfoListByPeriod(repoName, sdate, edate);
+			list = helper.getCommitInfoListByPeriod(repoId, sdate, edate);
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -121,20 +121,20 @@ public class GitController {
 	public Object getAllCommitCnt(@RequestBody HashMap<String, String> input) {
 		int uid = Integer.parseInt(input.get("uid"));
 		UserDto user = userService.findUserById(uid);
-		String repoName = input.get("repoName").trim();
+		String repoId = input.get("repoId").trim();
 		Date eDate = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(eDate);
 		cal.add(Calendar.DATE, -84);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			List<String> projectNames = new ArrayList<String>();
-			if(repoName == null || repoName.equals("")) {
-				projectNames = diaryService.getAllWrittenProjectName(user.getId());
+			List<String> repoIds = new ArrayList<String>();
+			if(repoId == null || repoId.equals("")) {
+				repoIds = diaryService.getAllWrittenRepoId(user.getId());
 			}else {
-				projectNames.add(repoName);
+				repoIds.add(repoId);
 			}
-			Map<Date, Integer> map = helper.getAllCommitCnt(projectNames, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
+			Map<Date, Integer> map = helper.getAllCommitCnt(repoIds, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -163,7 +163,7 @@ public class GitController {
 		UserDto user = userService.findUserByEmail(email);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenProjectName(user.getId()));
+			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenRepoId(user.getId()));
 			return new ResponseEntity<>(output, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

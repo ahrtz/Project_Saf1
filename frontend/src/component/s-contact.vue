@@ -14,6 +14,16 @@
       @click="follow()"
     >Unfollow</div>
     <div class="d-flex flex-column s-contact-contents">
+      <div class="d-flex">
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20"></v-icon>
+        팔로우 아이콘좀
+        <p
+          class="d-flex"
+          target="_top"
+          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px"
+          
+        >{{user.followingCnt}}</p>
+      </div>
       <div v-if="!user.isSocial" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
         <a

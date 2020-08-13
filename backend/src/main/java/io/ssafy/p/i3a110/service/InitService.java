@@ -35,7 +35,7 @@ public class InitService {
 			String accessToken = user.getGitToken();
 			if(!checkHelper.checkOauth(gitId, accessToken)) continue;
 			GitHubRestApiHelper helper = new GitHubRestApiHelper(accessToken);
-			Map<String, String> map = helper.getOdocRate(diaryService.getAllWrittenProjectName(uid), gitId);
+			Map<String, String> map = helper.getOdocRate(diaryService.getAllWrittenRepoId(uid), gitId);
 			RateDto rate = new RateDto();
 			rate.setUid(uid);
 			rate.setOdocCnt(map.get("days"));

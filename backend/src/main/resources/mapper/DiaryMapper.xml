@@ -20,8 +20,8 @@
 
 	<insert id="createDiary" parameterType="DiaryDto" useGeneratedKeys="true" keyProperty="id">
 		insert into diary 
-		(uid, title, intro,	img, git_name, git_url, is_proj, s_date, e_date)
-		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{isProj}, #{sDate}, #{eDate})
+		(uid, title, intro,	img, git_name, git_url, repo_id, is_proj, s_date, e_date)
+		values (#{uid}, #{title}, #{intro}, #{img}, #{gitName}, #{gitUrl}, #{repo_id}, #{isProj}, #{sDate}, #{eDate})
 	</insert>
 
 	<update id="updateDiary" parameterType="DiaryDto">
@@ -33,6 +33,7 @@
 		img = #{img},
 		git_name = #{gitName},
 		git_url = #{gitUrl},
+		repo_id = #{repoId},
 		is_proj = #{isProj},
 		s_date = #{sDate},
 		e_date = #{eDate}
@@ -45,10 +46,10 @@
 		where id = #{id}
 	</delete>
 	
-	<select id="getAllWrittenProjcetName" resultType = "String">
-		select git_name
+	<select id="getAllWrittenRepoId" resultType = "String">
+		select repo_id
 		from diary
-		where uid = #{uid} and is_proj = true and git_name is not null
+		where uid = #{uid} and is_proj = true and repo_id is not null
 	</select>
 	
 	<select id="getUidById" resultType="Integer">
