@@ -115,7 +115,13 @@ public class GitHubRestApiHelper {
 		try {
 			this.github.checkApiUrlValidity();
 			
-			GHRepository repo = this.github.getRepositoryById(repoId);
+			GHRepository repo = null;
+			try {
+				repo = this.github.getRepositoryById(repoId);
+			} catch(GHFileNotFoundException e) {
+				System.out.println(e);
+				return null;
+			}
 			GHRepositoryStatistics stat = repo.getStatistics();
 			List<CommitActivity> weekActivityList = stat.getCommitActivity().toList();
 			for (int i = 0; i < weekActivityList.size(); i++) {
@@ -182,7 +188,13 @@ public class GitHubRestApiHelper {
 		List<CommitInfoDto> list = new ArrayList<CommitInfoDto>();
 		try {
 			this.github.checkApiUrlValidity();
-			GHRepository repo = this.github.getRepositoryById(repoId);
+			GHRepository repo = null;
+			try {
+				repo = this.github.getRepositoryById(repoId);
+			} catch(GHFileNotFoundException e) {
+				System.out.println(e);
+				return null;
+			}
 			GHCommitQueryBuilder commitqb = repo.queryCommits();
 			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
 			
