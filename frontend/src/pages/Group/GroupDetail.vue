@@ -300,8 +300,8 @@ export default {
             : (member['recent_post'] = this.getRecentPost(
                 this.group_info.userinfo[i].lastPost.date
               ));
-          // member['odoc'] =
-          // member['odop'] =
+          member['odoc'] = this.group_info.userinfo[i].odocRate + "%( " + this.group_info.userinfo[i].odocCnt + " )"
+          member['odop'] = this.group_info.userinfo[i].odopRate + "%( " + this.group_info.userinfo[i].odopCnt + " )" 
 
           templist.push(member);
         }
