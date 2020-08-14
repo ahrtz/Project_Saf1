@@ -168,7 +168,7 @@ public class GitController {
 		}
 	}
 	
-	@GetMapping("test")
+	@PostMapping("test")
 	public Object test(HttpSession session, @RequestBody HashMap<String, String> map) {
 		String email = (String)session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
