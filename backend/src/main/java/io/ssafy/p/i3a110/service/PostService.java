@@ -54,7 +54,7 @@ public class PostService {
     	return postDao.getOdopRate(uid);
     }
 
-	public Map<Date, Integer> getAllPostCnt(int uid, int did) {
+	public Map<Date, Integer> getAllPostCnt(int uid, int did, int isProj) {
 		Date eDate = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(eDate);
@@ -65,7 +65,7 @@ public class PostService {
 		Map<Date, Integer> output = getDateMap(sDate, eDate);
 		
 		SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
-		List<Map<String, Object>> days = postDao.getAllPostCnt(uid, did);
+		List<Map<String, Object>> days = postDao.getAllPostCnt(uid, did, isProj);
 		for(Map<String, Object> day : days) {
 			int cnt = ((Long) day.get("cnt")).intValue();
 			try {

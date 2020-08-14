@@ -122,10 +122,11 @@
 	
 	<select id="getAllPostCnt" resultType="Map">
 		select date_format(c_date, '%Y-%m-%d') as date, count(*) cnt
-		from post
-		where uid = #{uid}
-		and is_temp = 0
-		<if test='did != "0"'>and did = #{did}</if>
+		from post p join diary d on p.did = d.id
+		where p.uid = #{uid}
+		and p.is_temp = 0
+		<if test='isProj != "2"'>and d.is_proj = #{isProj}</if>
+		<if test='did != "0"'>and p.did = #{did}</if>
 		group by date
 		having date between date_format(date_sub(now(), interval 3 month), '%Y-%m-%d') and date_format(date_sub(now(), interval 1 day), '%Y-%m-%d')
 	</select>
