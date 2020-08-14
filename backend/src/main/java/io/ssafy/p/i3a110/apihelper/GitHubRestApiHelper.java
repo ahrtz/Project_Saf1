@@ -22,6 +22,7 @@ import org.kohsuke.github.GHRepositoryStatistics.CommitActivity;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.HttpException;
+import org.kohsuke.github.PagedIterator;
 
 import io.ssafy.p.i3a110.dto.CommitInfoDto;
 import io.ssafy.p.i3a110.dto.RepositoryInfoDto;
@@ -200,8 +201,9 @@ public class GitHubRestApiHelper {
 			
 			if(sDate!=null && !sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
 			if(eDate!=null && !eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
-			List<GHCommit> commits = commitqb.list().toList();
-			for(GHCommit commit : commits) {
+			PagedIterator<GHCommit> commits = commitqb.list().iterator();
+			while(commits.hasNext()) {
+				GHCommit commit = commits.next();
 				String author = commit.getCommitShortInfo().getAuthor().getName();
 				String sha1 = commit.getSHA1();
 				Date date = commit.getCommitDate();
@@ -273,13 +275,12 @@ public class GitHubRestApiHelper {
 					continue;
 				}
 				GHCommitQueryBuilder commitqb = repo.queryCommits();
-		    	
+		    	commitqb.author(gitid);
 				commitqb.since(sDate);
 				commitqb.until(eDate);
-				List<GHCommit> commits = commitqb.list().toList();
-				for(GHCommit commit : commits) {
-					String author = commit.getCommitShortInfo().getAuthor().getName();
-					if(!author.equals(gitid)) continue;
+				PagedIterator<GHCommit> commits = commitqb.list().iterator();
+				while(commits.hasNext()) {
+					GHCommit commit = commits.next();
 					Date date = cutTime(commit.getCommitDate());
 					output.put(date, output.get(date)+1);
 				}

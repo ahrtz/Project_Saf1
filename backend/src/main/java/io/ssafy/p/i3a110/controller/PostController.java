@@ -163,8 +163,9 @@ public class PostController {
     public Map<Date, Integer> getAllPostCnt(@RequestBody HashMap<String, Integer> input) {
     	int uid = input.get("uid");
     	int did = input.get("did");
+    	int isProj = input.get("isProj");
     	
-    	return postService.getAllPostCnt(uid, did); 
+    	return postService.getAllPostCnt(uid, did, isProj); 
     }
     
     @GetMapping("/posts/rate/odop")
