@@ -255,6 +255,31 @@ public class GitHubRestApiHelper {
 	}
 	
 	//////////////////////////////////NEW//////////////////////////////////////
+	public Object test(String repoId, String sDate, String eDate){
+		List<CommitInfoDto> list = new ArrayList<CommitInfoDto>();
+		try {
+			this.github.checkApiUrlValidity();
+			GHRepository repo = null;
+			try {
+				repo = this.github.getRepositoryById(repoId);
+			} catch(GHFileNotFoundException e) {
+				System.out.println(e);
+				return null;
+			}
+			GHCommitQueryBuilder commitqb = repo.queryCommits();
+			SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+			
+			if(sDate!=null && !sDate.equals("")) commitqb = commitqb.since(form.parse(sDate).getTime());
+			if(eDate!=null && !eDate.equals("")) commitqb = commitqb.until(form.parse(eDate).getTime()+86399999);
+			PagedIterator<GHCommit> commits = commitqb.list().iterator();
+			return commits;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public Map<Date, Integer> getAllCommitCnt(List<String> repoIds, String gitid, Date sDate, Date eDate) {
 		eDate = cutTime(eDate);
