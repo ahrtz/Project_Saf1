@@ -37,5 +37,5 @@ public interface PostDao {
 	
 	public int getOdopRate(int uid);
 
-	public List<Map<String, Object>> getAllPostCnt(int uid, int did);
+	public List<Map<String, Object>> getAllPostCnt(int uid, int did, int isProj);
 }
