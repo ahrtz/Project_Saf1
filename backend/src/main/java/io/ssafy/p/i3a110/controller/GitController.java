@@ -167,4 +167,13 @@ public class GitController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("test")
+	public Object test(HttpSession session, @RequestBody HashMap<String, String> map) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		String repoId = map.get("repoId");
+		helper = new GitHubRestApiHelper(user.getGitToken());
+		return helper.test(repoId, null, null);
+	}
 }
