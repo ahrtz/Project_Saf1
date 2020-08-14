@@ -11,6 +11,11 @@
           <div class="d-flex align-center">
             <div class="d-flex start">
               <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
+                <h6 class="d-flex align-end" v-if="diarydata.isProj==1">
+                  <a :href="diarydata.gitUrl" > 
+                    ({{diarydata.gitName ? diarydata.gitName:""}})
+                  </a>
+                </h6> 
             </div>
             <div class="d-flex end align-self-end">
               <p>{{diarydata.sdate ? diarydata.sdate.substr(0,10) : ""}} ~ {{diarydata.sdate ? diarydata.edate.substr(0,10) : ""}}</p>
