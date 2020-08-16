@@ -11,10 +11,12 @@ public class CommitInfoDto {
 	private String sha1;
 	private Date date;
 	private String msg;
-	public CommitInfoDto(String author, String sha1, Date date, String msg) {
+	private String url;
+	public CommitInfoDto(String author, String sha1, Date date, String msg, String url) {
 		this.author = author;
 		this.sha1 = sha1;
 		this.date = date;
 		this.msg = msg;
+		this.url = url;
 	}
 }

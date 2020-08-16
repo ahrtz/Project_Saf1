@@ -21,10 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.GroupDto;
 import io.ssafy.p.i3a110.dto.GroupRelationDto;
+import io.ssafy.p.i3a110.dto.RateDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
 import io.ssafy.p.i3a110.service.GroupService;
 import io.ssafy.p.i3a110.service.PostService;
+import io.ssafy.p.i3a110.service.RateService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -36,6 +38,8 @@ public class GroupController {
 	private UserService userService;
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private RateService rateService;
 	
 	@Auth
 	@GetMapping("/groups")
@@ -73,6 +77,7 @@ public class GroupController {
     		UserDto leader = userService.findUserById(group.getLid());
     		output.put("lName", leader.getNickname());
     		output.put("lEmail", leader.getEmail());
+    		output.put("lImg", leader.getImg());
     		output.put("mCnt", groupService.getMemberCntById(group.getId()));
 			List<String> uList = new ArrayList<String>();
 			uList = groupService.getUserListById(id);
@@ -80,6 +85,7 @@ public class GroupController {
 			List<HashMap<Object, Object>> list = new ArrayList<HashMap<Object, Object>>();
 			for(String uid : uList) {
 				UserDto tUser = userService.findUserById(Integer.parseInt(uid));
+				RateDto rate = rateService.getRateByUid(tUser.getId());
 	    		HashMap<Object, Object> userinfo = new HashMap<Object, Object>();
 	    		userinfo.put("id", String.valueOf(tUser.getId()));
 	    		userinfo.put("email", tUser.getEmail());
@@ -87,6 +93,10 @@ public class GroupController {
 	    		userinfo.put("img", tUser.getImg());
 	    		userinfo.put("intro", tUser.getIntro());
 	    		userinfo.put("lastPost", postService.getLastPostDate(Integer.parseInt(uid)));
+	    		userinfo.put("odocCnt", rate.getOdocCnt());
+	    		userinfo.put("odocRate", rate.getOdocRate());
+	    		userinfo.put("odopCnt", rate.getOdopCnt());
+	    		userinfo.put("odopRate", rate.getOdopRate());
 	    		list.add(userinfo);
 			}
 			output.put("userinfo", list);
@@ -102,6 +112,9 @@ public class GroupController {
 	public Object createGroup(HttpSession session, @RequestBody GroupDto groupDto) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
+		
+		if(groupDto.getName().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 		groupDto.setLid(user.getId());
 		groupService.createGroup(groupDto);
 		
@@ -155,8 +168,8 @@ public class GroupController {
 	public Object updateGroup(HttpSession session, @RequestBody GroupDto groupDto) {
 		String email = (String)session.getAttribute("email");
 		int uid = userService.findUserByEmail(email).getId();
-		
-		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid() && uid == groupDto.getLid()) {
+		if(groupDto.getName().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if(uid == groupService.getGroupInfoById(String.valueOf(groupDto.getId())).getLid()) {
 			groupService.updateGroup(groupDto);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}else {

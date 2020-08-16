@@ -1,7 +1,10 @@
 package io.ssafy.p.i3a110.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -48,6 +51,8 @@ public class CommentController {
     	List<CommentDto> commentList = commentService.getAllCommentsByPost(pid);
     	for(CommentDto comment : commentList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(comment, HashMap.class);
+    		long cdate = (long) form.get("cdate");
+    		form.put("cdate", new Date(cdate));
     		UserDto writer = userService.findUserById(comment.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
     		userinfo.put("id", String.valueOf(writer.getId()));
@@ -65,13 +70,18 @@ public class CommentController {
 	@Auth
 	@PostMapping("/comments")
 	@ApiOperation(value = "댓글 작성")
-	public Object addComment(HttpSession session, @RequestBody CommentDto commentDto) {
+	public Object addComment(HttpSession session, @RequestBody CommentDto comment) {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
+		
+		String content = comment.getContent();
+		if(content.equals("") || content.length()>100) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 		int uid = user.getId();
-		commentDto.setUid(uid);
-		commentService.addComment(commentDto);
-		return new ResponseEntity<>(commentDto.getId(), HttpStatus.OK);
+		comment.setUid(uid);
+		comment.setCDate(Calendar.getInstance().getTime());
+		commentService.addComment(comment);
+		return new ResponseEntity<>(comment.getId(), HttpStatus.OK);
 	}
 	
 	@Auth

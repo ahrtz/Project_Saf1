@@ -11,13 +11,15 @@ public class RepositoryInfoDto {
 	private String url;
 	private Boolean isPrivate;
 	private List<String> languages;
+	private String repoId;
 
-	public RepositoryInfoDto(String repoName, String owner, String url, Boolean isPrivate,
-			List<String> languages){
+	public RepositoryInfoDto(String repoName, String owner, String url, Boolean isPrivate, List<String> languages,
+			String repoId) {
 		this.repoName = repoName;
 		this.owner = owner;
 		this.url = url;
 		this.isPrivate = isPrivate;
 		this.languages = languages;
+		this.repoId = repoId;
 	}
 }

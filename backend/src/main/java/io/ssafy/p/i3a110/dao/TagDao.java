@@ -13,7 +13,7 @@ public interface TagDao {
 
 	public List<TagDto> getTagsByKeyword(String keyword);
 
-	public List<HashMap<Object, Object>> getTopNTags(String uid, int num);
+	public List<HashMap<Object, Object>> getTopNTags(int did, int uid, int num);
 
 	public void addTag(TagDto tagDto);
 

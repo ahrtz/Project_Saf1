@@ -9,17 +9,16 @@
 		where pid = #{pid}
 	</select>
 	
-	<insert id="addCommit" parameterType="CommitListDto">
+	<insert id="addCommit" parameterType="CommitListDto" useGeneratedKeys="true" keyProperty="id">
 		insert into commit_list 
-		(uid, pid, sha, author, msg, date)
-		values (#{uid}, #{pid}, #{sha}, #{author}, #{msg}, #{date})
+		(uid, pid, sha, author, msg, date, url)
+		values (#{uid}, #{pid}, #{sha}, #{author}, #{msg}, #{date}, #{url})
 	</insert>
 	
 	<delete id="deleteCommit">
 		delete
 		from commit_list
 		where id = #{id}
-		
 	</delete>
 	
 	<select id="getUidById" resultType="Integer">

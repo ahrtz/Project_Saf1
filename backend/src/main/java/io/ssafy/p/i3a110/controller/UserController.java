@@ -29,8 +29,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.ssafy.p.i3a110.apihelper.GitHubRestApiHelper;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.FollowService;
+import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
@@ -38,9 +43,16 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 //    private static final String BE_BASE_URL = "http://localhost:3000";
     private static final String BE_BASE_URL = "http://i3a110.p.ssafy.io:3000";
+    private static final String regExp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,16}$";
+    
+    private GitHubRestApiHelper helper;
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FollowService followService;
+    @Autowired
+    private LikeService likeService;
 
     @Value("${application.staticPath}")
     private String staticPath;
@@ -65,15 +77,41 @@ public class UserController {
 
     @GetMapping("/users/{email}")
     @ApiOperation(value = "회원 단일 조회")
-    public HashMap<String, String> findUserByEmail(@PathVariable String email) {
+    public Object findUserByEmail(@PathVariable String email) {
     	UserDto user = userService.findUserByEmail(email);
+    	if(user==null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 회원이 존재하지 않습니다.");
+    		return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+    	}
     	HashMap<String, String> userinfo = new HashMap<String, String>();
 		userinfo.put("id", String.valueOf(user.getId()));
 		userinfo.put("email", user.getEmail());
 		userinfo.put("nickname", user.getNickname());
 		userinfo.put("img", user.getImg());
 		userinfo.put("intro", user.getIntro());
-        return userinfo;
+        return new ResponseEntity<>(userinfo, HttpStatus.OK);
+    }
+    
+    @GetMapping("/users")
+    @ApiOperation(value = "회원 단일 조회 (회원 id (PK))")
+    public HashMap<String, String> findUserById(int id) {
+    	UserDto user = userService.findUserById(id);
+    	HashMap<String, String> userinfo = new HashMap<String, String>();
+    	userinfo.put("id", String.valueOf(user.getId()));
+    	userinfo.put("email", user.getEmail());
+    	userinfo.put("nickname", user.getNickname());
+    	userinfo.put("img", user.getImg());
+    	userinfo.put("intro", user.getIntro());
+    	userinfo.put("gitUrl", user.getGitUrl());
+    	
+    	List<Integer> follower = followService.getFollowInfo(0, user.getId());
+    	List<Integer> following = followService.getFollowInfo(1, user.getId());
+    	userinfo.put("followerCnt", String.valueOf(follower.size()));
+    	userinfo.put("followingCnt", String.valueOf(following.size()));
+    	userinfo.put("likeCnt", String.valueOf(likeService.getLikeCntByUid(user.getId())));
+    	
+    	return userinfo;
     }
 
     @Auth
@@ -81,32 +119,30 @@ public class UserController {
     @ApiOperation(value = "회원 정보 수정")
     public void updateUser(HttpSession httpSession,
                            @RequestParam(required = false) MultipartFile file,
-                           @RequestParam String email,
                            @RequestParam String pwd,
                            @RequestParam String nickname,
                            @RequestParam String gitId,
                            @RequestParam String gitUrl,
                            @RequestParam String intro,
-                           @RequestParam String img,
                            @RequestParam String gitToken,
-                           @RequestParam String isSocial,
                            @RequestParam String isCertified) throws Exception {
 
         String userEmail = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(userEmail);
-        user.setEmail(email);
-        user.setPwd(pwd);
+        if(!pwd.equals("") && pwd != null && !pwd.equals("undefined")) user.setPwd(pwd);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
         user.setIntro(intro);
         user.setGitToken(gitToken);
-        user.setIsSocial(Integer.parseInt(isSocial));
+        helper = new GitHubRestApiHelper();
+        if(!helper.checkOauth(gitId, gitToken)) {
+        	user.setGitId("");
+        	user.setGitToken("");
+        }
         user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (file == null) {
-            user.setImg(null);
-        } else {
+        if (file != null) {
             long timestamp = System.currentTimeMillis();
             StringBuilder builder = new StringBuilder(staticPath);
             String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -120,9 +156,7 @@ public class UserController {
                     .append(fileName)
                     .toString());
         }
-
         userService.updateUser(user);
-
     }
 
     @Auth
@@ -174,60 +208,74 @@ public class UserController {
     @Auth
     @GetMapping("/users/me")
     @ApiOperation(value = "내 정보 조회")
-    public UserDto me(HttpSession httpSession) {
+    public Object me(HttpSession httpSession) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-        return user;
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashMap<Object, Object> form = objectMapper.convertValue(user, HashMap.class);
+        form.remove("pwd");
+        return form;
     }
 
     @PostMapping("/users/signup")
     @ApiOperation(value = "회원 가입")
-    public void signup(@RequestParam(required = false) MultipartFile file,
+    public Object signup(@RequestParam(required = false) MultipartFile file,
                        @RequestParam String email,
                        @RequestParam String pwd,
                        @RequestParam String nickname,
                        @RequestParam String gitId,
                        @RequestParam String gitUrl,
                        @RequestParam String intro,
-                       @RequestParam String img,
                        @RequestParam String gitToken,
                        @RequestParam String isSocial,
                        @RequestParam String isCertified) throws Exception {
 
         UserDto user = userService.findUserByEmail(email);
+        if(user != null) {
+    		HashMap<String, String> msg = new HashMap<String, String>();
+    		msg.put("errMsg", "해당 Email이 존재합니다.");
+        	return new ResponseEntity<>(msg ,HttpStatus.BAD_REQUEST);
+        }
+        if(!pwd.matches(regExp)) {
+        	HashMap<String, String> msg = new HashMap<String, String>();
+        	msg.put("errMsg", "비밀번호 형식이 잘못되었습니다.");
+        	return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+        }
+        user = new UserDto();
+        user.setEmail(email);
+        user.setPwd(pwd);
+        user.setNickname(nickname);
+        user.setGitId(gitId);
+        user.setGitUrl(gitUrl);
+        user.setIntro(intro);
+        user.setGitToken(gitToken);
+        helper = new GitHubRestApiHelper();
+        if(!helper.checkOauth(gitId, gitToken)) {
+        	user.setGitId("");
+        	user.setGitToken("");
+        }
+        user.setIsSocial(Integer.parseInt(isSocial));
+        user.setIsCertified(Integer.parseInt(isCertified));
 
-        if (user == null) {
-            user = new UserDto();
-            user.setEmail(email);
-            user.setPwd(pwd);
-            user.setNickname(nickname);
-            user.setGitId(gitId);
-            user.setGitUrl(gitUrl);
-            user.setIntro(intro);
-            user.setGitToken(gitToken);
-            user.setIsSocial(Integer.parseInt(isSocial));
-            user.setIsCertified(Integer.parseInt(isCertified));
+        if (file == null) {
+            user.setImg(null);
+        } else {
+            long timestamp = System.currentTimeMillis();
+            StringBuilder builder = new StringBuilder(staticPath);
+            String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileName = timestamp + "." + extension;
 
-            if (file == null) {
-                user.setImg(null);
-            } else {
-                long timestamp = System.currentTimeMillis();
-                StringBuilder builder = new StringBuilder(staticPath);
-                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-                String fileName = timestamp + "." + extension;
-
-                file.transferTo(new File(builder.append("/")
-                        .append(fileName)
-                        .toString()));
-                user.setImg(new StringBuilder(BE_BASE_URL)
-                        .append("/users/image/")
-                        .append(fileName)
-                        .toString());
-            }
-
-            userService.insertUser(user);
+            file.transferTo(new File(builder.append("/")
+                    .append(fileName)
+                    .toString()));
+            user.setImg(new StringBuilder(BE_BASE_URL)
+                    .append("/users/image/")
+                    .append(fileName)
+                    .toString());
         }
 
+        userService.insertUser(user);
+        return new ResponseEntity<>(user.getId(), HttpStatus.OK);
     }
 
     @GetMapping("/users/image/{fileName}")
@@ -241,4 +289,15 @@ public class UserController {
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
+    
+    @Auth
+    @GetMapping("/users/cancel")
+    @ApiOperation(value = "GitToken 검증 취소")
+    public void cancelToken(HttpSession session) {
+    	String email = (String)session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	
+    	userService.cancelToken(user.getId());
+    }
+    
 }

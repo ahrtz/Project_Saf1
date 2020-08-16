@@ -1,24 +1,30 @@
 <template>
   <div class="search-page-container ">
-    <SearchSidebar/>
+    
     <div class="search-page-inner d-flex justify-center">
-        <!-- <Status /> -->
+        
         <br>
-          <v-col cols="8" >
+          <v-col cols="2">
+            
+              <v-btn @click="res=0" >제목검색 ({{searchResult.length}})</v-btn>
+              <v-btn @click="res=1" >태그검색 ({{tagResult.length}})</v-btn>
+            
+          </v-col>
+          <v-col cols="10" >
               <div class="d-flex align-center justify-space-between" style="margin-bottom:16px; border-bottom:solid 1px grey">
                   <div class="search-page-section-title"><h2>Diary Post</h2></div>
               </div>
-              <div :key=componentKey>
+              <!-- 여기 v-if 구분 -->
+              <div :key=componentKey
+              v-if="res==0"
+              >
                 <v-card
                   class="ma-2"
                   flat
                   style="margin-top:10px; border-bottom:dashed 1px grey"
                   v-for="post in searchResult" :key="'sr-' + post.id"
                 >
-                <!-- card layout -->
-                <!-- TODO : tag title로 검색 / tag로 검색 나누어 주어야 함 -->
-                <!-- title -->
-                  <!-- 프로필 이미지, 닉네임  -->
+               
                   <header class="search-card-header">
                     <img :src="post.userinfo.img" alt="" class="search-card-header-img">
                     <div class="search-card-header-nick_date">
@@ -30,7 +36,6 @@
                       </span>
                     </div>
                   </header>
-                  <!-- 포스트 제목 / 컨텐츠 -->
                   <article class="search-card-article" @click="$router.push({name:'PostDetail',params:{pid:post.id}})" style="cursor:pointer">
                     <h3 style="margin-left:10px;">{{post.title}}</h3>
                     <p style="margin-left:10px; margin-top:5px;">
@@ -38,11 +43,43 @@
                     </p>
                   </article>
                   <footer>
-                    <!-- TODO: tags -->
                   </footer>
                 </v-card>
               </div>
-          </v-col>
+              
+              
+              <div :key=componentKey+1
+              v-if="res==1"
+              >
+                <v-card
+                  class="ma-2"
+                  flat
+                  style="margin-top:10px; border-bottom:dashed 1px grey"
+                  v-for="posts in tagResult" :key="'src-' + posts.id"
+                >
+                
+                  <header class="search-card-header">
+                    <img :src="posts.userinfo.img" alt="" class="search-card-header-img">
+                    <div class="search-card-header-nick_date">
+                      <span> 닉네임 :
+                        {{posts.userinfo.nickname}}
+                      </span>
+                      <span> 작성일 :
+                        {{posts.postinfo.cdate}}
+                      </span>
+                    </div>
+                  </header>
+                  <article class="search-card-article" @click="$router.push({name:'PostDetail',params:{pid:posts.pid}})" style="cursor:pointer">
+                    <h3 style="margin-left:10px;">{{posts.postinfo.title}}</h3>
+                    <p style="margin-left:10px; margin-top:5px;">
+                        {{posts.postinfo.content}}
+                    </p>
+                  </article>
+                  <footer>
+                  </footer>
+                </v-card>
+              </div>
+            </v-col>
     </div>
   </div>
 </template>
@@ -50,87 +87,58 @@
 <script>
 import axios from 'axios'
 // import Status from '@/component/Status.vue'
-import SearchSidebar from '../component/SearchSidebar.vue'
+
 
 export default {
     name: 'tmp',
+    
     data(){
         return{
             ddd:this.$route.params,
-            s_data:{
+            p_data:{
               uid:"",
-              keyword:"",
+              keyword:this.$route.params.key,
               isTemp:"0",
-              limit:"0",
+              limit:"",
               isProj:"2"
             },
             t_data:{
-              keyword:"",
+              keyword:this.$route.params.key,
             },
-            tagsearchResult:[],
+            tagResult:[],
             searchResult:[],
-            componentKey:2
+            componentKey:2,
+            res:0
         }
     },
     async created(){
-        console.log('keyword : ' + this.ddd.key);
-        this.forceRerender();
-        if(this.ddd.type == 'tag'){ //tag search
-          console.log("tagsearch");
-          this.searchResult = []
-          this.t_data.keyword =this.ddd.key;
-          try{
-            let tmpspace = await this.$api.tagSearch(this.t_data)
-            this.tagsearchResult = tmpspace;
-            console.log(this.tagsearchResult);
-            for(var i=0;i<this.tagsearchResult.length;i++){
-              try{
-                console.log('postid : ' + this.tagsearchResult[i].pid);
-                var dup = 0;
-                for(var j=0;j<i;j++){//중복 제거
-                  if(this.tagsearchResult[j].pid == this.tagsearchResult[i].pid){
-                    dup = 1;break;
-                  }
-                }
-                if(dup==1)continue;
-                //엄청난 시간손실
-                let tmpspace = await this.$api.postdetail(this.tagsearchResult[i].pid)
-                if(tmpspace.isTemp=='1')continue;
-                this.searchResult[i]=(tmpspace);
-                // console.log(this.searchResult);
-              }catch(e){
-                console.log(e)
-              }
-            }
-          }catch(e){
-            console.log(e)
-          }
-        }
-        else{ // title search
-          this.searchResult = []
-          console.log("title search");
-          this.s_data.keyword = this.ddd.key;
-          try{
-            let tmpspace = await this.$api.searchTemp(this.s_data)
-            this.searchResult = tmpspace.data;
-            // console.log(this.searchResult);
-          }catch(e){
-            console.log(e)
-          }
-        }
-        //API수정해줘야됨
-        this.forceRerender();
+      try{
+        let tmpspace = await this.$api.searchTemp(this.p_data)
+        this.searchResult = tmpspace.data
+      }catch(e){
+        console.log('포스트 검색 실패')
+      }
+      try{
+        let tmpspace1 = await this.$api.tagSearch(this.t_data)
+        this.tagResult = tmpspace1
+      }catch(e){
+        console.log('태그 검색 실패')
+      }
+
     },
-    methods: {
-      forceRerender() {
-        console.log(this.componentKey);
-        this.componentKey += 1;
-    },
-    mounted(){
-      this.forceRerender();
+    methods:{
+      changeval(){
+        if (this.res==0){
+          this.res=1
+        }else{
+          this.res=0
+        }
+      }
     }
+    
+    
   }
-}
+
 </script>
 
 <style>
@@ -167,7 +175,7 @@ export default {
 .search-page-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding-bottom: 70px;
 }
 
 .search-page-btn {

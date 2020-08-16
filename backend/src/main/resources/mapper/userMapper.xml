@@ -43,13 +43,38 @@
         where id=#{id}
     </delete>
 
-    <insert id="insertUser">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         insert into user
         (email, pwd, nickname, git_id, git_url, intro, img, git_token, is_social, is_certified)
         values
         (#{email}, #{pwd}, #{nickname}, #{gitId}, #{gitUrl}, #{intro}, #{img}, #{gitToken}, #{isSocial}, #{isCertified})
     </insert>
+    
+    <update id="cancelToken">
+    	update user
+    	set is_certified = 0
+    	where id = #{id}
+    </update>
 
+    <update id="authenticateToken" parameterType="UserDto">
+    	update user
+    	set
+    	is_certified = 1,
+    	git_id = #{gitId},
+    	git_token = #{gitToken}
+    	where id = #{id}
+    </update>
+    
+    <select id="getAllGitUsers" resultType="UserDto">
+    	select *
+    	from user 
+		where is_certified = 1;
+    </select>
+    
+    <select id="getAllUsers" resultType="UserDto">
+    	select *
+    	from user
+    </select>
 </mapper>
 
 

@@ -18,12 +18,16 @@
 	
 	<select id="getTopNTags" resultType="HashMap">
 		select t.name name, count(*) cnt
-		from post p join tag t
+		from (select p.id id, p.uid uid
+				from post p join diary d
+				on p.did = d.id
+				where p.is_temp = 0
+				and p.uid = #{uid}
+				<if test='did != "0"'>and d.id = #{did}</if>) p join tag t
 		on p.id = t.pid
-		where p.uid = #{uid}
 		group by t.name
 		order by cnt desc
-		limit #{num}
+		limit #{num};
 	</select>
 	
 	<insert id="addTag" parameterType="TagDto" useGeneratedKeys="true" keyProperty="id">

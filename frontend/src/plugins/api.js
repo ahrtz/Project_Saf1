@@ -158,6 +158,10 @@ export default {
     async addGroup(data){
         return (await axios.post(`${baseURL}/groups`,data))
     },
+    async deleteGroup(id)
+    {
+        return (await axios.delete(`${baseURL}/groups/${id}`))
+    },
     async getGroupList(){
         return (await axios.get(`${baseURL}/groups`)).data
     },
@@ -173,7 +177,11 @@ export default {
     async groupDetailUpdate(datas){
         return (await axios.put(`${baseURL}/groups`,datas)).data
     },
-
+    //그룹 별 상위회원 조회
+    async getTopMembers(data){
+        return (await axios.post(`${baseURL}/groups/top`,data)).data
+    },
+    
     //팔로우 관련
     // 팔로우, 팔로잉 유저 목록 확인
     async searchFollow(data){
@@ -183,4 +191,26 @@ export default {
     async makeFollow(data){
         return (await axios.put(`${baseURL}/follows`,data))     //이건 일단 나중에 쓸거고! 
     },
-}
+    //단일 팔로우 확인
+    async confirmFollow(pid){
+        return (await axios.get(`${baseURL}/follows/${pid}`))
+    }
+    ,
+    async gitCancel(){
+        return (await axios.get(`${baseURL}/users/cancel`))
+    },
+    async contactBar(userpk){
+        return (await axios.get(`${baseURL}/users?id=${userpk}`))
+    },
+    async updateDiary(data){
+        return (await axios.put(`${baseURL}/diaries`,data))
+    },
+
+    // status 관련 ~
+    async getCommitStatus(data) {
+        return (await axios.post(`${baseURL}/gits/commits/cnt`, data)).data
+    },
+    async getPostStatus(data) {
+        return (await axios.post(`${baseURL}/posts/cnt`, data)).data
+    },
+}   

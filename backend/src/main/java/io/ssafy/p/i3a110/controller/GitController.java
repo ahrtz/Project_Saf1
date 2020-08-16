@@ -1,8 +1,11 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,11 +37,23 @@ public class GitController {
 
 	@PostMapping("/gits")
 	@ApiOperation(value = "Git AccessToken 검증")
-	public boolean checkOauth(@RequestBody HashMap<String, String> map) {
+	public boolean checkOauth(HttpSession session, @RequestBody HashMap<String, String> map) {
+		helper = new GitHubRestApiHelper();
 		String gitid = map.get("gitId");
 		String accesstoken = map.get("accessToken");
-		helper = new GitHubRestApiHelper();
-		return helper.checkOauth(gitid, accesstoken);
+		
+		if(helper.checkOauth(gitid, accesstoken)) {
+			if(session.getAttribute("email") != null) {
+				String email = (String)session.getAttribute("email");
+				UserDto user = userService.findUserByEmail(email);
+				user.setGitId(gitid);
+				user.setGitToken(accesstoken);
+				userService.authenticateToken(user);
+			}
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	@Auth
@@ -70,18 +85,18 @@ public class GitController {
 	
 	@Auth
 	@PostMapping("/gits/commits")
-	@ApiOperation(value = "Repoitory 전체 Commit 조회")
+	@ApiOperation(value = "회원 Git Repository 별 Commit 정보 조회")
 	public Object getAllCommitsByRepo(HttpSession session, @RequestBody HashMap<String, String> map) {
 		List<CommitInfoDto> list = null;
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
-		String repoName = map.get("repoName");
-		String sDate = map.get("sDate");
-		String eDate = map.get("eDate");
+		String repoId = map.get("repoId");
+		String sdate = map.get("sdate");
+		String edate = map.get("edate");
 		
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			list = helper.getCommitInfoListByPeriod(repoName, sDate, eDate);
+			list = helper.getCommitInfoListByPeriod(repoId, sdate, edate);
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -99,21 +114,25 @@ public class GitController {
 //		return list;
 //	}
 	
-	@Auth
 	@PostMapping("/gits/commits/cnt")
 	@ApiOperation(value = "Repo Commit 수 조회")
-	public Object getAllCommitCnt(HttpSession session, @RequestBody HashMap<String, String> input) {
-		HashMap<Date, Integer> map = new HashMap<Date, Integer>();
-		String email = (String) session.getAttribute("email");
-		UserDto user = userService.findUserByEmail(email);
-		String repoName = input.get("repoName");
+	public Object getAllCommitCnt(@RequestBody HashMap<String, String> input) {
+		int uid = Integer.parseInt(input.get("uid"));
+		UserDto user = userService.findUserById(uid);
+		String repoId = input.get("repoId").trim();
+		Date eDate = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(eDate);
+		cal.add(Calendar.DATE, -84);
 		if(user.getIsCertified()==1) {
 			helper = new GitHubRestApiHelper(user.getGitToken());
-			if(repoName == null) {
-				map = helper.getAllCommitCnt(diaryService.getAllWrittenProjectName(user.getId()));
+			List<String> repoIds = new ArrayList<String>();
+			if(repoId == null || repoId.equals("")) {
+				repoIds = diaryService.getAllWrittenRepoId(user.getId());
 			}else {
-				map = helper.getCommitCnt(repoName);
+				repoIds.add(repoId);
 			}
+			Map<Date, Integer> map = helper.getAllCommitCnt(repoIds, user.getGitId(),new Date(cal.getTimeInMillis()), eDate);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -134,4 +153,18 @@ public class GitController {
 //		return map;
 //	}
 	
+	@Auth
+	@GetMapping("gits/rate/odoc")
+	@ApiOperation(value = "회원 1Day 1Commit 달성률")
+	public Object getOdocRate(HttpSession session) {
+		String email = (String)session.getAttribute("email");
+		UserDto user = userService.findUserByEmail(email);
+		if(user.getIsCertified()==1) {
+			helper = new GitHubRestApiHelper(user.getGitToken());
+			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenRepoId(user.getId()));
+			return new ResponseEntity<>(output, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

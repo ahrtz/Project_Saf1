@@ -1,10 +1,14 @@
 package io.ssafy.p.i3a110.dao;
 
-import io.ssafy.p.i3a110.dto.PostDto;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import io.ssafy.p.i3a110.dto.PostDto;
 
 @Mapper
 public interface PostDao {
@@ -30,4 +34,8 @@ public interface PostDao {
 	public void plusLike(int id);
 	
 	public void minusLike(int id);
+	
+	public int getOdopRate(int uid);
+
+	public List<Map<String, Object>> getAllPostCnt(int uid, int did, int isProj);
 }

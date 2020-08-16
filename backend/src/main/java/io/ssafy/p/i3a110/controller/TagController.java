@@ -1,5 +1,6 @@
 package io.ssafy.p.i3a110.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.TagDto;
@@ -41,15 +44,38 @@ public class TagController {
 	
 	@PostMapping("/tags")
 	@ApiOperation(value = "태그 검색")
-	public List<TagDto> getTagsByKeyword(@RequestBody HashMap<String, String> map){
+	public List<HashMap<Object, Object>> getTagsByKeyword(@RequestBody HashMap<String, String> map){
 		String keyword = map.get("keyword");
-		return tagService.getTagsByKeyword(keyword);
+		List<TagDto> tags = tagService.getTagsByKeyword(keyword);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+		for(TagDto tag : tags) {
+			HashMap<Object, Object> form = objectMapper.convertValue(tag, HashMap.class);
+			PostDto postinfo = postService.getPostById(tag.getPid());
+			form.put("postinfo", postinfo);
+			
+    		UserDto writer = userService.findUserById(postinfo.getUid());
+    		HashMap<String, String> userinfo = new HashMap<String, String>();
+    		userinfo.put("id", String.valueOf(writer.getId()));
+    		userinfo.put("email", writer.getEmail());
+    		userinfo.put("nickname", writer.getNickname());
+    		userinfo.put("img", writer.getImg());
+    		userinfo.put("intro", writer.getIntro());
+    		form.put("userinfo", userinfo);
+    		
+			output.add(form);
+		}
+		return output;
 	}
 	
-	@GetMapping("/tags")
+	@PostMapping("/tags/rank")
 	@ApiOperation(value = "회원 별 태그 상위 num개 조회")
-	public List<HashMap<Object, Object>> getTopNTags(String uid, int num){
-		return tagService.getTopNTags(uid,num);
+	public List<HashMap<Object, Object>> getTopNTags(@RequestBody HashMap<String, Integer> map){
+		int did = map.get("did");
+		int uid = map.get("uid");
+		int num = map.get("num");
+		return tagService.getTopNTags(did,uid,num);
 	}
 	
 	@Auth

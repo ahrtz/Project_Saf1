@@ -14,4 +14,5 @@ public interface LikeDao {
 	public void makeLike(LikeDto like);
 	public List<HashMap<Object, Object>> getLikeCntByUser();
 	public List<HashMap<Object, Object>> getLikeCntByDiary();
+	public int getLikeCntByUid(int uid);
 }

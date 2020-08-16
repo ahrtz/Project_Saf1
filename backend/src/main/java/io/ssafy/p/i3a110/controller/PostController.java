@@ -1,11 +1,11 @@
 package io.ssafy.p.i3a110.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -61,6 +61,8 @@ public class PostController {
     	ArrayList<PostDto> postList = postService.getAllPostByUser(uid, isProj, keyword, isTemp, limit);
     	for(PostDto post : postList) {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+    		long cdate = (long) form.get("cdate");
+    		form.put("cdate", new Date(cdate));
     		UserDto writer = userService.findUserById(post.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
     		userinfo.put("id", String.valueOf(writer.getId()));
@@ -91,6 +93,8 @@ public class PostController {
     	PostDto post = postService.getPostById(id);
     	ObjectMapper objectMapper = new ObjectMapper();
     	HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+		long cdate = (long) form.get("cdate");
+		form.put("cdate", new Date(cdate));
 		UserDto writer = userService.findUserById(post.getUid());
 		HashMap<String, String> userinfo = new HashMap<String, String>();
 		userinfo.put("id", String.valueOf(writer.getId()));
@@ -109,11 +113,11 @@ public class PostController {
     public Object createPost(HttpSession httpSession, @RequestBody PostDto post) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-        Timestamp ts = Timestamp.valueOf(formatter.format(Calendar.getInstance().getTime()));
+        
+        if(post.getContent().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         
         post.setUid(user.getId());
-        post.setCDate(ts.toString());
+        post.setCDate(Calendar.getInstance().getTime());
         post.setCntLike(0);
         postService.createPost(post);
 		return new ResponseEntity<>(post.getId(), HttpStatus.OK);
@@ -125,7 +129,7 @@ public class PostController {
     public Object updatePost(HttpSession httpSession, @RequestBody PostDto post) {
         String email = (String) httpSession.getAttribute("email");
         UserDto user = userService.findUserByEmail(email);
-
+        if(post.getContent().equals("")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         PostDto oldPost = postService.getPostById(post.getId());
         if(user.getId() == oldPost.getUid()) {
         	oldPost.setTitle(post.getTitle());
@@ -152,5 +156,30 @@ public class PostController {
         }else {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @PostMapping("/posts/cnt")
+    @ApiOperation(value = "Diary에 작성된 전체 Post 수 조회 (84일)")
+    public Map<Date, Integer> getAllPostCnt(@RequestBody HashMap<String, Integer> input) {
+    	int uid = input.get("uid");
+    	int did = input.get("did");
+    	int isProj = input.get("isProj");
+    	
+    	return postService.getAllPostCnt(uid, did, isProj); 
+    }
+    
+    @GetMapping("/posts/rate/odop")
+    @ApiOperation(value = "회원 1Day 1Post 달성률")
+    public HashMap<String, String> getOdopRate(HttpSession session, String uid) {
+    	String email = (String) session.getAttribute("email");
+    	UserDto user = userService.findUserByEmail(email);
+    	int id = 0;
+    	if(user!=null) id = user.getId();
+    	if(uid!=null) id = Integer.parseInt(uid);
+    	int days = postService.getOdopRate(id);
+    	HashMap<String, String> output = new HashMap<String, String>();
+		output.put("days", String.format("%d/%d", days, 84));
+		output.put("rate", String.format("%.2f", (double)days/84*100));
+		return output;
     }
 }

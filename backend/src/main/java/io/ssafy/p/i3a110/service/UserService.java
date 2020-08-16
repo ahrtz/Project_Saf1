@@ -1,7 +1,9 @@
 package io.ssafy.p.i3a110.service;
 
-import io.ssafy.p.i3a110.dao.UserDao;
-import io.ssafy.p.i3a110.dto.UserDto;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import io.ssafy.p.i3a110.dao.UserDao;
+import io.ssafy.p.i3a110.dto.UserDto;
+		
 @Service
 public class UserService implements UserDetailsService {
 
@@ -52,4 +54,20 @@ public class UserService implements UserDetailsService {
 
         return new User(email, user.getPwd(), Collections.emptyList());
     }
+
+	public void cancelToken(int id) {
+		userDao.cancelToken(id);
+	}
+	
+	public void authenticateToken(UserDto user) {
+		userDao.authenticateToken(user);
+	}
+	
+	public List<UserDto> getAllGitUsers(){
+		return userDao.getAllGitUsers();
+	}
+	
+	public List<UserDto> getAllUsers(){
+		return userDao.getAllUsers();
+	}
 }

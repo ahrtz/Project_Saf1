@@ -39,8 +39,8 @@ public class DiaryService {
 	}
 	
 	// GitHub API 용
-	public List<String> getAllWrittenProjectName(int uid){
-		return diaryDao.getAllWrittenProjcetName(uid);
+	public List<String> getAllWrittenRepoId(int uid){
+		return diaryDao.getAllWrittenRepoId(uid);
 	}
 
 	public int getUidById(int id) {

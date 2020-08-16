@@ -4,16 +4,6 @@
         <div class="d-flex justify-center">
             <div @click="test=0;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==0}">
                 <div>
-                    <img class="diary-main-toggle-img" src="/static/images/branch.png" />
-                </div>
-                <div>
-                    <div class="diary-main-toggle-text">Project</div>
-                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
-                </div>
-
-            </div>
-            <div @click="test=1;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==1}">
-                <div>
                     <img class="diary-main-toggle-img" src="/static/images/blog.png" />
                 </div>
                 <div>
@@ -22,26 +12,50 @@
                 </div>
 
             </div>
+            <div @click="test=1;getDiary()" class="d-flex flex-grow-0 align-center justify-center diary-main-toggle-item" :class="{'diary-main-toggle-item--selected': test==1}">
+                <div>
+                    <img class="diary-main-toggle-img" src="/static/images/branch.png" />
+                </div>
+                <div>
+                    <div class="diary-main-toggle-text">Project</div>
+                    <div class="diary-main-toggle-text" style="font-size:14px;font-weight:300">Git commit</div>
+                </div>
+
+            </div>
         </div>
      </div>
     <div class="diary-main-inner">
         <!-- <h2>블로그 카드 뷰</h2> -->
-        
-        <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
+        <v-text-field
+          id="header-text"
+          class="d-flex justify-center flex-grow-0"
+          placeholder="Search by Title"
+          outlined
+          dense
+          type="text"
+          hide-details
+          v-model="keyw"
+          
+        ></v-text-field>
 
-        <router-link v-show="test==0" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
+
+
+
+        <!-- <v-btn class="mr-4 " color="indigo" dark @click="testa()">xx</v-btn> -->
+        <router-link v-show="test==0 || test==2 " v-if="mydata.id==uid"  class="float-right" :to="{name:'BlogAdd'}" tag="button">
+          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
+        </router-link>
+
+        <router-link v-show="test==1 ||test==2" v-if="mydata.id==uid" class="float-right" :to="{name:'ProjectAdd'}" tag="button">
           <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">프로젝트 추가</div>
         </router-link>
 
-        <router-link v-show="test==1" class="float-right" :to="{name:'BlogAdd'}" tag="button">
-          <div class="d-flex flex-grow-0 justify-center align-center diary-main-add-btn">블로그 추가</div>
-        </router-link>
         <br>
         <br>
 
        <v-container fluid>
            <v-row>
-               <v-col cols="4" v-for="blog in diarys" :key="blog.id">
+               <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-show="blog.title.includes(keyw)">
                    <v-hover
                         v-slot:default="{ hover }"
                         enabled
@@ -64,8 +78,17 @@
                            {{blog.title}}
                         </v-card-title>
                         <v-card-subtitle>
-                            <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
+                            <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
+                            </div> -->
+                            
+                            <span v-if="blog.languages != null && blog.languages.length>0" style="color:white;font-weight:bold;"> 언 어 : </span>
+                            
+                            <span style="color:white;font-weight:bold;" v-for="language in blog.languages" :key="language.id">
+                                {{language}}
+                            </span>
+                            <div style="color:white;font-weight:bold;">
+                                기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}
                             </div>
                         </v-card-subtitle>
                         <v-card-text style="color:white;font-weight:bold;">
@@ -84,7 +107,9 @@
                     </v-card>
                 </v-hover>
                 </v-col>
-
+                <img v-if="!blog.title.includes(keyw)" src="/static/images/Blogit_logo_grey.png">
+   
+    
            </v-row>
        </v-container>
     </div>
@@ -104,13 +129,25 @@ export default {
             showNav: true,
             show: false,
             diarys:{},
-            uid:''
-
+            uid:'',
+            mydata:[],
+            keyw:'',
+            blog:{
+                title:''
+            },
+            tmp:''
         }
     },
     created(){
+        this.tmp =this.$route.params 
         this.uid= this.$route.params.uid
         this.test = this.$route.params.test
+        if(this.test){
+        }else{
+            this.test=2
+        }
+
+        this.mydata =  this.$store.state.user
         this.getDiary();
 
     },
@@ -128,7 +165,7 @@ export default {
 
             try{
 
-                let tempspace= await this.$api.getDiaries(this.uid,{isProj:(this.test+1)%2,keyword:""})
+                let tempspace= await this.$api.getDiaries(this.uid,{isProj:(this.test),keyword:""})
                 this.diarys = tempspace
                 console.log('성공')
             }catch(e){
@@ -151,7 +188,7 @@ export default {
 .diary-main-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding: 70px 0;
 }
 
 .diary-main-add-btn {

@@ -1,131 +1,132 @@
 <template>
-  <div class="main-page-container">
-    <div class="main-page-inner d-flex flex-column justify-center">
-      
-      
-      
-     
-      <Status />
-     
-     
-     
-     
-      <br />
-      <br />
-      <v-container fluid>
-        <v-row>
-          <v-col cols="6">
-            <div
-              class="d-flex align-center justify-space-between"
-              style="margin-bottom:16px; border-bottom:solid 1px grey"
-            >
-              <div class="main-page-section-title">Project Post</div>
-              <div
-                class="d-flex justify-center flex-grow-0 align-center main-page-btn"
-                style="margin-bottom:5px;" @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
-              >프로젝트 보러가기</div>
-            </div>
-            <v-card
-              class="ma-2"
-              flat
-              v-for="post in list_proj"
-              :key="post.id"
-              style="margin-top:10px; border-bottom:dashed 1px grey"
-            >
-              <!-- card layout -->
-              <div>
-                <!-- 프로필 이미지, 닉네임  -->
-                <header class="main-card-header">
-                  <img :src="post.userinfo.img" alt class="main-card-header-img" />
-                  <div class="main-card-header-nick_date">
-                    <span>
-                      닉네임 :
-                      {{post.userinfo.nickname}}
-                    </span>
-                    <span>
-                      작성일 :
-                      {{post.cdate}}
-                    </span>
-                  </div>
-                </header>
-                <!-- 포스트 제목 / 컨텐츠 -->
-                <article
-                  class="main-card-article"
-                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                  style="cursor:pointer"
+  <div class="d-flex main-page-container">
+    <div class="d-flex flex-grow-0 main-page-inner">
+      <div class="d-flex flex-grow-0" style="width: 300px">
+        <div class="main-page-contact">
+          <s-contact />
+        </div>
+      </div>
+      <div class="d-flex justify-center">
+        <div class="d-flex flex-column" style="width:100%">
+          <Status />
+          <v-container fluid>
+            <v-row>
+              <v-col cols="6">
+                <div
+                  class="d-flex align-center justify-space-between"
+                  style="margin-bottom:16px; border-bottom:solid 1px grey"
                 >
-                  <h3 style="margin-left:10px;">{{post.title}}</h3>
-                  <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                </article>
-                <footer>
-                  <!-- TODO: tags -->
-                </footer>
-              </div>
-            </v-card>
+                  <div class="main-page-section-title">Project Post</div>
+                  <div
+                    class="d-flex justify-center flex-grow-0 align-center main-page-btn"
+                    style="margin-bottom:5px;"
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
+                  >more projects</div>
+                </div>
+                <v-card
+                  class="ma-2"
+                  flat
+                  v-for="post in list_proj"
+                  :key="post.id"
+                  style="margin-top:10px; border-bottom:dashed 1px grey"
+                >
+                  <!-- card layout -->
+                  <div>
+                    <!-- 프로필 이미지, 닉네임  -->
+                    <header class="main-card-header">
+                      <img :src="post.userinfo.img" alt class="main-card-header-img" />
+                      <div class="main-card-header-nick_date">
+                        <span>
+                          닉네임 :
+                          {{post.userinfo.nickname}}
+                        </span>
+                        <span>
+                          작성일 :
+                          {{post.cdate}}
+                        </span>
+                      </div>
+                    </header>
+                    <!-- 포스트 제목 / 컨텐츠 -->
+                    <article
+                      class="main-card-article"
+                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                      style="cursor:pointer"
+                    >
+                      <h3 style="margin-left:10px;">{{post.title}}</h3>
+                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
+                    </article>
+                    <footer>
+                      <!-- TODO: tags -->
+                    </footer>
+                  </div>
+                </v-card>
 
-            <infinite-loading
-              slot="append"
-              @infinite="infiniteHandler"
-              spinner="waveDots"
-              force-use-infinite-wrapper=".el-table__body-wrapper"
-            ></infinite-loading>
-          </v-col>
-          <v-col cols="6">
-            <div
-              class="d-flex align-center justify-space-between"
-              style="margin-bottom:16px; border-bottom:solid 1px grey"
-            >
-              <div class="main-page-section-title">Blog Post</div>
-              <div
-                class="d-flex justify-center flex-grow-0 align-center main-page-btn"
-                style="margin-bottom:5px;" @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
-              >다이어리 보러가기</div>
-            </div>
-            <v-card
-              class="ma-2"
-              flat
-              v-for="post in list_blog"
-              :key="post.id"
-              style="margin-top:10px;border-bottom:dashed 1px grey"
-            >
-              <div>
-                <!-- 프로필 이미지, 닉네임  -->
-                <header class="main-card-header">
-                  <img :src="post.userinfo.img" alt class="main-card-header-img" />
-                  <div class="main-card-header-nick_date">
-                    <span>
-                      닉네임 :
-                      {{post.userinfo.nickname}}
-                    </span>
-                    <span>
-                      작성일 :
-                      {{post.cdate}}
-                    </span>
-                  </div>
-                </header>
-                <!-- 포스트 제목 / 컨텐츠 -->
-                <article
-                  class="main-card-article"
-                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                  style="cursor:pointer"
+                <infinite-loading
+                  slot="append"
+                  @infinite="infiniteHandler"
+                  spinner="waveDots"
+                  force-use-infinite-wrapper=".el-table__body-wrapper"
+                ></infinite-loading>
+              </v-col>
+              <v-col cols="6">
+                <div
+                  class="d-flex align-center justify-space-between"
+                  style="margin-bottom:16px; border-bottom:solid 1px grey"
                 >
-                  <h3 style="margin-left:10px;">{{post.title}}</h3>
-                  <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                </article>
-                <footer>
-                  <!-- TODO: tags -->
-                </footer>
-              </div>
-            </v-card>
-            <infinite-loading
-              slot="append"
-              @infinite="infiniteHandler2"
-              spinner="waveDots"
-              force-use-infinite-wrapper=".el-table__body-wrapper"
-            ></infinite-loading>
-          </v-col>
-        </v-row>
-      </v-container>
+                  <div class="main-page-section-title">Blog Post</div>
+                  <div
+                    class="d-flex justify-center flex-grow-0 align-center main-page-btn"
+                    style="margin-bottom:5px;"
+                    @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
+                  >more blogs</div>
+                </div>
+                <v-card
+                  class="ma-2"
+                  flat
+                  v-for="post in list_blog"
+                  :key="post.id"
+                  style="margin-top:10px;border-bottom:dashed 1px grey"
+                >
+                  <div>
+                    <!-- 프로필 이미지, 닉네임  -->
+                    <header class="main-card-header">
+                      <img :src="post.userinfo.img" alt class="main-card-header-img" />
+                      <div class="main-card-header-nick_date">
+                        <span>
+                          닉네임 :
+                          {{post.userinfo.nickname}}
+                        </span>
+                        <span>
+                          작성일 :
+                          {{post.cdate}}
+                        </span>
+                      </div>
+                    </header>
+                    <!-- 포스트 제목 / 컨텐츠 -->
+                    <article
+                      class="main-card-article"
+                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                      style="cursor:pointer"
+                    >
+                      <h3 style="margin-left:10px;">{{post.title}}</h3>
+                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
+                    </article>
+                    <footer>
+                      <!-- TODO: tags -->
+                    </footer>
+                  </div>
+                </v-card>
+                <infinite-loading
+                  slot="append"
+                  @infinite="infiniteHandler2"
+                  spinner="waveDots"
+                  force-use-infinite-wrapper=".el-table__body-wrapper"
+                ></infinite-loading>
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -134,6 +135,7 @@
 import axios from 'axios';
 import Status from '@/component/Status.vue';
 import InfiniteLoading from 'vue-infinite-loading';
+import SContact from '@/component/s-contact.vue';
 
 var count = 0;
 export default {
@@ -141,6 +143,7 @@ export default {
   components: {
     Status,
     InfiniteLoading,
+    SContact,
   },
   data() {
     return {
@@ -153,18 +156,17 @@ export default {
       page: 1,
       list_proj: [],
       list_blog: [],
-      isLogin : false,
-      uid:''
+      isLogin: false,
+      uid: '',
     };
   },
   created() {
-    this.isLogin=this.$store.state.isLoggedIn
-    this.uid = this.$route.params.uid
+    this.isLogin = this.$store.state.isLoggedIn;
+    this.uid = this.$route.params.uid;
   },
   methods: {
-   
     infiniteHandler($state) {
-      let temp = this.$route.params.uid
+      let temp = this.$route.params.uid;
       axios
         .post('/api/posts/all/', {
           uid: temp,
@@ -189,7 +191,7 @@ export default {
         });
     },
     infiniteHandler2($state) {
-      let temp = this.$route.params.uid
+      let temp = this.$route.params.uid;
       axios
         .post('/api/posts/all/', {
           uid: temp,
@@ -249,23 +251,27 @@ export default {
 .main-page-inner {
   width: 1140px;
   margin: 0 auto;
-  padding: 77px 0;
+  padding-bottom: 70px;
+}
+
+.main-page-contact {
+  width: 268px;
 }
 
 .main-page-btn {
   margin-left: 4px;
-  font-size: 14px;
+  font-size: 12px;
   background: #0051cb;
-  font-weight: 600;
+  font-weight: normal;
   color: #fff;
   border-radius: 6px;
-  width: 80px;
-  height: 40px;
+  padding: 0 16px;
+  height: 30px;
   cursor: pointer;
 }
 
 .main-page-section-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 </style>
