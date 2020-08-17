@@ -48,7 +48,7 @@
 	</delete>
 	
 	<select id="getAllWrittenRepoId" resultType = "String">
-		select repo_id
+		select distinct repo_id
 		from diary
 		where uid = #{uid} and is_proj = true and repo_id is not null
 	</select>
