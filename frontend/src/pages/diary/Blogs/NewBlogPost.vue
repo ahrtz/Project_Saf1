@@ -205,8 +205,8 @@ export default {
       commitList: [],
       tmppost:[],
       newtag:{
-
-      }
+      },
+      testing:{}
     
     };
   },
@@ -223,6 +223,11 @@ export default {
           try{
             let repoId= this.diarys.repoId
             let listCommit = await this.$api.getCommitList({repoId:repoId})
+            
+            
+            // let testing = await this.$api.forTest({repoId:repoId})
+            // this.commitList=testing
+
             this.commitList=listCommit
             console.log('커밋 받음')
           }catch(e){
