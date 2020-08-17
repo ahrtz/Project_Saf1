@@ -100,8 +100,24 @@
             <div @click="scrap" class="post-detail-icon">
               <v-icon color="#e8a317" size="32">stars</v-icon>
             </div>
-            <div @click="grapurl()" class="post-detail-icon">
-              <v-icon color="#808080" size="32">share</v-icon>
+            <div class="post-detail-icon">
+              <v-icon color="#808080" size="32" @click.stop="dialog=true;getUrl()">share</v-icon>
+              <!-- 모달 하나 띄워 줘야 될거같다 -->
+              <v-dialog v-model="dialog">
+                <v-card>
+                  <v-card-title> 공유 하기</v-card-title>
+                  <v-card-text>
+                    <v-text-field id="ShareUrl" v-model="this.urll" readonly></v-text-field>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                    color="blue" text @click="CopyUrlToClipboard();dialog=false">복사하기</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+
             </div>
           </div>
           <div class="post-detail-comment-container">
@@ -189,6 +205,8 @@ export default {
       comments: [],
       isLogin:false,
       printLikeCnt :'',
+      dialog:false,
+      urll:""
     };
   },
   async created() {
@@ -375,6 +393,9 @@ export default {
       // this.getcDate()
       this.commentData.pid = this.id.pid;
       await this.$api.createComment(this.commentData);
+      document.getElementById(
+        'post-comment-content'
+        ).value = ""
       this.getComment();}
     },
     async commenterase(commentid) {
@@ -404,7 +425,24 @@ export default {
     },
     mvUrl(url){
       window.open(url, "_blank");
-    }
+    },
+    CopyUrlToClipboard(){
+
+        var obShareUrl = document.getElementById("ShareUrl");
+        obShareUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
+
+        obShareUrl.select();  // 해당 값이 선택되도록 select() 합니다
+        document.execCommand("copy"); // 클립보드에 복사합니다.
+
+        obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
+        alert("URL이 클립보드에 복사되었습니다"); 
+
+      },
+    getUrl(){
+    var obShareUrl = document.getElementById("ShareUrl");
+      // obShareUrl.value = window.document.location.href;
+      this.urll = window.document.location.href
+      }
   },
   computed: {
     limited: function () {
@@ -436,6 +474,12 @@ export default {
       // console.log(this.tmp.uid);
       return this.uid == this.tmp.uid;
     },
+    
+    
+
+
+
+
   },
 };
 </script>

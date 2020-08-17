@@ -213,4 +213,7 @@ export default {
     async getPostStatus(data) {
         return (await axios.post(`${baseURL}/posts/cnt`, data)).data
     },
+    async forTest(data){
+        return (await axios.post(`${baseURL}/test`,data)).data
+    }
 }   
