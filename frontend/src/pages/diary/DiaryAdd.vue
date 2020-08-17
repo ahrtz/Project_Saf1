@@ -48,11 +48,11 @@
       </v-layout>
 
       <v-text-field v-if="repoData.length!=0" readonly v-model="repoChecked.repoName"></v-text-field>
-      <v-col cols="12">
+      <div class="d-flex flex-column">
         <div class="diary-add-subtitle">대표 이미지</div>
         <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*" />
-      </v-col>
-      <v-col cols="6">
+      </div>
+      <div class="d-flex flex-column">
         <v-menu
           v-model="blogData.menu2"
           :close-on-content-click="false"
@@ -62,7 +62,7 @@
           min-width="290px"
         >
           <template v-slot:activator="{ on, attrs }">
-              <div class="diary-add-subtitle">시작 날짜</div>
+            <div class="diary-add-subtitle" style="margin-top: 32px">시작 날짜</div>
             <v-text-field
               v-model="blogData.sdate"
               readonly
@@ -74,12 +74,12 @@
           </template>
           <v-date-picker v-model="blogData.sdate" @input="blogData.menu2 = false"></v-date-picker>
         </v-menu>
-      </v-col>
+      </div>
 
-      <v-col cols="12">
+      <div class="d-flex flex-column">
         <div class="diary-add-subtitle">설명</div>
         <v-textarea v-model="blogData.intro" placeholder="다이어리의 간략한 설명을 적어주세요."></v-textarea>
-      </v-col>
+      </div>
       <div style="float:right">
         <v-btn class="float-right" color="primary" dark @click="AddProj()">추가</v-btn>
         <v-btn class="mr-2 float-right" color="info" dark @click="goback()">취소</v-btn>

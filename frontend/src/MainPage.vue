@@ -7,59 +7,48 @@
         </div>
       </div>
       <div class="d-flex justify-center">
-        <div class="d-flex flex-column" style="width:100%">
-          <Status :uid="uid" :isProj="2"/>
-          <v-container fluid>
-            <v-row>
-              <v-col cols="6">
+        <div class="d-flex flex-column" style="width:100%;">
+          <Status :uid="uid" :isProj="2" />
+          <div class="d-flex">
+            <div class="d-flex">
+              <div class="d-flex flex-column flex-shrink-0" style="width: 100%;padding-right:32px">
                 <div
-                  class="d-flex align-center justify-space-between"
-                  style="margin-bottom:16px; border-bottom:solid 1px grey"
+                  class="d-flex align-center"
+                  style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Project Post</div>
+                  <div class="d-flex" />
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
                   >more projects</div>
                 </div>
-                <v-card
-                  class="ma-2"
-                  flat
-                  v-for="post in list_proj"
-                  :key="post.id"
-                  style="margin-top:10px; border-bottom:dashed 1px grey"
-                >
+                <div class="main-page-card" v-for="post in list_proj" :key="post.id">
                   <!-- card layout -->
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
-                    <header class="main-card-header">
+                    <div class="d-flex align-center main-card-header">
                       <img :src="post.userinfo.img" alt class="main-card-header-img" />
                       <div class="main-card-header-nick_date">
-                        <span>
-                          닉네임 :
-                          {{post.userinfo.nickname}}
-                        </span>
-                        <span>
-                          작성일 :
-                          {{post.cdate}}
-                        </span>
+                        <div class="main-page-nickname">{{post.userinfo.nickname}}</div>
+                        <div class="main-page-cdate">{{post.cdate}}</div>
                       </div>
-                    </header>
+                    </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <article
+                    <div
                       class="main-card-article"
                       @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                       style="cursor:pointer"
                     >
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </article>
+                      <div class="main-page-content-title">{{post.title}}</div>
+                      <div class="main-page-content-text">{{post.content}}</div>
+                    </div>
                     <footer>
                       <!-- TODO: tags -->
                     </footer>
                   </div>
-                </v-card>
+                </div>
 
                 <infinite-loading
                   slot="append"
@@ -67,64 +56,55 @@
                   spinner="waveDots"
                   force-use-infinite-wrapper=".el-table__body-wrapper"
                 ></infinite-loading>
-              </v-col>
-              <v-col cols="6">
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="d-flex flex-column flex-shrink-0" style="width: 100%;">
                 <div
-                  class="d-flex align-center justify-space-between"
-                  style="margin-bottom:16px; border-bottom:solid 1px grey"
+                  class="d-flex align-center"
+                  style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Blog Post</div>
+                  <div class="d-flex" />
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
                   >more blogs</div>
                 </div>
-                <v-card
-                  class="ma-2"
-                  flat
-                  v-for="post in list_blog"
-                  :key="post.id"
-                  style="margin-top:10px;border-bottom:dashed 1px grey"
-                >
+                <div class="main-page-card" v-for="post in list_blog" :key="post.id">
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
-                    <header class="main-card-header">
+                    <div class="d-flex align-center main-card-header">
                       <img :src="post.userinfo.img" alt class="main-card-header-img" />
                       <div class="main-card-header-nick_date">
-                        <span>
-                          닉네임 :
-                          {{post.userinfo.nickname}}
-                        </span>
-                        <span>
-                          작성일 :
-                          {{post.cdate}}
-                        </span>
+                        <div class="main-page-nickname">{{post.userinfo.nickname}}</div>
+                        <div class="main-page-cdate">{{post.cdate}}</div>
                       </div>
-                    </header>
+                    </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <article
+                    <div
                       class="main-card-article"
                       @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                       style="cursor:pointer"
                     >
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </article>
+                      <div class="main-page-content-title">{{post.title}}</div>
+                      <div class="main-page-content-text">{{post.content}}</div>
+                    </div>
                     <footer>
                       <!-- TODO: tags -->
                     </footer>
                   </div>
-                </v-card>
+                </div>
                 <infinite-loading
                   slot="append"
                   @infinite="infiniteHandler2"
                   spinner="waveDots"
                   force-use-infinite-wrapper=".el-table__body-wrapper"
                 ></infinite-loading>
-              </v-col>
-            </v-row>
-          </v-container>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -233,12 +213,18 @@ export default {
 }
 
 .main-card-header-img {
+  border-radius: 50%;
+  border: solid 1px #dde3ea;
   width: 35px;
   height: 35px;
-  margin: 10px 10px 10px 10px;
-  float: left;
+  margin-right: 10px;
 }
 .main-card-article {
+  margin-top: 2px;
+  padding-top: 8px;
+  padding: 16px;
+  overflow: hidden;
+  border-top: solid 1px #dde3ea;
   background-color: white;
   float: unset;
   width: 100%;
@@ -273,5 +259,45 @@ export default {
 .main-page-section-title {
   font-size: 18px;
   font-weight: 700;
+}
+
+.main-page-card {
+  padding: 6px 10px 16px 10px;
+  margin-top: 15px;
+  height: 200px;
+  border: 1px solid #dde3ea;
+  border-radius: 8px;
+  margin: 15px 5px;
+  text-decoration: none;
+  color: #21262e;
+  -webkit-transition: -webkit-box-shadow 0.2s;
+  transition: -webkit-box-shadow 0.2s;
+  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.main-page-card:hover {
+  box-shadow: 1px 1px 10px 4px #dde3ea;
+}
+
+.main-page-nickname {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.main-page-cdate {
+  font-size: 12px;
+  color: #21262e;
+}
+
+.main-page-content-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.main-page-content-text {
+  font-size: 12px;
 }
 </style>
