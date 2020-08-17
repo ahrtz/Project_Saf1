@@ -8,7 +8,7 @@
       </div>
       <div class="d-flex justify-center">
         <div class="d-flex flex-column" style="width:100%">
-          <Status />
+          <Status :uid="uid" :isProj="2"/>
           <v-container fluid>
             <v-row>
               <v-col cols="6">

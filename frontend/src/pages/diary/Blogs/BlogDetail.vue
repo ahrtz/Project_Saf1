@@ -105,11 +105,11 @@
         </div>
 
         <Status
-          v-if="diarydata.gitName"
+          v-if="!!diarydata.id"
           :uid="diaryid.uid"
-          :repoId="diarydata.repoId"
           :did="diaryid.did"
-          :isProject="diarydata.isProj"
+          :repoId="diarydata.repoId"
+          :isProj="diarydata.isProj"
         />
 
         <div class="d-flex align-center" style="margin-bottom: 30px">

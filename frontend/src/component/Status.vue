@@ -7,34 +7,69 @@
       <div v-for="(t, ti) in 3" :key="ti" class="d-flex flex-grow-0">
         <div class="d-flex flex-column">
           <div v-for="(r, ri) in 4" :key="ri" class="status-tile-container d-flex flex-grow-0">
-            <div
-              v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
-              :key="`ci-${ci}`"
-              class="d-flex flex-grow-0 align-center justify-center status-tile status-level0"
-              :class="{
+            <template v-if="isProj == 0">
+              <div
+                v-for="(d, di) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`di0-${di}`"
+                class="d-flex flex-grow-0 align-center justify-center status-tile status-tile-yellow"
+              >
+                <img
+                  v-if="d >= 1"
+                  style="height: 24px;opacity:0.7;"
+                  src="/static/images/flower.png"
+                />
+              </div>
+            </template>
+
+            <template v-if="isProj == 1">
+              <div
+                v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`ci-${ci}`"
+                class="d-flex flex-grow-0 align-center justify-center status-tile status-level0"
+                :class="{
             'status-level1': c >= 1 && c <= 2,
             'status-level2': c >= 3 && c <= 4,
             'status-level3': c >= 5 && c <= 6,
             'status-level4': c >= 7,
         }"
-            ></div>
-            <div
-              v-for="(i, ii) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
-              :key="`ii-${ii}`"
-              class="status-tile-img"
-            >
-              <img v-if="isProject && i >= 1" style="height: 36px" src="/static/images/sprout.png" />
-              <img
-                v-if="!isProject && i >= 1"
-                style="height: 24px;opacity:0.7;"
-                src="/static/images/flower.png"
-              />
-              <img
-                v-if="isProject == null && i >= 1"
-                style="height: 28px;opacity:0.6"
-                src="/static/images/tree.png"
-              />
-            </div>
+              ></div>
+
+              <div
+                v-for="(d, di) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`di1-${di}`"
+                :style="`position:absolute;left:${(di+1)*38}px`"
+              >
+                <img v-if="d >= 1" style="height: 36px" src="/static/images/sprout.png" />
+              </div>
+            </template>
+
+            <template v-if="isProj == 2">
+              <div
+                v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`ci-${ci}`"
+                class="d-flex flex-grow-0 align-center justify-center status-tile status-level0"
+                :class="{
+            'status-level1': c >= 1 && c <= 2,
+            'status-level2': c >= 3 && c <= 4,
+            'status-level3': c >= 5 && c <= 6,
+            'status-level4': c >= 7,
+        }"
+              ></div>
+
+              <div
+                v-for="(d, di) in comb.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`di23-${di}`"
+                :style="`position:absolute;left:${(di+1)*38}px`"
+              >
+                <img
+                  v-if="d == 0"
+                  style="height: 24px;opacity:0.7;"
+                  src="/static/images/flower.png"
+                />
+                <img v-if="d == 1" style="height: 36px" src="/static/images/sprout.png" />
+                <img v-if="d == 2" style="height: 28px;opacity:0.6;margin-top:6px;margin-left:6px;" src="/static/images/tree.png" />
+              </div>
+            </template>
           </div>
         </div>
         <div v-if="ti != 2" class="d-flex flex-grow-0 status-div" />
@@ -57,17 +92,19 @@ export default {
     profile,
   },
   props: {
-    uid: 0,
-    did: 0,
+    uid: '',
+    did: '',
     repoId: '',
-    isProject: null,
+    isProj: '',
   },
   data: () => ({
     dreq: {},
     dres: [],
     req: {},
     res: [],
-    default: [
+    bres: [],
+    pres: [],
+    dData: [
       0,
       0,
       0,
@@ -153,6 +190,7 @@ export default {
       0,
       0,
     ],
+    comb: [],
   }),
   methods: {
     async getDStatus() {
@@ -171,19 +209,45 @@ export default {
       } catch (e) {
         console.log('post status 가져오기 실패');
       }
-
       this.res = Object.values(this.res);
-      console.log('***' + this.res);
     },
   },
   async created() {
     this.dreq.uid = this.req.uid = this.uid;
-    this.req.did = this.did;
-    this.dreq.repoId = this.repoId;
-    if (this.isProject) {
+    this.req.did = this.did ? this.did : '0';
+    this.dreq.repoId = this.repoId ? this.repoId : '';
+    this.req.isProj = this.isProj;
+    console.log('--', this.isProj);
+    if (this.isProj == 0) {
+      this.getStatus();
+    } else if (this.isProj == 1) {
       this.getDStatus();
+      this.getStatus();
+    } else if (this.isProj == 2) {
+      this.getDStatus();
+
+      this.req.isProj = 1;
+      console.log(this.req.isProj);
+      await this.getStatus();
+      this.bres = this.res;
+      console.log('blog' + this.bres + this.bres.length);
+
+      this.req.isProj = 2;
+      console.log(this.req.isProj);
+      await this.getStatus();
+      this.pres = this.res;
+      console.log('project' + this.pres + this.pres.length);
+
+      for (let i = 0; i < this.bres.length; ++i) {
+        if (this.bres[i] && this.pres[i]) {
+          this.comb[i] = 2;
+        } else if (this.bres[i] && !this.pres[i]) {
+          this.comb[i] = 0;
+        } else if (!this.bres[i] && this.pres[i]) {
+          this.comb[i] = 1;
+        }
+      }
     }
-    this.getStatus();
   },
 };
 </script>
@@ -220,6 +284,10 @@ export default {
   height: 35px;
   border-radius: 4px;
   margin: 1.5px;
+}
+
+.status-tile-yellow {
+  background-color: rgb(247, 240, 184);
 }
 
 .status-level0 {
