@@ -41,9 +41,15 @@
                       @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                       style="cursor:pointer"
                     >
-                      <div class="main-page-content-title">{{post.title}}</div>
-                      <div class="main-page-content-text">{{post.content}}</div>
+
+                      <h3 style="margin-left:10px;">{{post.title}}</h3>
+                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
                     </div>
+
+                      <div class="main-page-content-title">{{post.title}}</div>
+                      <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
+                    </div>
+
                     <footer>
                       <!-- TODO: tags -->
                     </footer>
@@ -88,8 +94,13 @@
                       @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                       style="cursor:pointer"
                     >
+
+                      <h3 style="margin-left:10px;">{{post.title}}</h3>
+                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
+                    </div>
+
                       <div class="main-page-content-title">{{post.title}}</div>
-                      <div class="main-page-content-text">{{post.content}}</div>
+                      <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
                     </div>
                     <footer>
                       <!-- TODO: tags -->
@@ -107,8 +118,7 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+   
 </template>
 
 <script>
@@ -116,6 +126,9 @@ import axios from 'axios';
 import Status from '@/component/Status.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import SContact from '@/component/s-contact.vue';
+import marked from 'marked'
+
+var renderer = new marked.Renderer();
 
 var count = 0;
 export default {
@@ -145,6 +158,17 @@ export default {
     this.uid = this.$route.params.uid;
   },
   methods: {
+    compiledMarkdown: function (posttmp) {
+          let vm = posttmp
+          console.log(vm)
+          renderer.em = function(text) {
+        return '<em>' + "" + '</em>';
+      }
+      var tmp1 = marked(posttmp.content, { renderer: renderer }); 
+      
+      return tmp1
+    },
+
     infiniteHandler($state) {
       let temp = this.$route.params.uid;
       axios

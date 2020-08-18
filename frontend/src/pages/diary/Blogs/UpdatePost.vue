@@ -14,9 +14,32 @@
         <br />제목
         <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
-        <div v-for="(scommit,index) in selectedCommits" :key="index">
-          {{index}}{{scommit.msg}}<v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+
+      <div v-if="selectedCommits.length!=0">
+          <div
+                class="post-detail-commit-box"
+                v-for="(scommit, index) in selectedCommits"
+                :key="index"
+              >
+                <div class="post-detail-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
+                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(scommit.url)">
+                  <div class="post-detail-commit-title">{{scommit.msg}}</div>
+                  <div class="d-flex">
+                    <div class="post-detail-commit-author">{{scommit.author}}</div>
+                    <div class="d-flex" />
+                    <div class="post-detail-commit-sha">{{scommit.sha1}}</div>
+                  </div>
+                </div>
+                <v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+              </div>
         </div>
+
+
+
+
+
+
+
         <v-layout row v-show="this.isProj==true">
           <v-dialog v-model="dialog" scrollable max-width="500px">
           <template v-slot:activator="{ on }">
@@ -74,11 +97,28 @@
                 </v-card>
             </v-dialog>
         </v-layout>
-
+        <div v-if="selected.length!=0">
+          <div
+                class="post-detail-commit-box"
+                v-for="(commit, i) in selected"
+                :key="i"
+              >
+                <div class="post-detail-commit-date">#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
+                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(commit.url)">
+                  <div class="post-detail-commit-title">{{commit.msg}}</div>
+                  <div class="d-flex">
+                    <div class="post-detail-commit-author">{{commit.author}}</div>
+                    <div class="d-flex" />
+                    <div class="post-detail-commit-sha">{{commit.sha1}}</div>
+                  </div>
+                </div>
+              </div>
+        </div>
 
         내용
-        <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
-
+        <editor />
+        <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
+        
         <h3>태그</h3>
         <div class="d-flex">
           <v-text-field label="태그를 추가" v-model="tag" @keyup.enter="addtag()" @keyup.space="addtag()"></v-text-field>
@@ -87,7 +127,7 @@
         </div>
         <br />
         <!-- tags -->
-        <!-- TODO : 오른쪽으로 나열하고 싶은데 잘 안됨 -->
+
         <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
         <div class="d-flex flex-grow-0 post-detail-tag"  v-for="(tag,index) in originaltag" :key="'t-1'+index">
           
@@ -162,9 +202,16 @@
 
 <script>
 import axios from 'axios'
+import editor from '@/component/editor.vue'
+import bus from '@/component/EventBus'
+
+
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
     name:'UpdatePost',
+    components:{
+      editor
+    },
     data(){
       return{
         drawer:null,
@@ -205,12 +252,14 @@ export default {
     },
     props:['value'],
     async created(){
+      bus.$on('updateContent', this.updateContent);
       this.post.uid= this.$store.state.user.id
       this.config.uid = this.$store.state.user.id;
       try{
             let tmpspace = await this.$api.postdetail(this.pid)
             this.post =tmpspace
             console.log('성공')
+            bus.$emit('getContent', this.post.content);
 
             try{
               let tempspace1= await this.$api.individualDiary(this.post.did)
@@ -220,6 +269,7 @@ export default {
               try{
                 let listCommit = await this.$api.getCommitList({repoId:tempspace1.repoId})
                 this.commitList=listCommit
+                bus.$emit('getCommits', this.commitList);
               }
               catch(e){
                 console.log('커밋 받아오기  에러')
@@ -253,6 +303,10 @@ export default {
       // console.log(this.tags);
     },
     methods:{
+      updateContent(content){
+      this.post.content = content;
+    },
+
       clear(){
         this.$refs.form.reset()
       },
@@ -326,7 +380,7 @@ export default {
                     // this.selected[i].uid = this.post.id
                     this.selected[i].pid = this.pid
                     this.selected[i].sha=this.selected[i].sha1
-                    this.selected[i].date=this.selected[i].date.substr(0,10)
+                    this.selected[i].date=this.selected[i].date
                     delete this.selected[i].sha1
                     await this.$api.addCommit(this.selected[i])
                     console.log(this.selected[i],'부악')
@@ -387,6 +441,11 @@ export default {
         this.selectedCommits.splice(index,1)
       }
     },
+    computed:{
+      downcontent(){
+        return this.post.content
+      }
+    }
 }
 </script>
 
