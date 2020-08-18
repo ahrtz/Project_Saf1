@@ -4,7 +4,7 @@
       <div class="d-flex flex-shrink-0 flex-grow-0 post-detail-contact">
         <s-contact />
       </div>
-      <div class="d-flex flex-grow-0">
+      <div class="d-flex flex-grow-0" style="width:100%">
         <div class="d-flex flex-column" style="width:100%">
           <div class="d-flex">
             <div

@@ -37,7 +37,7 @@
               <div
                 v-for="(d, di) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
                 :key="`di1-${di}`"
-                :style="`position:absolute;left:${(di+1)*38}px`"
+                :style="`position:absolute;left:${di*38}px`"
               >
                 <img v-if="d >= 1" style="height: 36px" src="/static/images/sprout.png" />
               </div>
@@ -59,7 +59,7 @@
               <div
                 v-for="(d, di) in comb.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
                 :key="`di23-${di}`"
-                :style="`position:absolute;left:${(di+1)*38}px`"
+                :style="`position:absolute;left:${di*38}px`"
               >
                 <img
                   v-if="d == 0"
