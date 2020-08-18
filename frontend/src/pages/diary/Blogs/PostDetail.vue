@@ -1,10 +1,10 @@
 <template>
   <div class="post-detail-container">
     <div class="d-flex post-detail">
-      <div class="d-flex flex-grow-0 post-detail-contact">
+      <div class="d-flex flex-shrink-0 flex-grow-0 post-detail-contact">
         <s-contact />
       </div>
-      <div class="d-flex">
+      <div class="d-flex flex-grow-0" style="width:100%">
         <div class="d-flex flex-column" style="width:100%">
           <div class="d-flex">
             <div
@@ -136,9 +136,9 @@
                 <div class="post-detail-comment-id">{{comment.userinfo.nickname}}</div>
               </div>
               <div class="d-flex align-center">
-                <div class="d-flex post-detail-comment-content">{{comment.content}}</div>
+                <div class="d-flex align-center post-detail-comment-content">{{comment.content}}</div>
                 <div
-                  class="d-flex justify-center align-center flex-grow-0 post-detail-red-btn"
+                  class="d-flex justify-center align-center flex-grow-0 flex-shrink-0 post-detail-red-btn"
                   style="margin-left: 8px;"
                   v-if="isWritten(comment.uid)"
                   @click="commenterase(comment.id)"
@@ -684,6 +684,7 @@ export default {
 }
 
 .post-detail-comment-date {
+  margin-top: 4px;
   color: rgb(102, 102, 102);
   font-size: 12px;
 }
@@ -694,6 +695,7 @@ export default {
 }
 
 .post-detail-comment-content {
+  min-height: 40px;
   font-size: 14px;
 }
 

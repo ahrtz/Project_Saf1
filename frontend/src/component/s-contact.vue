@@ -15,8 +15,7 @@
     >Unfollow</div>
     <div class="d-flex flex-column s-contact-contents">
       <div class="d-flex">
-        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20"></v-icon>
-        팔로워 아이콘좀
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="19">person_add</v-icon>
         <p
           class="d-flex"
           target="_top"

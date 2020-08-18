@@ -3,7 +3,11 @@
       <span class="toolbar" @click="notPreview()">Contents</span>
       <span class="toolbar" @click="doPreview()">Preview</span>
     
+<<<<<<< HEAD
       <v-textarea v-show="!preview" v-model="content" required outlined rows="9" no-resize auto-grow style="margin-top: 5px;"></v-textarea>    
+=======
+      <v-textarea v-show="!preview" v-model="input" required outlined rows="9" no-resize auto-grow style="margin-top: 5px;"></v-textarea>    
+>>>>>>> f1a51038ee033411523380f73549a301794dceac
     
       <div id="preview" v-show="preview" v-html="compiledMarkdown" label="preview"></div>
     

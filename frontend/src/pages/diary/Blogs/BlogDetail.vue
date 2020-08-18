@@ -6,115 +6,131 @@
           <s-contact />
         </div>
       </div>
-      <div class="d-flex flex-column">
-        <div class="d-flex">
-          <div class="d-flex align-center">
-            <div class="d-flex start">
-              <h1 style="margin-right: 30px">{{diarydata.title}}</h1>
-                <h6 class="d-flex align-end" v-if="diarydata.isProj==1">
-                  <a :href="diarydata.gitUrl" > 
-                    ({{diarydata.gitName ? diarydata.gitName:""}})
-                  </a>
-                </h6> 
-            </div>
-            <div class="d-flex end align-self-end">
-              <p>{{diarydata.sdate ? diarydata.sdate.substr(0,10) : ""}} ~ {{diarydata.sdate ? diarydata.edate.substr(0,10) : ""}}</p>
-            </div>            
-          </div>
-          <div
-            class="d-flex flex-grow-0 align-center justify-center blog-detail-red-btn"
-            style="margin-bottom: 32px;"
-            @click="diaryDelete()"
-            v-if="diaryid.uid==mydata.id"
-          >다이어리 삭제</div>
-          
+      <div class="d-flex flex-column" style="width: 840px">
+        <div class="d-flex align-center" style="width: 100%;margin-bottom:8px">
+          <div class="blog-detail-title">{{diarydata.title}}</div>
+          <div class="d-flex" />
 
           <v-dialog v-model="dialog" scrollable max-width="600px" v-if="diaryid.uid==mydata.id">
             <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on" @click="updateData()">다이어리 수정</v-btn>
+              <v-btn
+                color="info"
+                dark
+                v-on="on"
+                @click="updateData()"
+              >{{isProj ? "프로젝트" : "블로그"}} 수정</v-btn>
             </template>
 
-            <v-card >
-                <v-card-title>다이어리 수정</v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                  
-                  다이어리 타이틀 : <v-text-field v-model="updatediary.title" type = "text" placeholder="다이어리 이름을 입력하세요"></v-text-field>
-                  간단 설명
-                  <v-textarea v-model="updatediary.intro" label="intro"></v-textarea>
-                  대표 이미지
-                  <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
-                  
-                  <v-menu
-                      v-model="menu1"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                  >
-                      <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="updatediary.sdate"
-                          label="시작날짜"
-                          prepend-icon="event"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="updatediary.sdate" @input="menu1 = false"></v-date-picker>
-                  </v-menu>
-                  <v-menu
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                  >
-                      <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                          v-model="updatediary.edate"
-                          label="종료날짜"
-                          prepend-icon="event"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="updatediary.edate" @input="menu2 = false"></v-date-picker>
-                  </v-menu>
-                  
-                </v-card-text>
-                
-                <v-divider></v-divider>
-                    <v-card-actions>
-                    
-                    <v-btn color="blue darken-1" text @click="dialog = false;diaryUpdate()">Save</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false">cancel</v-btn>
-                    </v-card-actions>
+            <v-card>
+              <v-card-title>{{isProj ? "프로젝트" : "블로그"}} 수정</v-card-title>
+              <v-divider></v-divider>
+              <v-card-text>
+                {{isProj ? "프로젝트" : "블로그"}} 타이틀 :
+                <v-text-field v-model="updatediary.title" type="text" placeholder="다이어리 이름을 입력하세요"></v-text-field>간단 설명
+                <v-textarea v-model="updatediary.intro" label="intro"></v-textarea>대표 이미지
+                <input
+                  @change="onFileSelected($event)"
+                  ref="file"
+                  type="file"
+                  name="file"
+                  accept="image/*"
+                />
+
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="updatediary.sdate"
+                      label="시작날짜"
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="updatediary.sdate" @input="menu1 = false"></v-date-picker>
+                </v-menu>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="updatediary.edate"
+                      label="종료날짜"
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="updatediary.edate" @input="menu2 = false"></v-date-picker>
+                </v-menu>
+              </v-card-text>
+
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-btn color="blue darken-1" text @click="dialog = false;diaryUpdate()">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">cancel</v-btn>
+              </v-card-actions>
             </v-card>
           </v-dialog>
-            
-
-
-
+          <div
+            class="d-flex flex-grow-0 align-center justify-center blog-detail-red-btn"
+            style="margin-left: 4px;"
+            @click="diaryDelete()"
+            v-if="diaryid.uid==mydata.id"
+          >{{isProj ? "프로젝트" : "블로그"}} 삭제</div>
         </div>
-        <Status v-if="diarydata.gitName" :uid="diaryid.uid" :repoId="diarydata.repoId" :did="diaryid.did" type="project"/>
-        <div class="d-flex">
-          <div class="d-flex" />
+
+        <div>
+          <div class="d-flex" v-if="diarydata.isProj==1">
+            <div class="blog-detail-info-title">Repository</div>
+            <a
+              class="blog-detail-info-content"
+              :href="diarydata.gitUrl"
+            >{{diarydata.gitName ? diarydata.gitName:""}}</a>
+          </div>
+          <div class="d-flex">
+            <div class="blog-detail-info-title">Start date ~ End date</div>
+            <p
+              class="blog-detail-info-content"
+            >{{diarydata.sdate ? diarydata.sdate.substr(0,10) : ""}} ~ {{diarydata.sdate ? diarydata.edate.substr(0,10) : ""}}</p>
+          </div>
+        </div>
+
+        <Status
+          v-if="!!diarydata.id"
+          :uid="diaryid.uid"
+          :did="diaryid.did"
+          :repoId="diarydata.repoId"
+          :isProj="diarydata.isProj"
+        />
+
+        <div class="d-flex align-center" style="margin-bottom: 30px">
           <v-text-field
-          id="header-text"
-          class="d-flex justify-center flex-grow-0"
-          placeholder="Search by Title"
-          outlined
-          dense
-          type="text"
-          hide-details
-          v-model="keyw"
-          
-        ></v-text-field>
+            id="header-text"
+            class="d-flex justify-center flex-grow-0"
+            placeholder="Search by Title"
+            outlined
+            dense
+            type="text"
+            hide-details
+            append-icon="search"
+            style="width: 300px"
+            v-model="keyw"
+          ></v-text-field>
+          <div class="d-flex" />
           <div
             v-if="!isProj && diaryid.uid==mydata.id"
             class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
@@ -125,11 +141,10 @@
             v-if="isProj && diaryid.uid==mydata.id"
             class="d-flex justify-center align-center flex-grow-0 blog-detail-btn"
             @click="$router.push({name:'NewProjectPost',params:{did:diaryid.did}})"
-            
           >글 작성</div>
         </div>
         <div>
-<<<<<<< Updated upstream
+
           <v-container fluid>
             <v-row>
               <v-col cols="12">
@@ -186,6 +201,8 @@
             </v-row>
           </v-container>
 =======
+=======
+>>>>>>> f1a51038ee033411523380f73549a301794dceac
           <div
             class="d-flex align-center"
             style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
@@ -215,7 +232,7 @@
               <!-- TODO: tags -->
             </div>
           </div>
->>>>>>> Stashed changes
+
         </div>
       </div>
     </div>
@@ -239,27 +256,26 @@ export default {
   },
   data() {
     return {
-      keyw:'',
+      keyw: '',
       diaryid: this.$route.params,
       config: {
         keyword: '',
         isTemp: 0,
       },
-      dialog:false,
+      dialog: false,
       postdata: [],
-      diarydata:{},
-      updatediary:{
-        id:"",
-        title:"",
-        intro:"",
-        img:null,
-        sdate:new Date().toISOString().substr(0, 10),
-        edate:new Date().toISOString().substr(0, 10),
-
+      diarydata: {},
+      updatediary: {
+        id: '',
+        title: '',
+        intro: '',
+        img: null,
+        sdate: new Date().toISOString().substr(0, 10),
+        edate: new Date().toISOString().substr(0, 10),
       },
-      menu2:false,
-      menu1:false,
-      mydata:{}
+      menu2: false,
+      menu1: false,
+      mydata: {},
     };
   },
   methods: {
@@ -291,11 +307,11 @@ export default {
 
     onFileSelected(event) {
       var input = event.target;
-      if (input.files && input.files[0]) { 
+      if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = (e) => { 
+        reader.onload = (e) => {
           this.uploadImageFile = e.target.result;
-        }
+        };
         reader.readAsDataURL(input.files[0]);
       }
     },
@@ -311,51 +327,47 @@ export default {
         console.log(e);
       }
     },
-    updateData(){
-      this.updatediary.id=this.diarydata.id
-      this.updatediary.title = this.diarydata.title
-      this.updatediary.intro = this.diarydata.intro
-      this.updatediary.img = this.diarydata.img
-      this.updatediary.sdate =this.diarydata.sdate.substr(0,10)
-      
+    updateData() {
+      this.updatediary.id = this.diarydata.id;
+      this.updatediary.title = this.diarydata.title;
+      this.updatediary.intro = this.diarydata.intro;
+      this.updatediary.img = this.diarydata.img;
+      this.updatediary.sdate = this.diarydata.sdate.substr(0, 10);
     },
-    async diaryUpdate(){
-      if(this.updatediary.title==""|| this.updatediary.title == null){
-        alert('타이틀은 빈칸이 올수 없습니다')
-      }else{
+    async diaryUpdate() {
+      if (this.updatediary.title == '' || this.updatediary.title == null) {
+        alert('타이틀은 빈칸이 올수 없습니다');
+      } else {
+        try {
+          if (this.$refs.file != null) {
+            this.updatediary.file = this.$refs.file.files[0];
+          }
+          const formData = new FormData();
+          formData.append('id', this.updatediary.id);
+          formData.append('title', this.updatediary.title);
+          formData.append('intro', this.updatediary.intro);
+          formData.append('img', this.updatediary.img);
+          formData.append('sdate', this.updatediary.sdate);
+          formData.append('edate', this.updatediary.edate);
+          formData.append('file', this.updatediary.file);
 
-      try{
-        if (this.$refs.file != null){
-          this.updatediary.file=this.$refs.file.files[0]
+          await this.$api.updateDiary(formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          let tmpspace1 = await this.$api.individualDiary(
+            this.$route.params.did
+          );
+          this.diarydata = tmpspace1;
+        } catch (e) {
+          console.log(e);
         }
-        const formData = new FormData()
-        formData.append('id',this.updatediary.id)
-        formData.append('title',this.updatediary.title)
-        formData.append('intro',this.updatediary.intro)
-        formData.append('img',this.updatediary.img)
-        formData.append('sdate',this.updatediary.sdate)
-        formData.append('edate',this.updatediary.edate)
-        formData.append('file',this.updatediary.file)
-      
-      
-        await this.$api.updateDiary(formData,{
-        headers:{
-                    'Content-Type':'multipart/form-data'
-                }
-        
-      })
-      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did)
-      this.diarydata = tmpspace1
-  
-    } catch(e){
-      console.log(e)
-    }
       }
-  },
-    
+    },
   },
   async created() {
-    this.mydata = this.$store.state.user
+    this.mydata = this.$store.state.user;
     try {
       let tmpspace = await this.$api.diarydetail(
         this.$route.params.did,
@@ -367,16 +379,16 @@ export default {
     } catch (e) {
       console.log('실패');
     }
-    try{
-      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did)
-      this.diarydata = tmpspace1
-    }catch(e){
-      console.log('fdas')
+    try {
+      let tmpspace1 = await this.$api.individualDiary(this.$route.params.did);
+      this.diarydata = tmpspace1;
+    } catch (e) {
+      console.log('fdas');
     }
   },
   computed: {
     isProj() {
-      if (this.diarydata.isProj==1) {
+      if (this.diarydata.isProj == 1) {
         return true;
       } else {
         return false;
@@ -399,7 +411,6 @@ export default {
 }
 
 .blog-detail-btn {
-  margin-top: 32px;
   padding: 0 16px;
   font-size: 14px;
   background: #0051cb;
@@ -409,6 +420,23 @@ export default {
   height: 40px;
   cursor: pointer;
 }
+
+.blog-detail-title {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.blog-detail-info-title {
+  font-size: 12px;
+  color: rgb(0, 0, 0, 0.57);
+  width: 150px;
+  font-weight: 600;
+}
+
+.blog-detail-info-content {
+  font-size: 12px;
+}
+
 .blog-card-header {
   background-color: white;
   /* background:#ffffffde; */
@@ -421,6 +449,11 @@ export default {
   flex-direction: column;
 }
 .blog-card-article {
+  margin-top: 2px;
+  padding-top: 8px;
+  padding: 16px;
+  overflow: hidden;
+  border-top: solid 1px #dde3ea;
   background-color: white;
   float: unset;
   width: 100%;
@@ -440,5 +473,51 @@ export default {
   padding: 0 16px;
   height: 40px;
   cursor: pointer;
+}
+
+.blog-detail-section-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.blog-detail-card {
+  position: relative;
+  padding: 6px 10px 16px 10px;
+  margin-top: 15px;
+  height: 150px;
+  border: 1px solid #dde3ea;
+  border-radius: 8px;
+  margin: 15px 5px;
+  text-decoration: none;
+  color: #21262e;
+  -webkit-transition: -webkit-box-shadow 0.2s;
+  transition: -webkit-box-shadow 0.2s;
+  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.blog-detail-card:hover {
+  box-shadow: 1px 1px 10px 4px #dde3ea;
+}
+
+.blog-detail-nickname {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.blog-detail-cdate {
+  font-size: 12px;
+  color: #21262e;
+}
+
+.blog-detail-content-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.blog-detail-content-text {
+  font-size: 12px;
 }
 </style>
