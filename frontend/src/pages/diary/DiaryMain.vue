@@ -121,7 +121,9 @@
             </v-hover>
           </v-col>
         </v-row>
-        <img v-if="!blog.title.includes(keyw)" src="/static/images/Blogit_logo_grey.png" />
+        <!-- <template class="justify-center" v-if="!blog.title.includes(keyw)">
+          <img src="/static/images/Blogit_logo_grey.png" />
+        </template>-->
       </div>
     </div>
   </div>
