@@ -77,17 +77,26 @@
             </v-dialog>
         </v-layout>
 
-
-
-
-
-
-
-
-
+        <div v-if="selected.length!=0">
+          <div
+                class="post-detail-commit-box"
+                v-for="(commit, i) in selected.slice(0,5)"
+                :key="i"
+              >
+                <div class="post-detail-commit-date">#{{i+1}} Commits on {{commit.date}}</div>
+                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(commit.url)">
+                  <div class="post-detail-commit-title">{{commit.msg}}</div>
+                  <div class="d-flex">
+                    <div class="post-detail-commit-author">{{commit.author}}</div>
+                    <div class="d-flex" />
+                    <div class="post-detail-commit-sha">{{commit.sha1}}</div>
+                  </div>
+                </div>
+              </div>
+        </div>
       
         내용
-        <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
+        <editor/>
 
         <h3>태그</h3>
         <div class="d-flex">
@@ -171,9 +180,15 @@
 
 <script>
 import axios from 'axios';
+import editor from '@/component/editor.vue'
+import bus from '@/component/EventBus'
+
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
   name: 'NewBlogPost',
+  components:{
+    editor
+  },
   data() {
     return {
       drawer:null,
@@ -212,6 +227,7 @@ export default {
   },
   props: ['value'],
   async created() {
+    bus.$on('updateContent', this.updateContent);
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try{
@@ -248,6 +264,9 @@ export default {
     }
   },
   methods: {
+    updateContent(content){
+      this.post.content = content;
+    },
     clear() {
       this.$refs.form.reset();
     },
@@ -368,10 +387,15 @@ export default {
         console.log('실패');
       }}
     },
-
+    mvUrl(url){
+      window.open(url, "_blank");
+    },
   },
-
-  
+  watch:{
+    selected(){
+      bus.$emit('getCommits',this.selected);
+    }
+  },  
   computed: {
         
     userid() {},
@@ -438,5 +462,45 @@ export default {
   border-radius: 6px;
   height: 40px;
   cursor: pointer;
+}
+
+.post-detail-commit-box {
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
+}
+
+.post-detail-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.post-detail-commit:hover {
+  background: #0051cb11;
+  cursor: pointer;
+}
+
+.post-detail-commit-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.post-detail-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.post-detail-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.post-detail-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 </style>
