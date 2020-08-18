@@ -42,9 +42,7 @@
                       style="cursor:pointer"
                     >
 
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </div>
+                      
 
                       <div class="main-page-content-title">{{post.title}}</div>
                       <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
@@ -89,15 +87,12 @@
                       </div>
                     </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <div
-                      class="main-card-article"
-                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                      style="cursor:pointer"
-                    >
-
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </div>
+                      <div
+                        class="main-card-article"
+                        @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                        style="cursor:pointer"
+                      >
+                      
 
                       <div class="main-page-content-title">{{post.title}}</div>
                       <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
@@ -118,7 +113,8 @@
           </div>
         </div>
       </div>
-   
+    </div>
+  </div>
 </template>
 
 <script>
@@ -230,6 +226,7 @@ export default {
   font-size: 16px;
   color: black;
   height: 55px;
+  width: 100%;
 }
 .main-card-header-nick_date {
   display: flex;

@@ -96,15 +96,11 @@
         </div>
       
         내용
-<<<<<<< HEAD
-<<<<<<< Updated upstream
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
-=======
-        <editor :content="post.content"/>
->>>>>>> Stashed changes
-=======
+
+
         <editor/>
->>>>>>> f1a51038ee033411523380f73549a301794dceac
+
 
         <h3>태그</h3>
         <div class="d-flex">
@@ -235,15 +231,10 @@ export default {
   },
   props: ['value'],
   async created() {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
+
     
     bus.$on('updateContent', this.updateContent);
->>>>>>> Stashed changes
-=======
-    bus.$on('updateContent', this.updateContent);
->>>>>>> f1a51038ee033411523380f73549a301794dceac
+
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try{
@@ -403,20 +394,11 @@ export default {
         console.log('실패');
       }}
     },
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 
-=======
     mvUrl(url){
       window.open(url, "_blank");
     },
-      
->>>>>>> Stashed changes
-=======
-    mvUrl(url){
-      window.open(url, "_blank");
-    },
->>>>>>> f1a51038ee033411523380f73549a301794dceac
+
   },
   watch:{
     selected(){

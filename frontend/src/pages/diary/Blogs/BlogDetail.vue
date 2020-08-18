@@ -145,64 +145,6 @@
         </div>
         <div>
 
-          <v-container fluid>
-            <v-row>
-              <v-col cols="12">
-                <div
-                  class="text-center d-flex justify-space-between"
-                  style="margin-bottom:16px; border-bottom:solid 1px grey;"
-                >
-                  <div>
-                    <h2>{{isProj ? "프로젝트 글" : "블로그 글"}}</h2>
-                  </div>
-                </div>
-                <v-card
-                  class="ma-2"
-                  flat
-                  v-for="post in postdata"
-                  :key="post.id"
-                  style="margin-top:10px; border-bottom:dashed 1px grey"
-                  v-show="post.title.includes(keyw)"
-                >
-                  <router-link :to="{name:'PostDetail',params:{pid:post.id}}">
-                    <!-- {{post}} -->
-                    <!-- card layout -->
-                    <div>
-                      <!-- 프로필 이미지, 닉네임  -->
-                      <header class="blog-card-header">
-                        <!-- <img :src="post.userinfo.img" alt="" class="search-card-header-img"> -->
-                        <div class="blog-card-header-nick_date">
-                          <h3>
-                            제목 :
-                            {{post.title}}
-                          </h3>
-                          <span>
-                            작성일 :
-                            {{post.c_date}}
-                          </span>
-                        </div>
-                      </header>
-                      <!-- 포스트 제목 / 컨텐츠 -->
-                      <article
-                        class="blog-card-article"
-                        @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})"
-                        style="cursor:pointer"
-                      >
-                        <h3 style="margin-left:10px;">{{post.title}}</h3>
-                        <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                      </article>
-                      <footer>
-                        <!-- TODO: tags -->
-                      </footer>
-                    </div>
-                  </router-link>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-=======
-=======
->>>>>>> f1a51038ee033411523380f73549a301794dceac
           <div
             class="d-flex align-center"
             style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
