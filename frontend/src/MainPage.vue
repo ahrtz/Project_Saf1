@@ -227,7 +227,6 @@ export default {
   border-top: solid 1px #dde3ea;
   background-color: white;
   float: unset;
-  width: 100%;
   height: 100px;
 }
 .main-page-container {
