@@ -76,49 +76,51 @@
 
       <!-- <h2>블로그 카드 뷰</h2> -->
       <div class="d-flex">
-        <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-show="blog.title.includes(keyw)">
-          <v-hover v-slot:default="{ hover }" enabled>
-            <v-card
-              :elevation="hover? 12 : 2"
-              :img="!blog.img?'../../../static/images/Blogit_logo.png':blog.img"
-              class="ma-2"
-              :class="{ 'on-hover': hover }"
-              style="height:300px;"
-              outlined
-              @click="goBlog(blog.id)"
-            >
-              <!-- hover -->
-              <div v-if="hover" class="black div-reveal">
-                <v-card-title style="color:white;">{{blog.title}}</v-card-title>
-                <v-card-subtitle>
-                  <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
+        <v-row>
+          <v-col cols="4" v-for="blog in diarys" :key="blog.id" v-show="blog.title.includes(keyw)">
+            <v-hover v-slot:default="{ hover }" enabled>
+              <v-card
+                :elevation="hover? 12 : 2"
+                :img="!blog.img?'../../../static/images/Blogit_logo.png':blog.img"
+                class="ma-2"
+                :class="{ 'on-hover': hover }"
+                style="height:300px;"
+                outlined
+                @click="goBlog(blog.id)"
+              >
+                <!-- hover -->
+                <div v-if="hover" class="black div-reveal">
+                  <v-card-title style="color:white;">{{blog.title}}</v-card-title>
+                  <v-card-subtitle>
+                    <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
                                 {{tag}}
-                  </div>-->
+                    </div>-->
 
-                  <span
-                    v-if="blog.languages != null && blog.languages.length>0"
-                    style="color:white;font-weight:bold;"
-                  >언 어 :</span>
+                    <span
+                      v-if="blog.languages != null && blog.languages.length>0"
+                      style="color:white;font-weight:bold;"
+                    >언 어 :</span>
 
-                  <span
-                    style="color:white;font-weight:bold;"
-                    v-for="language in blog.languages"
-                    :key="language.id"
-                  >{{language}}</span>
-                  <div
-                    style="color:white;font-weight:bold;"
-                  >기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
-                </v-card-subtitle>
-                <v-card-text style="color:white;font-weight:bold;">{{blog.intro}}</v-card-text>
-              </div>
+                    <span
+                      style="color:white;font-weight:bold;"
+                      v-for="language in blog.languages"
+                      :key="language.id"
+                    >{{language}}</span>
+                    <div
+                      style="color:white;font-weight:bold;"
+                    >기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
+                  </v-card-subtitle>
+                  <v-card-text style="color:white;font-weight:bold;">{{blog.intro}}</v-card-text>
+                </div>
 
-              <!-- unhover -->
-              <div v-else>
-                <v-card-title class="title-unhover">{{blog.title}}</v-card-title>
-              </div>
-            </v-card>
-          </v-hover>
-        </v-col>
+                <!-- unhover -->
+                <div v-else>
+                  <v-card-title class="title-unhover">{{blog.title}}</v-card-title>
+                </div>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
         <img v-if="!blog.title.includes(keyw)" src="/static/images/Blogit_logo_grey.png" />
       </div>
     </div>
