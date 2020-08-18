@@ -87,7 +87,11 @@
 
       
         내용
+<<<<<<< Updated upstream
         <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
+=======
+        <editor :content="post.content"/>
+>>>>>>> Stashed changes
 
         <h3>태그</h3>
         <div class="d-flex">
@@ -212,6 +216,11 @@ export default {
   },
   props: ['value'],
   async created() {
+<<<<<<< Updated upstream
+=======
+    
+    bus.$on('updateContent', this.updateContent);
+>>>>>>> Stashed changes
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try{
@@ -368,7 +377,14 @@ export default {
         console.log('실패');
       }}
     },
+<<<<<<< Updated upstream
 
+=======
+    mvUrl(url){
+      window.open(url, "_blank");
+    },
+      
+>>>>>>> Stashed changes
   },
 
   

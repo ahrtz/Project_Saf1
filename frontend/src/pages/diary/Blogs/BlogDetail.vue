@@ -129,6 +129,7 @@
           >글 작성</div>
         </div>
         <div>
+<<<<<<< Updated upstream
           <v-container fluid>
             <v-row>
               <v-col cols="12">
@@ -184,6 +185,37 @@
               </v-col>
             </v-row>
           </v-container>
+=======
+          <div
+            class="d-flex align-center"
+            style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
+          >
+            <div>
+              <div class="blog-detail-section-title">{{isProj ? "Project " : "Blog "}} Post</div>
+            </div>
+          </div>
+          <div
+            class="d-flex flex-column blog-detail-card"
+            v-for="post in postdata"
+            :key="post.id"
+            v-show="post.title.includes(keyw)"
+            @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})"
+          >
+            <!-- 프로필 이미지, 닉네임  -->
+            <div class="d-flex align-center blog-card-header">
+              <div class="d-flex blog-detail-content-title">{{post.title}}</div>
+              <div class="d-flex flex-grow-0 blog-detail-cdate">{{post.c_date}}</div>
+            </div>
+            <!-- 포스트 제목 / 컨텐츠 -->
+            <div class="d-flex blog-card-article">
+              <!-- <div class="blog-detail-content-text" >{{post.content}}</div> -->
+              <div class="blog-detail-content-text" v-html="compiledMarkdown(post)"></div>
+            </div>
+            <div style="position:absolute;bottom:0">
+              <!-- TODO: tags -->
+            </div>
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>
@@ -194,6 +226,9 @@
 import Status from '@/component/Status.vue';
 import axios from 'axios';
 import SContact from '@/component/s-contact.vue';
+import marked from  'marked'
+
+var renderer = new marked.Renderer();
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
@@ -228,6 +263,32 @@ export default {
     };
   },
   methods: {
+    compiledMarkdown: function (posttmp) {
+      let vm = posttmp
+      console.log(vm)
+      renderer.em = function(text) {
+        // var indexNumber = text.indexOf('/');
+        // if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
+      //     var idx = text.substr(indexNumber + 1)
+      //     var commit = vm.commitList[idx-1];
+      //     var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
+      //             + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
+      //             + idx +' '+ commit.msg
+      //             + '</div><div class="d-flex"> <div class="contents-commit-author">'
+      //             + commit.author + ' committed on ' + commit.date
+      //             + '</div></div></div></div></div>'
+      //     return res;
+        // }
+        return '<em>' + "" + '</em>';
+      }
+
+
+
+      var tmp1 = marked(posttmp.content, { renderer: renderer }); 
+      
+      return tmp1
+    },
+
     onFileSelected(event) {
       var input = event.target;
       if (input.files && input.files[0]) { 
@@ -321,6 +382,7 @@ export default {
         return false;
       }
     },
+    
   },
 };
 </script>
