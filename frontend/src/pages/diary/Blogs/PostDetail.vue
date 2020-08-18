@@ -37,6 +37,7 @@
             <div>{{tmp.cdate}}</div>
           </div>
           <div class="post-detail-commit-container" v-if="checkcommit">
+            사용된 커밋 
             <div v-if="!commitcheck">
               <div
                 class="post-detail-commit-box"
