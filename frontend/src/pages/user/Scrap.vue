@@ -22,7 +22,7 @@
               <div class="d-flex" />
               <div
                 class="d-flex align-center justify-center flex-grow-0 scrap-btn"
-                @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                @click="$router.push({name:'PostDetail',params:{uid:post.postinfo.uid, pid:post.postinfo.id}})"
               >보러가기</div>
               <div
                 class="d-flex align-center justify-center flex-grow-0 scrap-btn-red"

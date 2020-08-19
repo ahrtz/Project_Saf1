@@ -239,9 +239,10 @@ export default {
     };
   },
   methods: {
-    compiledMarkdown: function (posttmp) {
-      let vm = posttmp;
-      console.log(vm);
+    compiledMarkdown(posttmp) {
+      if (!posttmp || !posttmp.content) {
+        return '';
+      }
       renderer.em = function (text) {
         // var indexNumber = text.indexOf('/');
         // if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
@@ -258,9 +259,7 @@ export default {
         return '<em>' + '' + '</em>';
       };
 
-      var tmp1 = marked(posttmp.content, { renderer: renderer });
-
-      return tmp1;
+      return marked(posttmp.content, { renderer: renderer });
     },
 
     onFileSelected(event) {

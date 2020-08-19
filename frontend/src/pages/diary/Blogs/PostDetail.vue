@@ -88,7 +88,7 @@
             >접기</div>
           </div>
 
-          <div class="post-detail-content" v-html="compiledMarkdown"></div>
+          <div class="post-detail-content" v-html="compiledMarkdown()"></div>
 
           <!-- <div class="post-detail-content">{{tmp.content}}</div> -->
           <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
@@ -286,6 +286,36 @@ export default {
     console.log('***' + this.commitList[0]);
   },
   methods: {
+    compiledMarkdown () {
+      if (!this.tmp || !this.tmp.content) {
+        return ''
+      }
+
+      if (this.commitList.length != 0) {
+        renderer.em = (text) => {
+          var indexNumber = text.indexOf('/');
+          if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== '\\') {
+            var idx = text.substr(indexNumber + 1);
+            var commit = this.commitList[idx - 1];
+            var res =
+              '<div class="post-detail-commit-container" ><div class="contents-commit-box">' +
+              `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #` +
+              idx +
+              ' ' +
+              commit.msg +
+              '</div><div class="d-flex"> <div class="contents-commit-author">' +
+              commit.author +
+              ' committed on ' +
+              commit.date +
+              '</div></div></div></div></div>';
+            return res;
+          }
+          return '<em>' + text.replace('\\/', '/') + '</em>';
+        };
+      }
+
+      return marked(this.tmp.content, { renderer: renderer });
+    },
     async getComment() {
       try {
         let temp = await this.$api.getCommentlist(this.id.pid);
@@ -295,55 +325,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    async created() {
-      this.uid = this.$store.state.user.id;
-      //comment 데이터 가져오기
-      this.getComment();
-
-      //post 데이터 가져오기
-      try {
-        let tmpspace = await this.$api.postdetail(this.id.pid);
-        this.tmp = tmpspace;
-        // console.log('성공')
-      } catch (e) {
-        console.log(e);
-      }
-      //좋아요 데이터 가져오기
-      try {
-        let tmpspace1 = await this.$api.likedatas(this.id.pid);
-        this.likedummy = tmpspace1;
-        if (tmpspace1.length != 0) {
-          if (tmpspace1.status == 1) {
-            this.likeData.likechecked = true;
-          } else {
-            this.likeData.likechecked = false;
-          }
-        } else {
-          this.likeData.likechecked = false;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-      //commit data가져오기
-      try {
-        let tmpspace2 = await this.$api.getPostCommit(this.id.pid);
-        this.commitList = tmpspace2;
-        console.log('커밋 부르기 성공');
-      } catch (e) {
-        console.log(e);
-      }
-
-      //   var ymd = d.toISOString().substr(0, 10);
-      //   var timestamp =
-      //     ('00' + d.getHours()).slice(-2) +
-      //     ':' +
-      //     ('00' + d.getMinutes()).slice(-2) +
-      //     ':' +
-      //     ('00' + d.getSeconds()).slice(-2);
-
-      //   this.commentData.cDate = ymd + ' ' + timestamp;
-      //console.log(this.commentData.cDate)
     },
     goback() {
       this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
@@ -498,37 +479,6 @@ export default {
       // console.log(this.uid);
       // console.log(this.tmp.uid);
       return this.uid == this.tmp.uid;
-    },
-
-    compiledMarkdown: function () {
-      let vm = this;
-      console.log(vm.tmp ? vm.tmp.content : 'NULL', '32145124');
-      if (vm.commitList.length != 0) {
-        renderer.em = function (text) {
-          var indexNumber = text.indexOf('/');
-          if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== '\\') {
-            var idx = text.substr(indexNumber + 1);
-            var commit = vm.commitList[idx - 1];
-            var res =
-              '<div class="post-detail-commit-container" ><div class="contents-commit-box">' +
-              `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #` +
-              idx +
-              ' ' +
-              commit.msg +
-              '</div><div class="d-flex"> <div class="contents-commit-author">' +
-              commit.author +
-              ' committed on ' +
-              commit.date +
-              '</div></div></div></div></div>';
-            return res;
-          }
-          return '<em>' + text.replace('\\/', '/') + '</em>';
-        };
-      }
-
-      var tmp1 = marked(vm.tmp.content, { renderer: renderer });
-
-      return tmp1;
     },
   },
 };
