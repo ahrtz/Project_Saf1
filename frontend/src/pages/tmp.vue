@@ -29,7 +29,7 @@
               class="d-flex flex-column flex-grow-0 search-page-card"
               v-for="post in searchResult"
               :key="`search-${post.id}`"
-              @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+              @click="$router.push({name:'PostDetail',params:{uid:post.userinfo.id, pid:post.id}})"
             >
               <!-- 프로필 이미지, 닉네임  -->
               <div class="d-flex align-center search-card-header">
@@ -44,7 +44,7 @@
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
                 <div class="search-page-content-title">{{post.title}}</div>
-                <div class="search-page-content-text">{{post.content}}</div>
+                <div class="search-page-content-text" v-html="compiledMarkdown(post)"></div>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@
               class="d-flex flex-column flex-grow-0 search-page-card"
               v-for="posts in tagResult"
               :key="`tag-${posts.id}`"
-              @click="$router.push({name:'PostDetail',params:{pid:posts.id}})"
+              @click="$router.push({name:'PostDetail',params:{uid:posts.userinfo.id, pid:posts.postinfo.id}})"
             >
               <!-- 프로필 이미지, 닉네임  -->
               <div class="d-flex align-center search-card-header">
@@ -69,7 +69,10 @@
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
                 <div class="search-page-content-title">{{posts.postinfo.title}}</div>
-                <div v-if="posts" class="search-page-content-text">{{posts.postinfo.content}}</div>
+                <div
+                  class="search-page-content-text"
+                  v-html="compiledMarkdown(posts.postinfo)"
+                ></div>
               </div>
             </div>
           </div>
@@ -108,6 +111,27 @@ export default {
       res: 0,
     };
   },
+  methods: {
+    changeval() {
+      if (this.res == 0) {
+        this.res = 1;
+      } else {
+        this.res = 0;
+      }
+    },
+    compiledMarkdown(posttmp) {
+      console.log("hi")
+      let vm = posttmp;
+      if (!posttmp || !posttmp.content) {
+        return '';
+      }
+      renderer.em = (text) => {
+        return '<em>' + '' + '</em>';
+      };
+
+      return marked(posttmp.content, { renderer: renderer });
+    },
+  },
   async created() {
     try {
       let tmpspace = await this.$api.searchTemp(this.p_data);
@@ -121,26 +145,6 @@ export default {
     } catch (e) {
       console.log('태그 검색 실패');
     }
-  },
-  methods: {
-    changeval() {
-      if (this.res == 0) {
-        this.res = 1;
-      } else {
-        this.res = 0;
-      }
-    },
-    compiledMarkdown: function (posttmp) {
-      let vm = posttmp;
-      console.log(vm);
-      renderer.em = function (text) {
-        return '<em>' + '' + '</em>';
-      };
-      console.log("posttmp", posttmp)
-      var tmp1 = marked(posttmp ? posttmp.content : "", { renderer: renderer });
-
-      return tmp1;
-    },
   },
 };
 </script>
