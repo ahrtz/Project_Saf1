@@ -34,6 +34,8 @@
                         <div class="main-page-nickname">{{post.userinfo.nickname}}</div>
                         <div class="main-page-cdate">{{post.cdate}}</div>
                       </div>
+                        <v-icon class="d-flex justify-end ">mdi-source-commit</v-icon>
+                        <span class="main-page-commitcnt">{{post.commitCnt}}</span>
                     </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
                     <div
@@ -260,6 +262,11 @@ export default {
   height: 55px;
   width: 100%;
 }
+.main-page-commitcnt{
+  font-size: 14px
+}
+
+
 .main-card-header-nick_date {
   display: flex;
   flex-direction: column;
