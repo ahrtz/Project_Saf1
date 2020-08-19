@@ -271,8 +271,8 @@ export default {
   overflow: hidden;
   background-color: white;
   float: unset;
-  min-height: 40px;
-  max-height: 80px;
+  height: 60px;
+  max-height: 60px;
 }
 .main-page-container {
   width: 100%;
@@ -318,6 +318,7 @@ export default {
   transition: box-shadow 0.2s;
   transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
   cursor: pointer;
+  height: 200px;
 }
 
 .main-page-card:hover {
