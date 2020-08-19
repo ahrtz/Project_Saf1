@@ -22,7 +22,7 @@
             style="margin-bottom:16px;"
           >이메일 체크</div>
         </div>
-        <span class="login-hint" :style="{visibility:visipw}" >*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+        <span class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -107,27 +107,17 @@
           ></v-text-field>
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{on}">
-              
               <i
                 v-on="on"
                 class="far fa-question-circle"
                 style="cursor:pointer;float:right;margin-bottom:8px;font-size: 14px;font-weight: 600"
-              > 도움말</i>
+              >도움말</i>
             </template>
             <template>
               <!-- prev-icon="mdi-arrow-left"
-              next-icon="mdi-arrow-right" -->
-              <v-carousel 
-              :show-arrows='false'
-              >
-                <v-carousel-item
-                v-for="(image,i) in images" 
-                :key="i"
-                :src="image" 
-                
-                >
-
-                </v-carousel-item>
+              next-icon="mdi-arrow-right"-->
+              <v-carousel :show-arrows="false">
+                <v-carousel-item v-for="(image,i) in images" :key="i" :src="image"></v-carousel-item>
               </v-carousel>
             </template>
           </v-dialog>
@@ -191,11 +181,10 @@ export default {
         '/static/images/token3.png',
         '/static/images/token4.png',
         '/static/images/token5.png',
-        
       ],
     };
   },
-  
+
   methods: {
     onFileSelected(event) {
       var input = event.target;
@@ -235,22 +224,22 @@ export default {
       this.$router.go(-1);
     },
     async signup() {
-      
-
       if (this.signupData.pwd != this.signupData.pwdconfirm) {
         this.signupData.pwdconfirm = '';
         console.log('dnajk');
         alert('비밀번호가 다릅니다.');
-      }
-      else if(this.signupData.pwd.length<8||this.signupData.pwd.length>16 ){
-        alert('8자에서 16자 사이에서 입력해 주세요 ')
-      }
-      else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(this.signupData.pwd)==false) {
+      } else if (
+        this.signupData.pwd.length < 8 ||
+        this.signupData.pwd.length > 16
+      ) {
+        alert('8자에서 16자 사이에서 입력해 주세요 ');
+      } else if (
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(
+          this.signupData.pwd
+        ) == false
+      ) {
         alert('소문자 한개 숫자 한개 특수문자 한개는 필수조건입니다');
-
-      }
-      
-      else {
+      } else {
         try {
           if (this.$refs.file != null) {
             this.signupData.file = this.$refs.file.files[0];
@@ -278,65 +267,58 @@ export default {
           console.log('성공');
           this.$router.push({ name: 'Login' });
         } catch (e) {
-          alert(e.response.data.errMsg)
-          
+          alert(e.response.data.errMsg);
         }
       }
     },
     // checkpwd(pw) {
     //    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(pw)
-      //  if(pw.length < 8 || pw.length > 16){
+    //  if(pw.length < 8 || pw.length > 16){
 
-      //   alert("8자리 ~ 16자리 이내로 입력해주세요.");
-      //   return false;
-      // }else if(pw.search(/\s/) != -1){
-      //   alert("비밀번호는 공백 없이 입력해주세요.");
-      //   return false;
-      // }else if(num < 0 || eng < 0 || spe < 0 ){
-      //   alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-      //   return false;
-      // }else {
-      //   console.log("통과"); 
-      //     return true;
-      // }
+    //   alert("8자리 ~ 16자리 이내로 입력해주세요.");
+    //   return false;
+    // }else if(pw.search(/\s/) != -1){
+    //   alert("비밀번호는 공백 없이 입력해주세요.");
+    //   return false;
+    // }else if(num < 0 || eng < 0 || spe < 0 ){
+    //   alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+    //   return false;
+    // }else {
+    //   console.log("통과");
+    //     return true;
+    // }
 
-      
-
-
-      // if (this.pwd != this.pwdconfirm) {
-      //   this.pwdconfirm = '';
-      //   console.log('dnajk');
-      //   alert('비밀번호가 다릅니다.');
-      // }
+    // if (this.pwd != this.pwdconfirm) {
+    //   this.pwdconfirm = '';
+    //   console.log('dnajk');
+    //   alert('비밀번호가 다릅니다.');
+    // }
     // },
-    async certifyGit(){
-      try{
-        let tmpid=this.signupData.gitId
-        let tmpToken = this.signupData.gitToken
-        let res = await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
-        
-        if (res.data == false){
-          alert('인증 실패! \n깃 닉네임과 토큰을 다시 확인 해 주세요')
-        }else{
+    async certifyGit() {
+      try {
+        let tmpid = this.signupData.gitId;
+        let tmpToken = this.signupData.gitToken;
+        let res = await this.$api.certgitToken({
+          gitId: tmpid,
+          accessToken: tmpToken,
+        });
 
-          this.signupData.isCertified = 1
-          alert('인증되었습니다')
+        if (res.data == false) {
+          alert('인증 실패! \n깃 닉네임과 토큰을 다시 확인 해 주세요');
+        } else {
+          this.signupData.isCertified = 1;
+          alert('인증되었습니다');
         }
-
-        
-         
-      }catch(e){
-        console.log(e)
-
+      } catch (e) {
+        console.log(e);
       }
     },
   },
-  computed:{
-    checkpwd(){
-      
-       return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test()
-    }
-  }
+  computed: {
+    checkpwd() {
+      return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test();
+    },
+  },
 };
 </script>
 
