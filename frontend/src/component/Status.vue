@@ -65,7 +65,7 @@
             'status-level4': c >= 7,
         }"
               >
-                <v-tooltip bottom>
+                <v-tooltip  bottom >
                   <template v-slot:activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1"></div>
                   </template>

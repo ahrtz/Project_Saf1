@@ -157,7 +157,7 @@
             class="d-flex flex-column blog-detail-card"
             v-for="(post,indexs) in postdata"
             :key="post.id"
-            v-show="post.title.includes(keyw)"
+            v-if="post.title.includes(keyw)"
             @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})"
           >
             <!-- 프로필 이미지, 닉네임  -->
