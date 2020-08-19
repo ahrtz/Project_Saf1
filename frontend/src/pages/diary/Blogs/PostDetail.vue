@@ -330,7 +330,7 @@ export default {
       //console.log(this.commentData.cDate)
     },
     goback() {
-      this.$router.go(-1);
+      this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
     },
     async like() {
       if(this.isLogin){
@@ -425,7 +425,7 @@ export default {
       try {
         this.$api.deletePost(postid);
         // console.log('성공')
-        this.$router.go(-1);
+        this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
       } catch (e) {
         console.log(e);
       }
@@ -484,6 +484,8 @@ export default {
     
     compiledMarkdown: function () {
       let vm = this;
+      console.log(vm.tmp.content,'32145124')
+      if(vm.commitList.length!=0){
       renderer.em = function(text) {
         var indexNumber = text.indexOf('/');
         if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
@@ -498,11 +500,10 @@ export default {
           return res;
         }
         return '<em>' + text.replace('\\/', '/') + '</em>';
-      }
+      }}
 
 
-
-      var tmp1 = marked(this.tmp.content, { renderer: renderer }); 
+      var tmp1 = marked(vm.tmp.content, { renderer: renderer }); 
       
       return tmp1
     },

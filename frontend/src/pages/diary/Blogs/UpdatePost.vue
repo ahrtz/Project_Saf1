@@ -22,7 +22,7 @@
                 :key="index"
               >
                 <div class="post-detail-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
-                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(scommit.url)">
+                <div class="d-flex flex-column justify-center post-detail-commit" >
                   <div class="post-detail-commit-title">{{scommit.msg}}</div>
                   <div class="d-flex">
                     <div class="post-detail-commit-author">{{scommit.author}}</div>
@@ -104,7 +104,7 @@
                 :key="i"
               >
                 <div class="post-detail-commit-date">#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
-                <div class="d-flex flex-column justify-center post-detail-commit" @click="mvUrl(commit.url)">
+                <div class="d-flex flex-column justify-center post-detail-commit" >
                   <div class="post-detail-commit-title">{{commit.msg}}</div>
                   <div class="d-flex">
                     <div class="post-detail-commit-author">{{commit.author}}</div>
@@ -500,5 +500,45 @@ export default {
   cursor: pointer;
   color: #0051cb;
   font-size: 14px;
+}
+
+.post-detail-commit-box {
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
+}
+
+.post-detail-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.post-detail-commit:hover {
+  background: #0051cb11;
+  cursor: pointer;
+}
+
+.post-detail-commit-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.post-detail-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.post-detail-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.post-detail-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 </style>

@@ -28,6 +28,7 @@ export default {
   },
   async created(){
         await bus.$on('getContent', this.getContent)
+        await bus.$on('getCommits', this.getCommits)
 
   },
   methods:{
@@ -47,29 +48,34 @@ export default {
   },
   computed: {
     compiledMarkdown: function () {
+      let vm = this;
+          if (vm.commitList.length !=0){
+          renderer.em = function(text) {
+            var indexNumber = text.indexOf('/');
+            if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
+              var idx = text.substr(indexNumber + 1)
+              var commit = vm.commitList[idx-1];
+              var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
+                        + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
+                        + idx +' '+ commit.msg
+                        + '</div><div class="d-flex"> <div class="contents-commit-author">'
+                        + commit.author + ' committed on ' + commit.date
+                        + '</div></div></div></div></div>'
+              return res;
+            }
+            return '<em>' + text.replace('\\/', '/') + '</em>';
+          }}
+
+
+
       var tmp = marked(this.content, { renderer: renderer }); 
       bus.$emit('updateContent',this.content);     
       return tmp
     },
   },
   mounted(){
-    let vm = this;
-    renderer.em = function(text) {
-      var indexNumber = text.indexOf('/');
-      if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
-        var idx = text.substr(indexNumber + 1)
-        var commit = vm.commitList[idx-1];
-        var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
-                  + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
-                  + idx +' '+ commit.msg
-                  + '</div><div class="d-flex"> <div class="contents-commit-author">'
-                  + commit.author + ' committed on ' + commit.date
-                  + '</div></div></div></div></div>'
-        return res;
-      }
-      return '<em>' + text.replace('\\/', '/') + '</em>';
-    },
-    bus.$on('getCommits', this.getCommits)
+    
+    
   }
 }
 
