@@ -269,7 +269,7 @@ export default {
         alert('비밀번호가 다릅니다.');
       }
     },
-<<<<<<< HEAD
+
     async certifyGit(){
       try{
         let tmpid=this.signupData.gitId
@@ -288,17 +288,7 @@ export default {
          
       }catch(e){
         console.log(e)
-=======
-    async certifyGit() {
-      try {
-        let tmpid = this.signupData.gitId;
-        let tmpToken = this.signupData.gitToken;
-        await this.$api.certgitToken({ gitId: tmpid, accessToken: tmpToken });
-        this.signupData.isCertified = 1;
-        alert('인증되었습니다');
-      } catch (e) {
-        console.log(e);
->>>>>>> ec2fc6c5c67fdc4583afb4137740e1a2a718b70a
+
       }
     },
   },
