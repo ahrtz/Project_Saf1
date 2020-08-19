@@ -157,11 +157,19 @@ export default {
       uid: '',
       tag_proj: {},
       tag_blog: {},
+      tag_rank:{}
     };
   },
-  created() {
+  async created() {
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
+    this.tag_rank = await this.$api.tagRank({
+      did:0,
+      uid:this.$route.params.uid,
+      num:3
+
+
+    })
   },
   methods: {
     compiledMarkdown: function (posttmp) {

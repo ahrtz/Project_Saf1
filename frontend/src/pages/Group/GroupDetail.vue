@@ -281,13 +281,20 @@ export default {
   },
   methods: {
     async addMember() {
-      await this.$api.groupRelationAdd({
+      try{
+      let tmp= await this.$api.groupRelationAdd({
         email: this.newMember,
         oid: this.$route.params.gid,
       });
-      this.newMember = '';
-      await this.getMembers();
-      await this.getRatingInfo();
+        this.newMember = '';
+        await this.getMembers();
+        await this.getRatingInfo();
+      }
+      catch(e){
+        alert('존재하지 않는 이메일 입니다')
+        this.newMember = '';
+      }
+      
     },
     async getMembers() {
       try {

@@ -197,18 +197,27 @@ export default {
       }
     },
     async checkId() {
-      try {
-        let tmpId = this.signupData.email;
+      let tmpId = this.signupData.email;
+      if(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(tmpId)==false){
+        alert('이메일 형식을 맞춰 주십시오')
+      }else{
+        try {
         let tmpres = await this.$api.isthere(tmpId);
-
-        if (tmpres.length == '') {
-          alert('가입 가능한 아이디입니다.');
-        } else {
-          alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.');
-        }
-      } catch (e) {
-        console.log(e);
+        console.log(tmpres)  
+        alert('이미 존재하는 id 입니다')
+      }catch(e){
+        alert(e.response.data.errMsg)
       }
+      }
+
+
+
+        // if (tmpres.length == '') {
+        //   alert('가입 가능한 아이디입니다.');
+        // } else {
+        //   alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.');
+        // }
+
     },
 
     goback() {
