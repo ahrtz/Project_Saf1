@@ -1,179 +1,205 @@
 <template>
-  <div class="update-blog-post-container">
-    <div class="d-flex flex-column update-blog-post-inner justify-center">
-      <div class="d-flex">
-        <div class="d-flex" />
-        <div
-          class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
-          @click="goback()"
-        >뒤로가기</div>
-      </div>
-      <div class="d-flex flex-column" style="width:60%;align-self:center; ">
-        <div>포스트 수정</div>
-        <br />
-        <br />제목
-        <v-text-field v-model="post.title" required outlined></v-text-field>중요도
-        <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
-
-        <div v-if="selectedCommits.length!=0">
-          <div
-            class="update-post-commit-box"
-            v-for="(scommit, index) in selectedCommits"
-            :key="index"
-          >
-            <div class="update-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
-            <div class="d-flex flex-column justify-center update-post-commit">
-              <div class="update-post-commit-title">{{scommit.msg}}</div>
-              <div class="d-flex">
-                <div class="update-post-commit-author">{{scommit.author}}</div>
-                <div class="d-flex" />
-                <div class="update-post-commit-sha">{{scommit.sha1}}</div>
+  <div class="update-post-post-container">
+    <div class="d-flex update-post-post-inner justify-center">
+      <div class="d-flex flex-shrink-0 flex-grow-0 update-post-sidebar">
+        <div class="d-flex flex-column" style="width: 100%;">
+          <div class="update-post-menu">임시저장 글 보기</div>
+          <div>
+            <div class="update-post-tmp-container" v-for="temp in tmppost" :key="temp.id">
+              <div class="d-flex" style="margin-bottom: 4px;">
+                <div class="d-flex flex-grow-0 update-post-tmp-title">날짜</div>
+                <div class="update-post-tmp-text">{{temp.cdate}}</div>
               </div>
-            </div>
-            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" @click="commitDelete(scommit.id),index">삭제</div>
-          </div>
-        </div>
-
-        <v-layout row v-show="this.isProj==true">
-          <v-dialog v-model="dialog" scrollable max-width="500px">
-            <template v-slot:activator="{ on }">
+              <div class="d-flex" style="margin-bottom: 4px;">
+                <div class="d-flex flex-grow-0 update-post-tmp-title">다이어리</div>
+                <div class="update-post-tmp-text">{{temp.dName}}</div>
+              </div>
+              <div class="d-flex">
+                <div class="d-flex flex-grow-0 update-post-tmp-title">글 제목</div>
+                <div class="update-post-tmp-text">{{temp.title}}</div>
+              </div>
               <div
-                class="d-flex justify-center align-center flex-grow-0 s-button-blue"
-                v-on="on"
-              >커밋 선택하기</div>
-            </template>
-
-            <v-card color="primary" dark v-if="commitList.length==0">
-              <v-card-text>
-                commit 정보 받아 오는중
-                <v-progress-linear indeterminate color="white" class="mb-0" buffer-value="0" stream></v-progress-linear>
-              </v-card-text>
-            </v-card>
-
-            <v-card v-if="commitList.length!=0">
-              <v-card-title>커밋 고르기</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text>
-                <div
-                  :id="'t'+commit.msg"
-                  v-for="(commit,index) in commitList.slice((this.page-1)*10,(this.page*10))"
-                  :key="index"
-                >
-                  <input type="checkbox" v-model="selected" :value="commit" />
-                  <label :for="commit">{{commit.msg}}</label>
-                </div>
-              </v-card-text>
-              <div class="text-center">
-                <v-pagination
-                  v-model="page"
-                  :length="Math.ceil(commitList.length/10)"
-                  :total-visible="7"
-                ></v-pagination>
-              </div>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <div class="d-flex">
-                  <div class="d-flex" />
-                  <div
-                    class="d-flex justify-center align-center flex-grow-0 s-button-blue"
-                    @click="dialog = false"
-                  >저장</div>
-                </div>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-layout>
-        <div v-if="selected.length!=0">
-          <div class="update-post-commit-box" v-for="(commit, i) in selected" :key="i">
+                class="d-flex justify-center align-center s-button-blue"
+                style="margin-top: 16px;height:30px;font-size:12px"
+                @click="$router.push({name:'UpdatePost',params:{pid:temp.id}})"
+              >수정</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="d-flex flex-column" style="width: 100%">
+          <div class="d-flex">
+            <div class="d-flex" />
             <div
-              class="update-post-commit-date"
-            >#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
-            <div class="d-flex flex-column justify-center update-post-commit">
-              <div class="update-post-commit-title">{{commit.msg}}</div>
-              <div class="d-flex">
-                <div class="update-post-commit-author">{{commit.author}}</div>
-                <div class="d-flex" />
-                <div class="update-post-commit-sha">{{commit.sha1}}</div>
+              class="d-flex justify-center align-center flex-grow-0 update-post-post-btn-white"
+              @click="goback()"
+            >뒤로가기</div>
+          </div>
+          <div class="update-post-title">포스트 수정</div>
+          <div class="update-post-subtitle">제목</div>
+          <v-text-field v-model="post.title" required outlined></v-text-field>
+          <div class="update-post-subtitle">중요도</div>
+          <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
+
+          <div v-if="selectedCommits.length!=0">
+            <div
+              class="update-post-commit-box"
+              v-for="(scommit, index) in selectedCommits"
+              :key="index"
+            >
+              <div class="update-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
+              <div class="d-flex flex-column justify-center update-post-commit">
+                <div class="update-post-commit-title">{{scommit.msg}}</div>
+                <div class="d-flex">
+                  <div class="update-post-commit-author">{{scommit.author}}</div>
+                  <div class="d-flex" />
+                  <div class="update-post-commit-sha">{{scommit.sha1}}</div>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-center align-center flex-grow-0 s-button-red"
+                @click="commitDelete(scommit.id),index"
+              >삭제</div>
+            </div>
+          </div>
+
+          <v-layout v-show="this.isProj==true">
+            <v-dialog v-model="dialog" scrollable max-width="500px">
+              <template v-slot:activator="{ on }">
+                <div
+                  class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                  style="margin: 32px 0;"
+                  v-on="on"
+                >커밋 선택하기</div>
+              </template>
+
+              <v-card color="primary" dark v-if="commitList.length==0">
+                <v-card-text>
+                  commit 정보 받아 오는중
+                  <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-0"
+                    buffer-value="0"
+                    stream
+                  ></v-progress-linear>
+                </v-card-text>
+              </v-card>
+
+              <v-card v-if="commitList.length!=0">
+                <v-card-title>커밋 고르기</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <div
+                    :id="'t'+commit.msg"
+                    v-for="(commit,index) in commitList.slice((this.page-1)*10,(this.page*10))"
+                    :key="index"
+                  >
+                    <input type="checkbox" v-model="selected" :value="commit" />
+                    <label :for="commit">{{commit.msg}}</label>
+                  </div>
+                </v-card-text>
+                <div class="text-center">
+                  <v-pagination
+                    v-model="page"
+                    :length="Math.ceil(commitList.length/10)"
+                    :total-visible="7"
+                  ></v-pagination>
+                </div>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <div class="d-flex">
+                    <div class="d-flex" />
+                    <div
+                      class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                      @click="dialog = false"
+                    >저장</div>
+                  </div>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-layout>
+          <div v-if="selected.length!=0">
+            <div class="update-post-commit-box" v-for="(commit, i) in selected" :key="i">
+              <div
+                class="update-post-commit-date"
+              >#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
+              <div class="d-flex flex-column justify-center update-post-commit">
+                <div class="update-post-commit-title">{{commit.msg}}</div>
+                <div class="d-flex">
+                  <div class="update-post-commit-author">{{commit.author}}</div>
+                  <div class="d-flex" />
+                  <div class="update-post-commit-sha">{{commit.sha1}}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>내용
-        <editor />
-        <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
+          <div class="update-post-subtitle" style="margin-bottom:16px">내용</div>
+          <editor />
+          <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
 
-        <h3>태그</h3>
-        <div class="d-flex">
-          <v-text-field
-            label="태그를 추가"
-            v-model="tag"
-            @keyup.enter="addtag()"
-            @keyup.space="addtag()"
-          ></v-text-field>
-          <div
-            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
-            @click="addtag()"
-          >태그추가</div>
-        </div>
-        <br />
-        <!-- tags -->
-
-        <div class="d-flex align-center flex-grow-0 update-post-tag-container">
-          <div
-            class="d-flex flex-grow-0 update-post-tag"
-            v-for="(tag,index) in originaltag"
-            :key="'t-1'+index"
-          >
-            <a>#{{tag.name}} &nbsp;</a>
-            <button @click="tagdelete(tag.id)">X</button>
+          <div class="update-post-subtitle">태그</div>
+          <div class="d-flex">
+            <v-text-field
+              label="엔터, 스페이스 바를 눌러 태그를 추가하세요."
+              v-model="tag"
+              @keyup.enter="addtag()"
+              @keyup.space="addtag()"
+            ></v-text-field>
+            <div
+              class="d-flex justify-center align-center flex-grow-0 update-post-post-btn"
+              style="margin-left: 32px"
+              @click="addtag()"
+            >태그추가</div>
           </div>
-          <!-- 새태그 넣기 -->
-          <div
-            class="d-flex flex-grow-0 update-post-tag"
-            v-for="(tag,index) in tags"
-            :key="'t-'+index"
-          >
-            #{{tag}} &nbsp;
-            <button @click="removetag(tag)">X</button>
-          </div>
-        </div>
+          <br />
+          <!-- tags -->
 
-        <br />
-        <div class="d-flex" style="margin-top: 72px">
-          <div
-            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn-white"
-            @click="writetmpPost()"
-          >임시저장</div>
-          <div class="d-flex" />
-          <div
-            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn-white"
-            @click="clear()"
-            style="margin-right: 8px;"
-          >초기화</div>
-          <div
-            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
-            @click="writePost()"
-          >작성</div>
+          <div class="d-flex align-center flex-grow-0 update-post-tag-container">
+            <div
+              class="d-flex flex-grow-0 update-post-tag"
+              v-for="(tag,index) in originaltag"
+              :key="'t-1'+index"
+            >
+              <a>#{{tag.name}} &nbsp;</a>
+              <button @click="tagdelete(tag.id)">
+                <v-icon size="12" color="#0051cb">close</v-icon>
+              </button>
+            </div>
+            <!-- 새태그 넣기 -->
+            <div
+              class="d-flex flex-grow-0 update-post-tag"
+              v-for="(tag,index) in tags"
+              :key="'t-'+index"
+            >
+              #{{tag}} &nbsp;
+              <button @click="removetag(tag)">
+                <v-icon size="12" color="#0051cb">close</v-icon>
+              </button>
+            </div>
+          </div>
+
+          <br />
+          <div class="d-flex" style="margin-top: 72px">
+            <div
+              class="d-flex justify-center align-center flex-grow-0 s-button-white"
+              @click="writetmpPost()"
+            >임시저장</div>
+            <div class="d-flex" />
+            <div
+              class="d-flex justify-center align-center flex-grow-0 s-button-white"
+              @click="clear()"
+              style="margin-right: 8px;"
+            >초기화</div>
+            <div
+              class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+              @click="writePost()"
+            >작성</div>
+          </div>
         </div>
       </div>
     </div>
-    <v-card height="500px">
-      <v-container fill-height>
-        <v-layout>
-          <v-btn color="blue" dark @click.stop="drawer = !drawer">임시저장글 보기</v-btn>
-        </v-layout>
-      </v-container>
-
-      <v-navigation-drawer v-model="drawer" absolute temporary right>
-        <!-- 여따가 시작 -->
-        <div v-for="temp in tmppost" :key="temp.id">
-          {{temp.dName}}다이어리
-          <br />
-          제목 : {{temp.title}}
-          <v-btn @click="$router.push({name:'UpdatePost',params:{pid:temp.id}})">수정</v-btn>
-        </div>
-        <v-divider></v-divider>
-      </v-navigation-drawer>
-    </v-card>
   </div>
 </template>
 
@@ -425,17 +451,17 @@ export default {
 </script>
 
 <style>
-.update-blog-post-container {
+.update-post-post-container {
   width: 100%;
 }
 
-.update-blog-post-inner {
+.update-post-post-inner {
   padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
 
-.update-blog-post-btn {
+.update-post-post-btn {
   padding: 0 16px;
   margin-bottom: 8px;
   font-size: 14px;
@@ -447,7 +473,7 @@ export default {
   cursor: pointer;
 }
 
-.update-blog-post-btn-white {
+.update-post-post-btn-white {
   padding: 0 16px;
   font-size: 14px;
   background: #fff;
@@ -468,7 +494,7 @@ export default {
 .update-post-tag {
   margin-bottom: 8px;
   margin-right: 8px;
-  padding: 0 12px;
+  padding: 0 6px 0 12px;
   background: #fff;
   border: solid 1px #0051cb;
   border-radius: 20px;
@@ -477,43 +503,43 @@ export default {
   font-size: 14px;
 }
 
-.update-post-commit-box {
-  border-left: solid 2px #dde3ea;
-  padding-left: 16px;
-  margin-bottom: 22px;
+.update-post-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 48px;
 }
 
-.update-post-commit {
-  border: solid 1px #dde3ea;
-  padding: 8px;
-  height: 60px;
+.update-post-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.update-post-sidebar {
+  width: 268px;
+  margin-right: 32px;
+  padding: 20px 8px 8px 8px;
+  border: solid 1px #dde3eb;
+}
+
+.update-post-menu {
+  font-size: 14px;
+  padding: 16px;
+  font-weight: 700;
+}
+
+.update-post-tmp-container {
+  padding: 16px;
+  border: solid 1px #dde3eb;
   border-radius: 6px;
 }
 
-.update-post-commit:hover {
-  background: #0051cb11;
-  cursor: pointer;
-}
-
-.update-post-commit-title {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.update-post-commit-date {
-  margin-bottom: 12px;
+.update-post-tmp-title {
+  width: 80px;
   font-size: 12px;
-  font-weight: normal;
 }
 
-.update-post-commit-author {
+.update-post-tmp-text {
   font-size: 12px;
   font-weight: 600;
-  color: #24292e;
-}
-
-.update-post-commit-sha {
-  font-size: 10px;
-  font-weight: normal;
 }
 </style>
