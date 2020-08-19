@@ -16,7 +16,11 @@
           style="margin-bottom:16px;"
         ></v-text-field>
         <div>
-          <v-btn @click="checkId()" style="margin-bottom:16px;" class="primary float-right">이메일 체크</v-btn>
+          <div
+            class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+            @click="checkId()"
+            style="margin-bottom:16px;"
+          >이메일 체크</div>
         </div>
         <span class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
         <v-text-field
@@ -57,12 +61,24 @@
           style="margin-bottom:16px;"
         ></v-text-field>
 
-          <div class="input-wrap">
-            <img :src="uploadImageFile" style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"/>
-            <input @change="onFileSelected($event)" ref="file" type="file" name="file" accept="image/*"/>
-          </div>
+        <div class="input-wrap">
+          <img
+            :src="uploadImageFile"
+            style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"
+          />
+          <input
+            @change="onFileSelected($event)"
+            ref="file"
+            type="file"
+            name="file"
+            accept="image/*"
+          />
+        </div>
 
-        <span class="login-hint" :style="{visibility:visigit}">아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
+        <span
+          class="login-hint"
+          :style="{visibility:visigit}"
+        >아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="Git 아이디"
@@ -91,7 +107,12 @@
           ></v-text-field>
           <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{on}">
-              <i v-on="on" class="far fa-question-circle" style="cursor:pointer;float:right;margin-bottom:8px;"></i>
+              
+              <i
+                v-on="on"
+                class="far fa-question-circle"
+                style="cursor:pointer;float:right;margin-bottom:8px;font-size: 14px;font-weight: 600"
+              > 도움말</i>
             </template>
             <template>
               <!-- prev-icon="mdi-arrow-left"
@@ -112,7 +133,11 @@
           </v-dialog>
         </div>
         <div>
-          <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
+          <div
+            class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+            style="margin-bottom:16px;"
+            @click="certifyGit()"
+          >토큰 검증</div>
         </div>
         <v-text-field
           class="d-flex justify-center signup-input"
@@ -143,7 +168,7 @@ export default {
       visipw2: 'hidden',
       visig: 'hidden',
       visigit: 'hidden',
-      tmpresult:"",
+      tmpresult: '',
       signupData: {
         email: '',
         pwd: '',
@@ -159,8 +184,8 @@ export default {
         isCertified: '0',
       },
       uploadImageFile: '',
-      dialog : false,
-      images : [
+      dialog: false,
+      images: [
         '/static/images/token1.png',
         '/static/images/token2.png',
         '/static/images/token3.png',
@@ -173,31 +198,29 @@ export default {
   methods: {
     onFileSelected(event) {
       var input = event.target;
-      if (input.files && input.files[0]) { 
+      if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = (e) => { 
+        reader.onload = (e) => {
           this.uploadImageFile = e.target.result;
-        }
+        };
         reader.readAsDataURL(input.files[0]);
       }
     },
-    async checkId(){
-      try{
-        let tmpId=this.signupData.email
-        let tmpres=await this.$api.isthere(tmpId)
-        
-        if (tmpres.length==''){
-          alert('가입 가능한 아이디입니다.')
-        }else{
-          alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.')
-        }
+    async checkId() {
+      try {
+        let tmpId = this.signupData.email;
+        let tmpres = await this.$api.isthere(tmpId);
 
-      } catch(e){
-        console.log(e)
+        if (tmpres.length == '') {
+          alert('가입 가능한 아이디입니다.');
+        } else {
+          alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.');
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
 
-    
     goback() {
       this.$router.go(-1);
     },
@@ -208,8 +231,8 @@ export default {
         alert('비밀번호가 다릅니다.');
       } else {
         try {
-          if(this.$refs.file != null) {
-            this.signupData.file=this.$refs.file.files[0];
+          if (this.$refs.file != null) {
+            this.signupData.file = this.$refs.file.files[0];
           }
 
           const formData = new FormData();
@@ -217,19 +240,19 @@ export default {
           formData.append('pwd', this.signupData.pwd);
           formData.append('file', this.signupData.file);
           formData.append('img', this.signupData.img);
-          formData.append('nickname',this.signupData.nickname);
+          formData.append('nickname', this.signupData.nickname);
           formData.append('gitId', this.signupData.gitId);
-          formData.append('gitUrl',this.signupData.gitUrl);
+          formData.append('gitUrl', this.signupData.gitUrl);
           formData.append('gitToken', this.signupData.gitToken);
-          formData.append('intro',this.signupData.intro);
+          formData.append('intro', this.signupData.intro);
           formData.append('isSocial', this.signupData.isSocial);
-          formData.append('isCertified',this.signupData.isCertified);
-          console.log(formData)
+          formData.append('isCertified', this.signupData.isCertified);
+          console.log(formData);
 
           await this.$api.signupp(formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+              'Content-Type': 'multipart/form-data',
+            },
           });
           console.log('성공');
           this.$router.push({ name: 'Login' });
@@ -246,17 +269,17 @@ export default {
         alert('비밀번호가 다릅니다.');
       }
     },
-    async certifyGit(){
-      try{
-        let tmpid=this.signupData.gitId
-        let tmpToken = this.signupData.gitToken
-        await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
-        this.signupData.isCertified = 1
-        alert('인증되었습니다')
-      }catch(e){
-        console.log(e)
+    async certifyGit() {
+      try {
+        let tmpid = this.signupData.gitId;
+        let tmpToken = this.signupData.gitToken;
+        await this.$api.certgitToken({ gitId: tmpid, accessToken: tmpToken });
+        this.signupData.isCertified = 1;
+        alert('인증되었습니다');
+      } catch (e) {
+        console.log(e);
       }
-    }
+    },
   },
 };
 </script>
@@ -338,4 +361,3 @@ export default {
   margin-bottom: 8px;
 }
 </style>
-
