@@ -109,6 +109,14 @@
                     <div
                       style="color:white;font-weight:bold;"
                     >기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
+                    <div v-if="tagdata[blog.id].length!=0"
+                    style="color:white;font-weight:bold;"> 태그: 
+                      <div
+                       v-for="tag in tagdata[blog.id]" :key="tag.name"
+                        style="color:white;font-weight:bold;"
+                        
+                      > {{tag.name}}</div>
+                    </div>
                   </v-card-subtitle>
                   <v-card-text style="color:white;font-weight:bold;">{{blog.intro}}</v-card-text>
                 </div>
@@ -148,6 +156,7 @@ export default {
         title: '',
       },
       tmp: '',
+      tagdata:{}
     };
   },
   created() {
@@ -178,6 +187,21 @@ export default {
           keyword: '',
         });
         this.diarys = tempspace;
+        for( var i =0 ;tempspace.length>i;i++){
+          console.log(tempspace[i]['id'])
+          console.log(tempspace[i]['uid'])
+          var configss ={did:`${tempspace[i]['id']}`,
+          uid:`${tempspace[i]['uid']}`,
+          num:"3"}
+          console.log(configss)
+          try{
+          this.tagdata[tempspace[i]['id']]=await this.$api.tagRank(
+          configss)
+          }
+          catch(e){
+            console.log(e)
+          }
+        }
         console.log('성공');
       } catch (e) {
         console.log(e);

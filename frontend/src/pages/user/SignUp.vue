@@ -274,7 +274,6 @@ export default {
         }
       }
     },
-<<<<<<< HEAD
     // checkpwd(pw) {
     //    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(pw)
       //  if(pw.length < 8 || pw.length > 16){
@@ -301,16 +300,6 @@ export default {
       //   alert('비밀번호가 다릅니다.');
       // }
     // },
-=======
-    checkpwd() {
-      if (this.pwd != this.pwdconfirm) {
-        this.pwdconfirm = '';
-        console.log('dnajk');
-        alert('비밀번호가 다릅니다.');
-      }
-    },
-
->>>>>>> 3559e7dcc3d55b84bd3da65694403f6576ef3ba5
     async certifyGit(){
       try{
         let tmpid=this.signupData.gitId
