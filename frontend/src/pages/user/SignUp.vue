@@ -234,8 +234,8 @@ export default {
           console.log('성공');
           this.$router.push({ name: 'Login' });
         } catch (e) {
-          console.log(e.res);
-          console.log('실패');
+          alert(e.response.data.errMsg)
+          
         }
       }
     },
@@ -250,9 +250,18 @@ export default {
       try{
         let tmpid=this.signupData.gitId
         let tmpToken = this.signupData.gitToken
-        await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
-        this.signupData.isCertified = 1
-        alert('인증되었습니다')
+        let res = await this.$api.certgitToken({gitId:tmpid,accessToken:tmpToken})
+        
+        if (res.data == false){
+          alert('인증 실패! \n깃 닉네임과 토큰을 다시 확인 해 주세요')
+        }else{
+
+          this.signupData.isCertified = 1
+          alert('인증되었습니다')
+        }
+
+        
+         
       }catch(e){
         console.log(e)
       }
