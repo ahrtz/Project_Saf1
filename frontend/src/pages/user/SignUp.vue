@@ -76,18 +76,32 @@
           @blur="visigit='hidden'"
         ></v-text-field>
         <span class="login-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
-        <v-text-field
-          class="d-flex justify-center signup-input"
-          placeholder="Git token"
-          outlined
-          dense
-          hide-details
-          v-model="signupData.gitToken"
-          required
-          style="margin-bottom:16px;"
-          @focus="visig='visible'"
-          @blur="visig='hidden'"
-        ></v-text-field>
+        <div>
+          <v-text-field
+            class="d-flex justify-center signup-input"
+            placeholder="Git token"
+            outlined
+            dense
+            hide-details
+            v-model="signupData.gitToken"
+            required
+            style="margin-bottom:16px;"
+            @focus="visig='visible'"
+            @blur="visig='hidden'"
+          ></v-text-field>
+          <v-dialog v-model="dialog" max-width="800px">
+            <template v-slot:activator="{on}">
+              <i v-on="on" class="far fa-question-circle" style="cursor:pointer;float:right;margin-bottom:8px;"></i>
+            </template>
+            <v-card>
+              <v-card>
+                <div v-for="(image,index) in images" :key="index">
+                  <img :src="image" style="width:100%">
+                </div>
+              </v-card>
+            </v-card>
+          </v-dialog>
+        </div>
         <div>
           <v-btn class="primary float-right " style="margin-bottom:16px;" @click="certifyGit()">토큰 검증</v-btn>
         </div>
@@ -116,7 +130,6 @@ export default {
   name: 'SignUp',
   data() {
     return {
-
       visipw: 'hidden',
       visipw2: 'hidden',
       visig: 'hidden',
@@ -136,7 +149,19 @@ export default {
         isSocial: '0',
         isCertified: '0',
       },
-      uploadImageFile: ''
+      uploadImageFile: '',
+      dialog : false,
+      images : [
+        '/static/images/token1.png',
+        '/static/images/token2.png',
+        '/static/images/token3.png',
+        '/static/images/token4.png',
+        '/static/images/token5.png',
+        '/static/images/token6.png',
+        '/static/images/token7.png',
+        '/static/images/token8.png',
+        '/static/images/token9.png',
+      ],
     };
   },
   methods: {
