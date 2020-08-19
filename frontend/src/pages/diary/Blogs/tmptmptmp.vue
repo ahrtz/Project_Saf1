@@ -42,7 +42,29 @@
           <div class="new-post-subtitle">중요도</div>
           <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
 
-          <v-layout v-show="this.diarys.isProj==1">
+          <div v-if="selectedCommits.length!=0">
+            <div
+              class="new-post-commit-box"
+              v-for="(scommit, index) in selectedCommits"
+              :key="index"
+            >
+              <div class="new-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
+              <div class="d-flex flex-column justify-center new-post-commit">
+                <div class="new-post-commit-title">{{scommit.msg}}</div>
+                <div class="d-flex">
+                  <div class="new-post-commit-author">{{scommit.author}}</div>
+                  <div class="d-flex" />
+                  <div class="new-post-commit-sha">{{scommit.sha1}}</div>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-center align-center flex-grow-0 s-button-red"
+                @click="commitDelete(scommit.id),index"
+              >삭제</div>
+            </div>
+          </div>
+
+          <v-layout v-show="this.isProj==true">
             <v-dialog v-model="dialog" scrollable max-width="500px">
               <template v-slot:activator="{ on }">
                 <div
@@ -99,21 +121,20 @@
             </v-dialog>
           </v-layout>
           <div v-if="selected.length!=0">
-          <div class="new-post-commit-box" v-for="(commit, i) in selected.slice(0,5)" :key="i">
-            <div class="new-post-commit-date">#{{i+1}} Commits on {{commit.date}}</div>
-            <div
-              class="d-flex flex-column justify-center new-post-commit"
-              @click="mvUrl(commit.url)"
-            >
-              <div class="new-post-commit-title">{{commit.msg}}</div>
-              <div class="d-flex">
-                <div class="new-post-commit-author">{{commit.author}}</div>
-                <div class="d-flex" />
-                <div class="new-post-commit-sha">{{commit.sha1}}</div>
+            <div class="new-post-commit-box" v-for="(commit, i) in selected" :key="i">
+              <div
+                class="new-post-commit-date"
+              >#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
+              <div class="d-flex flex-column justify-center new-post-commit">
+                <div class="new-post-commit-title">{{commit.msg}}</div>
+                <div class="d-flex">
+                  <div class="new-post-commit-author">{{commit.author}}</div>
+                  <div class="d-flex" />
+                  <div class="new-post-commit-sha">{{commit.sha1}}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
           <div class="new-post-subtitle" style="margin-bottom:16px">내용</div>
           <editor />
           <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
@@ -136,6 +157,17 @@
           <!-- tags -->
 
           <div class="d-flex align-center flex-grow-0 new-post-tag-container">
+            <div
+              class="d-flex flex-grow-0 new-post-tag"
+              v-for="(tag,index) in originaltag"
+              :key="'t-1'+index"
+            >
+              <a>#{{tag.name}} &nbsp;</a>
+              <button @click="tagdelete(tag.id)">
+                <v-icon size="12" color="#0051cb">close</v-icon>
+              </button>
+            </div>
+            <!-- 새태그 넣기 -->
             <div
               class="d-flex flex-grow-0 new-post-tag"
               v-for="(tag,index) in tags"
@@ -486,45 +518,5 @@ export default {
 .new-post-tmp-text {
   font-size: 12px;
   font-weight: 600;
-}
-
-.new-post-commit-box {
-  border-left: solid 2px #dde3ea;
-  padding-left: 16px;
-  margin-bottom: 22px;
-}
-
-.new-post-commit {
-  border: solid 1px #dde3ea;
-  padding: 8px;
-  height: 60px;
-  border-radius: 6px;
-}
-
-.new-post-commit:hover {
-  background: #0051cb11;
-  cursor: pointer;
-}
-
-.new-post-commit-title {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.new-post-commit-date {
-  margin-bottom: 12px;
-  font-size: 12px;
-  font-weight: normal;
-}
-
-.new-post-commit-author {
-  font-size: 12px;
-  font-weight: 600;
-  color: #24292e;
-}
-
-.new-post-commit-sha {
-  font-size: 10px;
-  font-weight: normal;
 }
 </style>
