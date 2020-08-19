@@ -24,7 +24,7 @@
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
                   >more projects</div>
                 </div>
-                <div class="main-page-card" v-for="post in list_proj" :key="post.id">
+                <div class="main-page-card" v-for="(post,indexs) in list_proj" :key="post.id">
                   <!-- card layout -->
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
@@ -49,7 +49,15 @@
                     </div>
 
                     <footer>
-                      <!-- TODO: tags -->
+                      <div >
+                        <div
+                          class="d-flex flex-grow-0 postss-detail-tag"
+                          v-for="(tags,index) in tag_proj[indexs]"
+                          :key="'t-'+index"
+                        >
+                            #{{tags.name}}
+                        </div>
+                      </div>
                     </footer>
                   </div>
                 </div>
@@ -75,7 +83,7 @@
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
                   >more blogs</div>
                 </div>
-                <div class="main-page-card" v-for="post in list_blog" :key="post.id">
+                <div class="main-page-card" v-for="(post,indexss) in list_blog" :key="post.id">
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
                     <div class="d-flex align-center main-card-header">
@@ -97,7 +105,15 @@
                       <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
                     </div>
                     <footer>
-                      <!-- TODO: tags -->
+                      <div >
+                        <div
+                          class="d-flex flex-grow-0 postss-detail-tag"
+                          v-for="(tags,index) in tag_blog[indexss]"
+                          :key="'t-'+index"
+                        >
+                            #{{tags.name}}
+                        </div>
+                      </div>
                     </footer>
                   </div>
                 </div>
@@ -136,6 +152,7 @@ export default {
   data() {
     return {
       status: ['날짜정보 혹은 뭐 커밋 정보'],
+      
       blog_posts: {},
       project_posts: {},
       user: {},
@@ -146,11 +163,16 @@ export default {
       list_blog: [],
       isLogin: false,
       uid: '',
+      tag_proj:{},
+      tag_blog:{}
     };
   },
   created() {
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
+
+
+    
   },
   methods: {
     compiledMarkdown: function (posttmp) {
@@ -164,9 +186,9 @@ export default {
       return tmp1
     },
 
-    infiniteHandler($state) {
+    async infiniteHandler($state) {
       let temp = this.$route.params.uid;
-      axios
+      await axios
         .post('/api/posts/all/', {
           uid: temp,
           isProj: '1',
@@ -175,23 +197,29 @@ export default {
           limit: this.limit_proj + 10,
         })
         .then((res) => {
-          setTimeout(() => {
+          setTimeout(async() => {
             if (res.data.length >= this.limit_proj) {
               this.list_proj = res.data;
+              console.log(res.data[1])
+              for (var i=0;i<res.data.length;i++){
+                this.tag_proj[i]=await this.$api.tagIndex(res.data[i].id)
+              }
+              
               $state.loaded();
               this.limit_proj += 10;
             } else {
               $state.complete();
             }
           }, 1000);
+          this.$forceUpdate()
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    infiniteHandler2($state) {
+    async infiniteHandler2($state) {
       let temp = this.$route.params.uid;
-      axios
+      await axios
         .post('/api/posts/all/', {
           uid: temp,
           isProj: '0',
@@ -200,15 +228,20 @@ export default {
           limit: this.limit_blog + 10,
         })
         .then((res) => {
-          setTimeout(() => {
+          setTimeout(async () => {
             if (res.data.length >= this.limit_blog) {
               this.list_blog = res.data;
+              for (var i=0;i<res.data.length;i++){
+                this.tag_blog[i]=await this.$api.tagIndex(res.data[i].id)
+              }
+
               $state.loaded();
               this.limit_blog += 10;
             } else {
               $state.complete();
             }
           }, 1000);
+          this.$forceUpdate()
         })
         .catch((err) => {
           console.log(err);
@@ -318,5 +351,17 @@ export default {
 
 .main-page-content-text {
   font-size: 12px;
+}
+
+.postss-detail-tag {
+  margin-bottom: 8px;
+  margin-right: 8px;
+  padding: 0 12px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0051cb;
+  font-size: 14px;
 }
 </style>

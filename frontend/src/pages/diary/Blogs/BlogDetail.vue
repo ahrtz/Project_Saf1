@@ -155,7 +155,7 @@
           </div>
           <div
             class="d-flex flex-column blog-detail-card"
-            v-for="post in postdata"
+            v-for="(post,indexs) in postdata"
             :key="post.id"
             v-show="post.title.includes(keyw)"
             @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})"
@@ -170,9 +170,22 @@
               <!-- <div class="blog-detail-content-text" >{{post.content}}</div> -->
               <div class="blog-detail-content-text" v-html="compiledMarkdown(post)"></div>
             </div>
-            <div style="position:absolute;bottom:0">
-              <!-- TODO: tags -->
+            <!-- 태그 -->
+            <div style="position:absolute;bottom:0 ">
+              <div
+                class="d-flex flex-grow-0 posts-detail-tag"
+                v-for="(tags,index) in tagdata[indexs]"
+                :key="'t-'+index"
+              >
+                  #{{tags.name}}
+              </div>
             </div>
+          
+          
+          </div>
+
+
+             
           </div>
 
         </div>
@@ -218,6 +231,7 @@ export default {
       menu2: false,
       menu1: false,
       mydata: {},
+      tagdata:{}
     };
   },
   methods: {
@@ -258,6 +272,8 @@ export default {
       }
     },
     diaryDelete() {
+      if (confirm('정말 삭제 하시겠습니까?') == true){
+
       try {
         console.log('다이어리 삭제 완료');
         this.$api.deleteDiary(this.diaryid.did);
@@ -267,6 +283,9 @@ export default {
         });
       } catch (e) {
         console.log(e);
+      }}
+      else{
+        return
       }
     },
     updateData() {
@@ -315,8 +334,19 @@ export default {
         this.$route.params.did,
         this.config
       );
-      console.log(tmpspace);
+      console.log(tmpspace,'123');
       this.postdata = tmpspace;
+      try{
+        for( var i=0 ;i<tmpspace.length;i++){
+          this.tagdata[i]= await this.$api.tagIndex(tmpspace[i].id)
+        }
+        console.log('ddddd')
+      }catch(e){
+        console.log(e)
+        
+      }
+
+
       console.log('성공');
     } catch (e) {
       console.log('실패');
@@ -461,5 +491,23 @@ export default {
 
 .blog-detail-content-text {
   font-size: 12px;
+}
+
+.posts-detail-tag-container {
+  width: 100%;
+  overflow: hidden;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+.posts-detail-tag {
+  margin-bottom: 8px;
+  margin-right: 8px;
+  padding: 0 12px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0051cb;
+  font-size: 14px;
 }
 </style>
