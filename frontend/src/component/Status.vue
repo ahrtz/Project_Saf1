@@ -15,7 +15,7 @@
               >
                 <img
                   v-if="d >= 1"
-                  style="height: 24px;opacity:0.7;"
+                  style="height: 24px;opacity:0.7;cursor: pointer;"
                   src="/static/images/flower.png"
                 />
               </div>
@@ -39,11 +39,36 @@
                 :key="`di1-${di}`"
                 :style="`position:absolute;left:${di*38}px`"
               >
-                <img v-if="d >= 1" style="height: 36px" src="/static/images/sprout.png" />
+                <img
+                  v-if="d >= 1"
+                  style="height: 36px;cursor: pointer;"
+                  src="/static/images/sprout.png"
+                />
               </div>
             </template>
 
             <template v-if="isProj == 2">
+              <div
+                v-for="(d, di) in comb.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`di23-${di}`"
+                :style="`position:absolute;left:${di*38}px;`"
+              >
+                <img
+                  v-if="d == 0"
+                  style="height: 24px;opacity:0.7;cursor: pointer;"
+                  src="/static/images/flower.png"
+                />
+                <img
+                  v-if="d == 1"
+                  style="height: 36px;cursor: pointer;"
+                  src="/static/images/sprout.png"
+                />
+                <img
+                  v-if="d == 2"
+                  style="height: 28px;opacity:0.6;margin-top:6px;margin-left:6px;cursor: pointer;"
+                  src="/static/images/tree.png"
+                />
+              </div>
               <div
                 v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
                 :key="`ci-${ci}`"
@@ -54,20 +79,30 @@
             'status-level3': c >= 5 && c <= 6,
             'status-level4': c >= 7,
         }"
-              ></div>
-
-              <div
-                v-for="(d, di) in comb.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
-                :key="`di23-${di}`"
-                :style="`position:absolute;left:${di*38}px`"
               >
-                <img
-                  v-if="d == 0"
-                  style="height: 24px;opacity:0.7;"
-                  src="/static/images/flower.png"
-                />
-                <img v-if="d == 1" style="height: 36px" src="/static/images/sprout.png" />
-                <img v-if="d == 2" style="height: 28px;opacity:0.6;margin-top:6px;margin-left:6px;" src="/static/images/tree.png" />
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1"></div>
+                  </template>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">날짜</div>
+                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].date}}</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">커밋</div>
+                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].ccnt}} 개</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">블로그 글</div>
+                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].bcnt}} 개</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">프로젝트 글</div>
+                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].pcnt}} 개</div>
+                    </div>
+                  </div>
+                </v-tooltip>
               </div>
             </template>
           </div>
@@ -191,6 +226,8 @@ export default {
       0,
     ],
     comb: [],
+    date: [],
+    tdata: [],
   }),
   methods: {
     async getDStatus() {
@@ -200,6 +237,7 @@ export default {
       } catch (e) {
         console.log('commit status 가져오기 실패');
       }
+      this.date = Object.keys(this.dres);
       this.dres = Object.values(this.dres);
     },
     async getStatus() {
@@ -209,6 +247,7 @@ export default {
       } catch (e) {
         console.log('post status 가져오기 실패');
       }
+      this.date = Object.keys(this.res);
       this.res = Object.values(this.res);
     },
   },
@@ -219,12 +258,12 @@ export default {
     this.req.isProj = this.isProj;
     console.log('--', this.isProj);
     if (this.isProj == 0) {
-      this.getStatus();
+      await this.getStatus();
     } else if (this.isProj == 1) {
-      this.getDStatus();
-      this.getStatus();
+      await this.getDStatus();
+      await this.getStatus();
     } else if (this.isProj == 2) {
-      this.getDStatus();
+      await this.getDStatus();
 
       this.req.isProj = 1;
       console.log(this.req.isProj);
@@ -248,6 +287,20 @@ export default {
         }
       }
     }
+
+    for (let i = 0; i < this.date.length; ++i) {
+      this.date[i] = this.date[i].substring(0, 10);
+      let tmp = {};
+      tmp.date = this.date[i];
+      tmp.bcnt = this.bres[i];
+      tmp.pcnt = this.pres[i];
+      if (this.isProj != 0) {
+        tmp.ccnt = this.dres[i];
+        console.log(this.dres[i]);
+      }
+      this.tdata.push(tmp);
+    }
+    console.log(this.tdata);
   },
 };
 </script>
@@ -284,6 +337,8 @@ export default {
   height: 35px;
   border-radius: 4px;
   margin: 1.5px;
+  cursor: pointer;
+  z-index: 9;
 }
 
 .status-tile-yellow {
@@ -310,7 +365,20 @@ export default {
   background-color: rgba(33, 110, 57, 0.8);
 }
 
-.status-tile-img {
-  position: absolute;
+.status-tooltip-title {
+  width: 80px;
+  font-size: 12px;
+}
+
+.status-tooltip-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.v-tooltip__content {
+  width: 180px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  padding: 12px;
 }
 </style>

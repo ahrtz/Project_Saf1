@@ -139,6 +139,8 @@ export default {
   border: solid 1px #dde3ea;
   padding: 16px;
   background: #fff;
+  width: 268px;
+  max-width: 268px;
 }
 
 .s-contact-nickname {
