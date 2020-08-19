@@ -232,7 +232,11 @@ export default {
         this.signupData.pwdconfirm = '';
         console.log('dnajk');
         alert('비밀번호가 다릅니다.');
-      }else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(this.signupData.pwd)==false) {
+      }
+      else if(this.signupData.pwd.length<8||this.signupData.pwd.length>16 ){
+        alert('8자에서 16자 사이에서 입력해 주세요 ')
+      }
+      else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(this.signupData.pwd)==false) {
         alert('소문자 한개 숫자 한개 특수문자 한개는 필수조건입니다');
 
       }
