@@ -31,6 +31,7 @@
                   class="d-flex flex-column flex-grow-0 main-page-card"
                   v-for="(post,indexs) in list_proj"
                   :key="post.id"
+                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                 >
                   <!-- card layout -->
                   <!-- 프로필 이미지, 닉네임  -->
@@ -44,11 +45,7 @@
                     <span class="main-page-commitcnt">{{post.commitCnt}}</span>
                   </div>
                   <!-- 포스트 제목 / 컨텐츠 -->
-                  <div
-                    class="main-card-article"
-                    @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                    style="cursor:pointer"
-                  >
+                  <div class="main-card-article" style="cursor:pointer">
                     <div class="main-page-content-title">{{post.title}}</div>
                     <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
                   </div>
@@ -83,7 +80,12 @@
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
                   >more blogs</div>
                 </div>
-                <div class="main-page-card" v-for="(post,indexss) in list_blog" :key="post.id">
+                <div
+                  class="main-page-card"
+                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                  v-for="(post,indexss) in list_blog"
+                  :key="post.id"
+                >
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
                     <div class="d-flex align-center main-card-header">
@@ -94,11 +96,7 @@
                       </div>
                     </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <div
-                      class="main-card-article"
-                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                      style="cursor:pointer"
-                    >
+                    <div class="main-card-article" style="cursor:pointer">
                       <div class="main-page-content-title">{{post.title}}</div>
                       <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
                     </div>
@@ -250,6 +248,7 @@ export default {
   color: black;
   height: 55px;
   width: 100%;
+  border-bottom: solid 1px #dde3ea;
 }
 .main-page-commitcnt {
   font-size: 14px;
@@ -268,14 +267,12 @@ export default {
   margin-right: 10px;
 }
 .main-card-article {
-  margin-top: 2px;
-  padding-top: 8px;
-  padding: 16px;
+  margin: 16px;
   overflow: hidden;
-  border-top: solid 1px #dde3ea;
   background-color: white;
   float: unset;
-  height: 100px;
+  min-height: 40px;
+  max-height: 80px;
 }
 .main-page-container {
   width: 100%;
@@ -311,7 +308,6 @@ export default {
 .main-page-card {
   padding: 6px 10px 16px 10px;
   margin-top: 15px;
-  height: 200px;
   border: 1px solid #dde3ea;
   border-radius: 8px;
   margin: 15px 5px;
