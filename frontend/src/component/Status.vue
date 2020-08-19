@@ -13,27 +13,35 @@
                 :key="`di0-${di}`"
                 class="d-flex flex-grow-0 align-center justify-center status-tile status-tile-yellow"
               >
-                <img
-                  v-if="d >= 1"
-                  style="height: 24px;opacity:0.7;cursor: pointer;"
-                  src="/static/images/flower.png"
-                />
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1">
+                      <img
+                        v-if="d >= 1"
+                        style="margin:6px 0 0 6px;height: 24px;opacity:0.7;cursor: pointer;"
+                        src="/static/images/flower.png"
+                      />
+                    </div>
+                  </template>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">날짜</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+di] ? tdata[(ri+ti*4) * 7+di].date : ''}}</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">블로그 글</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+di] ? tdata[(ri+ti*4) * 7+di].bcnt : 0}} 개</div>
+                    </div>
+                  </div>
+                </v-tooltip>
               </div>
             </template>
 
             <template v-if="isProj == 1">
-              <div
-                v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
-                :key="`ci-${ci}`"
-                class="d-flex flex-grow-0 align-center justify-center status-tile status-level0"
-                :class="{
-            'status-level1': c >= 1 && c <= 2,
-            'status-level2': c >= 3 && c <= 4,
-            'status-level3': c >= 5 && c <= 6,
-            'status-level4': c >= 7,
-        }"
-              ></div>
-
               <div
                 v-for="(d, di) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
                 :key="`di1-${di}`"
@@ -44,6 +52,44 @@
                   style="height: 36px;cursor: pointer;"
                   src="/static/images/sprout.png"
                 />
+              </div>
+
+              <div
+                v-for="(c, ci) in dres.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
+                :key="`ci-${ci}`"
+                class="d-flex flex-grow-0 align-center justify-center status-tile status-level0"
+                :class="{
+            'status-level1': c >= 1 && c <= 2,
+            'status-level2': c >= 3 && c <= 4,
+            'status-level3': c >= 5 && c <= 6,
+            'status-level4': c >= 7,
+        }"
+              >
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1"></div>
+                  </template>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">날짜</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].date : ''}}</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">커밋</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].ccnt : 0}} 개</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="d-flex flex-grow-0 status-tooltip-title">프로젝트 글</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].pcnt : 0}} 개</div>
+                    </div>
+                  </div>
+                </v-tooltip>
               </div>
             </template>
 
@@ -87,19 +133,27 @@
                   <div class="d-flex flex-column">
                     <div class="d-flex">
                       <div class="d-flex flex-grow-0 status-tooltip-title">날짜</div>
-                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].date}}</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].date : ''}}</div>
                     </div>
                     <div class="d-flex">
                       <div class="d-flex flex-grow-0 status-tooltip-title">커밋</div>
-                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].ccnt}} 개</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].ccnt : 0}} 개</div>
                     </div>
                     <div class="d-flex">
                       <div class="d-flex flex-grow-0 status-tooltip-title">블로그 글</div>
-                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].bcnt}} 개</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].bcnt : 0}} 개</div>
                     </div>
                     <div class="d-flex">
                       <div class="d-flex flex-grow-0 status-tooltip-title">프로젝트 글</div>
-                      <div class="d-flex status-tooltip-text">{{tdata[(ri+ti*4) * 7+ci].pcnt}} 개</div>
+                      <div
+                        class="d-flex status-tooltip-text"
+                      >{{tdata[(ri+ti*4) * 7+ci] ? tdata[(ri+ti*4) * 7+ci].pcnt : 0}} 개</div>
                     </div>
                   </div>
                 </v-tooltip>
@@ -292,11 +346,15 @@ export default {
       this.date[i] = this.date[i].substring(0, 10);
       let tmp = {};
       tmp.date = this.date[i];
-      tmp.bcnt = this.bres[i];
-      tmp.pcnt = this.pres[i];
-      if (this.isProj != 0) {
+      if (this.isProj == 0) {
+        tmp.bcnt = this.res[i];
+      } else if (this.isProj == 1) {
         tmp.ccnt = this.dres[i];
-        console.log(this.dres[i]);
+        tmp.pcnt = this.res[i];
+      } else if (this.isProj == 2) {
+        tmp.bcnt = this.bres[i];
+        tmp.pcnt = this.pres[i];
+        tmp.ccnt = this.dres[i];
       }
       this.tdata.push(tmp);
     }
