@@ -13,7 +13,7 @@
             <div class="d-flex">
               <div class="d-flex flex-column flex-shrink-0" style="width: 100%;padding-right:32px">
                 <div
-                  class="d-flex align-center"
+                  class="d-flex align-center flex-grow-0"
                   style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Project Post</div>
@@ -53,7 +53,6 @@
                     </footer>
                   </div>
                 </div>
-
                 <infinite-loading
                   slot="append"
                   @infinite="infiniteHandler"
@@ -65,7 +64,7 @@
             <div class="d-flex">
               <div class="d-flex flex-column flex-shrink-0" style="width: 100%;">
                 <div
-                  class="d-flex align-center"
+                  class="d-flex align-center flex-grow-0"
                   style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Blog Post</div>
