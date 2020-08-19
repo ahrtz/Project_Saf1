@@ -16,6 +16,8 @@ import Swiper from 'swiper';
 // import Swiper styles
 import 'swiper/swiper-bundle.css';
 
+import "../src/css/main.css";
+
 // API
 import api from './plugins/api'
 Vue.prototype.$api = api

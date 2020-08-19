@@ -8,7 +8,7 @@
             <div class="d-flex" />
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{on}">
-                <v-btn v-on="on" color="info" dark class="mr-2">그룹 수정</v-btn>
+                <div class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px" v-on="on">그룹 수정</div>
               </template>
               <v-card>
                 <v-card-title>
@@ -36,12 +36,12 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="close()">cancel</v-btn>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="updateGroup()">confirm</v-btn>
+                  <div class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px;" @click="close()">취소</div>
+                  <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="updateGroup()">확인</div>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-btn color="error" dark @click="removeGroup">그룹 해체</v-btn>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" @click="removeGroup">그룹 해체</div>
           </div>
 
           <v-row style="width: 768px;margin:0 auto;">
@@ -171,7 +171,7 @@
                 type="text"
                 placeholder="추가할 사용자의 이메일을 입력하세요"
               />
-              <v-btn tile color="primary" dark @click="addMember" style="margin-left: 4px;">멤버 추가</v-btn>
+              <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="addMember" style="margin-left: 4px;">멤버 추가</div>
             </div>
           </div>
           <!-- 아랫 부분 (그룹에 속한 멤버 리스트) -->

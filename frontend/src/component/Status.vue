@@ -289,7 +289,10 @@ export default {
         let tmp = await this.$api.getCommitStatus(this.dreq);
         this.dres = tmp;
       } catch (e) {
-        console.log('commit status 가져오기 실패');
+        console.log('commit status 가져오기 실패, git repo가 없는 회원입니다.');
+        for (let i = 0; i < 84; ++i) {
+          this.dres.push(0);
+        }
       }
       this.date = Object.keys(this.dres);
       this.dres = Object.values(this.dres);
@@ -431,12 +434,5 @@ export default {
 .status-tooltip-text {
   font-size: 12px;
   font-weight: 600;
-}
-
-.v-tooltip__content {
-  width: 180px;
-  background: #fff;
-  border: solid 1px #0051cb;
-  padding: 12px;
 }
 </style>

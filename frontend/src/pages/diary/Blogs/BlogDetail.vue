@@ -13,19 +13,21 @@
 
           <v-dialog v-model="dialog" scrollable max-width="600px" v-if="diaryid.uid==mydata.id">
             <template v-slot:activator="{ on }">
-              <v-btn
-                color="info"
-                dark
-                v-on="on"
-                @click="updateData()"
-              >{{isProj ? "프로젝트" : "블로그"}} 수정</v-btn>
+              <div class="d-flex">
+                <div class="d-flex" />
+                <div
+                  class="d-flex align-center justify-center flex-grow-0 s-button-blue"
+                  v-on="on"
+                  @click="updateData()"
+                >{{isProj ? "프로젝트" : "블로그"}} 수정</div>
+              </div>
             </template>
 
             <v-card>
               <v-card-title>{{isProj ? "프로젝트" : "블로그"}} 수정</v-card-title>
               <v-divider></v-divider>
-              <v-card-text>
-                {{isProj ? "프로젝트" : "블로그"}} 타이틀 :
+              <v-card-text style="margin-top: 16px;">
+                {{isProj ? "프로젝트" : "블로그"}} 타이틀
                 <v-text-field v-model="updatediary.title" type="text" placeholder="다이어리 이름을 입력하세요"></v-text-field>간단 설명
                 <v-textarea v-model="updatediary.intro" label="intro"></v-textarea>대표 이미지
                 <input
@@ -80,8 +82,18 @@
 
               <v-divider></v-divider>
               <v-card-actions>
-                <v-btn color="blue darken-1" text @click="dialog = false;diaryUpdate()">Save</v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false">cancel</v-btn>
+                <div class="d-flex">
+                  <div class="d-flex" />
+                  <div
+                    class="d-flex align-center justify-center flex-grow-0 s-button-white"
+                    style="margin-right:4px"
+                    @click="dialog = false"
+                  >취소</div>
+                  <div
+                    class="d-flex align-center justify-center flex-grow-0 s-button-blue"
+                    @click="dialog = false;diaryUpdate()"
+                  >저장</div>
+                </div>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -184,7 +196,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -413,7 +424,7 @@ export default {
   margin-top: 2px;
   margin: 16px;
   overflow: hidden;
-  
+
   background-color: white;
   float: unset;
   min-height: 40px;
