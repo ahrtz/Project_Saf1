@@ -96,7 +96,7 @@
         </div>
       
         내용
-        <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
+        
 
 
         <editor/>

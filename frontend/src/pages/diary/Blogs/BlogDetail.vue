@@ -164,6 +164,8 @@
             <div class="d-flex align-center blog-card-header">
               <div class="d-flex blog-detail-content-title">{{post.title}}</div>
               <div class="d-flex flex-grow-0 blog-detail-cdate">{{post.c_date}}</div>
+              <v-icon class="d-flex justify-end ">mdi-source-commit</v-icon>
+              <span class="main-page-commitcnt">{{post.commitCnt}}</span>
             </div>
             <!-- 포스트 제목 / 컨텐츠 -->
             <div class="d-flex blog-card-article">
