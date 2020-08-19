@@ -37,7 +37,9 @@
             <div>{{tmp.cdate}}</div>
           </div>
           <div class="post-detail-commit-container" v-if="checkcommit">
-            사용된 커밋
+            <div class="d-flex justify-center">
+              <div class="d-flex flex-grow-0" style="color:#0051cb;margin-top: 8px;margin-bottom:16px;font-size:14px;font-weight:600">Add Commit list</div>
+            </div>
             <div v-if="!commitcheck">
               <div
                 class="post-detail-commit-box"

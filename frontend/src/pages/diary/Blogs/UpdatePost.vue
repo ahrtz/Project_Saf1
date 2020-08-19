@@ -1,6 +1,6 @@
 <template>
-  <div class="update-post-post-container">
-    <div class="d-flex update-post-post-inner justify-center">
+  <div class="update-post-container">
+    <div class="d-flex update-post-inner justify-center">
       <div class="d-flex flex-shrink-0 flex-grow-0 update-post-sidebar">
         <div class="d-flex flex-column" style="width: 100%;">
           <div class="update-post-menu">임시저장 글 보기</div>
@@ -32,7 +32,7 @@
           <div class="d-flex">
             <div class="d-flex" />
             <div
-              class="d-flex justify-center align-center flex-grow-0 update-post-post-btn-white"
+              class="d-flex justify-center align-center flex-grow-0 update-post-btn-white"
               @click="goback()"
             >뒤로가기</div>
           </div>
@@ -40,7 +40,7 @@
           <div class="update-post-subtitle">제목</div>
           <v-text-field v-model="post.title" required outlined></v-text-field>
           <div class="update-post-subtitle">중요도</div>
-          <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
+          <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange" style="margin-bottom:32px;"></v-rating>
 
           <div v-if="selectedCommits.length!=0">
             <div
@@ -48,8 +48,9 @@
               v-for="(scommit, index) in selectedCommits"
               :key="index"
             >
-              <div class="update-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
-              <div class="d-flex flex-column justify-center update-post-commit">
+              <div class="update-post-commit-date" style="margin-top:4px;">#{{index+1}} Commits on {{scommit.date}}</div>
+              <div class="d-flex align-center">
+              <div class="d-flex flex-column justify-center flex-grow-1 update-post-commit">
                 <div class="update-post-commit-title">{{scommit.msg}}</div>
                 <div class="d-flex">
                   <div class="update-post-commit-author">{{scommit.author}}</div>
@@ -59,8 +60,11 @@
               </div>
               <div
                 class="d-flex justify-center align-center flex-grow-0 s-button-red"
+                style="margin-left: 4px;height: 60px;font-size:12px;font-weight:500;padding: 12px"
                 @click="commitDelete(scommit.id),index"
               >삭제</div>
+              </div>
+              
             </div>
           </div>
 
@@ -148,7 +152,7 @@
               @keyup.space="addtag()"
             ></v-text-field>
             <div
-              class="d-flex justify-center align-center flex-grow-0 update-post-post-btn"
+              class="d-flex justify-center align-center flex-grow-0 update-post-btn"
               style="margin-left: 32px"
               @click="addtag()"
             >태그추가</div>
@@ -451,17 +455,17 @@ export default {
 </script>
 
 <style>
-.update-post-post-container {
+.update-post-container {
   width: 100%;
 }
 
-.update-post-post-inner {
+.update-post-inner {
   padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
 
-.update-post-post-btn {
+.update-post-btn {
   padding: 0 16px;
   margin-bottom: 8px;
   font-size: 14px;
@@ -473,7 +477,7 @@ export default {
   cursor: pointer;
 }
 
-.update-post-post-btn-white {
+.update-post-btn-white {
   padding: 0 16px;
   font-size: 14px;
   background: #fff;
@@ -541,5 +545,45 @@ export default {
 .update-post-tmp-text {
   font-size: 12px;
   font-weight: 600;
+}
+
+.update-post-commit-box {
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
+}
+
+.update-post-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.update-post-commit:hover {
+  background: #0051cb11;
+  cursor: pointer;
+}
+
+.update-post-commit-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.update-post-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.update-post-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.update-post-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 </style>
