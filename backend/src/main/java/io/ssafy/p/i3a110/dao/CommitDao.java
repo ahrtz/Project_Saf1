@@ -16,4 +16,6 @@ public interface CommitDao {
 	public void deleteCommit(String id);
 
 	public int getUidById(String id);
+
+	public String getCntByPid(String pid);
 }
