@@ -215,5 +215,8 @@ export default {
     },
     async forTest(data){
         return (await axios.post(`${baseURL}/test`,data)).data
+    },
+    async tagRank(data){
+        return (await axios.post(`${baseURL}/tags/rank`),data).data
     }
 }   
