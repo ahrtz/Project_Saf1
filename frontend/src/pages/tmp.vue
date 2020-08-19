@@ -38,8 +38,8 @@
                   <div class="search-page-nickname">{{post.userinfo.nickname}}</div>
                   <div class="search-page-cdate">{{post.cdate}}</div>
                 </div>
-                <v-icon class="d-flex justify-end">mdi-source-commit</v-icon>
-                <span class="search-page-commitcnt">{{post.commitCnt}}</span>
+                <v-icon v-if="post.commitCnt" class="d-flex justify-end">mdi-source-commit</v-icon>
+                <span v-if="post.commitCnt" class="search-page-commitcnt">{{post.commitCnt}}</span>
               </div>
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
@@ -63,8 +63,8 @@
                   <div class="search-page-nickname">{{posts.userinfo.nickname}}</div>
                   <div class="search-page-cdate">{{posts.postinfo.cdate}}</div>
                 </div>
-                <v-icon class="d-flex justify-end">mdi-source-commit</v-icon>
-                <span class="search-page-commitcnt">{{posts.postinfo.commitCnt}}</span>
+                <v-icon v-if="posts.commitCnt" class="d-flex justify-end">mdi-source-commit</v-icon>
+                <span v-if="posts.commitCnt" class="search-page-commitcnt">{{posts.commitCnt}}</span>
               </div>
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
