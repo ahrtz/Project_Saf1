@@ -14,14 +14,21 @@
       @click="follow()"
     >Unfollow</div>
     <div class="d-flex flex-column s-contact-contents">
-      <div class="d-flex">
+      <div class="d-flex mr-auto">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="19">person_add</v-icon>
         <p
           class="d-flex"
           target="_top"
-          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px"
+          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px;margin-right:8px;"
           
         >{{printfollowerCnt}}</p>
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="19">favorite</v-icon>
+        <p
+          class="d-flex"
+          target="_top"
+          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px;margin-right:8px;"
+          
+        >{{printlikeCnt}}</p>
       </div>
       <div v-if="!user.isSocial" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
@@ -59,7 +66,7 @@ export default {
       mydata: '',
       followcheck: false,
       printfollowerCnt : '',
-      printfollowingCnt : '',
+      printlikeCnt : '',
     };
   },
   methods: {
@@ -93,7 +100,7 @@ export default {
       let tmpspace = await this.$api.contactBar(this.$route.params.uid);
       this.user = tmpspace.data;
       this.printfollowerCnt = this.user.followerCnt;
-      this.printfollowingCnt = this.user.followingCnt;
+      this.printlikeCnt = this.user.likeCnt;
       this.loginCheck = this.$store.state.isLoggedIn;
 
       console.log(this.user, 'vdasvdsa');
