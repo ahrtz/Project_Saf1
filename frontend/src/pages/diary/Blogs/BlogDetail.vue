@@ -236,6 +236,7 @@ export default {
       menu1: false,
       mydata: {},
       tagdata: {},
+      tagrank:{}
     };
   },
   methods: {
@@ -330,6 +331,15 @@ export default {
   },
   async created() {
     this.mydata = this.$store.state.user;
+
+    this.tagrank = await this.$api.tagRank(
+      {
+        did:this.$route.params.did,
+        uid:this.$route.params.uid,
+        num:3
+      }
+    )
+
     try {
       let tmpspace = await this.$api.diarydetail(
         this.$route.params.did,
