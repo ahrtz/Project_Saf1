@@ -144,7 +144,6 @@
           >글 작성</div>
         </div>
         <div>
-
           <div
             class="d-flex align-center"
             style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
@@ -164,7 +163,7 @@
             <div class="d-flex align-center blog-card-header">
               <div class="d-flex blog-detail-content-title">{{post.title}}</div>
               <div class="d-flex flex-grow-0 blog-detail-cdate">{{post.c_date}}</div>
-              <v-icon class="d-flex justify-end ">mdi-source-commit</v-icon>
+              <v-icon class="d-flex justify-end">mdi-source-commit</v-icon>
               <span class="main-page-commitcnt">{{post.commitCnt}}</span>
             </div>
             <!-- 포스트 제목 / 컨텐츠 -->
@@ -173,23 +172,14 @@
               <div class="blog-detail-content-text" v-html="compiledMarkdown(post)"></div>
             </div>
             <!-- 태그 -->
-            <div style="position:absolute;bottom:0 ">
+            <div class="d-flex blog-detail-tag-container">
               <div
-                class="d-flex flex-grow-0 posts-detail-tag"
+                class="d-flex flex-grow-0 blog-detail-tag"
                 v-for="(tags,index) in tagdata[indexs]"
                 :key="'t-'+index"
-              >
-                  #{{tags.name}}
-              </div>
+              >#{{tags.name}}</div>
             </div>
-          
-          
           </div>
-
-
-             
-          </div>
-
         </div>
       </div>
     </div>
@@ -200,7 +190,7 @@
 import Status from '@/component/Status.vue';
 import axios from 'axios';
 import SContact from '@/component/s-contact.vue';
-import marked from  'marked'
+import marked from 'marked';
 
 var renderer = new marked.Renderer();
 
@@ -233,34 +223,32 @@ export default {
       menu2: false,
       menu1: false,
       mydata: {},
-      tagdata:{}
+      tagdata: {},
     };
   },
   methods: {
     compiledMarkdown: function (posttmp) {
-      let vm = posttmp
-      console.log(vm)
-      renderer.em = function(text) {
+      let vm = posttmp;
+      console.log(vm);
+      renderer.em = function (text) {
         // var indexNumber = text.indexOf('/');
         // if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
-      //     var idx = text.substr(indexNumber + 1)
-      //     var commit = vm.commitList[idx-1];
-      //     var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
-      //             + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
-      //             + idx +' '+ commit.msg
-      //             + '</div><div class="d-flex"> <div class="contents-commit-author">'
-      //             + commit.author + ' committed on ' + commit.date
-      //             + '</div></div></div></div></div>'
-      //     return res;
+        //     var idx = text.substr(indexNumber + 1)
+        //     var commit = vm.commitList[idx-1];
+        //     var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
+        //             + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
+        //             + idx +' '+ commit.msg
+        //             + '</div><div class="d-flex"> <div class="contents-commit-author">'
+        //             + commit.author + ' committed on ' + commit.date
+        //             + '</div></div></div></div></div>'
+        //     return res;
         // }
-        return '<em>' + "" + '</em>';
-      }
+        return '<em>' + '' + '</em>';
+      };
 
+      var tmp1 = marked(posttmp.content, { renderer: renderer });
 
-
-      var tmp1 = marked(posttmp.content, { renderer: renderer }); 
-      
-      return tmp1
+      return tmp1;
     },
 
     onFileSelected(event) {
@@ -274,20 +262,19 @@ export default {
       }
     },
     diaryDelete() {
-      if (confirm('정말 삭제 하시겠습니까?') == true){
-
-      try {
-        console.log('다이어리 삭제 완료');
-        this.$api.deleteDiary(this.diaryid.did);
-        this.$router.push({
-          name: 'DiaryMain',
-          params: { uid: this.diaryid.uid, test: 2 },
-        });
-      } catch (e) {
-        console.log(e);
-      }}
-      else{
-        return
+      if (confirm('정말 삭제 하시겠습니까?') == true) {
+        try {
+          console.log('다이어리 삭제 완료');
+          this.$api.deleteDiary(this.diaryid.did);
+          this.$router.push({
+            name: 'DiaryMain',
+            params: { uid: this.diaryid.uid, test: 2 },
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        return;
       }
     },
     updateData() {
@@ -336,18 +323,16 @@ export default {
         this.$route.params.did,
         this.config
       );
-      console.log(tmpspace,'123');
+      console.log(tmpspace, '123');
       this.postdata = tmpspace;
-      try{
-        for( var i=0 ;i<tmpspace.length;i++){
-          this.tagdata[i]= await this.$api.tagIndex(tmpspace[i].id)
+      try {
+        for (var i = 0; i < tmpspace.length; i++) {
+          this.tagdata[i] = await this.$api.tagIndex(tmpspace[i].id);
         }
-        console.log('ddddd')
-      }catch(e){
-        console.log(e)
-        
+        console.log('ddddd');
+      } catch (e) {
+        console.log(e);
       }
-
 
       console.log('성공');
     } catch (e) {
@@ -368,7 +353,6 @@ export default {
         return false;
       }
     },
-    
   },
 };
 </script>
@@ -413,8 +397,10 @@ export default {
 
 .blog-card-header {
   background-color: white;
+  border-bottom: solid 1px #dde3ea;
   /* background:#ffffffde; */
   font-size: 16px;
+  padding: 0 16px;
   color: black;
   height: 55px;
 }
@@ -424,14 +410,13 @@ export default {
 }
 .blog-card-article {
   margin-top: 2px;
-  padding-top: 8px;
-  padding: 16px;
+  margin: 16px;
   overflow: hidden;
-  border-top: solid 1px #dde3ea;
+  
   background-color: white;
   float: unset;
-  width: 100%;
-  height: 100px;
+  min-height: 40px;
+  max-height: 85px;
 }
 
 .blog-detail-contact {
@@ -458,7 +443,6 @@ export default {
   position: relative;
   padding: 6px 10px 16px 10px;
   margin-top: 15px;
-  height: 150px;
   border: 1px solid #dde3ea;
   border-radius: 8px;
   margin: 15px 5px;
@@ -469,6 +453,8 @@ export default {
   transition: box-shadow 0.2s;
   transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
   cursor: pointer;
+  overflow: hidden;
+  max-height: 400px;
 }
 
 .blog-detail-card:hover {
@@ -495,13 +481,10 @@ export default {
   font-size: 12px;
 }
 
-.posts-detail-tag-container {
+.blog-detail-tag-container {
   width: 100%;
-  overflow: hidden;
-  margin: 32px 0;
-  flex-wrap: wrap;
 }
-.posts-detail-tag {
+.blog-detail-tag {
   margin-bottom: 8px;
   margin-right: 8px;
   padding: 0 12px;
@@ -511,5 +494,6 @@ export default {
   cursor: pointer;
   color: #0051cb;
   font-size: 14px;
+  white-space: nowrap;
 }
 </style>

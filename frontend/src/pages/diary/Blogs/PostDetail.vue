@@ -489,7 +489,7 @@ export default {
     
     compiledMarkdown: function () {
       let vm = this;
-      console.log(vm.tmp.content,'32145124')
+      console.log(vm.tmp ? vm.tmp.content : "NULL",'32145124')
       if(vm.commitList.length!=0){
       renderer.em = function(text) {
         var indexNumber = text.indexOf('/');
