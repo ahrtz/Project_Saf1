@@ -100,7 +100,14 @@ export default {
       let tmpspace = await this.$api.contactBar(this.$route.params.uid);
       this.user = tmpspace.data;
       this.printfollowerCnt = this.user.followerCnt;
-      this.printlikeCnt = this.user.likeCnt;
+      if(this.user.likeCnt*1 >= 1000)
+      {
+        this.printlikeCnt = (this.user.likeCnt*1)/1000 + "k";
+      }
+      else
+      {
+        this.printlikeCnt = this.user.likeCnt;
+      }
       this.loginCheck = this.$store.state.isLoggedIn;
 
       console.log(this.user, 'vdasvdsa');
