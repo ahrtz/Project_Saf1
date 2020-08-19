@@ -422,12 +422,17 @@ export default {
       }
     },
     async deleteP(postid) {
+
+      if(confirm('정말 삭제하시겠습니까 ?' )==true
+      ){
       try {
         this.$api.deletePost(postid);
         // console.log('성공')
         this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
       } catch (e) {
         console.log(e);
+      }}else{
+        return
       }
     },
     mvUrl(url){
