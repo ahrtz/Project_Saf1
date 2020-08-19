@@ -8,7 +8,12 @@
       <v-layout v-if="this.$route.path[7] =='p'">
         <v-dialog v-model="dialog" scrollable max-width="300px">
           <template v-slot:activator="{ on }">
-            <v-btn style="margin-top: 32px;" color="primary" dark v-on="on">git repository 선택하기</v-btn>
+            <div
+              class="d-flex align-center justify-center flex-grow-0 s-button-blue"
+              style="margin-top: 32px;"
+              dark
+              v-on="on"
+            >git repository 선택하기</div>
           </template>
           <v-card color="primary" dark v-if="repoData.length==0">
             <v-card-text>
@@ -41,7 +46,11 @@
             </div>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+              <div class="d-flex" />
+              <div
+                class="d-flex align-center justify-center flex-grow-0 s-button-blue"
+                @click="dialog = false"
+              >저장</div>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -80,9 +89,17 @@
         <div class="diary-add-subtitle">설명</div>
         <v-textarea v-model="blogData.intro" placeholder="다이어리의 간략한 설명을 적어주세요."></v-textarea>
       </div>
-      <div style="float:right">
-        <v-btn class="float-right" color="primary" dark @click="AddProj()">추가</v-btn>
-        <v-btn class="mr-2 float-right" color="info" dark @click="goback()">취소</v-btn>
+      <div class="d-flex" style="margin-top: 32px;">
+        <div class="d-flex" />
+        <div
+          class="d-flex align-center justify-center flex-grow-0 s-button-white"
+          style="margin-right: 4px;"
+          @click="goback()"
+        >취소</div>
+        <div
+          class="d-flex align-center justify-center flex-grow-0 s-button-blue"
+          @click="AddProj()"
+        >추가</div>
       </div>
     </div>
   </div>

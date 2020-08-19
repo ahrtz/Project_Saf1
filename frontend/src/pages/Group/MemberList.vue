@@ -12,14 +12,14 @@
             <v-text-field v-model="this.newuser" type = "text" placeholder="추가할 사용자의 이메일을 입력하세요"></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-btn @click="addgroup">추가</v-btn>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="addgroup">추가</div>
           </v-col>
         </v-row>
       </v-container>
       
       <div v-for="member in MemberList" :key="member.id" >
         <div>
-          {{member}}  <v-btn @click="rejectuser(member.id)"> 삭제 </v-btn>
+          {{member}}  <div class="d-flex justify-center align-center flex-grow-0 s-button-red" @click="rejectuser(member.id)"> 삭제 </div>
         </div>
       </div>
   </div>

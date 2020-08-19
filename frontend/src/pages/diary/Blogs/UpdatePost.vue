@@ -30,14 +30,17 @@
                 <div class="update-post-commit-sha">{{scommit.sha1}}</div>
               </div>
             </div>
-            <v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" @click="commitDelete(scommit.id),index">삭제</div>
           </div>
         </div>
 
         <v-layout row v-show="this.isProj==true">
           <v-dialog v-model="dialog" scrollable max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark v-on="on">커밋 선택하기</v-btn>
+              <div
+                class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                v-on="on"
+              >커밋 선택하기</div>
             </template>
 
             <v-card color="primary" dark v-if="commitList.length==0">
@@ -69,7 +72,13 @@
               </div>
               <v-divider></v-divider>
               <v-card-actions>
-                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+                <div class="d-flex">
+                  <div class="d-flex" />
+                  <div
+                    class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                    @click="dialog = false"
+                  >저장</div>
+                </div>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -159,7 +168,6 @@
         <div v-for="temp in tmppost" :key="temp.id">
           {{temp.dName}}다이어리
           <br />
-
           제목 : {{temp.title}}
           <v-btn @click="$router.push({name:'UpdatePost',params:{pid:temp.id}})">수정</v-btn>
         </div>
