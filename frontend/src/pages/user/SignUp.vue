@@ -22,7 +22,7 @@
             style="margin-bottom:16px;"
           >이메일 체크</div>
         </div>
-        <span class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+        <span class="login-hint" :style="{visibility:visipw}" >*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -195,6 +195,7 @@ export default {
       ],
     };
   },
+  
   methods: {
     onFileSelected(event) {
       var input = event.target;
@@ -225,11 +226,18 @@ export default {
       this.$router.go(-1);
     },
     async signup() {
+      
+
       if (this.signupData.pwd != this.signupData.pwdconfirm) {
         this.signupData.pwdconfirm = '';
         console.log('dnajk');
         alert('비밀번호가 다릅니다.');
-      } else {
+      }else if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(this.signupData.pwd)==false) {
+        alert('소문자 한개 숫자 한개 특수문자 한개는 필수조건입니다');
+
+      }
+      
+      else {
         try {
           if (this.$refs.file != null) {
             this.signupData.file = this.$refs.file.files[0];
@@ -262,13 +270,32 @@ export default {
         }
       }
     },
-    checkpwd() {
-      if (this.pwd != this.pwdconfirm) {
-        this.pwdconfirm = '';
-        console.log('dnajk');
-        alert('비밀번호가 다릅니다.');
-      }
-    },
+    // checkpwd(pw) {
+    //    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(pw)
+      //  if(pw.length < 8 || pw.length > 16){
+
+      //   alert("8자리 ~ 16자리 이내로 입력해주세요.");
+      //   return false;
+      // }else if(pw.search(/\s/) != -1){
+      //   alert("비밀번호는 공백 없이 입력해주세요.");
+      //   return false;
+      // }else if(num < 0 || eng < 0 || spe < 0 ){
+      //   alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+      //   return false;
+      // }else {
+      //   console.log("통과"); 
+      //     return true;
+      // }
+
+      
+
+
+      // if (this.pwd != this.pwdconfirm) {
+      //   this.pwdconfirm = '';
+      //   console.log('dnajk');
+      //   alert('비밀번호가 다릅니다.');
+      // }
+    // },
     async certifyGit(){
       try{
         let tmpid=this.signupData.gitId
@@ -290,6 +317,12 @@ export default {
       }
     },
   },
+  computed:{
+    checkpwd(){
+      
+       return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test()
+    }
+  }
 };
 </script>
 
