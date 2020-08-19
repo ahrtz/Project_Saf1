@@ -37,6 +37,7 @@
             <div>{{tmp.cdate}}</div>
           </div>
           <div class="post-detail-commit-container" v-if="checkcommit">
+            사용된 커밋 
             <div v-if="!commitcheck">
               <div
                 class="post-detail-commit-box"
@@ -78,8 +79,11 @@
               @click="commitwide()"
             >접기</div>
           </div>
-          <div class="post-detail-content">{{tmp.content}}</div>
 
+
+          <div class="post-detail-content" v-html="compiledMarkdown"></div>
+
+<!-- <div class="post-detail-content">{{tmp.content}}</div> -->
           <div class="d-flex align-center flex-grow-0 post-detail-tag-container">
             <div
               class="d-flex flex-grow-0 post-detail-tag"
@@ -178,8 +182,10 @@
 import SContact from '../../../component/s-contact.vue';
 import ContentSidebar from '../../../component/ContentSidebar.vue';
 import axios from 'axios';
-import moment from 'moment';  //
+import moment from 'moment';
+import marked from 'marked'  //
 
+var renderer = new marked.Renderer();
 
 export default {
   name: 'PostDetail',
@@ -260,6 +266,7 @@ export default {
     console.log('***' + this.commitList[0]);
   },
   methods: {
+    
     async getComment() {
       try {
         let temp = await this.$api.getCommentlist(this.id.pid);
@@ -323,7 +330,7 @@ export default {
       //console.log(this.commentData.cDate)
     },
     goback() {
-      this.$router.go(-1);
+      this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
     },
     async like() {
       if(this.isLogin){
@@ -418,7 +425,7 @@ export default {
       try {
         this.$api.deletePost(postid);
         // console.log('성공')
-        this.$router.go(-1);
+        this.$router.push({ name: 'BlogDetail', params: { did: this.tmp.did } });
       } catch (e) {
         console.log(e);
       }
@@ -475,7 +482,31 @@ export default {
       return this.uid == this.tmp.uid;
     },
     
-    
+    compiledMarkdown: function () {
+      let vm = this;
+      console.log(vm.tmp.content,'32145124')
+      if(vm.commitList.length!=0){
+      renderer.em = function(text) {
+        var indexNumber = text.indexOf('/');
+        if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
+          var idx = text.substr(indexNumber + 1)
+          var commit = vm.commitList[idx-1];
+          var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
+                  + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
+                  + idx +' '+ commit.msg
+                  + '</div><div class="d-flex"> <div class="contents-commit-author">'
+                  + commit.author + ' committed on ' + commit.date
+                  + '</div></div></div></div></div>'
+          return res;
+        }
+        return '<em>' + text.replace('\\/', '/') + '</em>';
+      }}
+
+
+      var tmp1 = marked(vm.tmp.content, { renderer: renderer }); 
+      
+      return tmp1
+    },
 
 
 
@@ -668,5 +699,46 @@ export default {
 .post-detail-comment-content {
   min-height: 40px;
   font-size: 14px;
+}
+
+.contents-commit-box {
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
+}
+
+.contents-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+  
+}
+
+.contents-commit:hover {
+  background: #0051cb11;
+  cursor: pointer;
+}
+
+.contents-commit-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.contents-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.contents-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.contents-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 </style>

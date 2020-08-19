@@ -96,7 +96,11 @@
         </div>
       
         내용
+        <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
+
+
         <editor/>
+
 
         <h3>태그</h3>
         <div class="d-flex">
@@ -227,7 +231,10 @@ export default {
   },
   props: ['value'],
   async created() {
+
+    
     bus.$on('updateContent', this.updateContent);
+
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try{
@@ -387,9 +394,11 @@ export default {
         console.log('실패');
       }}
     },
+
     mvUrl(url){
       window.open(url, "_blank");
     },
+
   },
   watch:{
     selected(){

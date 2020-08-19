@@ -3,7 +3,7 @@
       <span class="toolbar" @click="notPreview()">Contents</span>
       <span class="toolbar" @click="doPreview()">Preview</span>
     
-      <v-textarea v-show="!preview" v-model="input" required outlined rows="9" no-resize auto-grow style="margin-top: 5px;"></v-textarea>    
+      <v-textarea v-show="!preview" v-model="content" required outlined rows="9" no-resize auto-grow style="margin-top: 5px;"></v-textarea>    
     
       <div id="preview" v-show="preview" v-html="compiledMarkdown" label="preview"></div>
     
@@ -18,14 +18,17 @@ var renderer = new marked.Renderer();
 
 export default {
   name : 'editor',
+  // props:['content'],
   data(){
     return{
       preview: false,
-      input:'',
+      content:'',
       commitList:[]
     }
   },
-  created(){
+  async created(){
+        await bus.$on('getContent', this.getContent)
+        await bus.$on('getCommits', this.getCommits)
 
   },
   methods:{
@@ -38,34 +41,41 @@ export default {
     getCommits(commitList){
       this.commitList = commitList;
       console.log(this.commitList);
+    },
+    getContent(content){
+      this.content = content
     }
   },
   computed: {
     compiledMarkdown: function () {
-      var tmp = marked(this.input, { renderer: renderer }); 
-      bus.$emit('updateContent',tmp);     
+      let vm = this;
+          if (vm.commitList.length !=0){
+          renderer.em = function(text) {
+            var indexNumber = text.indexOf('/');
+            if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
+              var idx = text.substr(indexNumber + 1)
+              var commit = vm.commitList[idx-1];
+              var res = '<div class="post-detail-commit-container" ><div class="contents-commit-box">'
+                        + `<div class="d-flex flex-column justify-center contents-commit" ><div class="contents-commit-title"> #`
+                        + idx +' '+ commit.msg
+                        + '</div><div class="d-flex"> <div class="contents-commit-author">'
+                        + commit.author + ' committed on ' + commit.date
+                        + '</div></div></div></div></div>'
+              return res;
+            }
+            return '<em>' + text.replace('\\/', '/') + '</em>';
+          }}
+
+
+
+      var tmp = marked(this.content, { renderer: renderer }); 
+      bus.$emit('updateContent',this.content);     
       return tmp
     },
   },
   mounted(){
-    let vm = this;
-    renderer.em = function(text) {
-      var indexNumber = text.indexOf('/');
-      if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
-        var idx = text.substr(indexNumber + 1)
-        var commit = vm.commitList[idx-1];
-        var res = '<div class="contents-commit-box">'
-                  + `<div class="d-flex flex-column justify-center contents-commit" @click="mvUrl(`
-                  + commit.url + `)"><div class="contents-commit-title"> #`
-                  + idx +' '+ commit.msg
-                  + '</div><div class="d-flex"> <div class="contents-commit-author">'
-                  + commit.author + ' committed on ' + commit.date
-                  + '</div></div></div></div>'
-        return res;
-      }
-      return '<em>' + text.replace('\\/', '/') + '</em>';
-    },
-    bus.$on('getCommits', this.getCommits)
+    
+    
   }
 }
 
@@ -119,7 +129,7 @@ code {
   padding: 8px;
   height: 60px;
   border-radius: 6px;
-  width: 500px;
+  
 }
 
 .contents-commit:hover {

@@ -1,28 +1,43 @@
 <template>
-  <div class="update-post-post-container">
-    <div class="d-flex update-post-post-inner justify-center">
-      <div class="d-flex flex-grow-0 update-post-tmp-container">임시저장 section</div>
-      <div class="d-flex flex-column" style="width: 100%;">
-        <div class="d-flex">
-          <div class="d-flex" />
-          <div
-            class="d-flex justify-center align-center flex-grow-0 update-post-post-btn-white"
-            @click="goback()"
-          >뒤로가기</div>
-        </div>
-        <div class="update-post-title">포스트 수정</div>
-        <div class="update-post-subtitle">제목</div>
-        <v-text-field v-model="post.title" required outlined></v-text-field>
-        <div class="update-post-subtitle">중요도</div>
+  <div class="update-blog-post-container">
+    <div class="d-flex flex-column update-blog-post-inner justify-center">
+      <div class="d-flex">
+        <div class="d-flex" />
+        <div
+          class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
+          @click="goback()"
+        >뒤로가기</div>
+      </div>
+      <div class="d-flex flex-column" style="width:60%;align-self:center; ">
+        <div>포스트 수정</div>
+        <br />
+        <br />제목
+        <v-text-field v-model="post.title" required outlined></v-text-field>중요도
         <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
-        <div v-for="(scommit,index) in selectedCommits" :key="index">
-          {{index}}{{scommit.msg}}
-          <v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+
+        <div v-if="selectedCommits.length!=0">
+          <div
+            class="update-post-commit-box"
+            v-for="(scommit, index) in selectedCommits"
+            :key="index"
+          >
+            <div class="update-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
+            <div class="d-flex flex-column justify-center update-post-commit">
+              <div class="update-post-commit-title">{{scommit.msg}}</div>
+              <div class="d-flex">
+                <div class="update-post-commit-author">{{scommit.author}}</div>
+                <div class="d-flex" />
+                <div class="update-post-commit-sha">{{scommit.sha1}}</div>
+              </div>
+            </div>
+            <v-btn @click="commitDelete(scommit.id),index">삭제</v-btn>
+          </div>
         </div>
-        <v-layout v-show="this.isProj==true">
+
+        <v-layout row v-show="this.isProj==true">
           <v-dialog v-model="dialog" scrollable max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" style="margin: 32px 0;" dark v-on="on">커밋 선택하기</v-btn>
+              <v-btn color="primary" dark v-on="on">커밋 선택하기</v-btn>
             </template>
 
             <v-card color="primary" dark v-if="commitList.length==0">
@@ -40,7 +55,6 @@
                   :id="'t'+commit.msg"
                   v-for="(commit,index) in commitList.slice((this.page-1)*10,(this.page*10))"
                   :key="index"
-                  style="padding: 4px 0;"
                 >
                   <input type="checkbox" v-model="selected" :value="commit" />
                   <label :for="commit">{{commit.msg}}</label>
@@ -55,29 +69,45 @@
               </div>
               <v-divider></v-divider>
               <v-card-actions>
-                <div class="d-flex"/>
-                <v-btn color="primary" @click="dialog = false">저장</v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-layout>
-        <div class="update-post-subtitle">내용</div>
-        <v-textarea v-model="post.content" label="content" required outlined></v-textarea>
+        <div v-if="selected.length!=0">
+          <div class="update-post-commit-box" v-for="(commit, i) in selected" :key="i">
+            <div
+              class="update-post-commit-date"
+            >#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
+            <div class="d-flex flex-column justify-center update-post-commit">
+              <div class="update-post-commit-title">{{commit.msg}}</div>
+              <div class="d-flex">
+                <div class="update-post-commit-author">{{commit.author}}</div>
+                <div class="d-flex" />
+                <div class="update-post-commit-sha">{{commit.sha1}}</div>
+              </div>
+            </div>
+          </div>
+        </div>내용
+        <editor />
+        <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
 
-        <div class="update-post-subtitle">태그</div>
+        <h3>태그</h3>
         <div class="d-flex">
           <v-text-field
-            label="엔터, 스페이스 바를 눌러 태그를 추가하세요."
+            label="태그를 추가"
             v-model="tag"
             @keyup.enter="addtag()"
             @keyup.space="addtag()"
           ></v-text-field>
           <div
-            class="d-flex justify-center align-center flex-grow-0 update-post-post-btn"
-            style="margin-left: 32px"
+            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
             @click="addtag()"
           >태그추가</div>
         </div>
+        <br />
+        <!-- tags -->
+
         <div class="d-flex align-center flex-grow-0 update-post-tag-container">
           <div
             class="d-flex flex-grow-0 update-post-tag"
@@ -85,7 +115,7 @@
             :key="'t-1'+index"
           >
             <a>#{{tag.name}} &nbsp;</a>
-            <button @click="tagdelete(tag.id)"><v-icon size="12" color="#0051cb">close</v-icon></button>
+            <button @click="tagdelete(tag.id)">X</button>
           </div>
           <!-- 새태그 넣기 -->
           <div
@@ -94,24 +124,24 @@
             :key="'t-'+index"
           >
             #{{tag}} &nbsp;
-            <button @click="removetag(tag)"><v-icon>close</v-icon></button>
+            <button @click="removetag(tag)">X</button>
           </div>
         </div>
 
         <br />
         <div class="d-flex" style="margin-top: 72px">
           <div
-            class="d-flex justify-center align-center flex-grow-0 update-post-post-btn-white"
+            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn-white"
             @click="writetmpPost()"
           >임시저장</div>
           <div class="d-flex" />
           <div
-            class="d-flex justify-center align-center flex-grow-0 update-post-post-btn-white"
+            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn-white"
             @click="clear()"
             style="margin-right: 8px;"
           >초기화</div>
           <div
-            class="d-flex justify-center align-center flex-grow-0 update-post-post-btn"
+            class="d-flex justify-center align-center flex-grow-0 update-blog-post-btn"
             @click="writePost()"
           >작성</div>
         </div>
@@ -141,9 +171,15 @@
 
 <script>
 import axios from 'axios';
+import editor from '@/component/editor.vue';
+import bus from '@/component/EventBus';
+
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
   name: 'UpdatePost',
+  components: {
+    editor,
+  },
   data() {
     return {
       drawer: null,
@@ -183,12 +219,14 @@ export default {
   },
   props: ['value'],
   async created() {
+    bus.$on('updateContent', this.updateContent);
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try {
       let tmpspace = await this.$api.postdetail(this.pid);
       this.post = tmpspace;
       console.log('성공');
+      bus.$emit('getContent', this.post.content);
 
       try {
         let tempspace1 = await this.$api.individualDiary(this.post.did);
@@ -200,6 +238,7 @@ export default {
               repoId: tempspace1.repoId,
             });
             this.commitList = listCommit;
+            bus.$emit('getCommits', this.commitList);
           } catch (e) {
             console.log('커밋 받아오기  에러');
           }
@@ -232,6 +271,10 @@ export default {
     // console.log(this.tags);
   },
   methods: {
+    updateContent(content) {
+      this.post.content = content;
+    },
+
     clear() {
       this.$refs.form.reset();
     },
@@ -297,7 +340,7 @@ export default {
                 // this.selected[i].uid = this.post.id
                 this.selected[i].pid = this.pid;
                 this.selected[i].sha = this.selected[i].sha1;
-                this.selected[i].date = this.selected[i].date.substr(0, 10);
+                this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
                 console.log(this.selected[i], '부악');
@@ -365,21 +408,26 @@ export default {
       this.selectedCommits.splice(index, 1);
     },
   },
+  computed: {
+    downcontent() {
+      return this.post.content;
+    },
+  },
 };
 </script>
 
 <style>
-.update-post-post-container {
+.update-blog-post-container {
   width: 100%;
 }
 
-.update-post-post-inner {
+.update-blog-post-inner {
   padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
 
-.update-post-post-btn {
+.update-blog-post-btn {
   padding: 0 16px;
   margin-bottom: 8px;
   font-size: 14px;
@@ -391,7 +439,7 @@ export default {
   cursor: pointer;
 }
 
-.update-post-post-btn-white {
+.update-blog-post-btn-white {
   padding: 0 16px;
   font-size: 14px;
   background: #fff;
@@ -412,7 +460,7 @@ export default {
 .update-post-tag {
   margin-bottom: 8px;
   margin-right: 8px;
-  padding: 0 6px 0 12px;
+  padding: 0 12px;
   background: #fff;
   border: solid 1px #0051cb;
   border-radius: 20px;
@@ -421,20 +469,43 @@ export default {
   font-size: 14px;
 }
 
-.update-post-title {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 48px;
+.update-post-commit-box {
+  border-left: solid 2px #dde3ea;
+  padding-left: 16px;
+  margin-bottom: 22px;
 }
 
-.update-post-subtitle {
+.update-post-commit {
+  border: solid 1px #dde3ea;
+  padding: 8px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.update-post-commit:hover {
+  background: #0051cb11;
+  cursor: pointer;
+}
+
+.update-post-commit-title {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 800;
 }
 
-.update-post-tmp-container {
-  width: 300px;
-  padding-right: 32px;
-  border: solid 1px #ddd
+.update-post-commit-date {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.update-post-commit-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #24292e;
+}
+
+.update-post-commit-sha {
+  font-size: 10px;
+  font-weight: normal;
 }
 </style>
