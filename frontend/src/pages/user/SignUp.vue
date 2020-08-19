@@ -269,6 +269,7 @@ export default {
         alert('비밀번호가 다릅니다.');
       }
     },
+
     async certifyGit(){
       try{
         let tmpid=this.signupData.gitId
@@ -287,6 +288,7 @@ export default {
          
       }catch(e){
         console.log(e)
+
       }
     },
   },
