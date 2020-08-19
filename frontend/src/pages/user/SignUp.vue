@@ -93,13 +93,22 @@
             <template v-slot:activator="{on}">
               <i v-on="on" class="far fa-question-circle" style="cursor:pointer;float:right;margin-bottom:8px;"></i>
             </template>
-            <v-card>
-              <v-card>
-                <div v-for="(image,index) in images" :key="index">
-                  <img :src="image" style="width:100%">
-                </div>
-              </v-card>
-            </v-card>
+            <template>
+              <!-- prev-icon="mdi-arrow-left"
+              next-icon="mdi-arrow-right" -->
+              <v-carousel 
+              :show-arrows='false'
+              >
+                <v-carousel-item
+                v-for="(image,i) in images" 
+                :key="i"
+                :src="image" 
+                
+                >
+
+                </v-carousel-item>
+              </v-carousel>
+            </template>
           </v-dialog>
         </div>
         <div>
@@ -157,10 +166,7 @@ export default {
         '/static/images/token3.png',
         '/static/images/token4.png',
         '/static/images/token5.png',
-        '/static/images/token6.png',
-        '/static/images/token7.png',
-        '/static/images/token8.png',
-        '/static/images/token9.png',
+        
       ],
     };
   },
@@ -332,3 +338,4 @@ export default {
   margin-bottom: 8px;
 }
 </style>
+
