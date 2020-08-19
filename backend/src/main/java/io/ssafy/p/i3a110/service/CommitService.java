@@ -28,4 +28,10 @@ public class CommitService {
 	public int getUidById(String id) {
 		return commitDao.getUidById(id);
 	}
+	
+	public int getCntByPid(String pid) {
+		String tmp = commitDao.getCntByPid(pid);
+		if(tmp==null) return 0;
+		return Integer.parseInt(tmp);
+	}
 }
