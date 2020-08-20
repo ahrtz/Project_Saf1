@@ -61,7 +61,9 @@
       </div>
     </div>
     <div class="d-flex login-right">
-      <div class="login-right-img"></div>
+      <div class="d-flex justify-center login-right-img">
+        <div @click="onExperienceClick()" class="d-flex flex-grow-0 justify-center align-center s-button-white" style="margin-top: 150px;width: 150px;font-size:16px;">체험하기</div>
+      </div>
     </div>
   </div>
 </template>
@@ -105,6 +107,9 @@ export default {
     googleLogin() {
       var temp = window.open('/api/oauth2/authorization/google');
     },
+    onExperienceClick() {
+      location.href='/1'
+    }
   },
 };
 </script>
