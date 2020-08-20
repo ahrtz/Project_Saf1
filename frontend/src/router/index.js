@@ -49,17 +49,78 @@ const router = new Router({
       name: 'Login',
       component: Login,
     },
-
     {
-      path: '/:uid',
-      name: 'MainPagefor',
-      component: MainPagefor,
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp,
     },
     {
       path: '/search/:key',
       name: 'tmp',
       component: tmp
     },
+    // 다이어리
+
+    //프로젝트
+    {
+      path: '/diary/projects',
+      name: 'Project',
+      component: Project,
+    },
+    {
+      path: '/diary/projects/add',
+      name: 'ProjectAdd',
+      component: ProjectAdd,
+
+    },
+    {
+      path: '/diary/projects/:did/new',
+      name: 'NewProjectPost',
+      component: NewProjectPost
+    },
+    //블로그
+    {
+      path: '/diary/blogs/add',
+      name: 'BlogAdd',
+      component: BlogAdd
+    },
+
+    {
+      path: '/diary/blog/:did/new',
+      name: 'NewBlogPost',
+      component: NewBlogPost
+    },
+    {
+      path: '/diary/:pid/update',
+      name: 'UpdatePost',
+      component: UpdatePost
+    },
+
+    {
+      path: '/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
+      name: 'MemberList',
+      component: MemberList
+    },
+    {
+      path: '/group/:gid/groupdetail',
+      name: 'GroupDetail',
+      component: GroupDetail
+    },
+    //소셜로그인용
+    {
+      path: '/social/success-callback',
+      name: 'socialSuccess',
+      component: socialSuccess,
+      // redirect: { name: 'DairyMain' }
+
+    },
+
+    {
+      path: '/:uid',
+      name: 'MainPagefor',
+      component: MainPagefor,
+    },
+
     {
       path: '/:uid/tmppost',
       name: 'tmpPost',
@@ -92,41 +153,11 @@ const router = new Router({
     //   component: Login,
     // },
     {
-      path: '/signup',
-      name: 'SignUp',
-      component: SignUp,
-    },
-    // 다이어리
-
-    //프로젝트
-    {
-      path: '/diary/projects',
-      name: 'Project',
-      component: Project,
-    },
-    {
-      path: '/diary/projects/add',
-      name: 'ProjectAdd',
-      component: ProjectAdd,
-
-    },
-
-    {
-      path: '/diary/projects/:did/new',
-      name: 'NewProjectPost',
-      component: NewProjectPost
-    },
-    //블로그
-    {
       path: '/:uid/diary',
       name: 'DiaryMain',
       component: DiaryMain,
     },
-    {
-      path: '/diary/blogs/add',
-      name: 'BlogAdd',
-      component: BlogAdd
-    },
+
     {
       path: '/:uid/diary/blogs/:did',
       name: 'BlogDetail',
@@ -137,40 +168,14 @@ const router = new Router({
       name: 'PostDetail',
       component: PostDetail
     },
-    {
-      path: '/diary/blog/:did/new',
-      name: 'NewBlogPost',
-      component: NewBlogPost
-    },
-    {
-      path: '/diary/:pid/update',
-      name: 'UpdatePost',
-      component: UpdatePost
-    },
+
     // 그룹
     {
       path: '/:uid/group',
       name: 'GroupMain',
       component: GroupMain
     },
-    {
-      path: '/group/:gid/memberList',//이거 나중에 그룹 GID 받아와서 그거로 동적 라우팅 해야댐
-      name: 'MemberList',
-      component: MemberList
-    },
-    {
-      path: '/group/:gid/groupdetail',
-      name: 'GroupDetail',
-      component: GroupDetail
-    },
-    //소셜로그인용
-    {
-      path: '/social/success-callback',
-      name: 'socialSuccess',
-      component: socialSuccess,
-      // redirect: { name: 'DairyMain' }
 
-    },
 
 
   ]

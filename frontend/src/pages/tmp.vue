@@ -7,12 +7,12 @@
             class="d-flex flex-grow-0 search-page-menu"
             :class="{'search-page-menu--selected': res==0}"
             @click="res=0"
-          >제목검색 ({{searchResult.length}})</div>
+          >제목검색 ({{searchResult ? searchResult.length : "0"}})</div>
           <div
             class="d-flex flex-grow-0 search-page-menu"
             :class="{'search-page-menu--selected': res==1}"
             @click="res=1"
-          >태그검색 ({{tagResult.length}})</div>
+          >태그검색 ({{tagResult ? tagResult.length : "0"}})</div>
         </div>
       </div>
       <div class="d-flex">
@@ -64,13 +64,13 @@
                   <div class="search-page-cdate">{{posts.postinfo.cdate}}</div>
                 </div>
                 <v-icon
-                  v-if="tagcommit[index].length>0"
+                  v-if="tagcommit[index] ? tagcommit[index].length>0 : false"
                   class="d-flex justify-end"
                 >mdi-source-commit</v-icon>
                 <span
-                  v-if="tagcommit[index].length>0"
+                  v-if="tagcommit[index] ? tagcommit[index].length>0 : false"
                   class="search-page-commitcnt"
-                >{{tagcommit[index].length}}</span>
+                >{{tagcommit[index] ? tagcommit[index].length : "0"}}</span>
               </div>
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">

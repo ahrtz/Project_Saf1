@@ -199,7 +199,9 @@
         </div>
       </div>
     </div>
-    <div class="d-flex signup-right"></div>
+    <div class="d-flex signup-right">
+      <div class="signup-right-img "></div>
+    </div>
   </div>
 </template>
 
@@ -488,6 +490,13 @@ export default {
 .signup-right {
   background: #0051cb;
   width: 300px;
+}
+
+.signup-right-img {
+  width: 100%;
+  height: 100%;
+  background: url('/static/images/mac_main.png') no-repeat;
+  background-position: center 235px;
 }
 
 .signup-social-logo-container {
