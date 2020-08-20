@@ -388,7 +388,7 @@ export default {
     async removeGroup() {
       try {
         await this.$api.deleteGroup(this.$route.params.gid);
-        this.$router.go(-1);
+        this.$router.push({name:'GroupMain',uid:this.uid})
       } catch (e) {}
     },
     getRecentPost(recentPost) {

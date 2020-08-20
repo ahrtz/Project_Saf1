@@ -99,7 +99,7 @@
                       >{{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
                     </div>
                     <div
-                      v-if="blog.languages != null && blog.languages.length>0"
+                      v-if="blog.languages  && blog.languages.length>0"
                       class="d-flex diary-main-content-container"
                     >
                       <div class="d-flex flex-grow-0 diary-main-content-title">언어</div>

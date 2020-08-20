@@ -464,7 +464,7 @@ export default {
     likechecking() {
       if (this.likedummy.status == 1) {
         this.likeData.likechecked == true;
-      } else if ((this.likedummy, length == 0)) {
+      } else if ((this.likedummy.length == 0)) {
         this.likeData.likechecked == false;
       } else {
         this.likeData.likechecked == false;
