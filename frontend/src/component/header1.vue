@@ -67,10 +67,13 @@ export default {
     this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
     // console.log(this.$route.path);
+    
+    // this.target = temp
+  },
+  mounted() {
     if (this.$route.path == '/' || this.$route.path == '/signup') {
       this.isLoginPage = true;
     }
-    // this.target = temp
   },
   methods: {
     onDiaryBtnClick() {
