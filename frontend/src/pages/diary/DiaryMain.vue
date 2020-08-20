@@ -36,7 +36,7 @@
     <div class="diary-main-inner">
       <div class="d-flex">
         <v-text-field
-          id="header-text"
+          id="header-texts"
           class="d-flex justify-center flex-grow-0"
           placeholder="Search by Title"
           outlined
@@ -198,26 +198,24 @@ export default {
           keyword: '',
         });
         this.diarys = tempspace;
-        for (var i = 0; tempspace.length > i; i++) {
-          console.log(tempspace[i]['id']);
-          console.log(tempspace[i]['uid']);
-          var configss = {
-            did: `${tempspace[i]['id']}`,
-            uid: `${tempspace[i]['uid']}`,
-            num: '3',
-          };
-          console.log(configss);
-          try {
-            this.tagdata[tempspace[i]['id']] = await this.$api.tagRank(
-              configss
-            );
-          } catch (e) {
-            console.log(e);
+        for( var i =0 ;tempspace.length>i;i++){
+          // console.log(tempspace[i]['id'])
+          // console.log(tempspace[i]['uid'])
+          var configss ={did:`${tempspace[i]['id']}`,
+          uid:`${tempspace[i]['uid']}`,
+          num:"3"}
+          // console.log(configss)
+          try{
+          this.tagdata[tempspace[i]['id']]=await this.$api.tagRank(
+          configss)
+          }
+          catch(e){
+            // console.log(e)
           }
         }
-        console.log('성공');
+        // console.log('성공');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
   },
