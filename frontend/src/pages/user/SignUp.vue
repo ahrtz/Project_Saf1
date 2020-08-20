@@ -18,13 +18,21 @@
           style="margin-bottom:16px;"
           @focus="visimail='visible'"
           @blur="visimail='hidden'"
+          :readonly = "emailchecking>=1"
         ></v-text-field>
         <div>
           <div
             class="d-flex justify-center align-center flex-grow-0 s-button-blue"
             @click="checkId()"
             style="margin-bottom:16px;"
-          >이메일 체크</div>
+            v-if="emailchecking<1"
+          >중복 이메일 체크</div>
+          <div
+            class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+            @click="unfreeze()"
+            style="margin-bottom:16px;"
+            v-if="emailchecking>1"
+          >이메일 수정</div>
         </div>
         <span v-if="!checkpwd && !checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
         <span 
@@ -175,6 +183,9 @@ export default {
       visipw2: 'hidden',
       visig: 'hidden',
       visigit: 'hidden',
+      emailchecking:0,
+      emailtmp:'',
+      
       tmpresult: '',
       signupData: {
         email: '',
@@ -222,8 +233,12 @@ export default {
         let tmpres = await this.$api.isthere(tmpId);
         // console.log(tmpres)  
         alert('이미 존재하는 id 입니다')
+        // this.emailchecking=false
+
       }catch(e){
-        alert(e.response.data.errMsg)
+        alert('사용 가능한 id 입니다.')
+        this.emailchecking=2
+        this.emailtmp=this.signupData.email
       }
       }
 
@@ -236,7 +251,9 @@ export default {
         // }
 
     },
-
+    unfreeze(){
+      this.emailchecking=0
+    },
     goback() {
       this.$router.go(-1);
     },
@@ -256,7 +273,10 @@ export default {
         ) == false
       ) {
         alert('소문자 한개 숫자 한개 특수문자 한개는 필수조건입니다');
-      } else {
+      } else if(this.emailchecking<1){
+        alert('중복 이메일 체크를 먼저 진행해 주세요')
+      }
+      else {
         try {
           if (this.$refs.file != null) {
             this.signupData.file = this.$refs.file.files[0];
@@ -354,8 +374,10 @@ export default {
       }else{
         return true
       }
-    }
+    },
+    
   },
+  
 };
 </script>
 
