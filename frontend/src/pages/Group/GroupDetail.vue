@@ -6,9 +6,9 @@
           <!-- 윗부분 -->
           <div class="d-flex" style="margin-bottom: 32px;">
             <div class="d-flex" />
-            <v-dialog v-model="dialog" max-width="500px">
+            <v-dialog v-if="isLeader" v-model="dialog" max-width="500px">
               <template v-slot:activator="{on}">
-                <div class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px" v-on="on">그룹 수정</div>
+                <div  class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px" v-on="on">그룹 수정</div>
               </template>
               <v-card>
                 <v-card-title>
@@ -41,7 +41,11 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" @click="removeGroup">그룹 해체</div>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" 
+            v-if="isLeader" @click="removeGroup">그룹 해체</div>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" 
+            v-if="!isLeader" @click="deleteMe">그룹 탈퇴</div>
+            
           </div>
 
           <v-row style="width: 768px;margin:0 auto;">
@@ -302,6 +306,8 @@ export default {
       try {
         let temp = await this.$api.groupDetail(this.$route.params.gid);
         this.group_info = temp;
+        this.updateItem.name=temp.name
+        this.updateItem.intro = temp.intro
         var templist = [];
         for (var i = 0; i < this.group_info.userinfo.length; i++) {
           var member = {};
@@ -348,6 +354,14 @@ export default {
 
       await this.getMembers();
       await this.getRatingInfo();
+    },
+    deleteMe(){
+      this.$api.groupRelationDelete({
+        oid: this.$route.params.gid,
+        uid: this.uid,
+      })
+
+      this.$router.push({name:'GroupMain',uid:this.uid})
     },
     async updateGroup() {
       try {
