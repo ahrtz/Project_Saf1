@@ -359,7 +359,7 @@ export default {
       document.getElementById('header-text').value = tagName;
       this.$router.push({
         name: 'tmp',
-        params: { key: tagName, type: 'title' },
+        params: { key: tagName, type: 'tag' },
       });
     },
     grapurl() {

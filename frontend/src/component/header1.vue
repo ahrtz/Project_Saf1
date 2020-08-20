@@ -108,6 +108,7 @@ export default {
         params: { key: this.keyw, type: 'title' },
         
       });
+      this.keyw=""
       
     },
     alerts(msg) {
