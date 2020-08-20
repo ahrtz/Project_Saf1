@@ -30,7 +30,7 @@
 export default {
   name: 's-ranking',
   props: {
-    data: [],
+    data: {},
   },
 };
 </script>

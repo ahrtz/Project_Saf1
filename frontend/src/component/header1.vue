@@ -177,9 +177,8 @@ export default {
   height: 100%;
   line-height: 70px;
   padding: 0 20px;
-  color: #21262e;
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -237,8 +236,7 @@ export default {
 .header-profile {
   margin-left: 24px;
   color: #21262e;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 14px;
   cursor: pointer;
 }
 
