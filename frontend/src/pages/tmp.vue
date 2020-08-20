@@ -52,7 +52,7 @@
           <div :key="componentKey+1" v-if="res==1">
             <div
               class="d-flex flex-column flex-grow-0 search-page-card"
-              v-for="posts in tagResult"
+              v-for="(posts,index) in tagResult"
               :key="`tag-${posts.id}`"
               @click="$router.push({name:'PostDetail',params:{uid:posts.userinfo.id, pid:posts.postinfo.id}})"
             >
@@ -63,8 +63,8 @@
                   <div class="search-page-nickname">{{posts.userinfo.nickname}}</div>
                   <div class="search-page-cdate">{{posts.postinfo.cdate}}</div>
                 </div>
-                <v-icon v-if="posts.commitCnt" class="d-flex justify-end">mdi-source-commit</v-icon>
-                <span v-if="posts.commitCnt" class="search-page-commitcnt">{{posts.commitCnt}}</span>
+                <v-icon v-if="tagcommit[index].length>0" class="d-flex justify-end">mdi-source-commit</v-icon>
+                <span v-if="tagcommit[index].length>0" class="search-page-commitcnt">{{tagcommit[index].length}}</span>
               </div>
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
@@ -109,6 +109,7 @@ export default {
       searchResult: [],
       componentKey: 2,
       res: 0,
+      tagcommit:{}
     };
   },
   methods: {
@@ -142,6 +143,9 @@ export default {
     try {
       let tmpspace1 = await this.$api.tagSearch(this.t_data);
       this.tagResult = tmpspace1;
+      for(var i=0;i<tmpspace1.length;i++){
+        this.tagcommit[i]=await this.$api.getPostCommit(tmpspace1[i]['pid'])
+      }
     } catch (e) {
       // console.log('태그 검색 실패');
     }

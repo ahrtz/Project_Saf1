@@ -36,7 +36,7 @@
     <div class="diary-main-inner">
       <div class="d-flex">
         <v-text-field
-          id="header-text"
+          id="header-texts"
           class="d-flex justify-center flex-grow-0"
           placeholder="Search by Title"
           outlined
@@ -109,7 +109,7 @@
                     <div
                       style="color:white;font-weight:bold;"
                     >기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
-                    <div v-if="tagdata[blog.id].length!=0"
+                    <div v-if="tagdata[blog.id]!=null && tagdata[blog.id].length!=0"
                     style="color:white;font-weight:bold;"> 태그: 
                       <div
                        v-for="tag in tagdata[blog.id]" :key="tag.name"
@@ -188,23 +188,23 @@ export default {
         });
         this.diarys = tempspace;
         for( var i =0 ;tempspace.length>i;i++){
-          console.log(tempspace[i]['id'])
-          console.log(tempspace[i]['uid'])
+          // console.log(tempspace[i]['id'])
+          // console.log(tempspace[i]['uid'])
           var configss ={did:`${tempspace[i]['id']}`,
           uid:`${tempspace[i]['uid']}`,
           num:"3"}
-          console.log(configss)
+          // console.log(configss)
           try{
           this.tagdata[tempspace[i]['id']]=await this.$api.tagRank(
           configss)
           }
           catch(e){
-            console.log(e)
+            // console.log(e)
           }
         }
-        console.log('성공');
+        // console.log('성공');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
   },
