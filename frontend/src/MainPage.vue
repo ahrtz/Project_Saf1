@@ -128,7 +128,7 @@
 <script>
 import axios from 'axios';
 import Status from '@/component/Status.vue';
-import SRanking from '@/component/s-ranking.vue'
+import SRanking from '@/component/s-ranking.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import SContact from '@/component/s-contact.vue';
 import marked from 'marked';
@@ -164,6 +164,13 @@ export default {
     };
   },
   async created() {
+    try {
+      console.log(this.$route.path.substring(1))
+      let tmpres = await this.$api.findUserByUid(this.$route.path.substring(1));
+      console.log(tmpres)
+    } catch (e) {
+      this.$router.push({ name: 'Login' });
+    }
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
     this.tag_rank = await this.$api.tagRank({
@@ -171,6 +178,7 @@ export default {
       uid: this.$route.params.uid,
       num: 3,
     });
+    
   },
   methods: {
     compiledMarkdown: function (posttmp) {
