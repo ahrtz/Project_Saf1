@@ -166,11 +166,6 @@ export default {
   async created() {
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
-    this.tag_rank = await this.$api.tagRank({
-      did: 0,
-      uid: this.$route.params.uid,
-      num: 3,
-    });
     try {
       // console.log(this.$route.path.substring(1))
       let tmpres = await this.$api.findUserByUid(this.$route.path.substring(1));
@@ -178,6 +173,11 @@ export default {
     } catch (e) {
       this.$router.push({ name: 'Login' });
     }
+    this.tag_rank = await this.$api.tagRank({
+      did: 0,
+      uid: this.$route.params.uid,
+      num: 3,
+    });
   },
   methods: {
     compiledMarkdown: function (posttmp) {
