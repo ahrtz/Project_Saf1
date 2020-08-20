@@ -9,6 +9,7 @@
       <div class="d-flex justify-center">
         <div class="d-flex flex-column" style="width:100%;">
           <Status :uid="uid" :isProj="2" />
+          <s-ranking :data="tag_rank" />
           <div class="d-flex">
             <div class="d-flex">
               <div
@@ -127,6 +128,7 @@
 <script>
 import axios from 'axios';
 import Status from '@/component/Status.vue';
+import SRanking from '@/component/s-ranking.vue'
 import InfiniteLoading from 'vue-infinite-loading';
 import SContact from '@/component/s-contact.vue';
 import marked from 'marked';
@@ -138,6 +140,7 @@ export default {
   name: 'MainPage',
   components: {
     Status,
+    SRanking,
     InfiniteLoading,
     SContact,
   },
@@ -157,19 +160,17 @@ export default {
       uid: '',
       tag_proj: {},
       tag_blog: {},
-      tag_rank:{}
+      tag_rank: {},
     };
   },
   async created() {
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
     this.tag_rank = await this.$api.tagRank({
-      did:0,
-      uid:this.$route.params.uid,
-      num:3
-
-
-    })
+      did: 0,
+      uid: this.$route.params.uid,
+      num: 3,
+    });
   },
   methods: {
     compiledMarkdown: function (posttmp) {

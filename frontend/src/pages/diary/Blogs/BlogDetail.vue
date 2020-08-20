@@ -128,6 +128,7 @@
           :repoId="diarydata.repoId"
           :isProj="diarydata.isProj"
         />
+        <s-ranking :data="tagrank" />
 
         <div class="d-flex align-center" style="margin-bottom: 30px">
           <v-text-field
@@ -168,7 +169,7 @@
             class="d-flex flex-column blog-detail-card"
             v-for="(post,indexs) in postdata"
             :key="post.id"
-            v-if="post.title.includes(keyw)"
+            v-show="post.title.includes(keyw)"
             @click="$router.push({name:'PostDetail',params:{uid:diaryid.uid ,pid:post.id}})"
           >
             <!-- 프로필 이미지, 닉네임  -->
@@ -200,6 +201,7 @@
 
 <script>
 import Status from '@/component/Status.vue';
+import SRanking from '@/component/s-ranking.vue'
 import axios from 'axios';
 import SContact from '@/component/s-contact.vue';
 import marked from 'marked';
@@ -211,6 +213,7 @@ export default {
   name: 'BlogDetail',
   components: {
     Status,
+    SRanking,
     SContact,
   },
   data() {

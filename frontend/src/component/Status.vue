@@ -369,7 +369,7 @@ export default {
 <style>
 .status {
   width: 100%;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 }
 
 .status-container {
