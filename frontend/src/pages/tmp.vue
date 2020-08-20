@@ -137,6 +137,7 @@ export default {
     },
   },
   async created() {
+    
     if (this.$route.params.type == 'tag') {
       this.res = 1;
     }
