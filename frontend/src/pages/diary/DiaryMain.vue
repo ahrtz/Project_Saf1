@@ -90,35 +90,46 @@
               >
                 <!-- hover -->
                 <div v-if="hover" class="black div-reveal">
-                  <v-card-title style="color:white;">{{blog.title}}</v-card-title>
-                  <v-card-subtitle>
-                    <!-- <div style="color:white;font-weight:bold;" v-for="tag in blog.tags" :key="tag">
-                                {{tag}}
-                    </div>-->
-
-                    <span
-                      v-if="blog.languages != null && blog.languages.length>0"
-                      style="color:white;font-weight:bold;"
-                    >언 어 :</span>
-
-                    <span
-                      style="color:white;font-weight:bold;"
-                      v-for="language in blog.languages"
-                      :key="language.id"
-                    >{{language}}</span>
-                    <div
-                      style="color:white;font-weight:bold;"
-                    >기 간 : {{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
-                    <div v-if="tagdata[blog.id].length!=0"
-                    style="color:white;font-weight:bold;"> 태그: 
+                  <v-card-title style="color:white;font-size:24px;font-weight:bold">{{blog.title}}</v-card-title>
+                  <v-card-subtitle style="margin-top: 16px;">
+                    <div class="d-flex diary-main-content-container">
+                      <div class="d-flex flex-grow-0 diary-main-content-title">기간</div>
                       <div
-                       v-for="tag in tagdata[blog.id]" :key="tag.name"
-                        style="color:white;font-weight:bold;"
-                        
-                      > {{tag.name}}</div>
+                        class="d-flex flex-grow-0 justify-center align-center diary-main-content-text"
+                      >{{blog.sdate.substr(0,10)}} ~ {{blog.edate.substr(0,10)}}</div>
+                    </div>
+                    <div
+                      v-if="blog.languages != null && blog.languages.length>0"
+                      class="d-flex diary-main-content-container"
+                    >
+                      <div class="d-flex flex-grow-0 diary-main-content-title">언어</div>
+                      <div class="d-flex">
+                        <div
+                          class="d-flex flex-grow-0 justify-center align-center diary-main-content-text"
+                          v-for="language in blog.languages"
+                          :key="language.id"
+                        >{{language}}</div>
+                      </div>
+                    </div>
+
+                    <div
+                      v-if="tagdata[blog.id].length!=0"
+                      class="d-flex diary-main-content-container"
+                    >
+                      <div class="d-flex flex-grow-0 diary-main-content-title">태그</div>
+                      <div
+                        v-for="tag in tagdata[blog.id]"
+                        :key="tag.name"
+                        class="d-flex flex-grow-0 justify-center align-center diary-main-content-text"
+                      >{{tag.name}}</div>
                     </div>
                   </v-card-subtitle>
-                  <v-card-text style="color:white;font-weight:bold;">{{blog.intro}}</v-card-text>
+                  <v-card-text v-if="blog.intro" style="color:white;font-weight:bold;">
+                    <div class="diary-main-content-container">
+                      <div class="diary-main-content-title">설명</div>
+                      <div style="color:#fff">{{blog.intro}}</div>
+                    </div>
+                  </v-card-text>
                 </div>
 
                 <!-- unhover -->
@@ -156,7 +167,7 @@ export default {
         title: '',
       },
       tmp: '',
-      tagdata:{}
+      tagdata: {},
     };
   },
   created() {
@@ -187,19 +198,21 @@ export default {
           keyword: '',
         });
         this.diarys = tempspace;
-        for( var i =0 ;tempspace.length>i;i++){
-          console.log(tempspace[i]['id'])
-          console.log(tempspace[i]['uid'])
-          var configss ={did:`${tempspace[i]['id']}`,
-          uid:`${tempspace[i]['uid']}`,
-          num:"3"}
-          console.log(configss)
-          try{
-          this.tagdata[tempspace[i]['id']]=await this.$api.tagRank(
-          configss)
-          }
-          catch(e){
-            console.log(e)
+        for (var i = 0; tempspace.length > i; i++) {
+          console.log(tempspace[i]['id']);
+          console.log(tempspace[i]['uid']);
+          var configss = {
+            did: `${tempspace[i]['id']}`,
+            uid: `${tempspace[i]['uid']}`,
+            num: '3',
+          };
+          console.log(configss);
+          try {
+            this.tagdata[tempspace[i]['id']] = await this.$api.tagRank(
+              configss
+            );
+          } catch (e) {
+            console.log(e);
           }
         }
         console.log('성공');
@@ -269,14 +282,35 @@ export default {
   height: 100%;
 }
 .title-unhover {
-  color: black;
   font-weight: bold;
+  font-size: 24px;
   background-color: white;
   opacity: 0.5;
   width: 100%;
   height: 100%;
 }
 
+.diary-main-content-container {
+  overflow: hidden;
+  padding: 4px;
+}
+
+.diary-main-content-title {
+  width: 50px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.diary-main-content-text {
+  margin-right: 2px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  padding: 0 8px;
+  border-radius: 10px;
+  border: solid 1px #fff;
+  white-space: nowrap;
+}
 /* TODO : 반응형으로 작성(half page : 줄당 2개) 모바일 : 줄당 1개 */
 </style>
 
