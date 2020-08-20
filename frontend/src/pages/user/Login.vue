@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="d-flex justify-center">
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column" style="width: 320px">
             <div class="login-title">
               Blogit에 오신것을
               <br />환영합니다.
