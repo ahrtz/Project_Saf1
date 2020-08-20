@@ -30,7 +30,7 @@
               <v-radio-group v-model="repoChecked" column>
                 <v-radio
                   v-for="repo in repoData.slice((this.page-1)*5,(this.page)*5)"
-                  :v-if="repoData!=null"
+                  :v-if="repoData!=null && repo!=null"
                   :key="repo.url"
                   :label="repo.repoName"
                   :value="repo"

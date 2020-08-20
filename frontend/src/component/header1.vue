@@ -28,6 +28,7 @@
             <img class="header-profile-image" :src="userImg ? userImg : '/static/images/user.png'" />
           </div>
           <div>{{userNickname}}</div>
+          <v-icon size="20" style="margin-left: 4px;margin-top:2px;">expand_more</v-icon>
         </div>
         <div
           class="d-flex justify-center flex-grow-0 align-center header-btn-white"

@@ -210,7 +210,7 @@
                     v-if="item.id != group_info.lid"
                     small
                     class="mr-2"
-                    @click="deleteMember(item)"
+                    @click.stop="deleteMember(item)"
                   >mdi-close</v-icon>
                 </template>
               </v-data-table>
