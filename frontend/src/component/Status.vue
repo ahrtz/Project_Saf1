@@ -289,7 +289,7 @@ export default {
         let tmp = await this.$api.getCommitStatus(this.dreq);
         this.dres = tmp;
       } catch (e) {
-        console.log('commit status 가져오기 실패, git repo가 없는 회원입니다.');
+        // console.log('commit status 가져오기 실패, git repo가 없는 회원입니다.');
         for (let i = 0; i < 84; ++i) {
           this.dres.push(0);
         }
@@ -302,7 +302,7 @@ export default {
         let tmp = await this.$api.getPostStatus(this.req);
         this.res = tmp;
       } catch (e) {
-        console.log('post status 가져오기 실패');
+        // console.log('post status 가져오기 실패');
       }
       this.date = Object.keys(this.res);
       this.res = Object.values(this.res);
@@ -313,7 +313,7 @@ export default {
     this.req.did = this.did ? this.did : '0';
     this.dreq.repoId = this.repoId ? this.repoId : '';
     this.req.isProj = this.isProj;
-    console.log('--', this.isProj);
+    // console.log('--', this.isProj);
     if (this.isProj == 0) {
       await this.getStatus();
     } else if (this.isProj == 1) {
@@ -323,16 +323,16 @@ export default {
       await this.getDStatus();
 
       this.req.isProj = 1;
-      console.log(this.req.isProj);
+      // console.log(this.req.isProj);
       await this.getStatus();
       this.bres = this.res;
-      console.log('blog' + this.bres + this.bres.length);
+      // console.log('blog' + this.bres + this.bres.length);
 
       this.req.isProj = 2;
-      console.log(this.req.isProj);
+      // console.log(this.req.isProj);
       await this.getStatus();
       this.pres = this.res;
-      console.log('project' + this.pres + this.pres.length);
+      // console.log('project' + this.pres + this.pres.length);
 
       for (let i = 0; i < this.bres.length; ++i) {
         if (this.bres[i] && this.pres[i]) {
@@ -361,7 +361,7 @@ export default {
       }
       this.tdata.push(tmp);
     }
-    console.log(this.tdata);
+    // console.log(this.tdata);
   },
 };
 </script>

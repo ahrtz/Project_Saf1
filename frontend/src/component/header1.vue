@@ -66,7 +66,7 @@ export default {
   created() {
     this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
-    console.log(this.$route.path);
+    // console.log(this.$route.path);
     if (this.$route.path == '/') {
       this.isLoginPage = true;
     }
@@ -138,7 +138,7 @@ export default {
         this.$router.push({ name: 'MainPage' });
         location.reload();
       } catch (e) {
-        console.log('실패');
+        // console.log('실패');
       }
     },
   },

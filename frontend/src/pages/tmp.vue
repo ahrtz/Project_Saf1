@@ -120,7 +120,7 @@ export default {
       }
     },
     compiledMarkdown(posttmp) {
-      console.log("hi")
+      // console.log("hi")
       let vm = posttmp;
       if (!posttmp || !posttmp.content) {
         return '';
@@ -137,13 +137,13 @@ export default {
       let tmpspace = await this.$api.searchTemp(this.p_data);
       this.searchResult = tmpspace.data;
     } catch (e) {
-      console.log('포스트 검색 실패');
+      // console.log('포스트 검색 실패');
     }
     try {
       let tmpspace1 = await this.$api.tagSearch(this.t_data);
       this.tagResult = tmpspace1;
     } catch (e) {
-      console.log('태그 검색 실패');
+      // console.log('태그 검색 실패');
     }
   },
 };

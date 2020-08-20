@@ -263,13 +263,13 @@ export default {
     try {
       let tmpspace = await this.$api.postdetail(this.pid);
       this.post = tmpspace;
-      console.log('성공');
+      // console.log('성공');
       bus.$emit('getContent', this.post.content);
 
       try {
         let tempspace1 = await this.$api.individualDiary(this.post.did);
         if (tempspace1.gitName.length > 0) {
-          console.log(tempspace1, 'vdsa');
+          // console.log(tempspace1, 'vdsa');
           this.isProj = true;
           try {
             let listCommit = await this.$api.getCommitList({
@@ -278,33 +278,33 @@ export default {
             this.commitList = listCommit;
             bus.$emit('getCommits', this.commitList);
           } catch (e) {
-            console.log('커밋 받아오기  에러');
+            // console.log('커밋 받아오기  에러');
           }
         }
       } catch (e) {
-        console.log('깃네임 받아오기 에러');
+        // console.log('깃네임 받아오기 에러');
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     try {
       let selectedCommit = await this.$api.getPostCommit(this.pid);
       this.selectedCommits = selectedCommit;
-      console.log('선택한 커밋 불러오기');
+      // console.log('선택한 커밋 불러오기');
     } catch (e) {}
     //tags 가져오기
     try {
       let tmpspace3 = await this.$api.tagIndex(this.pid);
       this.originaltag = tmpspace3;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     try {
       let tmpspace = await this.$api.searchTemp(this.config);
       this.tmppost = tmpspace.data;
-      console.log('성공');
+      // console.log('성공');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     // console.log(this.tags);
   },
@@ -371,7 +371,7 @@ export default {
         try {
           this.post.isTemp = 0;
           await this.$api.updatePost(this.post);
-          console.log('성공11');
+          // console.log('성공11');
           try {
             if (this.selected.length != 0) {
               for (var i = 0; i < this.selected.length; i++) {
@@ -381,8 +381,8 @@ export default {
                 this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
-                console.log(this.selected[i], '부악');
-                console.log('성공', i);
+                // console.log(this.selected[i], '부악');
+                // console.log('성공', i);
               }
             }
             if (this.tags.length != 0) {
@@ -396,13 +396,13 @@ export default {
               name: 'PostDetail',
               params: { uid: this.config.uid, pid: this.pid },
             });
-            console.log(this.selected);
+            // console.log(this.selected);
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
         } catch (e) {
-          console.log(e);
-          console.log('실패');
+          // console.log(e);
+          // console.log('실패');
         }
       }
     },
@@ -423,7 +423,7 @@ export default {
                 this.selected[i].date = this.selected[i].date.substr(0, 10);
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
-                console.log('성공', i);
+                // console.log('성공', i);
               }
             }
             this.$router.push({
@@ -431,13 +431,13 @@ export default {
               params: { uid: this.config.uid, pid: this.pid },
             });
             // this.$router.go(-1);
-            console.log(this.selected);
+            // console.log(this.selected);
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
         } catch (e) {
-          console.log(e);
-          console.log('실패');
+          // console.log(e);
+          // console.log('실패');
         }
       }
     },

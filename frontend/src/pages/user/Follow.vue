@@ -127,17 +127,17 @@ export default {
         let temp = await this.$api.searchFollow(this.followertype);
         this.followers = temp.userinfo;
       } catch (e) {
-        console.log('실패');
+        // console.log('실패');
       }
     },
     async getFollowees() {
       try {
         let temp2 = await this.$api.searchFollow(this.followeetype);
         this.followees = temp2.userinfo; // 여기 에서 쓰는 this 는 data 가 될수도 있고 이 함수내의 것을 의미할수도있음 this는 쓸때 항상 주의하면서
-        console.log('followee 성공!! ' + temp2);
+        // console.log('followee 성공!! ' + temp2);
       } catch (e) {
-        console.log(e);
-        console.log('getFollowees() 실패.');
+        // console.log(e);
+        // console.log('getFollowees() 실패.');
       }
     },
   },

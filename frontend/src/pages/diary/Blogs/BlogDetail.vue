@@ -276,14 +276,14 @@ export default {
     diaryDelete() {
       if (confirm('정말 삭제 하시겠습니까?') == true) {
         try {
-          console.log('다이어리 삭제 완료');
+          // console.log('다이어리 삭제 완료');
           this.$api.deleteDiary(this.diaryid.did);
           this.$router.push({
             name: 'DiaryMain',
             params: { uid: this.diaryid.uid, test: 2 },
           });
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
       } else {
         return;
@@ -323,7 +323,7 @@ export default {
           );
           this.diarydata = tmpspace1;
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
       }
     },
@@ -344,26 +344,26 @@ export default {
         this.$route.params.did,
         this.config
       );
-      console.log(tmpspace, '123');
+      // console.log(tmpspace, '123');
       this.postdata = tmpspace;
       try {
         for (var i = 0; i < tmpspace.length; i++) {
           this.tagdata[i] = await this.$api.tagIndex(tmpspace[i].id);
         }
-        console.log('ddddd');
+        // console.log('ddddd');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
 
-      console.log('성공');
+      // console.log('성공');
     } catch (e) {
-      console.log('실패');
+      // console.log('실패');
     }
     try {
       let tmpspace1 = await this.$api.individualDiary(this.$route.params.did);
       this.diarydata = tmpspace1;
     } catch (e) {
-      console.log('fdas');
+      // console.log('fdas');
     }
   },
   computed: {

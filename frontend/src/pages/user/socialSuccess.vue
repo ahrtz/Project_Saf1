@@ -10,7 +10,7 @@ export default {
     created(){
         // window.opener.$root.$router.push({name:'DiaryMain'})
         let tmp = this.$store.state.user
-        console.log(tmp)
+        // console.log(tmp)
         window.opener.location.href = '/'+tmp.id;
         self.close();
     }

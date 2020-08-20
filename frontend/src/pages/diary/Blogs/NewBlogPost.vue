@@ -226,7 +226,7 @@ export default {
       let diaryid = this.did;
       let tempspace = await this.$api.individualDiary(diaryid);
       this.diarys = tempspace;
-      console.log('아이디 받음');
+      // console.log('아이디 받음');
       if (tempspace.isProj) {
         try {
           let repoId = this.diarys.repoId;
@@ -236,20 +236,20 @@ export default {
           // this.commitList=testing
 
           this.commitList = listCommit;
-          console.log('커밋 받음');
+          // console.log('커밋 받음');
         } catch (e) {
-          console.log('커밋쪽 에러');
+          // console.log('커밋쪽 에러');
         }
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     try {
       let tmpspace = await this.$api.searchTemp(this.config);
       this.tmppost = tmpspace.data;
-      console.log('성공');
+      // console.log('성공');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   },
   methods: {
@@ -295,7 +295,7 @@ export default {
       } else {
         try {
           let post = await this.$api.savePost(this.post);
-          console.log(post.data, 'vdas');
+          // console.log(post.data, 'vdas');
           try {
             if (this.selected.length != 0) {
               for (var i = 0; i < this.selected.length; i++) {
@@ -305,7 +305,7 @@ export default {
                 this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
-                console.log('성공', i);
+                // console.log('성공', i);
               }
             }
             // 여기선 태그를 저장해줘야댐
@@ -321,13 +321,13 @@ export default {
               name: 'BlogDetail',
               params: { uid: this.config.uid, did: this.did },
             });
-            console.log(this.selected);
+            // console.log(this.selected);
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
         } catch (e) {
-          console.log(e);
-          console.log('실패');
+          // console.log(e);
+          // console.log('실패');
         }
       }
     },
@@ -339,7 +339,7 @@ export default {
 
         try {
           let post = await this.$api.savePost(this.post);
-          console.log(post.data, 'vdas');
+          // console.log(post.data, 'vdas');
           try {
             if (this.selected.length != 0) {
               for (var i = 0; i < this.selected.length; i++) {
@@ -349,7 +349,7 @@ export default {
                 this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
-                console.log('성공', i);
+                // console.log('성공', i);
               }
             }
             if (this.tags.length != 0) {
@@ -363,13 +363,13 @@ export default {
               name: 'BlogDetail',
               params: { uid: this.config.uid, did: this.did },
             });
-            console.log(this.selected);
+            // console.log(this.selected);
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
         } catch (e) {
-          console.log(e);
-          console.log('실패');
+          // console.log(e);
+          // console.log('실패');
         }
       }
     },

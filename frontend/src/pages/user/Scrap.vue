@@ -61,17 +61,17 @@ export default {
     async scrapDelete(scrapid) {
       try {
         await this.$api.deleteScrap(scrapid);
-        console.log('삭제 성공');
+        // console.log('삭제 성공');
 
         try {
           let tmpspace = await this.$api.getScrapInfo(this.uid);
           this.scrapData = tmpspace;
-          console.log(tmpspace);
+          // console.log(tmpspace);
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
   },
