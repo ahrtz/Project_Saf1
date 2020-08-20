@@ -49,6 +49,7 @@ export default {
 * {
   font-family: NoTo Sans KR,sans-serif;
   color: #21262e;
+  letter-spacing: -0.8px;
 }
 
 .router-view {
