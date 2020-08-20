@@ -26,10 +26,14 @@
             style="margin-bottom:16px;"
           >이메일 체크</div>
         </div>
-        <v-icon v-if="checkpwd" class='d-flex justify-end' color="green" :style="{visibility:visipw}">mdi-check-bold</v-icon>
         <span v-if="!checkpwd && !checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
-        <span v-if="!checkpwd && checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 내에서 형식을 맞춰 주세요</span>
-        <span v-if="checkpwd" class="login-hint" :style="{visibility:visipw}">사용가능한 비밀번호 입니다</span>
+        <span 
+        v-if="!checkpwd && checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 내에서 형식을 맞춰 주세요(영문 대 소문자, 숫자, 특수문자)</span>
+        
+        <div>
+          <span v-if="checkpwd" class="login-complete" :style="{visibility:visipw}">사용가능한 비밀번호 입니다</span>
+          <v-icon v-if="checkpwd" class=' justify-end' color="green" :style="{visibility:visipw}">mdi-check-bold</v-icon>
+        </div>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -430,5 +434,9 @@ export default {
 
 .signup-input {
   margin-bottom: 8px;
+}
+
+.login-complete{
+  display: inline-block;
 }
 </style>
