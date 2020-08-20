@@ -39,7 +39,10 @@
               @keypress.enter="login()"
             ></v-text-field>
             <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
-            <div class="d-flex flex-grow-0 justify-center align-center login-btn" @click="login()">로그인</div>
+            <div
+              class="d-flex flex-grow-0 justify-center align-center login-btn"
+              @click="login()"
+            >로그인</div>
             <div
               class="d-flex flex-grow-0 justify-center align-center login-signup-btn"
               @click="$router.push({name:'SignUp'})"
@@ -68,7 +71,7 @@ export default {
     return {
       loginData: {
         email: null,
-        pwd: "",
+        pwd: '',
       },
       dummy: null,
       visi: 'hidden',

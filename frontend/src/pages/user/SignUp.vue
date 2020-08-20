@@ -8,189 +8,189 @@
           </div>
         </div>
         <div class="d-flex justify-center">
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column" style="width: 350px">
             <div class="signup-title">회원가입</div>
             <div class="signup-subtitle">email과 Git 아이디로 Blogit을 시작해보세요.</div>
-            <div class="d-flex flex-column" style="width: 350px;">
-              <span
-                v-if="!checkmail"
-                class="signup-hint"
-                :style="{visibility:visimail}"
-              >이메일 형식에 맞춰주세요</span>
-              <span
-                v-if="checkmail"
-                class="signup-hint"
-                :style="{visibility:visimail}"
-              >중복된 이메일이 있는지 체크해주세요</span>
-              <div class="d-flex">
-                <v-text-field
-                  class="d-flex justify-center signup-input"
-                  placeholder="이메일"
-                  outlined
-                  dense
-                  hide-details
-                  v-model="signupData.email"
-                  required
-                  type="email"
-                  style="margin-bottom:16px;"
-                  @focus="visimail='visible'"
-                  @blur="visimail='hidden'"
-                ></v-text-field>
-                <div>
-                  <div
-                    class="d-flex justify-center align-center flex-grow-0 s-button-blue"
-                    @click="checkId()"
-                    style="margin-bottom:16px;font-size:12px;margin-left: 4px;padding:12px;"
-                  >이메일 체크</div>
-                </div>
-              </div>
-              <span
-                v-if="!checkpwd && !checkpwdlength"
-                class="signup-hint"
-                :style="{visibility:visipw}"
-              >*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
-              <span
-                v-if="!checkpwd && checkpwdlength"
-                class="signup-hint"
-                :style="{visibility:visipw}"
-              >*8~16자 내에서 형식을 맞춰 주세요(영문 대 소문자, 숫자, 특수문자)</span>
-
+            <span v-if="!checkmail" class="signup-hint" :style="{visibility:visimail}">이메일 형식에 맞춰주세요</span>
+            <span
+              v-if="checkmail"
+              class="signup-hint"
+              :style="{visibility:visimail}"
+            >중복된 이메일이 있는지 체크해주세요</span>
+            <div class="d-flex">
+              <v-text-field
+                class="d-flex justify-center signup-input"
+                placeholder="이메일"
+                outlined
+                dense
+                hide-details
+                v-model="signupData.email"
+                required
+                type="email"
+                style="margin-bottom:16px;"
+                @focus="visimail='visible'"
+                @blur="visimail='hidden'"
+                :readonly="emailchecking>=1"
+              ></v-text-field>
               <div>
-                <span
-                  v-if="checkpwd"
-                  class="signup-complete"
-                  :style="{visibility:visipw}"
-                >사용가능한 비밀번호 입니다</span>
-                <v-icon
-                  v-if="checkpwd"
-                  class="justify-end"
-                  color="green"
-                  :style="{visibility:visipw}"
-                >mdi-check-bold</v-icon>
-              </div>
-              <v-text-field
-                class="d-flex justify-center signup-input"
-                placeholder="비밀번호"
-                outlined
-                dense
-                hide-details
-                v-model="signupData.pwd"
-                required
-                type="password"
-                style="margin-bottom:16px;"
-                @focus="visipw='visible'"
-                @blur="visipw='hidden'"
-              ></v-text-field>
-              <span
-                v-if="!samepwd"
-                class="signup-hint"
-                :style="{visibility:visipw2}"
-              >동일한 비밀번호를 입력해주세요</span>
-              <span v-if="samepwd " class="signup-hint" :style="{visibility:visipw2}">동일한 비밀번호 입니다.</span>
-              <v-text-field
-                class="d-flex justify-center signup-input"
-                placeholder="비밀번호 확인"
-                outlined
-                dense
-                hide-details
-                v-model="signupData.pwdconfirm"
-                required
-                type="password"
-                style="margin-bottom:16px;"
-                @focus="visipw2='visible'"
-                @blur="visipw2='hidden'"
-              ></v-text-field>
-
-              <v-text-field
-                class="d-flex justify-center signup-input"
-                placeholder="닉네임"
-                outlined
-                dense
-                hide-details
-                v-model="signupData.nickname"
-                required
-                style="margin-bottom:16px;"
-              ></v-text-field>
-
-              <div class="input-wrap">
-                <img
-                  :src="uploadImageFile ? uploadImageFile : '/static/images/user.png'"
-                  style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"
-                />
-                <input
-                  @change="onFileSelected($event)"
-                  ref="file"
-                  type="file"
-                  name="file"
-                  accept="image/*"
-                />
-              </div>
-
-              <span
-                class="signup-hint"
-                :style="{visibility:visigit}"
-              >아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
-              <v-text-field
-                class="d-flex justify-center signup-input"
-                placeholder="Git 아이디"
-                outlined
-                dense
-                hide-details
-                v-model="signupData.gitId"
-                required
-                style="margin-bottom:16px;"
-                @focus="visigit='visible'"
-                @blur="visigit='hidden'"
-              ></v-text-field>
-              <span class="signup-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
-              <v-dialog v-model="dialog" max-width="800px">
-                <template v-slot:activator="{on}">
-                  <i
-                    v-on="on"
-                    class="far fa-question-circle"
-                    style="cursor:pointer;float:right;margin-bottom:8px;font-size: 14px;font-weight: 600"
-                  >도움말</i>
-                </template>
-                <template>
-                  <!-- prev-icon="mdi-arrow-left"
-                  next-icon="mdi-arrow-right"-->
-                  <v-carousel :show-arrows="false">
-                    <v-carousel-item v-for="(image,i) in images" :key="i" :src="image"></v-carousel-item>
-                  </v-carousel>
-                </template>
-              </v-dialog>
-              <div class="d-flex">
-                <v-text-field
-                  class="d-flex justify-center signup-input"
-                  placeholder="Git token"
-                  outlined
-                  dense
-                  hide-details
-                  v-model="signupData.gitToken"
-                  required
-                  style="margin-bottom:16px;"
-                  @focus="visig='visible'"
-                  @blur="visig='hidden'"
-                ></v-text-field>
                 <div
                   class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                  @click="checkId()"
                   style="margin-bottom:16px;font-size:12px;margin-left: 4px;padding:12px;"
-                  @click="certifyGit()"
-                >토큰 검증</div>
+                  v-if="emailchecking<1"
+                >중복 체크</div>
+                <div
+                  class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                  @click="unfreeze()"
+                  style="margin-bottom:16px;font-size:12px;margin-left: 4px;padding:12px;"
+                  v-if="emailchecking>1"
+                >이메일 수정</div>
               </div>
-              <div></div>
+            </div>
+
+            <span
+              v-if="!checkpwd && !checkpwdlength"
+              class="signup-hint"
+              :style="{visibility:visipw}"
+            >*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+            <span
+              v-if="!checkpwd && checkpwdlength"
+              class="signup-hint"
+              :style="{visibility:visipw}"
+            >*8~16자 내에서 형식을 맞춰 주세요(영문 대 소문자, 숫자, 특수문자)</span>
+
+            <div>
+              <span
+                v-if="checkpwd"
+                class="signup-complete"
+                :style="{visibility:visipw}"
+              >사용가능한 비밀번호 입니다</span>
+              <v-icon
+                v-if="checkpwd"
+                class="justify-end"
+                color="green"
+                :style="{visibility:visipw}"
+              >mdi-check-bold</v-icon>
+            </div>
+            <v-text-field
+              class="d-flex justify-center signup-input"
+              placeholder="비밀번호"
+              outlined
+              dense
+              hide-details
+              v-model="signupData.pwd"
+              required
+              type="password"
+              style="margin-bottom:16px;"
+              @focus="visipw='visible'"
+              @blur="visipw='hidden'"
+            ></v-text-field>
+            <span v-if="!samepwd" class="signup-hint" :style="{visibility:visipw2}">동일한 비밀번호를 입력해주세요</span>
+            <span v-if="samepwd " class="signup-hint" :style="{visibility:visipw2}">동일한 비밀번호 입니다.</span>
+            <v-text-field
+              class="d-flex justify-center signup-input"
+              placeholder="비밀번호 확인"
+              outlined
+              dense
+              hide-details
+              v-model="signupData.pwdconfirm"
+              required
+              type="password"
+              style="margin-bottom:16px;"
+              @focus="visipw2='visible'"
+              @blur="visipw2='hidden'"
+            ></v-text-field>
+
+            <v-text-field
+              class="d-flex justify-center signup-input"
+              placeholder="닉네임"
+              outlined
+              dense
+              hide-details
+              v-model="signupData.nickname"
+              required
+              style="margin-bottom:16px;"
+            ></v-text-field>
+
+            <div class="input-wrap">
+              <img
+                :src="uploadImageFile ? uploadImageFile : '/static/images/user.png'"
+                style="width: 100px;height: 100px;border-radius: 50%;border: 1px solid #ccc;"
+              />
+              <input
+                @change="onFileSelected($event)"
+                ref="file"
+                type="file"
+                name="file"
+                accept="image/*"
+              />
+            </div>
+
+            <span
+              class="signup-hint"
+              :style="{visibility:visigit}"
+            >아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
+            <v-text-field
+              class="d-flex justify-center signup-input"
+              placeholder="Git 아이디"
+              outlined
+              dense
+              hide-details
+              v-model="signupData.gitId"
+              required
+              style="margin-bottom:16px;"
+              @focus="visigit='visible'"
+              @blur="visigit='hidden'"
+            ></v-text-field>
+            <span class="signup-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
+            <v-dialog v-model="dialog" max-width="800px">
+              <template v-slot:activator="{on}">
+                <i
+                  v-on="on"
+                  class="far fa-question-circle"
+                  style="cursor:pointer;float:right;margin-bottom:8px;font-size: 14px;font-weight: 600"
+                >도움말</i>
+              </template>
+              <template>
+                <!-- prev-icon="mdi-arrow-left"
+                next-icon="mdi-arrow-right"-->
+                <v-carousel :show-arrows="false">
+                  <v-carousel-item v-for="(image,i) in images" :key="i" :src="image"></v-carousel-item>
+                </v-carousel>
+              </template>
+            </v-dialog>
+            <div class="d-flex">
               <v-text-field
                 class="d-flex justify-center signup-input"
-                placeholder="내 Blog url"
+                placeholder="Git token"
                 outlined
                 dense
                 hide-details
-                v-model="signupData.gitUrl"
+                v-model="signupData.gitToken"
                 required
                 style="margin-bottom:16px;"
+                @focus="visig='visible'"
+                @blur="visig='hidden'"
               ></v-text-field>
-              <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
+              <div
+                class="d-flex justify-center align-center flex-grow-0 s-button-blue"
+                style="margin-bottom:16px;font-size:12px;margin-left: 4px;padding:12px;"
+                @click="certifyGit()"
+              >토큰 검증</div>
             </div>
+            <div></div>
+            <v-text-field
+              class="d-flex justify-center signup-input"
+              placeholder="내 Blog url"
+              outlined
+              dense
+              hide-details
+              v-model="signupData.gitUrl"
+              required
+              style="margin-bottom:16px;"
+            ></v-text-field>
+            <v-textarea solo label="자기소개" v-model="signupData.intro"></v-textarea>
+
             <div class="d-flex" style="margin-bottom:80px;">
               <div class="d-flex justify-center align-center signup-cancel-btn" @click="goback">취소</div>
               <div class="d-flex justify-center align-center signup-btn" @click="signup">완료</div>
@@ -215,6 +215,9 @@ export default {
       visipw2: 'hidden',
       visig: 'hidden',
       visigit: 'hidden',
+      emailchecking: 0,
+      emailtmp: '',
+
       tmpresult: '',
       signupData: {
         email: '',
@@ -260,14 +263,17 @@ export default {
           tmpId
         ) == false
       ) {
-        alert('이메일 형식을 맞춰 주십시오');
+        alert('이메일 형식을 맞춰주세요.');
       } else {
         try {
           let tmpres = await this.$api.isthere(tmpId);
           // console.log(tmpres)
-          alert('이미 존재하는 id 입니다');
+          alert('이미 존재하는 아이디입니다');
+          // this.emailchecking=false
         } catch (e) {
-          alert(e.response.data.errMsg);
+          alert('사용 가능한 아이디입니다.');
+          this.emailchecking = 2;
+          this.emailtmp = this.signupData.email;
         }
       }
 
@@ -277,7 +283,9 @@ export default {
       //   alert('가입 불가능한 아이디입니다. 다른 아이디를 사용해주세요.');
       // }
     },
-
+    unfreeze() {
+      this.emailchecking = 0;
+    },
     goback() {
       this.$router.go(-1);
     },
@@ -297,6 +305,8 @@ export default {
         ) == false
       ) {
         alert('소문자 한개 숫자 한개 특수문자 한개는 필수조건입니다');
+      } else if (this.emailchecking < 1) {
+        alert('중복 이메일 체크를 먼저 진행해 주세요');
       } else {
         try {
           if (this.$refs.file != null) {
