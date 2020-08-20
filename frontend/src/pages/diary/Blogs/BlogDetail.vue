@@ -122,6 +122,7 @@
         </div>
 
         <Status
+        style="margin-top:8px;"
           v-if="!!diarydata.id"
           :uid="diaryid.uid"
           :did="diaryid.did"

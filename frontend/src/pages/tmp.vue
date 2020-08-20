@@ -63,16 +63,19 @@
                   <div class="search-page-nickname">{{posts.userinfo.nickname}}</div>
                   <div class="search-page-cdate">{{posts.postinfo.cdate}}</div>
                 </div>
-                <v-icon v-if="tagcommit[index].length>0" class="d-flex justify-end">mdi-source-commit</v-icon>
-                <span v-if="tagcommit[index].length>0" class="search-page-commitcnt">{{tagcommit[index].length}}</span>
+                <v-icon
+                  v-if="tagcommit[index].length>0"
+                  class="d-flex justify-end"
+                >mdi-source-commit</v-icon>
+                <span
+                  v-if="tagcommit[index].length>0"
+                  class="search-page-commitcnt"
+                >{{tagcommit[index].length}}</span>
               </div>
               <!-- 포스트 제목 / 컨텐츠 -->
               <div class="search-card-article" style="cursor:pointer">
                 <div class="search-page-content-title">{{posts.postinfo.title}}</div>
-                <div
-                  class="search-page-content-text"
-                  v-html="compiledMarkdown(posts.postinfo)"
-                ></div>
+                <div class="search-page-content-text" v-html="compiledMarkdown(posts.postinfo)"></div>
               </div>
             </div>
           </div>
@@ -109,7 +112,7 @@ export default {
       searchResult: [],
       componentKey: 2,
       res: 0,
-      tagcommit:{}
+      tagcommit: {},
     };
   },
   methods: {
@@ -134,6 +137,10 @@ export default {
     },
   },
   async created() {
+    if (this.$route.params.type == 'tag') {
+      this.res = 1;
+    }
+
     try {
       let tmpspace = await this.$api.searchTemp(this.p_data);
       this.searchResult = tmpspace.data;
@@ -143,12 +150,14 @@ export default {
     try {
       let tmpspace1 = await this.$api.tagSearch(this.t_data);
       this.tagResult = tmpspace1;
-      for(var i=0;i<tmpspace1.length;i++){
-        this.tagcommit[i]=await this.$api.getPostCommit(tmpspace1[i]['pid'])
+      for (var i = 0; i < tmpspace1.length; i++) {
+        this.tagcommit[i] = await this.$api.getPostCommit(tmpspace1[i]['pid']);
       }
     } catch (e) {
       // console.log('태그 검색 실패');
     }
+
+    this.$forceUpdate();
   },
 };
 </script>

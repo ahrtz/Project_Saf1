@@ -10,6 +10,7 @@
         v-for="(rtag, rti) in data"
         :key="`rank_tag-${rti}`"
         class="d-flex align-center s-ranking-item"
+        @click="onTagClick(rtag.name)"
       >
         <div
           class="d-flex algin-center justify-center flex-shrink-0 flex-grow-0 s-ranking-number"
@@ -32,12 +33,22 @@ export default {
   props: {
     data: {},
   },
+  methods: {
+    onTagClick(key) {
+      this.$router.push({
+        name: 'tmp',
+        params: { key: key, type: 'tag' },
+      });
+    },
+  },
 };
 </script>
 
 <style>
 .s-ranking-container {
-  padding-bottom: 40px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  border-bottom: solid 1px #ddd;
 }
 
 .s-ranking-title {
@@ -48,7 +59,15 @@ export default {
 }
 
 .s-ranking-item {
-  padding: 16px;
+  margin: 8px;
+  margin-top: 16px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.s-ranking-item:hover {
+  background: #deebff;
+  border-radius: 6px;
 }
 
 .s-ranking-number {
