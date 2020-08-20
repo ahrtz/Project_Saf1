@@ -57,6 +57,6 @@ export default {
 }
 
 input, .v-text-field__slot, label {
-  font-size: 12px !important;
+  font-size: 14px !important;
 }
 </style>

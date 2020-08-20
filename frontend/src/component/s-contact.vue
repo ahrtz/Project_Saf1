@@ -15,14 +15,14 @@
     >Unfollow</div>
     <div class="d-flex flex-column s-contact-contents">
       <div class="d-flex mr-auto">
-        <v-icon class="d-flex flex-grow-0" color="#21262e" size="19">person_add</v-icon>
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="22">person_add</v-icon>
         <p
           class="d-flex"
           target="_top"
           style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px;margin-right:8px;"
           
         >{{printfollowerCnt}}</p>
-        <v-icon class="d-flex flex-grow-0" color="#21262e" size="19">favorite</v-icon>
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">favorite</v-icon>
         <p
           class="d-flex"
           target="_top"
@@ -180,7 +180,7 @@ export default {
 .s-contact-contents {
   width: 100%;
   margin-top: 32px;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
   color: #21262e;
 }

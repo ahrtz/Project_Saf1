@@ -261,7 +261,7 @@ export default {
 }
 
 .diary-main-toggle-text {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
 }
 

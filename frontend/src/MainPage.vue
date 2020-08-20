@@ -299,7 +299,7 @@ export default {
 
 .main-page-btn {
   margin-left: 4px;
-  font-size: 12px;
+  font-size: 14px;
   background: #0051cb;
   font-weight: normal;
   color: #fff;

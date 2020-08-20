@@ -378,7 +378,7 @@ export default {
 
 .status-title {
   padding-top: 8px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 8px;
   color: rgb(0, 0, 0, 0.54);
