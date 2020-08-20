@@ -14,6 +14,9 @@ export default {
     },
     async isthere(id){
         return (await axios.get(`${baseURL}/users/${id}`)).data
+    },
+    async findUserByUid(id){
+        return (await axios.get(`${baseURL}/users?id=${id}`)).data
     }
     ,
     async login(loginData) {
