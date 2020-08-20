@@ -19,7 +19,7 @@
                     <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1">
                       <img
                         v-if="d >= 1"
-                        style="margin:7px 0 0 7px;height: 24px;opacity:0.7;cursor: pointer;"
+                        style="margin:6px 0 0 6px;height: 24px;opacity:1;cursor: pointer;"
                         src="/static/images/flower.png"
                       />
                     </div>
@@ -102,7 +102,7 @@
               >
                 <img
                   v-if="d == 0"
-                  style="margin:7px 0 0 7px;height: 24px;opacity:0.7;cursor: pointer;"
+                  style="margin:7px 0 0 7px;height: 24px;opacity:1;cursor: pointer;"
                   src="/static/images/flower.png"
                 />
                 <img
@@ -112,7 +112,7 @@
                 />
                 <img
                   v-if="d == 2"
-                  style="height: 28px;opacity:0.6;margin-top:6px;margin-left:6px;cursor: pointer;"
+                  style="height: 28px;opacity:1;margin-top:6px;margin-left:6px;cursor: pointer;"
                   src="/static/images/tree.png"
                 />
               </div>
@@ -416,19 +416,19 @@ export default {
 }
 
 .status-level1 {
-  background-color: rgba(155, 233, 168, 0.8);
+  background-color: rgba(155, 233, 168, 0.6);
 }
 
 .status-level2 {
-  background-color: rgba(64, 196, 99, 0.8);
+  background-color: rgba(64, 196, 99, 0.6);
 }
 
 .status-level3 {
-  background-color: rgba(48, 161, 78, 0.8);
+  background-color: rgba(48, 161, 78, 0.6);
 }
 
 .status-level4 {
-  background-color: rgba(33, 110, 57, 0.8);
+  background-color: rgba(33, 110, 57, 0.6);
 }
 
 .status-tooltip-title {
