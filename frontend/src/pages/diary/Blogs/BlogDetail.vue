@@ -277,11 +277,11 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    diaryDelete() {
+    async diaryDelete() {
       if (confirm('정말 삭제 하시겠습니까?') == true) {
         try {
           // console.log('다이어리 삭제 완료');
-          this.$api.deleteDiary(this.diaryid.did);
+          await this.$api.deleteDiary(this.diaryid.did);
           this.$router.push({
             name: 'DiaryMain',
             params: { uid: this.diaryid.uid, test: 2 },
