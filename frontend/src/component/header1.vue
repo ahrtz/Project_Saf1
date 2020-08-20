@@ -67,7 +67,7 @@ export default {
     this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
     // console.log(this.$route.path);
-    if (this.$route.path == '/') {
+    if (this.$route.path == '/' || this.$route.path == '/signup') {
       this.isLoginPage = true;
     }
     // this.target = temp

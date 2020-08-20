@@ -19,7 +19,7 @@
                     <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1">
                       <img
                         v-if="d >= 1"
-                        style="margin:6px 0 0 6px;height: 24px;opacity:0.7;cursor: pointer;"
+                        style="margin:7px 0 0 7px;height: 24px;opacity:0.7;cursor: pointer;"
                         src="/static/images/flower.png"
                       />
                     </div>
@@ -46,11 +46,11 @@
               <div
                 v-for="(d, di) in res.slice((ri+ti*4) * 7, (ri+ti*4) * 7 + 7)"
                 :key="`di1-${di}`"
-                :style="`position:absolute;left:${di*38}px`"
+                :style="`position:absolute;left:${di*38}px;z-index:10`"
               >
                 <img
                   v-if="d >= 1"
-                  style="height: 36px;cursor: pointer;"
+                  style="height: 36px;margin-top:2px;margin-left:-2px;cursor: pointer;"
                   src="/static/images/sprout.png"
                 />
               </div>
@@ -102,12 +102,12 @@
               >
                 <img
                   v-if="d == 0"
-                  style="height: 24px;opacity:0.7;cursor: pointer;"
+                  style="margin:7px 0 0 7px;height: 24px;opacity:0.7;cursor: pointer;"
                   src="/static/images/flower.png"
                 />
                 <img
                   v-if="d == 1"
-                  style="height: 36px;cursor: pointer;"
+                  style="height: 36px;margin-top:2px;margin-left:-2px;cursor: pointer;"
                   src="/static/images/sprout.png"
                 />
                 <img
@@ -323,13 +323,13 @@ export default {
     } else if (this.isProj == 2) {
       await this.getDStatus();
 
-      this.req.isProj = 1;
+      this.req.isProj = 0;
       // console.log(this.req.isProj);
       await this.getStatus();
       this.bres = this.res;
       // console.log('blog' + this.bres + this.bres.length);
 
-      this.req.isProj = 2;
+      this.req.isProj = 1;
       // console.log(this.req.isProj);
       await this.getStatus();
       this.pres = this.res;

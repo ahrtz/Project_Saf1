@@ -60,7 +60,9 @@
         </div>
       </div>
     </div>
-    <div class="d-flex login-right"></div>
+    <div class="d-flex login-right">
+      <div class="login-right-img"></div>
+    </div>
   </div>
 </template>
 
@@ -130,6 +132,13 @@ export default {
 .login-right {
   background: #0051cb;
   width: 300px;
+}
+
+.login-right-img {
+  width: 100%;
+  height: 100%;
+  background: url('/static/images/mac_main.png') no-repeat;
+  background-position: center 235px;
 }
 
 .login-title {
