@@ -248,7 +248,7 @@ export default {
       this.tmp = tmpspace;
       this.printLikeCnt = this.tmp.cntLike;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     //좋아요 데이터 가져오기
     try {
@@ -264,15 +264,15 @@ export default {
         this.likeData.likechecked = false;
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
     //commit data가져오기
     try {
       let tmpspace2 = await this.$api.getPostCommit(this.id.pid);
       this.commitList = tmpspace2;
-      console.log('커밋 부르기 성공');
+      // console.log('커밋 부르기 성공');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
 
     //tag 데이터 가져오기
@@ -280,10 +280,10 @@ export default {
       let tmpspace3 = await this.$api.tagIndex(this.id.pid);
       this.tags = tmpspace3;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
 
-    console.log('***' + this.commitList[0]);
+    // console.log('***' + this.commitList[0]);
   },
   methods: {
     compiledMarkdown () {
@@ -320,10 +320,10 @@ export default {
       try {
         let temp = await this.$api.getCommentlist(this.id.pid);
         this.comments = temp;
-        console.log(temp, 'vdasdfsafbvfad');
+        // console.log(temp, 'vdasdfsafbvfad');
         // console.log('Comment 목록 가져오기 성공')
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     goback() {
@@ -335,9 +335,9 @@ export default {
           this.likeData.likechecked = false;
           this.$api.likeDislike({ pid: this.id.pid, status: 0 });
           this.printLikeCnt -= 1;
-          console.log('좋아요 취소');
+          // console.log('좋아요 취소');
         } else {
-          console.log('좋아요');
+          // console.log('좋아요');
           this.likeData.likechecked = true;
           this.$api.likeDislike({ pid: this.id.pid, status: 1 });
           this.printLikeCnt += 1;
@@ -348,7 +348,7 @@ export default {
           this.tmp = tmpspace;
           // console.log('성공')
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
         this.$forceUpdate();
       } else {
@@ -425,7 +425,7 @@ export default {
             params: { did: this.tmp.did },
           });
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
       } else {
         return;

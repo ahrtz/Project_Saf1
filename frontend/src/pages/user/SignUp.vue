@@ -4,6 +4,8 @@
       <div class="signup-title">회원가입</div>
       <div class="signup-subtitle">email과 Git 아이디로 Blogit을 시작해보세요.</div>
       <div class="d-flex flex-column">
+        <span v-if="!checkmail" class="login-hint" :style="{visibility:visimail}">이메일 형식에 맞춰주세요</span>
+        <span v-if="checkmail" class="login-hint" :style="{visibility:visimail}">중복된 이메일이 있는지 체크해주세요</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="이메일"
@@ -14,6 +16,8 @@
           required
           type="email"
           style="margin-bottom:16px;"
+          @focus="visimail='visible'"
+          @blur="visimail='hidden'"
         ></v-text-field>
         <div>
           <div
@@ -22,7 +26,10 @@
             style="margin-bottom:16px;"
           >이메일 체크</div>
         </div>
-        <span class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+        <v-icon v-if="checkpwd" class='d-flex justify-end' color="green" :style="{visibility:visipw}">mdi-check-bold</v-icon>
+        <span v-if="!checkpwd && !checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
+        <span v-if="!checkpwd && checkpwdlength" class="login-hint" :style="{visibility:visipw}">*8~16자 내에서 형식을 맞춰 주세요</span>
+        <span v-if="checkpwd" class="login-hint" :style="{visibility:visipw}">사용가능한 비밀번호 입니다</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호"
@@ -36,7 +43,8 @@
           @focus="visipw='visible'"
           @blur="visipw='hidden'"
         ></v-text-field>
-        <span class="login-hint" :style="{visibility:visipw2}">다시한번 입력해주세요</span>
+        <span v-if="!samepwd" class="login-hint" :style="{visibility:visipw2}">동일한 비밀번호를 입력해주세요</span>
+        <span v-if="samepwd " class="login-hint" :style="{visibility:visipw2}">동일한 비밀번호 입니다.</span>
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="비밀번호 확인"
@@ -50,6 +58,10 @@
           @focus="visipw2='visible'"
           @blur="visipw2='hidden'"
         ></v-text-field>
+
+
+
+
         <v-text-field
           class="d-flex justify-center signup-input"
           placeholder="닉네임"
@@ -76,7 +88,7 @@
         </div>
 
         <span
-          class="login-hint"
+          class="git-hint"
           :style="{visibility:visigit}"
         >아이디는 Github에 로그인이 되었을때 프로필상에 나오는 이름을 의미합니다.</span>
         <v-text-field
@@ -91,7 +103,7 @@
           @focus="visigit='visible'"
           @blur="visigit='hidden'"
         ></v-text-field>
-        <span class="login-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
+        <span class="git-hint" :style="{visibility:visig}">아이디와 토큰 모두 일치해야 인증이 완료 됩니다</span>
         <div>
           <v-text-field
             class="d-flex justify-center signup-input"
@@ -154,6 +166,7 @@ export default {
   name: 'SignUp',
   data() {
     return {
+      visimail:'hidden',
       visipw: 'hidden',
       visipw2: 'hidden',
       visig: 'hidden',
@@ -203,7 +216,7 @@ export default {
       }else{
         try {
         let tmpres = await this.$api.isthere(tmpId);
-        console.log(tmpres)  
+        // console.log(tmpres)  
         alert('이미 존재하는 id 입니다')
       }catch(e){
         alert(e.response.data.errMsg)
@@ -226,7 +239,7 @@ export default {
     async signup() {
       if (this.signupData.pwd != this.signupData.pwdconfirm) {
         this.signupData.pwdconfirm = '';
-        console.log('dnajk');
+        // console.log('dnajk');
         alert('비밀번호가 다릅니다.');
       } else if (
         this.signupData.pwd.length < 8 ||
@@ -257,14 +270,14 @@ export default {
           formData.append('intro', this.signupData.intro);
           formData.append('isSocial', this.signupData.isSocial);
           formData.append('isCertified', this.signupData.isCertified);
-          console.log(formData);
+          // console.log(formData);
 
           await this.$api.signupp(formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          console.log('성공');
+          // console.log('성공');
           this.$router.push({ name: 'Login' });
         } catch (e) {
           alert(e.response.data.errMsg);
@@ -310,14 +323,34 @@ export default {
           alert('인증되었습니다');
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
   },
   computed: {
     checkpwd() {
-      return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test();
+      return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(this.signupData.pwd);
     },
+    checkmail(){
+      return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(this.signupData.email)
+    },
+    samepwd(){
+      return this.signupData.pwd==this.signupData.pwdconfirm
+    },
+    checkpwdlength(){
+      if (this.signupData.pwd.length==0){
+        return false
+      }else{
+        return true
+      }
+    },
+    checkpwd2length(){
+      if (this.signupData.pwdconfirm.length==0){
+        return false
+      }else{
+        return true
+      }
+    }
   },
 };
 </script>

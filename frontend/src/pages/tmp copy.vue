@@ -76,19 +76,19 @@ export default {
         }
     },
     async created(){
-        console.log('keyword : ' + this.ddd.key);
+        // console.log('keyword : ' + this.ddd.key);
         this.forceRerender();
         if(this.ddd.type == 'tag'){ //tag search
-          console.log("tagsearch");
+          // console.log("tagsearch");
           this.searchResult = []
           this.t_data.keyword =this.ddd.key;
           try{
             let tmpspace = await this.$api.tagSearch(this.t_data)
             this.tagsearchResult = tmpspace;
-            console.log(this.tagsearchResult);
+            // console.log(this.tagsearchResult);
             for(var i=0;i<this.tagsearchResult.length;i++){
               try{
-                console.log('postid : ' + this.tagsearchResult[i].pid);
+                // console.log('postid : ' + this.tagsearchResult[i].pid);
                 var dup = 0;
                 for(var j=0;j<i;j++){//중복 제거
                   if(this.tagsearchResult[j].pid == this.tagsearchResult[i].pid){
@@ -102,23 +102,23 @@ export default {
                 this.searchResult[i]=(tmpspace);
                 // console.log(this.searchResult);
               }catch(e){
-                console.log(e)
+                // console.log(e)
               }
             }
           }catch(e){
-            console.log(e)
+            // console.log(e)
           }
         }
         else{ // title search
           this.searchResult = []
-          console.log("title search");
+          // console.log("title search");
           this.s_data.keyword = this.ddd.key;
           try{
             let tmpspace = await this.$api.searchTemp(this.s_data)
             this.searchResult = tmpspace.data;
             // console.log(this.searchResult);
           }catch(e){
-            console.log(e)
+            // console.log(e)
           }
         }
         //API수정해줘야됨
@@ -126,7 +126,7 @@ export default {
     },
     methods: {
       forceRerender() {
-        console.log(this.componentKey);
+        // console.log(this.componentKey);
         this.componentKey += 1;
     },
     mounted(){

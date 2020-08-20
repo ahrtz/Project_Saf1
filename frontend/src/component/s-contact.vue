@@ -110,11 +110,11 @@ export default {
       }
       this.loginCheck = this.$store.state.isLoggedIn;
 
-      console.log(this.user, 'vdasvdsa');
+      // console.log(this.user, 'vdasvdsa');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
-    console.log(this.user);
+    // console.log(this.user);
     try {
       let tmpspace1 = await this.$api.confirmFollow(this.dummy);
       if (tmpspace1.length != 0) {
@@ -127,7 +127,7 @@ export default {
         this.followcheck = false;
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   },
 };

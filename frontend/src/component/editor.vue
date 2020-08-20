@@ -40,7 +40,7 @@ export default {
     },
     getCommits(commitList){
       this.commitList = commitList;
-      console.log(this.commitList);
+      // console.log(this.commitList);
     },
     getContent(content){
       this.content = content

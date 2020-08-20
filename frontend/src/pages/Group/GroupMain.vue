@@ -118,7 +118,7 @@ export default {
         this.groups = temp;
         await this.setDataTable();
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     setDataTable() {

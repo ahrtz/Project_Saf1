@@ -174,7 +174,7 @@ export default {
   methods: {
     compiledMarkdown: function (posttmp) {
       let vm = posttmp;
-      console.log(vm);
+      // console.log(vm);
       renderer.em = function (text) {
         return '<em>' + '' + '</em>';
       };
@@ -197,7 +197,7 @@ export default {
           setTimeout(async () => {
             if (res.data.length >= this.limit_proj) {
               this.list_proj = res.data;
-              console.log(res.data[1]);
+              // console.log(res.data[1]);
               for (var i = 0; i < res.data.length; i++) {
                 this.tag_proj[i] = await this.$api.tagIndex(res.data[i].id);
               }
@@ -211,7 +211,7 @@ export default {
           this.$forceUpdate();
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     async infiniteHandler2($state) {
@@ -241,7 +241,7 @@ export default {
           this.$forceUpdate();
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
   },

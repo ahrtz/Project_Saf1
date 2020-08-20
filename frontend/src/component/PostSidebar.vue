@@ -36,9 +36,9 @@ export default {
 
         let tmpspace = await this.$api.getMe()
         this.user =tmpspace
-        console.log(this.user)
+        // console.log(this.user)
     }catch(e){
-        console.log(e)
+        // console.log(e)
     }
   }
 }
