@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex flex-column status">
+    <img src="/static/images/calendar_spring.jpg" style="opacity:0.6;height:50px;" />
     <div class="d-flex justify-center status-title">
       <v-icon size="20">date_range</v-icon>&nbsp;Status Calendar
     </div>
@@ -65,7 +66,7 @@
             'status-level4': c >= 7,
         }"
               >
-                <v-tooltip  bottom >
+                <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on" style="width:100%;height:100%;z-index:1"></div>
                   </template>
@@ -368,8 +369,12 @@ export default {
 
 <style>
 .status {
+  margin-top: -20px;
   width: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: solid 2px #ddd;
+  border-radius: 32px;
 }
 
 .status-container {
