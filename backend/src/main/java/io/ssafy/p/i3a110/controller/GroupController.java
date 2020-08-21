@@ -157,7 +157,13 @@ public class GroupController {
 			delRelation.setUid(uid);
 			groupService.withdrawGroup(delRelation);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}else {
+		}else if(groupService.checkMember(oid, uid)!=null){
+			GroupRelationDto delRelation = new GroupRelationDto();
+			delRelation.setOid(Integer.parseInt(oid));
+			delRelation.setUid(uid);
+			groupService.withdrawGroup(delRelation);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}{
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -51,7 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             user = new UserDto();
             user.setEmail(email);
             user.setIsSocial(1);
-            user.setIsCertified(1);
+            user.setNickname("Anonymous");
             userDao.insertUser(user);
         }
 

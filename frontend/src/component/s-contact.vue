@@ -14,15 +14,21 @@
       @click="follow()"
     >Unfollow</div>
     <div class="d-flex flex-column s-contact-contents">
-      <div class="d-flex">
-        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20"></v-icon>
-        팔로워 아이콘좀
+      <div class="d-flex mr-auto">
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="22">person_add</v-icon>
         <p
           class="d-flex"
           target="_top"
-          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px"
+          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px;margin-right:8px;"
           
         >{{printfollowerCnt}}</p>
+        <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">favorite</v-icon>
+        <p
+          class="d-flex"
+          target="_top"
+          style="text-decoration:none;margin-left:8px;color:#21262e;margin-bottom:3px;margin-right:8px;"
+          
+        >{{printlikeCnt}}</p>
       </div>
       <div v-if="!user.isSocial" class="d-flex">
         <v-icon class="d-flex flex-grow-0" color="#21262e" size="20">email</v-icon>
@@ -60,7 +66,7 @@ export default {
       mydata: '',
       followcheck: false,
       printfollowerCnt : '',
-      printfollowingCnt : '',
+      printlikeCnt : '',
     };
   },
   methods: {
@@ -94,14 +100,21 @@ export default {
       let tmpspace = await this.$api.contactBar(this.$route.params.uid);
       this.user = tmpspace.data;
       this.printfollowerCnt = this.user.followerCnt;
-      this.printfollowingCnt = this.user.followingCnt;
+      if(this.user.likeCnt*1 >= 1000)
+      {
+        this.printlikeCnt = (this.user.likeCnt*1)/1000 + "k";
+      }
+      else
+      {
+        this.printlikeCnt = this.user.likeCnt;
+      }
       this.loginCheck = this.$store.state.isLoggedIn;
 
-      console.log(this.user, 'vdasvdsa');
+      // console.log(this.user, 'vdasvdsa');
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
-    console.log(this.user);
+    // console.log(this.user);
     try {
       let tmpspace1 = await this.$api.confirmFollow(this.dummy);
       if (tmpspace1.length != 0) {
@@ -114,7 +127,7 @@ export default {
         this.followcheck = false;
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   },
 };
@@ -126,6 +139,8 @@ export default {
   border: solid 1px #dde3ea;
   padding: 16px;
   background: #fff;
+  width: 268px;
+  max-width: 268px;
 }
 
 .s-contact-nickname {
@@ -165,7 +180,7 @@ export default {
 .s-contact-contents {
   width: 100%;
   margin-top: 32px;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
   color: #21262e;
 }

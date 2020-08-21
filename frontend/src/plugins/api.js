@@ -14,6 +14,9 @@ export default {
     },
     async isthere(id){
         return (await axios.get(`${baseURL}/users/${id}`)).data
+    },
+    async findUserByUid(id){
+        return (await axios.get(`${baseURL}/users?id=${id}`)).data
     }
     ,
     async login(loginData) {
@@ -213,4 +216,10 @@ export default {
     async getPostStatus(data) {
         return (await axios.post(`${baseURL}/posts/cnt`, data)).data
     },
+    async forTest(data){
+        return (await axios.post(`${baseURL}/test`,data)).data
+    },
+    async tagRank(datas){
+        return (await axios.post(`${baseURL}/tags/rank`,datas)).data
+    }
 }   

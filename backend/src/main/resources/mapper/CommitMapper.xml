@@ -26,6 +26,13 @@
 		from commit_list
 		where id = #{id}
 	</select>
+	
+	<select id="getCntByPid" resultType="String">
+		select ifNull(count(*),0)
+		from commit_list
+		where pid = #{pid}
+		group by pid
+	</select>
 </mapper>    
     
     

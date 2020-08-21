@@ -7,124 +7,118 @@
         </div>
       </div>
       <div class="d-flex justify-center">
-        <div class="d-flex flex-column" style="width:100%">
-          <Status />
-          <v-container fluid>
-            <v-row>
-              <v-col cols="6">
+        <div class="d-flex flex-column" style="width:100%;">
+          <Status :uid="uid" :isProj="2" />
+          <s-ranking :data="tag_rank" />
+          <div class="d-flex">
+            <div class="d-flex">
+              <div
+                class="d-flex flex-column flex-grow-0 flex-shrink-0"
+                style="width: 404px;margin-right:32px"
+              >
                 <div
-                  class="d-flex align-center justify-space-between"
-                  style="margin-bottom:16px; border-bottom:solid 1px grey"
+                  class="d-flex align-center flex-grow-0"
+                  style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Project Post</div>
+                  <div class="d-flex" />
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:1}})"
                   >more projects</div>
                 </div>
-                <v-card
-                  class="ma-2"
-                  flat
-                  v-for="post in list_proj"
+                <div
+                  class="d-flex flex-column flex-grow-0 main-page-card"
+                  v-for="(post,indexs) in list_proj"
                   :key="post.id"
-                  style="margin-top:10px; border-bottom:dashed 1px grey"
+                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
                 >
                   <!-- card layout -->
-                  <div>
-                    <!-- 프로필 이미지, 닉네임  -->
-                    <header class="main-card-header">
-                      <img :src="post.userinfo.img" alt class="main-card-header-img" />
-                      <div class="main-card-header-nick_date">
-                        <span>
-                          닉네임 :
-                          {{post.userinfo.nickname}}
-                        </span>
-                        <span>
-                          작성일 :
-                          {{post.cdate}}
-                        </span>
-                      </div>
-                    </header>
-                    <!-- 포스트 제목 / 컨텐츠 -->
-                    <article
-                      class="main-card-article"
-                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                      style="cursor:pointer"
-                    >
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </article>
-                    <footer>
-                      <!-- TODO: tags -->
-                    </footer>
+                  <!-- 프로필 이미지, 닉네임  -->
+                  <div class="d-flex align-center main-card-header">
+                    <img :src="post.userinfo.img" alt class="main-card-header-img" />
+                    <div class="main-card-header-nick_date">
+                      <div class="main-page-nickname">{{post.userinfo.nickname}}</div>
+                      <div class="main-page-cdate">{{post.cdate}}</div>
+                    </div>
+                    <v-icon class="d-flex justify-end">mdi-source-commit</v-icon>
+                    <span class="main-page-commitcnt">{{post.commitCnt}}</span>
                   </div>
-                </v-card>
+                  <!-- 포스트 제목 / 컨텐츠 -->
+                  <div class="main-card-article" style="cursor:pointer">
+                    <div class="main-page-content-title">{{post.title}}</div>
+                    <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
+                  </div>
 
+                  <div class="d-flex main-page-tag-container">
+                    <div
+                      class="d-flex flex-grow-0 main-page-tag"
+                      v-for="(tags,index) in tag_proj[indexs]"
+                      :key="'t-'+index"
+                    >#{{tags.name}}</div>
+                  </div>
+                </div>
                 <infinite-loading
                   slot="append"
                   @infinite="infiniteHandler"
                   spinner="waveDots"
                   force-use-infinite-wrapper=".el-table__body-wrapper"
                 ></infinite-loading>
-              </v-col>
-              <v-col cols="6">
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="d-flex flex-column flex-shrink-0" style="width: 404px;">
                 <div
-                  class="d-flex align-center justify-space-between"
-                  style="margin-bottom:16px; border-bottom:solid 1px grey"
+                  class="d-flex align-center flex-grow-0"
+                  style="padding-bottom: 8px;margin-bottom:16px; border-bottom:solid 1px #dde3ea"
                 >
                   <div class="main-page-section-title">Blog Post</div>
+                  <div class="d-flex" />
                   <div
                     class="d-flex justify-center flex-grow-0 align-center main-page-btn"
                     style="margin-bottom:5px;"
                     @click="$router.push({name:'DiaryMain',params:{uid:uid,test:0}})"
                   >more blogs</div>
                 </div>
-                <v-card
-                  class="ma-2"
-                  flat
-                  v-for="post in list_blog"
+                <div
+                  class="main-page-card"
+                  @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
+                  v-for="(post,indexss) in list_blog"
                   :key="post.id"
-                  style="margin-top:10px;border-bottom:dashed 1px grey"
                 >
                   <div>
                     <!-- 프로필 이미지, 닉네임  -->
-                    <header class="main-card-header">
+                    <div class="d-flex align-center main-card-header">
                       <img :src="post.userinfo.img" alt class="main-card-header-img" />
                       <div class="main-card-header-nick_date">
-                        <span>
-                          닉네임 :
-                          {{post.userinfo.nickname}}
-                        </span>
-                        <span>
-                          작성일 :
-                          {{post.cdate}}
-                        </span>
+                        <div class="main-page-nickname">{{post.userinfo.nickname}}</div>
+                        <div class="main-page-cdate">{{post.cdate}}</div>
                       </div>
-                    </header>
+                    </div>
                     <!-- 포스트 제목 / 컨텐츠 -->
-                    <article
-                      class="main-card-article"
-                      @click="$router.push({name:'PostDetail',params:{pid:post.id}})"
-                      style="cursor:pointer"
-                    >
-                      <h3 style="margin-left:10px;">{{post.title}}</h3>
-                      <p style="margin-left:10px; margin-top:5px;">{{post.content}}</p>
-                    </article>
-                    <footer>
-                      <!-- TODO: tags -->
-                    </footer>
+                    <div class="main-card-article" style="cursor:pointer">
+                      <div class="main-page-content-title">{{post.title}}</div>
+                      <div class="main-page-content-text" v-html="compiledMarkdown(post)"></div>
+                    </div>
+                    <div class="d-flex main-page-tag-container">
+                      <div
+                        class="d-flex flex-grow-0 main-page-tag"
+                        v-for="(tags,index) in tag_blog[indexss]"
+                        :key="'t-'+index"
+                      >#{{tags.name}}</div>
+                    </div>
                   </div>
-                </v-card>
+                </div>
                 <infinite-loading
                   slot="append"
                   @infinite="infiniteHandler2"
                   spinner="waveDots"
                   force-use-infinite-wrapper=".el-table__body-wrapper"
                 ></infinite-loading>
-              </v-col>
-            </v-row>
-          </v-container>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -134,20 +128,26 @@
 <script>
 import axios from 'axios';
 import Status from '@/component/Status.vue';
+import SRanking from '@/component/s-ranking.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import SContact from '@/component/s-contact.vue';
+import marked from 'marked';
+
+var renderer = new marked.Renderer();
 
 var count = 0;
 export default {
   name: 'MainPage',
   components: {
     Status,
+    SRanking,
     InfiniteLoading,
     SContact,
   },
   data() {
     return {
       status: ['날짜정보 혹은 뭐 커밋 정보'],
+
       blog_posts: {},
       project_posts: {},
       user: {},
@@ -158,16 +158,42 @@ export default {
       list_blog: [],
       isLogin: false,
       uid: '',
+      tag_proj: {},
+      tag_blog: {},
+      tag_rank: {},
     };
   },
-  created() {
+  async created() {
     this.isLogin = this.$store.state.isLoggedIn;
     this.uid = this.$route.params.uid;
+    try {
+      // console.log(this.$route.path.substring(1))
+      let tmpres = await this.$api.findUserByUid(this.$route.path.substring(1));
+      // console.log(tmpres)
+    } catch (e) {
+      this.$router.push({ name: 'Login' });
+    }
+    this.tag_rank = await this.$api.tagRank({
+      did: 0,
+      uid: this.$route.params.uid,
+      num: 3,
+    });
   },
   methods: {
-    infiniteHandler($state) {
+    compiledMarkdown: function (posttmp) {
+      let vm = posttmp;
+      // console.log(vm);
+      renderer.em = function (text) {
+        return '<em>' + '' + '</em>';
+      };
+      var tmp1 = marked(posttmp.content, { renderer: renderer });
+
+      return tmp1;
+    },
+
+    async infiniteHandler($state) {
       let temp = this.$route.params.uid;
-      axios
+      await axios
         .post('/api/posts/all/', {
           uid: temp,
           isProj: '1',
@@ -176,23 +202,29 @@ export default {
           limit: this.limit_proj + 10,
         })
         .then((res) => {
-          setTimeout(() => {
+          setTimeout(async () => {
             if (res.data.length >= this.limit_proj) {
               this.list_proj = res.data;
+              // console.log(res.data[1]);
+              for (var i = 0; i < res.data.length; i++) {
+                this.tag_proj[i] = await this.$api.tagIndex(res.data[i].id);
+              }
+              this.$forceUpdate();
               $state.loaded();
               this.limit_proj += 10;
             } else {
               $state.complete();
             }
-          }, 1000);
+          }, 100);
+          
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
-    infiniteHandler2($state) {
+    async infiniteHandler2($state) {
       let temp = this.$route.params.uid;
-      axios
+      await axios
         .post('/api/posts/all/', {
           uid: temp,
           isProj: '0',
@@ -201,18 +233,23 @@ export default {
           limit: this.limit_blog + 10,
         })
         .then((res) => {
-          setTimeout(() => {
+          setTimeout(async () => {
             if (res.data.length >= this.limit_blog) {
               this.list_blog = res.data;
+              for (var i = 0; i < res.data.length; i++) {
+                this.tag_blog[i] = await this.$api.tagIndex(res.data[i].id);
+              }
+              this.$forceUpdate();
               $state.loaded();
               this.limit_blog += 10;
             } else {
               $state.complete();
             }
-          }, 1000);
+          }, 100);
+          
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
   },
@@ -226,23 +263,32 @@ export default {
   font-size: 16px;
   color: black;
   height: 55px;
+  width: 100%;
+  border-bottom: solid 1px #dde3ea;
 }
+.main-page-commitcnt {
+  font-size: 14px;
+}
+
 .main-card-header-nick_date {
   display: flex;
   flex-direction: column;
 }
 
 .main-card-header-img {
+  border-radius: 50%;
+  border: solid 1px #dde3ea;
   width: 35px;
   height: 35px;
-  margin: 10px 10px 10px 10px;
-  float: left;
+  margin-right: 10px;
 }
 .main-card-article {
+  margin: 16px;
+  overflow: hidden;
   background-color: white;
   float: unset;
-  width: 100%;
-  height: 100px;
+  height: 60px;
+  max-height: 60px;
 }
 .main-page-container {
   width: 100%;
@@ -260,7 +306,7 @@ export default {
 
 .main-page-btn {
   margin-left: 4px;
-  font-size: 12px;
+  font-size: 14px;
   background: #0051cb;
   font-weight: normal;
   color: #fff;
@@ -273,5 +319,63 @@ export default {
 .main-page-section-title {
   font-size: 18px;
   font-weight: 700;
+}
+
+.main-page-card {
+  padding: 6px 10px 16px 10px;
+  margin-top: 15px;
+  border: 1px solid #dde3ea;
+  border-radius: 8px;
+  margin: 15px 5px;
+  text-decoration: none;
+  color: #21262e;
+  -webkit-transition: -webkit-box-shadow 0.2s;
+  transition: -webkit-box-shadow 0.2s;
+  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, -webkit-box-shadow 0.2s;
+  cursor: pointer;
+  height: 200px;
+}
+
+.main-page-card:hover {
+  box-shadow: 1px 1px 10px 4px #dde3ea;
+}
+
+.main-page-nickname {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.main-page-cdate {
+  font-size: 12px;
+  color: #21262e;
+}
+
+.main-page-content-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.main-page-content-text {
+  font-size: 12px;
+}
+
+.main-page-tag-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-page-tag {
+  white-space: nowrap;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  padding: 0 12px;
+  background: #fff;
+  border: solid 1px #0051cb;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #0051cb;
+  font-size: 14px;
 }
 </style>

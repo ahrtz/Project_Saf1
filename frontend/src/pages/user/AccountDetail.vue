@@ -183,7 +183,7 @@ export default {
           if (this.$refs.file != null) {
             this.userdata.file = this.$refs.file.files[0];
           }
-          console.log(this.userdata.file);
+          // console.log(this.userdata.file);
           const formData = new FormData();
           formData.append('email', this.userdata.email);
           formData.append('pwd', this.userdata.pwd);
@@ -207,8 +207,8 @@ export default {
           this.$router.push({ name: 'MainPagefor', params: { uid: this.userdata.id } });
         }
       } catch (e) {
-        console.log('실패');
-        console.log(e);
+        // console.log('실패');
+        // console.log(e);
       }
     },
     async certifyGit() {
@@ -219,7 +219,7 @@ export default {
         this.userdata.isCertified = 1;
         alert('인증되었습니다');
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     uncertifyGit() {

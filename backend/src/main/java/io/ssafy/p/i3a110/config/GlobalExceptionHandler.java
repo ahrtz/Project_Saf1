@@ -1,5 +1,6 @@
 package io.ssafy.p.i3a110.config;
 
+import org.kohsuke.github.HttpException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,5 +21,12 @@ public class GlobalExceptionHandler {
 	public String handleNullPointerExceptionForGlobal(NullPointerException e) {
 		System.out.println(e);
 		return "NullPointerException";
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(value = HttpException.class)
+	public String handleHttpExceptionForGlobal(HttpException e) {
+		System.out.println(e);
+		return "HttpException(Check GitHubId or AccessToken)";
 	}
 }

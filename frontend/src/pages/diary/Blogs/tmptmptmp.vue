@@ -1,22 +1,22 @@
 <template>
-  <div class="update-post-container">
-    <div class="d-flex update-post-inner justify-center">
-      <div class="d-flex flex-shrink-0 flex-grow-0 update-post-sidebar">
+  <div class="new-post-container">
+    <div class="d-flex new-post-inner justify-center">
+      <div class="d-flex flex-shrink-0 flex-grow-0 new-post-sidebar">
         <div class="d-flex flex-column" style="width: 100%;">
-          <div class="update-post-menu">임시저장 글 보기</div>
+          <div class="new-post-menu">임시저장 글 보기</div>
           <div>
-            <div class="update-post-tmp-container" v-for="temp in tmppost" :key="temp.id">
+            <div class="new-post-tmp-container" v-for="temp in tmppost" :key="temp.id">
               <div class="d-flex" style="margin-bottom: 4px;">
-                <div class="d-flex flex-grow-0 update-post-tmp-title">날짜</div>
-                <div class="update-post-tmp-text">{{temp.cdate}}</div>
+                <div class="d-flex flex-grow-0 new-post-tmp-title">날짜</div>
+                <div class="new-post-tmp-text">{{temp.cdate}}</div>
               </div>
               <div class="d-flex" style="margin-bottom: 4px;">
-                <div class="d-flex flex-grow-0 update-post-tmp-title">다이어리</div>
-                <div class="update-post-tmp-text">{{temp.dName}}</div>
+                <div class="d-flex flex-grow-0 new-post-tmp-title">다이어리</div>
+                <div class="new-post-tmp-text">{{temp.dName}}</div>
               </div>
               <div class="d-flex">
-                <div class="d-flex flex-grow-0 update-post-tmp-title">글 제목</div>
-                <div class="update-post-tmp-text">{{temp.title}}</div>
+                <div class="d-flex flex-grow-0 new-post-tmp-title">글 제목</div>
+                <div class="new-post-tmp-text">{{temp.title}}</div>
               </div>
               <div
                 class="d-flex justify-center align-center s-button-blue"
@@ -32,39 +32,35 @@
           <div class="d-flex">
             <div class="d-flex" />
             <div
-              class="d-flex justify-center align-center flex-grow-0 update-post-btn-white"
+              class="d-flex justify-center align-center flex-grow-0 new-post-btn-white"
               @click="goback()"
             >뒤로가기</div>
           </div>
-          <div class="update-post-title">포스트 수정</div>
-          <div class="update-post-subtitle">제목</div>
+          <div class="new-post-title">포스트 수정</div>
+          <div class="new-post-subtitle">제목</div>
           <v-text-field v-model="post.title" required outlined></v-text-field>
-          <div class="update-post-subtitle">중요도</div>
-          <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange" style="margin-bottom:32px;"></v-rating>
+          <div class="new-post-subtitle">중요도</div>
+          <v-rating v-model="post.priority" background-color="orange lighten-3" color="orange"></v-rating>
 
           <div v-if="selectedCommits.length!=0">
             <div
-              class="update-post-commit-box"
+              class="new-post-commit-box"
               v-for="(scommit, index) in selectedCommits"
               :key="index"
             >
-              <div class="update-post-commit-date" style="margin-top:4px;">#{{index+1}} Commits on {{scommit.date}}</div>
-              <div class="d-flex align-center">
-              <div class="d-flex flex-column justify-center flex-grow-1 update-post-commit">
-                <div class="update-post-commit-title">{{scommit.msg}}</div>
+              <div class="new-post-commit-date">#{{index+1}} Commits on {{scommit.date}}</div>
+              <div class="d-flex flex-column justify-center new-post-commit">
+                <div class="new-post-commit-title">{{scommit.msg}}</div>
                 <div class="d-flex">
-                  <div class="update-post-commit-author">{{scommit.author}}</div>
+                  <div class="new-post-commit-author">{{scommit.author}}</div>
                   <div class="d-flex" />
-                  <div class="update-post-commit-sha">{{scommit.sha1}}</div>
+                  <div class="new-post-commit-sha">{{scommit.sha1}}</div>
                 </div>
               </div>
               <div
                 class="d-flex justify-center align-center flex-grow-0 s-button-red"
-                style="margin-left: 4px;height: 60px;font-size:12px;font-weight:500;padding: 12px"
                 @click="commitDelete(scommit.id),index"
               >삭제</div>
-              </div>
-              
             </div>
           </div>
 
@@ -125,25 +121,25 @@
             </v-dialog>
           </v-layout>
           <div v-if="selected.length!=0">
-            <div class="update-post-commit-box" v-for="(commit, i) in selected" :key="i">
+            <div class="new-post-commit-box" v-for="(commit, i) in selected" :key="i">
               <div
-                class="update-post-commit-date"
+                class="new-post-commit-date"
               >#{{i+1+selectedCommits.length}} Commits on {{commit.date}}</div>
-              <div class="d-flex flex-column justify-center update-post-commit">
-                <div class="update-post-commit-title">{{commit.msg}}</div>
+              <div class="d-flex flex-column justify-center new-post-commit">
+                <div class="new-post-commit-title">{{commit.msg}}</div>
                 <div class="d-flex">
-                  <div class="update-post-commit-author">{{commit.author}}</div>
+                  <div class="new-post-commit-author">{{commit.author}}</div>
                   <div class="d-flex" />
-                  <div class="update-post-commit-sha">{{commit.sha1}}</div>
+                  <div class="new-post-commit-sha">{{commit.sha1}}</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="update-post-subtitle" style="margin-bottom:16px">내용</div>
+          <div class="new-post-subtitle" style="margin-bottom:16px">내용</div>
           <editor />
           <!-- <v-textarea v-model="post.content" label="content" required outlined></v-textarea> -->
 
-          <div class="update-post-subtitle">태그</div>
+          <div class="new-post-subtitle">태그</div>
           <div class="d-flex">
             <v-text-field
               label="엔터, 스페이스 바를 눌러 태그를 추가하세요."
@@ -152,7 +148,7 @@
               @keyup.space="addtag()"
             ></v-text-field>
             <div
-              class="d-flex justify-center align-center flex-grow-0 update-post-btn"
+              class="d-flex justify-center align-center flex-grow-0 new-post-btn"
               style="margin-left: 32px"
               @click="addtag()"
             >태그추가</div>
@@ -160,9 +156,9 @@
           <br />
           <!-- tags -->
 
-          <div class="d-flex align-center flex-grow-0 update-post-tag-container">
+          <div class="d-flex align-center flex-grow-0 new-post-tag-container">
             <div
-              class="d-flex flex-grow-0 update-post-tag"
+              class="d-flex flex-grow-0 new-post-tag"
               v-for="(tag,index) in originaltag"
               :key="'t-1'+index"
             >
@@ -173,7 +169,7 @@
             </div>
             <!-- 새태그 넣기 -->
             <div
-              class="d-flex flex-grow-0 update-post-tag"
+              class="d-flex flex-grow-0 new-post-tag"
               v-for="(tag,index) in tags"
               :key="'t-'+index"
             >
@@ -214,7 +210,7 @@ import bus from '@/component/EventBus';
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 export default {
-  name: 'UpdatePost',
+  name: 'NewBlogPost',
   components: {
     editor,
   },
@@ -222,17 +218,20 @@ export default {
     return {
       drawer: null,
       dialog: false,
+      diarys: '',
       tag: '',
-      newtag: {
-        pid: '',
-        name: '',
-      },
+
       tags: [],
-      originaltag: {},
-      pid: this.$route.params.pid,
+      did: this.$route.params.did,
       selected: [],
-      selectedCommits: [],
       page: 1,
+      config: {
+        uid: '',
+        isProj: 2,
+        keyword: '',
+        isTemp: 1,
+        limit: 10,
+      },
       post: {
         uid: '',
         did: this.$route.params.did,
@@ -244,58 +243,36 @@ export default {
         cDate: new Date().toISOString().substr(0, 10),
       },
       commitList: [],
-      config: {
-        uid: '',
-        isProj: 2,
-        keyword: '',
-        isTemp: 1,
-        limit: 10,
-      },
-      isProj: false,
       tmppost: [],
+      newtag: {},
+      testing: {},
     };
   },
   props: ['value'],
   async created() {
     bus.$on('updateContent', this.updateContent);
+
     this.post.uid = this.$store.state.user.id;
     this.config.uid = this.$store.state.user.id;
     try {
-      let tmpspace = await this.$api.postdetail(this.pid);
-      this.post = tmpspace;
-      // console.log('성공');
-      bus.$emit('getContent', this.post.content);
+      let diaryid = this.did;
+      let tempspace = await this.$api.individualDiary(diaryid);
+      this.diarys = tempspace;
+      // console.log('아이디 받음');
+      if (tempspace.isProj) {
+        try {
+          let repoId = this.diarys.repoId;
+          let listCommit = await this.$api.getCommitList({ repoId: repoId });
 
-      try {
-        let tempspace1 = await this.$api.individualDiary(this.post.did);
-        if (tempspace1.gitName.length > 0) {
-          // console.log(tempspace1, 'vdsa');
-          this.isProj = true;
-          try {
-            let listCommit = await this.$api.getCommitList({
-              repoId: tempspace1.repoId,
-            });
-            this.commitList = listCommit;
-            bus.$emit('getCommits', this.commitList);
-          } catch (e) {
-            // console.log('커밋 받아오기  에러');
-          }
+          // let testing = await this.$api.forTest({repoId:repoId})
+          // this.commitList=testing
+
+          this.commitList = listCommit;
+          // console.log('커밋 받음');
+        } catch (e) {
+          // console.log('커밋쪽 에러');
         }
-      } catch (e) {
-        // console.log('깃네임 받아오기 에러');
       }
-    } catch (e) {
-      // console.log(e);
-    }
-    try {
-      let selectedCommit = await this.$api.getPostCommit(this.pid);
-      this.selectedCommits = selectedCommit;
-      // console.log('선택한 커밋 불러오기');
-    } catch (e) {}
-    //tags 가져오기
-    try {
-      let tmpspace3 = await this.$api.tagIndex(this.pid);
-      this.originaltag = tmpspace3;
     } catch (e) {
       // console.log(e);
     }
@@ -306,7 +283,6 @@ export default {
     } catch (e) {
       // console.log(e);
     }
-    // console.log(this.tags);
   },
   methods: {
     updateContent(content) {
@@ -316,10 +292,6 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    searchTag(tagName) {
-      document.getElementById('header-text').value = tagName;
-      this.$router.push({ name: 'tmp', params: { key: tagName } });
-    },
     goback() {
       this.$router.go(-1);
     },
@@ -327,28 +299,13 @@ export default {
       let index = this.tags.indexOf(data);
       this.tags.splice(index, 1);
     },
-    async tagdelete(id) {
-      this.$api.deleteTag(id);
-      let tmpspace3 = await this.$api.tagIndex(this.pid);
-      this.originaltag = tmpspace3;
-    },
     addtag() {
       if (this.tag == '' || this.tag == null) {
         alert('값이 입력되지 않았습니다');
       } else if (this.tags.length != 0) {
         for (var i = 0; i < this.tags.length; i++) {
           if (this.tags[i].toLowerCase() == this.tag.toLowerCase()) {
-            alert('중복된 태그 입니다');
-            this.tag = '';
-            return;
-          }
-        }
-      } else if (this.originaltag.length != 0) {
-        for (var i = 0; i < this.originaltag.length; i++) {
-          if (
-            this.originaltag[i].name.toLowerCase() == this.tag.toLowerCase()
-          ) {
-            alert('중복된 태그 입니다');
+            alert(this.tags[i], this.tag.toLowerCase(), '###');
             this.tag = '';
             return;
           }
@@ -366,35 +323,35 @@ export default {
 
     async writePost() {
       if (this.post.title == '' || this.post.title == null) {
-        alert('제목은 빈칸이 올 수 없습니다');
+        alert('제목은 빈칸이 올 수 없습니다.');
       } else {
         try {
-          this.post.isTemp = 0;
-          await this.$api.updatePost(this.post);
-          // console.log('성공11');
+          let post = await this.$api.savePost(this.post);
+          // console.log(post.data, 'vdas');
           try {
             if (this.selected.length != 0) {
               for (var i = 0; i < this.selected.length; i++) {
-                // this.selected[i].uid = this.post.id
-                this.selected[i].pid = this.pid;
+                this.selected[i].uid = this.diarys.uid;
+                this.selected[i].pid = post.data;
                 this.selected[i].sha = this.selected[i].sha1;
                 this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
-                // console.log(this.selected[i], '부악');
                 // console.log('성공', i);
               }
             }
+            // 여기선 태그를 저장해줘야댐
             if (this.tags.length != 0) {
               for (var i = 0; i < this.tags.length; i++) {
-                this.newtag.pid = this.pid;
+                this.newtag.pid = post.data;
                 this.newtag.name = this.tags[i];
                 await this.$api.createTag(this.newtag);
               }
             }
+
             this.$router.push({
-              name: 'PostDetail',
-              params: { uid: this.config.uid, pid: this.pid },
+              name: 'BlogDetail',
+              params: { uid: this.config.uid, did: this.did },
             });
             // console.log(this.selected);
           } catch (e) {
@@ -408,29 +365,36 @@ export default {
     },
     async writetmpPost() {
       if (this.post.title == '' || this.post.title == null) {
-        alert('제목은 빈칸이 올 수 없습니다');
+        alert('제목은 빈칸이 올 수 없습니다.');
       } else {
         this.post.isTemp = 1;
 
         try {
-          await this.$api.updatePost(this.post);
+          let post = await this.$api.savePost(this.post);
+          // console.log(post.data, 'vdas');
           try {
             if (this.selected.length != 0) {
               for (var i = 0; i < this.selected.length; i++) {
-                // this.selected[i].uid = this.post.id
-                this.selected[i].pid = this.pid;
+                this.selected[i].uid = this.diarys.uid;
+                this.selected[i].pid = post.data;
                 this.selected[i].sha = this.selected[i].sha1;
-                this.selected[i].date = this.selected[i].date.substr(0, 10);
+                this.selected[i].date = this.selected[i].date;
                 delete this.selected[i].sha1;
                 await this.$api.addCommit(this.selected[i]);
                 // console.log('성공', i);
               }
             }
+            if (this.tags.length != 0) {
+              for (var i = 0; i < this.tags.length; i++) {
+                this.newtag.pid = post.data;
+                this.newtag.name = this.tags[i];
+                await this.$api.createTag(this.newtag);
+              }
+            }
             this.$router.push({
-              name: 'PostDetail',
-              params: { uid: this.config.uid, pid: this.pid },
+              name: 'BlogDetail',
+              params: { uid: this.config.uid, did: this.did },
             });
-            // this.$router.go(-1);
             // console.log(this.selected);
           } catch (e) {
             // console.log(e);
@@ -441,31 +405,40 @@ export default {
         }
       }
     },
-    commitDelete(id, index) {
-      this.$api.deleteCommit(id);
-      this.selectedCommits.splice(index, 1);
+    mvUrl(url) {
+      window.open(url, '_blank');
+    },
+  },
+  watch: {
+    selected() {
+      bus.$emit('getCommits', this.selected);
     },
   },
   computed: {
-    downcontent() {
-      return this.post.content;
+    userid() {},
+    isProj() {
+      if (this.$route.path[7] == 'p') {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
 </script>
 
 <style>
-.update-post-container {
+.new-post-container {
   width: 100%;
 }
 
-.update-post-inner {
+.new-post-inner {
   padding-bottom: 70px;
   width: 1140px;
   margin: 0 auto;
 }
 
-.update-post-btn {
+.new-post-btn {
   padding: 0 16px;
   margin-bottom: 8px;
   font-size: 14px;
@@ -477,7 +450,7 @@ export default {
   cursor: pointer;
 }
 
-.update-post-btn-white {
+.new-post-btn-white {
   padding: 0 16px;
   font-size: 14px;
   background: #fff;
@@ -488,14 +461,14 @@ export default {
   height: 40px;
   cursor: pointer;
 }
-.update-post-tag-container {
+.new-post-tag-container {
   width: 100%;
   overflow: hidden;
   margin: 32px 0;
   flex-wrap: wrap;
 }
 
-.update-post-tag {
+.new-post-tag {
   margin-bottom: 8px;
   margin-right: 8px;
   padding: 0 6px 0 12px;
@@ -507,83 +480,43 @@ export default {
   font-size: 14px;
 }
 
-.update-post-title {
+.new-post-title {
   font-size: 18px;
   font-weight: 800;
   margin-bottom: 48px;
 }
 
-.update-post-subtitle {
+.new-post-subtitle {
   font-size: 14px;
   font-weight: 600;
 }
 
-.update-post-sidebar {
+.new-post-sidebar {
   width: 268px;
   margin-right: 32px;
   padding: 20px 8px 8px 8px;
   border: solid 1px #dde3eb;
 }
 
-.update-post-menu {
+.new-post-menu {
   font-size: 14px;
   padding: 16px;
   font-weight: 700;
 }
 
-.update-post-tmp-container {
+.new-post-tmp-container {
   padding: 16px;
   border: solid 1px #dde3eb;
   border-radius: 6px;
 }
 
-.update-post-tmp-title {
+.new-post-tmp-title {
   width: 80px;
   font-size: 12px;
 }
 
-.update-post-tmp-text {
+.new-post-tmp-text {
   font-size: 12px;
   font-weight: 600;
-}
-
-.update-post-commit-box {
-  border-left: solid 2px #dde3ea;
-  padding-left: 16px;
-  margin-bottom: 22px;
-}
-
-.update-post-commit {
-  border: solid 1px #dde3ea;
-  padding: 8px;
-  height: 60px;
-  border-radius: 6px;
-}
-
-.update-post-commit:hover {
-  background: #0051cb11;
-  cursor: pointer;
-}
-
-.update-post-commit-title {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.update-post-commit-date {
-  margin-bottom: 12px;
-  font-size: 12px;
-  font-weight: normal;
-}
-
-.update-post-commit-author {
-  font-size: 12px;
-  font-weight: 600;
-  color: #24292e;
-}
-
-.update-post-commit-sha {
-  font-size: 10px;
-  font-weight: normal;
 }
 </style>

@@ -222,7 +222,7 @@ public class UserController {
     public Object signup(@RequestParam(required = false) MultipartFile file,
                        @RequestParam String email,
                        @RequestParam String pwd,
-                       @RequestParam String nickname,
+                       @RequestParam(required = false) String nickname,
                        @RequestParam String gitId,
                        @RequestParam String gitUrl,
                        @RequestParam String intro,
@@ -244,6 +244,8 @@ public class UserController {
         user = new UserDto();
         user.setEmail(email);
         user.setPwd(pwd);
+        if(nickname == null) nickname = "anonymous";
+        System.out.println(nickname);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);

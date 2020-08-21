@@ -7,8 +7,8 @@
             <img class="login-logo" src="/static/images/Blogit_logo.png" />
           </div>
         </div>
-        <div class="d-flex justify-center">
-          <div class="d-flex flex-column">
+        <div class="d-flex justify-center align-center">
+          <div class="d-flex flex-column" style="width: 320px;padding-bottom: 80px;">
             <div class="login-title">
               Blogit에 오신것을
               <br />환영합니다.
@@ -39,7 +39,10 @@
               @keypress.enter="login()"
             ></v-text-field>
             <span class="login-hint" :style="{visibility:visi}">*8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span>
-            <div class="d-flex flex-grow-0 justify-center align-center login-btn" @click="login()">로그인</div>
+            <div
+              class="d-flex flex-grow-0 justify-center align-center login-btn"
+              @click="login()"
+            >로그인</div>
             <div
               class="d-flex flex-grow-0 justify-center align-center login-signup-btn"
               @click="$router.push({name:'SignUp'})"
@@ -57,7 +60,11 @@
         </div>
       </div>
     </div>
-    <div class="d-flex login-right"></div>
+    <div class="d-flex login-right">
+      <div class="d-flex justify-center login-right-img">
+        <div @click="onExperienceClick()" class="d-flex flex-grow-0 justify-center align-center s-button-white" style="margin-top: 150px;width: 150px;font-size:16px;">체험하기</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -68,7 +75,7 @@ export default {
     return {
       loginData: {
         email: null,
-        pwd: "",
+        pwd: '',
       },
       dummy: null,
       visi: 'hidden',
@@ -79,19 +86,19 @@ export default {
     if (this.dummy) {
       let temp = this.$store.state.user.id;
       this.$router.push({ name: 'MainPagefor', params: { uid: temp } });
-      console.log('>>>>');
+      // console.log('>>>>');
     }
   },
   methods: {
     async login() {
       try {
         let tmp = await this.$api.login(this.loginData);
-        console.log(tmp.data);
+        // console.log(tmp.data);
         this.$router.push({ name: 'MainPagefor', params: { uid: tmp.data } });
         location.reload();
       } catch (e) {
         alert('아이디 또는 비밀번호를 확인해주세요.');
-        console.log('실패');
+        // console.log('실패');
       }
     },
     githubLogin() {
@@ -100,6 +107,9 @@ export default {
     googleLogin() {
       var temp = window.open('/api/oauth2/authorization/google');
     },
+    onExperienceClick() {
+      location.href='/6'
+    }
   },
 };
 </script>
@@ -129,8 +139,14 @@ export default {
   width: 300px;
 }
 
+.login-right-img {
+  width: 100%;
+  height: 100%;
+  background: url('/static/images/mac_main.png') no-repeat;
+  background-position: center 235px;
+}
+
 .login-title {
-  padding-top: 70px;
   font-size: 24px;
   font-weight: 700;
 }

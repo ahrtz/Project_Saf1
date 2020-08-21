@@ -20,7 +20,7 @@
                 <v-col cols="auto">
                   <v-dialog v-model="dialog" max-width="500px">
                     <template v-slot:activator="{on}">
-                      <v-btn v-on="on" color="primary" dark class="mb-2">그룹 추가</v-btn>
+                      <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" v-on="on" style="margin-bottom: 4px;">그룹 추가</div>
                     </template>
                     <v-card>
                       <v-card-title>
@@ -50,8 +50,8 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn class="ma-2" color="blue darken-1" dark @click="close()">Cancel</v-btn>
-                        <v-btn class="ma-2" color="blue darken-1" dark @click="add()">Add</v-btn>
+                        <div class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px;" @click="close()">취소</div>
+                        <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="add()">추가</div>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -118,7 +118,7 @@ export default {
         this.groups = temp;
         await this.setDataTable();
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     setDataTable() {

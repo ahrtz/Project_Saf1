@@ -27,6 +27,7 @@ import io.ssafy.p.i3a110.dto.PostDto;
 import io.ssafy.p.i3a110.dto.UserDto;
 import io.ssafy.p.i3a110.http.request.GetPostRequest;
 import io.ssafy.p.i3a110.interceptor.Auth;
+import io.ssafy.p.i3a110.service.CommitService;
 import io.ssafy.p.i3a110.service.DiaryService;
 import io.ssafy.p.i3a110.service.LikeService;
 import io.ssafy.p.i3a110.service.PostService;
@@ -43,6 +44,8 @@ public class PostController {
     private LikeService likeService;
     @Autowired
     private DiaryService diaryService;
+    @Autowired
+    private CommitService commitService;
     
     @PostMapping("/posts/all")
     @ApiOperation(value = "회원 별 포스트 전체 조회")
@@ -63,6 +66,7 @@ public class PostController {
     		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
     		long cdate = (long) form.get("cdate");
     		form.put("cdate", new Date(cdate));
+    		form.put("commitCnt", commitService.getCntByPid(String.valueOf(post.getId())));
     		UserDto writer = userService.findUserById(post.getUid());
     		HashMap<String, String> userinfo = new HashMap<String, String>();
     		userinfo.put("id", String.valueOf(writer.getId()));
@@ -80,11 +84,21 @@ public class PostController {
     
     @PostMapping("/posts/{did}")
     @ApiOperation(value = "다이어리 포스트 조회")
-    public ArrayList<PostDto> getPost(@PathVariable int did, @RequestBody GetPostRequest map) {
+    public List<HashMap<Object, Object>> getPost(@PathVariable int did, @RequestBody GetPostRequest map) {
         String keyword = Optional.ofNullable(map.getKeyword()).orElse("");
         int isTemp = Optional.ofNullable(map.getIsTemp()).orElse(0);
-
-        return postService.getPost(did, keyword, isTemp);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	List<HashMap<Object, Object>> output = new ArrayList<HashMap<Object,Object>>();
+    	ArrayList<PostDto> postList = postService.getPost(did, keyword, isTemp);
+    	for(PostDto post : postList) {
+    		HashMap<Object, Object> form = objectMapper.convertValue(post, HashMap.class);
+    		long cdate = (long) form.get("cdate");
+    		form.put("cdate", new Date(cdate));
+    		form.put("commitCnt", commitService.getCntByPid(String.valueOf(post.getId())));
+    		output.add(form);
+    	}
+    	
+        return output;
     }
 
     @GetMapping("/posts/{id}")

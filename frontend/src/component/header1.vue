@@ -28,6 +28,7 @@
             <img class="header-profile-image" :src="userImg ? userImg : '/static/images/user.png'" />
           </div>
           <div>{{userNickname}}</div>
+          <v-icon size="20" style="margin-left: 4px;margin-top:2px;">expand_more</v-icon>
         </div>
         <div
           class="d-flex justify-center flex-grow-0 align-center header-btn-white"
@@ -66,11 +67,14 @@ export default {
   created() {
     this.userdata= this.$store.state.user
     this.target = this.$route.params.uid;
-    console.log(this.$route.path);
-    if (this.$route.path == '/') {
+    // console.log(this.$route.path);
+    
+    // this.target = temp
+  },
+  mounted() {
+    if (this.$route.path == '/' || this.$route.path == '/signup') {
       this.isLoginPage = true;
     }
-    // this.target = temp
   },
   methods: {
     onDiaryBtnClick() {
@@ -105,6 +109,7 @@ export default {
         params: { key: this.keyw, type: 'title' },
         
       });
+      this.keyw=""
       
     },
     alerts(msg) {
@@ -138,7 +143,7 @@ export default {
         this.$router.push({ name: 'MainPage' });
         location.reload();
       } catch (e) {
-        console.log('실패');
+        // console.log('실패');
       }
     },
   },
@@ -177,9 +182,8 @@ export default {
   height: 100%;
   line-height: 70px;
   padding: 0 20px;
-  color: #21262e;
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -237,8 +241,7 @@ export default {
 .header-profile {
   margin-left: 24px;
   color: #21262e;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 14px;
   cursor: pointer;
 }
 

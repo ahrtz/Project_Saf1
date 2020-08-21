@@ -6,9 +6,9 @@
           <!-- 윗부분 -->
           <div class="d-flex" style="margin-bottom: 32px;">
             <div class="d-flex" />
-            <v-dialog v-model="dialog" max-width="500px">
+            <v-dialog v-if="isLeader" v-model="dialog" max-width="500px">
               <template v-slot:activator="{on}">
-                <v-btn v-on="on" color="info" dark class="mr-2">그룹 수정</v-btn>
+                <div  class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px" v-on="on">그룹 수정</div>
               </template>
               <v-card>
                 <v-card-title>
@@ -36,17 +36,21 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="close()">cancel</v-btn>
-                  <v-btn class="ma-2" color="blue darken-1" dark @click="updateGroup()">confirm</v-btn>
+                  <div class="d-flex justify-center align-center flex-grow-0 s-button-white" style="margin-right: 4px;" @click="close()">취소</div>
+                  <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="updateGroup()">확인</div>
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-btn color="error" dark @click="removeGroup">그룹 해체</v-btn>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" 
+            v-if="isLeader" @click="removeGroup">그룹 해체</div>
+            <div class="d-flex justify-center align-center flex-grow-0 s-button-red" 
+            v-if="!isLeader" @click="deleteMe">그룹 탈퇴</div>
+            
           </div>
 
           <v-row style="width: 768px;margin:0 auto;">
             <!-- 그룹 이름 & 그룹 디테일 -->
-            <v-col class="group-detail-ino-box">
+            <v-col class="group-detail-info-box">
                 <div class="group-detail-info-title">그룹 정보</div>
               <div class="group-detail-info-name">{{ group_info.name }}</div>
               <div class="group-detail-info-content">{{ group_info.intro }}</div>
@@ -77,20 +81,22 @@
             </v-col>
           </v-row>
           <v-row class="flex-column" style="width: 768px;margin:0 auto;margin-top: 32px;">
-              <div class="d-flex align-center justify-center">
-                  <img style="width: 100px" src="/static/images/crown.png"/>
+              <div class="d-flex align-center justify-center" style="padding-bottom: 16px;">
+                  <img style="width: 30px" src="/static/images/crown.png"/>
+                  <div class="group-detail-rank-title">Rainking Top 5</div>
+                  <img style="width: 30px" src="/static/images/crown.png"/>
               </div>
               <div class="d-flex">
             <!-- 순위 리스트 3개 -->
               <!-- 좋아요 순위(Top 3) -->
               <v-col class="group-detail-info-box">
                 <v-list subheader>
-                  <v-subheader style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">좋아요 Top 5</v-subheader>
+                  <v-subheader class="group-detail-rank-subtitle" style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">좋아요 Top 5</v-subheader>
 
                   <v-list-item
                     v-for="like_item in lRateList"
                     :key="like_item.nickname"
-                    style="cursor:pointer"
+                    style="cursor:pointer;"
                     @click="$router.push({ name: 'MainPagefor', params: { uid: like_item.uid } })"
                   >
                     <v-list-item-avatar>
@@ -98,10 +104,10 @@
                         :src="like_item.img == null ? '/static/images/user.png' : like_item.img"
                       ></v-img>
                     </v-list-item-avatar>
-                    <v-list-item-title>
+                    <v-list-item-title style="padding-left:8px;">
                       {{like_item.nickname}}
                       <v-spacer></v-spacer>
-                      {{like_item.cnt}}
+                      {{like_item.cnt}}개
                     </v-list-item-title>
                     <v-list-item-content></v-list-item-content>
                   </v-list-item>
@@ -111,7 +117,7 @@
               <!-- 팔로워 순위(Top 3)  -->
               <v-col class="group-detail-info-box">
                 <v-list subheader>
-                  <v-subheader style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">팔로우 Top 5</v-subheader>
+                  <v-subheader class="group-detail-rank-subtitle" style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">팔로우 Top 5</v-subheader>
 
                   <v-list-item
                     v-for="follower_item in fRateList"
@@ -124,10 +130,10 @@
                         :src="follower_item.img == null ? '/static/images/user.png' : follower_item.img"
                       ></v-img>
                     </v-list-item-avatar>
-                    <v-list-item-title>
+                    <v-list-item-title style="padding-left:8px;">
                       {{follower_item.nickname}}
                       <v-spacer></v-spacer>
-                      {{follower_item.cnt}}
+                      {{follower_item.cnt}}명
                     </v-list-item-title>
                     <v-list-item-content></v-list-item-content>
                   </v-list-item>
@@ -137,7 +143,7 @@
               <!-- 포스트 순위(Top 3) -->
               <v-col class="group-detail-info-box">
                 <v-list subheader>
-                  <v-subheader style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">포스트 Top 5</v-subheader>
+                  <v-subheader class="group-detail-rank-subtitle" style="border-bottom: solid 1px #dde3ea;margin-bottom:8px">포스트 Top 5</v-subheader>
                   <v-list-item
                     v-for="post_item in pRateList"
                     :key="post_item.nickname"
@@ -150,10 +156,10 @@
                         :src="post_item.img == null ? '/static/images/user.png' : post_item.img"
                       ></v-img>
                     </v-list-item-avatar>
-                    <v-list-item-title>
+                    <v-list-item-title style="padding-left:8px;">
                       {{post_item.nickname}}
                       <v-spacer></v-spacer>
-                      {{post_item.cnt}}
+                      {{post_item.cnt}}개
                     </v-list-item-title>
                     <v-list-item-content></v-list-item-content>
                   </v-list-item>
@@ -171,7 +177,7 @@
                 type="text"
                 placeholder="추가할 사용자의 이메일을 입력하세요"
               />
-              <v-btn tile color="primary" dark @click="addMember" style="margin-left: 4px;">멤버 추가</v-btn>
+              <div class="d-flex justify-center align-center flex-grow-0 s-button-blue" @click="addMember" style="margin-left: 4px;">멤버 추가</div>
             </div>
           </div>
           <!-- 아랫 부분 (그룹에 속한 멤버 리스트) -->
@@ -204,7 +210,7 @@
                     v-if="item.id != group_info.lid"
                     small
                     class="mr-2"
-                    @click="deleteMember(item)"
+                    @click.stop="deleteMember(item)"
                   >mdi-close</v-icon>
                 </template>
               </v-data-table>
@@ -281,18 +287,27 @@ export default {
   },
   methods: {
     async addMember() {
-      await this.$api.groupRelationAdd({
+      try{
+      let tmp= await this.$api.groupRelationAdd({
         email: this.newMember,
         oid: this.$route.params.gid,
       });
-      this.newMember = '';
-      await this.getMembers();
-      await this.getRatingInfo();
+        this.newMember = '';
+        await this.getMembers();
+        await this.getRatingInfo();
+      }
+      catch(e){
+        alert('존재하지 않는 이메일 입니다')
+        this.newMember = '';
+      }
+      
     },
     async getMembers() {
       try {
         let temp = await this.$api.groupDetail(this.$route.params.gid);
         this.group_info = temp;
+        this.updateItem.name=temp.name
+        this.updateItem.intro = temp.intro
         var templist = [];
         for (var i = 0; i < this.group_info.userinfo.length; i++) {
           var member = {};
@@ -340,6 +355,14 @@ export default {
       await this.getMembers();
       await this.getRatingInfo();
     },
+    deleteMe(){
+      this.$api.groupRelationDelete({
+        oid: this.$route.params.gid,
+        uid: this.uid,
+      })
+
+      this.$router.push({name:'GroupMain',uid:this.uid})
+    },
     async updateGroup() {
       try {
         if(this.updateItem.name != '')
@@ -359,13 +382,13 @@ export default {
           alert("수정할 그룹의 이름을 기입하세요.");
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     async removeGroup() {
       try {
         await this.$api.deleteGroup(this.$route.params.gid);
-        this.$router.go(-1);
+        this.$router.push({name:'GroupMain',uid:this.uid})
       } catch (e) {}
     },
     getRecentPost(recentPost) {
@@ -445,5 +468,17 @@ export default {
 .group-detail-info-content {
     margin-top: 8px;
   font-size: 12px;
+}
+
+.group-detail-rank-title {
+  font-size: 20px;
+  padding: 0 8px;
+  font-weight: 600;
+  letter-spacing: -1.2px;
+}
+
+.group-detail-rank-subtitle {
+  font-size: 14px;
+  font-weight: 600;
 }
 </style>

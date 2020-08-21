@@ -53,7 +53,6 @@ public class GitHubRestApiHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return true;
 	}
 	
@@ -65,7 +64,11 @@ public class GitHubRestApiHelper {
 			String id = person.getLogin();
 			if(id.equals(gitId)) return true;
 			else return false;
-		} catch(HttpException e) {
+		} catch(IllegalStateException e) {
+			System.out.println("Maybe AccessToken Error");
+			System.out.println("GitID : " + gitId + " / AccesToken : " + accessToken +" / Error : "+ e.getMessage());
+		}catch(HttpException e) {
+			System.out.println("Maybe AccessToken Error");
 			System.out.println("GitID : " + gitId + " / AccesToken : " + accessToken +" / Error : "+ e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -259,10 +262,6 @@ public class GitHubRestApiHelper {
 	public Map<Date, Integer> getAllCommitCnt(List<String> repoIds, String gitid, Date sDate, Date eDate) {
 		eDate = cutTime(eDate);
 		sDate = cutTime(sDate);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(eDate);
-		calendar.add(Calendar.DATE, 1);
-		eDate = new Date(calendar.getTimeInMillis());
 		Map<Date, Integer> output = getDateMap(sDate, eDate);
 		try {
 			this.github.checkApiUrlValidity();
@@ -330,7 +329,7 @@ public class GitHubRestApiHelper {
     	calendar.setTimeInMillis(eDate.getTime()-sDate.getTime());
     	int days = calendar.get(Calendar.DAY_OF_YEAR);
     	calendar.setTime(sDate);
-    	for (int i = 0; i < days-2; i++) {
+    	for (int i = 0; i < days-1; i++) {
 			map.put(new Date(calendar.getTimeInMillis()), 0);
 			calendar.add(Calendar.DATE, 1);
 		}
