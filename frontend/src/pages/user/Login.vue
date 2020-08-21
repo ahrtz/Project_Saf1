@@ -108,7 +108,7 @@ export default {
       var temp = window.open('/api/oauth2/authorization/google');
     },
     onExperienceClick() {
-      location.href='/1'
+      location.href='/6'
     }
   },
 };
