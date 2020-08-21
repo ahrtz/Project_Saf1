@@ -151,10 +151,10 @@ export default {
 
       try {
         let tmpspace = await this.$api.getRepoData();
-        console.log(tmpspace);
+        // console.log(tmpspace);
         this.repoData = tmpspace;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
 
       return true;
