@@ -245,6 +245,7 @@ public class UserController {
         user.setEmail(email);
         user.setPwd(pwd);
         if(nickname == null) nickname = "anonymous";
+        System.out.println(nickname);
         user.setNickname(nickname);
         user.setGitId(gitId);
         user.setGitUrl(gitUrl);
