@@ -208,14 +208,14 @@ export default {
               'Content-Type': 'multipart/form-data',
             },
           });
-          console.log('성공');
+          // console.log('성공');
           this.$router.push({
             name: 'DiaryMain',
             params: { uid: this.blogData.uid, test: 2 },
           });
         } catch (e) {
-          console.log('실패');
-          console.log(e);
+          // console.log('실패');
+          // console.log(e);
         }
       }
     },
