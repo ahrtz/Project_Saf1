@@ -382,7 +382,7 @@ export default {
           alert("수정할 그룹의 이름을 기입하세요.");
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     },
     async removeGroup() {

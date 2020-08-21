@@ -33,7 +33,7 @@ export default {
       this.isLoggedIn = await this.$api.isLoggedIn();
       this.$store.commit('isLoggedIn', this.isLoggedIn);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       this.$store.commit('isLoggedIn', false);
     }
   },
