@@ -209,14 +209,14 @@ export default {
               for (var i = 0; i < res.data.length; i++) {
                 this.tag_proj[i] = await this.$api.tagIndex(res.data[i].id);
               }
-
+              this.$forceUpdate();
               $state.loaded();
               this.limit_proj += 10;
             } else {
               $state.complete();
             }
-          }, 1000);
-          this.$forceUpdate();
+          }, 100);
+          
         })
         .catch((err) => {
           // console.log(err);
@@ -239,14 +239,14 @@ export default {
               for (var i = 0; i < res.data.length; i++) {
                 this.tag_blog[i] = await this.$api.tagIndex(res.data[i].id);
               }
-
+              this.$forceUpdate();
               $state.loaded();
               this.limit_blog += 10;
             } else {
               $state.complete();
             }
-          }, 1000);
-          this.$forceUpdate();
+          }, 100);
+          
         })
         .catch((err) => {
           // console.log(err);
