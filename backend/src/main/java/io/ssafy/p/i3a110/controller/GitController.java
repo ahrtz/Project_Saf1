@@ -64,6 +64,10 @@ public class GitController {
 		String email = (String) session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		if(user.getIsCertified()==1) {
+			if(!helper.checkOauth(user.getGitId(), user.getGitToken())) {
+				userService.cancelToken(user.getId());
+				return new ResponseEntity<>("AccessToken 오류/만료",HttpStatus.BAD_REQUEST);
+			}
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			list = helper.getAllRepositoryInfo();
 			return new ResponseEntity<>(list, HttpStatus.OK);
@@ -95,6 +99,10 @@ public class GitController {
 		String edate = map.get("edate");
 		
 		if(user.getIsCertified()==1) {
+			if(!helper.checkOauth(user.getGitId(), user.getGitToken())) {
+				userService.cancelToken(user.getId());
+				return new ResponseEntity<>("AccessToken 오류/만료",HttpStatus.BAD_REQUEST);
+			}
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			list = helper.getCommitInfoListByPeriod(repoId, sdate, edate);
 			return new ResponseEntity<>(list, HttpStatus.OK);
@@ -125,6 +133,10 @@ public class GitController {
 		cal.setTime(eDate);
 		cal.add(Calendar.DATE, -84);
 		if(user.getIsCertified()==1) {
+			if(!helper.checkOauth(user.getGitId(), user.getGitToken())) {
+				userService.cancelToken(user.getId());
+				return new ResponseEntity<>("AccessToken 오류/만료",HttpStatus.BAD_REQUEST);
+			}
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			List<String> repoIds = new ArrayList<String>();
 			if(repoId == null || repoId.equals("")) {
@@ -160,6 +172,10 @@ public class GitController {
 		String email = (String)session.getAttribute("email");
 		UserDto user = userService.findUserByEmail(email);
 		if(user.getIsCertified()==1) {
+			if(!helper.checkOauth(user.getGitId(), user.getGitToken())) {
+				userService.cancelToken(user.getId());
+				return new ResponseEntity<>("AccessToken 오류/만료",HttpStatus.BAD_REQUEST);
+			}
 			helper = new GitHubRestApiHelper(user.getGitToken());
 			HashMap<String, String> output = helper.getOdocRate(diaryService.getAllWrittenRepoId(user.getId()));
 			return new ResponseEntity<>(output, HttpStatus.OK);
@@ -167,4 +183,5 @@ public class GitController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 }
