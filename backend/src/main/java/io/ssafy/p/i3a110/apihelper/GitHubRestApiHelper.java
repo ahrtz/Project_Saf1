@@ -53,7 +53,6 @@ public class GitHubRestApiHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return true;
 	}
 	
@@ -65,7 +64,11 @@ public class GitHubRestApiHelper {
 			String id = person.getLogin();
 			if(id.equals(gitId)) return true;
 			else return false;
-		} catch(HttpException e) {
+		} catch(IllegalStateException e) {
+			System.out.println("Maybe AccessToken Error");
+			System.out.println("GitID : " + gitId + " / AccesToken : " + accessToken +" / Error : "+ e.getMessage());
+		}catch(HttpException e) {
+			System.out.println("Maybe AccessToken Error");
 			System.out.println("GitID : " + gitId + " / AccesToken : " + accessToken +" / Error : "+ e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();

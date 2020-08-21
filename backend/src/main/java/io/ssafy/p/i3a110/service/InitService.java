@@ -39,7 +39,8 @@ public class InitService {
 			String gitId = user.getGitId();
 			String accessToken = user.getGitToken();
 			if(!checkHelper.checkOauth(gitId, accessToken)) {
-				System.out.println(String.format("Please Check User DB Table id = %d", idx));
+				System.out.println(String.format("Please Check User DB Table uid = %d", uid));
+				userService.cancelToken(uid);
 				continue;
 			}
 			GitHubRestApiHelper helper = new GitHubRestApiHelper(accessToken);
